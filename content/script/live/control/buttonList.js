@@ -97,7 +97,7 @@ src.base.control.buttonList.createAButtonList = function(options, createADiv, cr
                          currentItem['value'],
                          goog.dom.forms.getValue,
                          goog.string.isEmptySafe,
-                         updateHidden,
+                         goog.dom.forms.setValue,
                          goog.string.contains,
                          goog.string.remove);
             
