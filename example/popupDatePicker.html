@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../content/script/live/final.js"></script>
+  </head>
+  
+  <body>
+    <div>
+      
+      <div class="floatLeft">
+        <input type="textbox" name="targetTextbox" id="targetTextbox" value="" />
+      </div>
+      <div class="floatLeft" id="datePickerHolder" name="datePickerHolder">
+      </div>
+      <div class="clearBoth"></div>
+    </div>
+    
+  </body>
+  
+  <script type="text/javascript">
+    
+    var DatePicker = src.base.control.popupDatePicker;
+    var textboxName = 'targetTextbox';
+    var holderName = 'datePickerHolder';
+    
+    var datePickerOptions = {};
+    datePickerOptions[DatePicker.ButtonClass] = 'showButton';
+    datePickerOptions[DatePicker.ButtonText] = '';
+    datePickerOptions[DatePicker.ContainerClass] = '';
+    datePickerOptions[DatePicker.DatePickerClass] = '';
+    datePickerOptions[DatePicker.PopupClass] = 'popup';
+    datePickerOptions[DatePicker.TextboxName] = textboxName;
+    
+    var holder = document.getElementById(holderName);
+    var datePicker = DatePicker.create(datePickerOptions);
+    holder.appendChild(datePicker);
+    
+  </script>
+</html>

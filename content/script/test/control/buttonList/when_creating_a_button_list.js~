@@ -1,0 +1,134 @@
+goog.require('goog.string');
+goog.provide('src.test.control.buttonList.whenCreatingAButtonList');
+
+/**
+ @export
+ */
+src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
+    //Using
+    var Current = src.base.control.buttonList;
+
+
+    //Fields
+
+    var ContainerClass_ = goog.string.getRandomString();
+    var FirstText_ = goog.string.getRandomString();
+    var FirstValue_ = goog.string.getRandomString();
+    var ParentContainerId_ = goog.string.getRandomString();
+    var SecondText_ = goog.string.getRandomString();
+    var SecondValue_ = goog.string.getRandomString();
+
+    var addElement_;
+    var createAButton_;
+    var createADiv_;
+    var createAHidden_;
+    var options_;
+    var parentContainer_;
+
+    //Test Hooks
+    beforeEach(function() {
+
+        options_ = {};
+        options_[Current.ContainerClass] = ContainerClass_;
+        options_[Current.ElementId] = ParentContainerId_;
+        options_[Current.ButtonOptions] = [
+            {'text': FirstText_, 'value': FirstValue_},
+            {'text': SecondText_, 'value': SecondValue_}
+        ];
+
+        createADiv_ = function() { return parentContainer_; };
+        createAButton_ = function() { return {}; };
+        addElement_ = function() {};
+        createAHidden_ = function() { return {}; };
+    });
+
+
+    //Support Methods
+    var callTheMethod_ = function() {
+        Current.createAButtonList(options_, createADiv_, createAButton_, addElement_);
+    };
+
+
+    //Test Methods
+
+    it('should create the main container.', function() {
+        var methodWasCalled = false;
+
+        createADiv_ = function(attributes, nonono) {
+            methodWasCalled = attributes['id'] === ParentContainerId_ &&
+                attributes['class'] === ContainerClass_;
+        };
+
+        callTheMethod_();
+
+        expect(methodWasCalled).toBe(true);
+    });
+
+
+
+    it('should create a button per button list item ', function() {
+        var methodWasCalled = 0;
+
+        createAButton_ = function(attributes, text) {
+            methodWasCalled += text === FirstText_ ||
+                text === SecondText_;
+
+            return {};
+        };
+
+
+        callTheMethod_();
+
+        expect(methodWasCalled).toBe(2);
+    });
+
+
+    it('should add each button to the main container.', function() {
+        var firstButton = {};
+        var firstTime = true;
+        var methodWasCalled = 0;
+        var secondButton = {};
+
+        createAButton_ = function() {
+            var result = firstTime ? firstButton : secondButton;
+            firstTime = false;
+
+            return result;
+        };
+
+        addElement_ = function(parent, child) {
+            methodWasCalled += parent === parentContainer_ &&
+                (child === firstButton || child === secondButton);
+        };
+
+        callTheMethod_();
+
+        expect(methodWasCalled).toBe(2);
+    });
+
+
+
+    it('should create a hidden input.', function() {
+        var methodWasCalled = false;
+
+        createAHidden_ = function(attributes) {
+            methodWasCalled = attributes[Current.ElementId] === ParentContainerId_;
+            return {};
+        };
+
+        callTheMethod_();
+
+        expect(methodWasCalled).toBe(true);
+    });
+
+
+
+    it('should set the click event for each of the buttons.', function() {
+        expect('This is not').toBe('tested yet');
+    });
+};
+
+
+describe('When creating a button list, it', function() {
+    src.test.control.buttonList.whenCreatingAButtonList.describe();
+});
