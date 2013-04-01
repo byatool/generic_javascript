@@ -60,7 +60,7 @@ src.base.helper.domCreation.checkBox = function(attributes, checked) {
 
 /**
  @param {Object|string} attributes This is the html attributes
-
+ 
 
  for the parent form.
  @return {!Object} This is the created element tree.

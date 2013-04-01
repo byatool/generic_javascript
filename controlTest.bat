@@ -23,6 +23,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.popupDatePicker.whenCreatingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
 --namespace="src.test.control.buttonList.whenCreatingAButtonList" ^
+--namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^

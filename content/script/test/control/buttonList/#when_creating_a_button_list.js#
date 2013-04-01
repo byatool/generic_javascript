@@ -39,17 +39,17 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
             {'text': FirstText_, 'value': FirstValue_},
             {'text': SecondText_, 'value': SecondValue_}
         ];
-
+        
         var firstTime = true;
-
+        
         createAButton_ = function() {
             var result = firstTime ? firstButton_ : secondButton_;
             firstTime = false;
-
+            
             return result;
         };
-
-
+        
+        
         createADiv_ = function() { return parentContainer_; };
         addElement_ = function() {};
         createAHidden_ = function() { return {}; };
@@ -63,10 +63,10 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
     var callTheMethod_ = function() {
         Current.createAButtonList(options_, createADiv_, createAHidden_, createAButton_, setClick_, setValue_, updateHidden_, addElement_);
     };
-
-
+    
+    
     //Test Methods
-
+    
     it('should create the main container.', function() {
         var methodWasCalled = false;
         
@@ -74,21 +74,21 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
             methodWasCalled = attributes['id'] === ParentContainerId_ &&
                 attributes['class'] === ContainerClass_;
         };
-
+        
         callTheMethod_();
-
+        
         expect(methodWasCalled).toBe(true);
     });
-
-
+    
+    
     it('should create a hidden input.', function() {
         var methodWasCalled = false;
-
+        
         createAHidden_ = function(attributes) {
             methodWasCalled = attributes[Current.ElementId] === ParentContainerId_;
             return {};
         };
-
+        
         callTheMethod_();
 
         expect(methodWasCalled).toBe(true);
