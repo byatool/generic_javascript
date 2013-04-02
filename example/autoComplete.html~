@@ -1,0 +1,20 @@
+
+<html>
+  <head>
+    <link rel="stylesheet" href="../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../content/script/live/final.js"></script>
+  </head>
+  
+  <body>
+    <div class="" id="messageBoxContainer" name="messageBoxContainer">
+      
+    </div>
+    
+    <input type="button" name="exampleButton" id="exampleButton" value="exampleButton"  />
+  </body>
+  
+  <script type="text/javascript">
+    
+    
+  </script>
+</html>

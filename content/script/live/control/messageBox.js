@@ -33,8 +33,8 @@ src.base.control.messageBox.DIV_MESSAGE_CONTAINER = 'divMessgaeContainer';
  element.
  */
 src.base.control.messageBox.clearAllMessages = function(parentMessageBox, findMessageBox, removeChildren) {
-  var messageBox = findMessageBox(parentMessageBox);
-  removeChildren(messageBox);
+    var messageBox = findMessageBox(parentMessageBox);
+    removeChildren(messageBox);
 };
 
 
@@ -45,9 +45,9 @@ src.base.control.messageBox.clearAllMessages = function(parentMessageBox, findMe
  @private
  */
 src.base.control.messageBox.findMessageBox_ = function(parentContainer) {
-  return goog.dom.findNode(parentContainer, function(node) {  //Abstract?
-    return node.id == src.base.control.messageBox.DIV_MESSAGE_BOX;
-  });
+    return goog.dom.findNode(parentContainer, function(node) {  //Abstract?
+        return node.id == src.base.control.messageBox.DIV_MESSAGE_BOX;
+    });
 };
 
 /**
@@ -57,12 +57,12 @@ src.base.control.messageBox.findMessageBox_ = function(parentContainer) {
  class.
  */
 src.base.control.messageBox.setTheAppearanceByResult = function(divToChange, result, addRemoveClass) {
-  if (result[src.base.helper.constants.result.SUCCESS]) {
-    addRemoveClass(divToChange, 'error', 'info');
-  }
-  else {
-    addRemoveClass(divToChange, 'info', 'error');
-  }
+    if (result[src.base.helper.constants.result.SUCCESS]) {
+        addRemoveClass(divToChange, 'error', 'info');
+    }
+    else {
+        addRemoveClass(divToChange, 'info', 'error');
+    }
 };
 
 
@@ -75,12 +75,12 @@ src.base.control.messageBox.setTheAppearanceByResult = function(divToChange, res
  @export
  */
 src.base.control.messageBox.createAResult = function(messages, success) {
-  var ResultConstants = src.base.helper.constants.result;
-  var result = {};
-  result[ResultConstants.MESSAGES] = messages;
-  result[ResultConstants.SUCCESS] = success;
+    var ResultConstants = src.base.helper.constants.result;
+    var result = {};
+    result[ResultConstants.MESSAGES] = messages;
+    result[ResultConstants.SUCCESS] = success;
 
-  return result;
+    return result;
 };
 
 
@@ -94,30 +94,29 @@ src.base.control.messageBox.createAResult = function(messages, success) {
  @export
  */
 src.base.control.messageBox.createMessageBox = function(givenName, createADiv, showElement) {
-  'use strict';
+    'use strict';
 
-  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-  showElement = showElement ? showElement : goog.style.showElement;
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+    showElement = showElement ? showElement : goog.style.showElement;
 
-  var parentId = goog.string.isEmptySafe(givenName) ?
-        src.base.control.messageBox.DIV_MESSAGE_CONTAINER :
-        givenName;
+    var parentId = goog.string.isEmptySafe(givenName) ?
+            src.base.control.messageBox.DIV_MESSAGE_CONTAINER :
+            givenName;
 
-  var messageBox = createADiv({id: parentId}, [
-    createADiv({id: src.base.control.messageBox.DIV_MESSAGE_BOX})
-  ]);
+    var messageBox = createADiv({id: parentId}, [
+        createADiv({id: src.base.control.messageBox.DIV_MESSAGE_BOX})
+    ]);
 
-  showElement(messageBox, false);
+    showElement(messageBox, false);
 
-  return messageBox;
+    return messageBox;
 };
 
 
 /**
  @param {!Object} parentMessageBox This will update the message container
  with messages on the result.
- @param {!{messages: Array.<string>}} result This is the result
- to check for messages.
+ @param {!{messages: Array.<string>}} result This is the result to check for messages.
  @param {?function(Object)} clearAllMessages The method used to clear the messages from a message box.
  @param {?function(Object) : Object} findMessageBox The method used to find the child message box
  within the message box container.
@@ -129,31 +128,31 @@ src.base.control.messageBox.createMessageBox = function(givenName, createADiv, s
  @export
  */
 src.base.control.messageBox.updateMessagesByResult = function(parentMessageBox, result, clearAllMessages, findMessageBox, createADiv, appendChild, setTheAppearanceByResult, showElement) {
-  var ResultConstants = src.base.helper.constants.result;
+    var ResultConstants = src.base.helper.constants.result;
 
-  clearAllMessages = clearAllMessages ? clearAllMessages : src.base.control.messageBox.clearAllMessages;
-  findMessageBox = findMessageBox ? findMessageBox : src.base.control.messageBox.findMessageBox_;
-  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-  appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  setTheAppearanceByResult = setTheAppearanceByResult ? setTheAppearanceByResult : src.base.control.messageBox.setTheAppearanceByResult;
-  showElement = showElement ? showElement : goog.style.showElement;
+    clearAllMessages = clearAllMessages ? clearAllMessages : src.base.control.messageBox.clearAllMessages;
+    findMessageBox = findMessageBox ? findMessageBox : src.base.control.messageBox.findMessageBox_;
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    setTheAppearanceByResult = setTheAppearanceByResult ? setTheAppearanceByResult : src.base.control.messageBox.setTheAppearanceByResult;
+    showElement = showElement ? showElement : goog.style.showElement;
 
 
-  clearAllMessages(parentMessageBox, src.base.control.messageBox.findMessageBox_, goog.dom.removeChildren); //Abstract?
+    clearAllMessages(parentMessageBox, src.base.control.messageBox.findMessageBox_, goog.dom.removeChildren); //Abstract?
 
-  var divMessageContainer = findMessageBox(parentMessageBox);
-  var messages = result[ResultConstants.MESSAGES]; //Abstract?
+    var divMessageContainer = findMessageBox(parentMessageBox);
+    var messages = result[ResultConstants.MESSAGES]; //Abstract?
 
-  if (messages && messages.length > 0) {
-    var children = goog.array.map(messages, function(messageItem) { //Abstract?
-      return createADiv({}, messageItem);
-    });
+    if (messages && messages.length > 0) {
+        var children = goog.array.map(messages, function(messageItem) { //Abstract?
+            return createADiv({}, messageItem);
+        });
 
-    goog.array.forEach(children, function(createdMessage) {  //Abstract?
-      appendChild(divMessageContainer, createdMessage);
-    });
-  }
+        goog.array.forEach(children, function(createdMessage) {  //Abstract?
+            appendChild(divMessageContainer, createdMessage);
+        });
+    }
 
-  setTheAppearanceByResult(divMessageContainer, result, goog.dom.classes.addRemove);
-  showElement(parentMessageBox, true);
+    setTheAppearanceByResult(divMessageContainer, result, goog.dom.classes.addRemove);
+    showElement(parentMessageBox, true);
 };
