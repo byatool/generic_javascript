@@ -13,6 +13,7 @@
 *.exclude
 *.user
 
+.sass-cache/
 bin/
 ep/Bin/Microsoft.*.dll
 ep/Bin/MCTWF.*.dll
