@@ -7,6 +7,18 @@
 .floatRight {
   float: right; }
 
+.buttonListContainer {
+  background-color: #cccccc; }
+  .buttonListContainer button {
+    background-color: #c1131d !important;
+    border-color: white !important;
+    border-style: solid !important;
+    border-Width: 0.5em !important;
+    color: white !important;
+    font-size: x-large !important; }
+  .buttonListContainer .selectedButton {
+    border-color: black !important; }
+
 .formClass {
   height: 10em; }
   .formClass .submitButton {
