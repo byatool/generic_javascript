@@ -58,7 +58,7 @@ src.test.control.buttonList.whenUpdatingTheHiddenValue.describe = function() {
     it('should check the value for emptyness.', function() {
         var methodWasCalled = false;
         var result = goog.string.getRandomString();
-        
+
         getValue_ = function() {return result;};
 
         isEmptySafe_ = function(value) {
@@ -111,17 +111,17 @@ src.test.control.buttonList.whenUpdatingTheHiddenValue.describe = function() {
         getValue_ = function() { return originalValue; };
         isEmptySafe_ = function() { return false; };
         contains_ = function() { return true; };
-        
+
         removeValue_ = function(original, current) {
             methodWasCalled = current == value_ &&
                 originalValue === original;
         };
-        
+
         callTheMethod_()();
-        
+
         expect(methodWasCalled).toBe(true);
     });
-    
+
 
     it('should set the value with the cleaned text.', function() {
         var methodWasCalled = false;

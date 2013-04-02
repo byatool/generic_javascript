@@ -67,7 +67,7 @@ src.base.control.buttonList.updateHidden = function(hiddenElement, value, getVal
     return function() {
         var currentValue = getValue(hiddenElement);
         currentValue = isEmptySafe(currentValue) ? '' : currentValue;
-        
+
         if (contains(currentValue, value)) {
             currentValue = removeValue(currentValue, value);
             setValue(hiddenElement, currentValue);
@@ -97,7 +97,7 @@ src.base.control.buttonList.updateHidden = function(hiddenElement, value, getVal
 src.base.control.buttonList.createAButtonList = function(options, createADiv, createAHidden, createAButton,
                                                          setClick, setValue, updateHidden, toggleClass, appendChild) {
     var Current = src.base.control.buttonList;
-    
+
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
     createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
@@ -106,18 +106,18 @@ src.base.control.buttonList.createAButtonList = function(options, createADiv, cr
     updateHidden = updateHidden ? updateHidden : Current.updateHidden;
     toggleClass = toggleClass ? toggleClass : Current.toggleClass;
     appendChild = appendChild ? appendChild : goog.dom.appendChild;
-    
-    
+
+
     var parentContainer = createADiv({'id': options[Current.ElementId], 'class': options[Current.ContainerClass]}, null);
-    
+
     var hidden = createAHidden({'id': options[Current.ElementId]});
     appendChild(parentContainer, hidden);
-    
+
     var createdButtons = goog.array.map(options[Current.ButtonOptions], function(currentItem) {
-        
+
         //TOTEST: set intial class?
         var createdButton = createAButton({'type': 'button'}, currentItem['text']);
-        
+
         var hiddenChange = updateHidden(hidden,
                                         currentItem['value'],
                                         goog.dom.forms.getValue,
@@ -127,19 +127,19 @@ src.base.control.buttonList.createAButtonList = function(options, createADiv, cr
                                         goog.string.removeAll);
         //Does not exist yet.
         var toggle = toggleClass(createdButton, options[Current.SelectedButtonClass], goog.dom.classes.toggle);
-        
+
         setClick(createdButton, function() {
             hiddenChange();
             toggle();
         });
-        
+
         return createdButton;
     });
-    
+
     goog.array.forEach(createdButtons, function(item) {
         appendChild(parentContainer, item);
     });
-    
+
     return parentContainer;
 };
 
