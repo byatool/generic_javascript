@@ -156,7 +156,7 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
                 isEmptySafe === goog.string.isEmptySafe &&
                 setValue === goog.dom.forms.setValue &&
                 contains === goog.string.contains &&
-                remove === goog.string.remove;
+                remove === goog.string.removeAll;
         };
 
         callTheMethod_();

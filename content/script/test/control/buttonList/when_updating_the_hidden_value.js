@@ -42,106 +42,106 @@ src.test.control.buttonList.whenUpdatingTheHiddenValue.describe = function() {
     //Test Methods
 
     it('should get the current element value.', function() {
-      var methodWasCalled = false;
+        var methodWasCalled = false;
 
-      getValue_ = function(element) {
-        methodWasCalled = element === hiddenElement_;
-        return '';
-      };
+        getValue_ = function(element) {
+            methodWasCalled = element === hiddenElement_;
+            return '';
+        };
 
-      callTheMethod_()();
+        callTheMethod_()();
 
-      expect(methodWasCalled).toBe(true);
+        expect(methodWasCalled).toBe(true);
     });
 
 
     it('should check the value for emptyness.', function() {
-      var methodWasCalled = false;
-      var result = goog.string.getRandomString();
+        var methodWasCalled = false;
+        var result = goog.string.getRandomString();
+        
+        getValue_ = function() {return result;};
 
-      getValue_ = function() {return result;};
+        isEmptySafe_ = function(value) {
+            methodWasCalled = result === value;
+            return true;
+        };
 
-      isEmptySafe_ = function(value) {
-        methodWasCalled = result === value;
-        return true;
-      };
+        callTheMethod_()();
 
-      callTheMethod_()();
-
-      expect(methodWasCalled).toBe(true);
+        expect(methodWasCalled).toBe(true);
     });
 
 
     it('should set the value if there is none in existence.', function() {
-      var methodWasCalled = false;
+        var methodWasCalled = false;
 
-      setValue_ = function(element, value) {
-        methodWasCalled = element === hiddenElement_ &&
-          value === value_ + ' ';
-      };
+        setValue_ = function(element, value) {
+            methodWasCalled = element === hiddenElement_ &&
+                value === value_ + ' ';
+        };
 
-      callTheMethod_()();
+        callTheMethod_()();
 
-      expect(methodWasCalled).toBe(true);
+        expect(methodWasCalled).toBe(true);
     });
 
 
     it('should prepend the value if another exists.', function() {
-      var methodWasCalled = false;
-      var originalValue = goog.string.getRandomString();
+        var methodWasCalled = false;
+        var originalValue = goog.string.getRandomString();
 
-      getValue_ = function() { return originalValue; };
-      isEmptySafe_ = function() { return false; };
+        getValue_ = function() { return originalValue; };
+        isEmptySafe_ = function() { return false; };
 
-      setValue_ = function(element, value) {
-        methodWasCalled = element === hiddenElement_ &&
-          value === value_ + ' ' + originalValue;
-      };
+        setValue_ = function(element, value) {
+            methodWasCalled = element === hiddenElement_ &&
+                value === value_ + ' ' + originalValue;
+        };
 
-      callTheMethod_()();
+        callTheMethod_()();
 
-      expect(methodWasCalled).toBe(true);
+        expect(methodWasCalled).toBe(true);
     });
 
 
     it('should remove the value if it exists.', function() {
-      var methodWasCalled = false;
-      var originalValue = value_ + ' ';
+        var methodWasCalled = false;
+        var originalValue = value_ + ' ';
 
-      getValue_ = function() { return originalValue; };
-      isEmptySafe_ = function() { return false; };
-      contains_ = function() { return true; };
-
-      removeValue_ = function(current, original) {
-        methodWasCalled = current == value_ &&
-          originalValue === original;
-      };
-
-      callTheMethod_()();
-
-      expect(methodWasCalled).toBe(true);
+        getValue_ = function() { return originalValue; };
+        isEmptySafe_ = function() { return false; };
+        contains_ = function() { return true; };
+        
+        removeValue_ = function(original, current) {
+            methodWasCalled = current == value_ &&
+                originalValue === original;
+        };
+        
+        callTheMethod_()();
+        
+        expect(methodWasCalled).toBe(true);
     });
-
+    
 
     it('should set the value with the cleaned text.', function() {
-      var methodWasCalled = false;
+        var methodWasCalled = false;
 
-      var finalValue = goog.string.getRandomString();
+        var finalValue = goog.string.getRandomString();
 
-      contains_ = function() { return true; };
+        contains_ = function() { return true; };
 
-      removeValue_ = function() {
-        return finalValue;
-      };
+        removeValue_ = function() {
+            return finalValue;
+        };
 
-      setValue_ = function(element, value) {
-        methodWasCalled = element === hiddenElement_ &&
-          value === finalValue;
-      };
+        setValue_ = function(element, value) {
+            methodWasCalled = element === hiddenElement_ &&
+                value === finalValue;
+        };
 
-      callTheMethod_()();
+        callTheMethod_()();
 
-      expect(methodWasCalled).toBe(true);
+        expect(methodWasCalled).toBe(true);
     });
 
 };
