@@ -42,19 +42,21 @@ src.base.control.buttonList.ElementId = 'id';
  input element.
  @param {function(string, string) : boolean} contains The method used to find a string in a string.
  @param {function(Object, string)} removeValue The method used to remove a string from a string.
+ @return {function()} The method that wraps the update call.
  */
 src.base.control.buttonList.updateHidden = function(hiddenElement, value, getValue, isEmptySafe, setValue, contains, removeValue) {
-    
+  return function() {
     var currentValue = getValue(hiddenElement);
     currentValue = isEmptySafe(currentValue) ? '' : currentValue;
-
+    
     if (contains(currentValue, value)) {
-        currentValue = removeValue(value, currentValue);
-        setValue(hiddenElement, currentValue);
+      currentValue = removeValue(value, currentValue);
+      setValue(hiddenElement, currentValue);
     }
     else {
-        setValue(hiddenElement, value + ' ' + currentValue);
+      setValue(hiddenElement, value + ' ' + currentValue);
     }
+  };
 };
 
 //Exported Methods
@@ -72,46 +74,45 @@ src.base.control.buttonList.updateHidden = function(hiddenElement, value, getVal
  */
 src.base.control.buttonList.createAButtonList = function(options, createADiv, createAHidden, createAButton,
                                                          setClick, setValue, updateHidden, appendChild) {
-    var Current = src.base.control.buttonList;
+  var Current = src.base.control.buttonList;
+  
+  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+  createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
+  createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
+  setClick = setClick ? setClick : src.base.helper.events.setClick;
+  setValue = setValue ? setValue : goog.dom.forms.setValue;
+  updateHidden = updateHidden ? updateHidden : Current.updateHidden;
+  appendChild = appendChild ? appendChild : goog.dom.appendChild;
+  
+  var parentContainer = createADiv({'id': options[Current.ElementId], 'class': options[Current.ContainerClass]}, null);
+  
+  //TOTEST Actually append the child
+  var hidden = createAHidden({'id': options[Current.ElementId]});
+  appendChild(parentContainer, hidden);
+  var createdButtons = goog.array.map(options[Current.ButtonOptions], function(currentItem) {
+    var createdButton = createAButton({'type': 'button'}, currentItem['text']);
     
-    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-    createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
-    createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
-    setClick = setClick ? setClick : src.base.helper.events.setClick;
-    setValue = setValue ? setValue : goog.dom.forms.setValue;
-    updateHidden = updateHidden ? updateHidden : Current.updateHidden;
-    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    //TODO: Actual values sent are untested.
+    //TODO: Pull methods into parameters when testing solution is found.
+    setClick(createdButton,
+      updateHidden(hidden,
+                   currentItem['value'],
+                   goog.dom.forms.getValue,
+                   goog.string.isEmptySafe,
+                   goog.dom.forms.setValue,
+                   goog.string.contains,
+                   goog.string.remove));
+      
+      //TOTEST: change the button class});
     
-    var parentContainer = createADiv({'id': options[Current.ElementId], 'class': options[Current.ContainerClass]}, null);
-
-    //TOTEST Actually append the child
-    var hidden = createAHidden({'id': options[Current.ElementId]});
-    appendChild(parentContainer, hidden);
-    var createdButtons = goog.array.map(options[Current.ButtonOptions], function(currentItem) {
-        var createdButton = createAButton({'type': 'button'}, currentItem['text']);
-        
-        //TODO: Actual values sent are untested.
-        //TODO: Pull methods into parameters when testing solution is found.
-        setClick(createdButton, function() {
-            updateHidden(hidden,
-                         currentItem['value'],
-                         goog.dom.forms.getValue,
-                         goog.string.isEmptySafe,
-                         goog.dom.forms.setValue,
-                         goog.string.contains,
-                         goog.string.remove);
-            
-            //TOTEST: change the button class
-        });
-        
-        return createdButton;
-    });
-    
-    goog.array.forEach(createdButtons, function(item) {
-        appendChild(parentContainer, item);
-    });
-    //TOTEST Returning something
-    return parentContainer;
+    return createdButton;
+  });
+  
+  goog.array.forEach(createdButtons, function(item) {
+    appendChild(parentContainer, item);
+  });
+  //TOTEST Returning something
+  return parentContainer;
 };
 
 

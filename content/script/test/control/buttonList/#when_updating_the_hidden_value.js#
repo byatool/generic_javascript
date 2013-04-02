@@ -41,7 +41,7 @@ src.test.control.buttonList.whenUpdatingTheHiddenValue.describe = function() {
 
   //Test Methods
   
-  // it('should get the current element value.', function() {
+  // It('should get the current element value.', function() {
   //   var methodWasCalled = false;
     
   //   getValue_ = function(element) {
@@ -125,7 +125,7 @@ src.test.control.buttonList.whenUpdatingTheHiddenValue.describe = function() {
 
   // it('should set the value with the cleaned text.', function() {
   //   var methodWasCalled = false;
-
+  
   //   var finalValue = goog.string.getRandomString();
 
   //   contains_ = function() { return true; };
