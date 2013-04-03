@@ -7,6 +7,20 @@
 .floatRight {
   float: right; }
 
+.ac-renderer {
+  font: normal 13px Arial, sans-serif;
+  position: absolute;
+  background: white;
+  border: 1px solid #666666;
+  width: 300px; }
+  .ac-renderer .ac-row {
+    cursor: pointer;
+    padding: 0.4em; }
+  .ac-renderer .ac-highlighted {
+    font-weight: bold; }
+  .ac-renderer .ac-active {
+    background-color: #b2b4bf; }
+
 .buttonListContainer {
   background-color: #cccccc; }
   .buttonListContainer button {
