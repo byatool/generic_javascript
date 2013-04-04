@@ -49,75 +49,53 @@ src.base.control.autocomplete.Url = 'Url';
 
 
 /**
- @export
+ TODO Test this
+ @param {Object} inputHandler description.
+ @param {string} hiddenName description.
+ @param {function(string) : Object} getElement description.
+ @param {function(Object, string)} setValue description.
  */
-src.base.control.autocomplete.tempAutocomplete = function(textboxName, hiddenName, url) {
-    var Div = src.base.helper.domCreation.div;
-    var Hidden = src.base.helper.domCreation.hidden;
-    var input = goog.dom.getElement(textboxName);
-    var ac = new goog.ui.ac.Remote(url, input);
-    //The main reason for writing renderer enhancement was the use of objects being returned for the
-    //  autocomplete to create rows in the selection area.  For this example the return type is
-    //  an array of {Id, Name}.  The idea was to have it display the name for each item,
-    //  and set a hidden value with the Id when something was selected.
+src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, hiddenName, getElement, setValue) {
     
-    
-    //The renderer is in charge of how the rows should look in the selection area.
-    var renderer = ac.getRenderer();
-    
-    //Basically reassigning the original funtion with a new function that uses
-    //  the code of the original, but with modifications.
-    //The idea with this example is to create a row with not only a Name, but a
-    //  hidden input that will hold an ID associated with the Name.
-    renderer.renderRowContents_ = function(row, token, node) {
-        var createdDiv = Div({}, row['data']['Name']);
-        node.innerHTML = goog.dom.getOuterHtml(createdDiv);
-    };
-    
-    
-    //The inputHandler is in charge of what to do with an item when it has been selected.
-    //  In this case, the value set to the textbox.
-    var inputHandler = ac.getInputHandler();
-    
-    //Like the renderRowHtml method above, this reassigning the function
-    //  tasked with taking a selected item, and updating the attached textbox.
-    //One good note: the "selectedItem" isn't the actual selected row html, but
-    //  the original object that was returned from the server.  This means that
-    //  selectedRow = {Id: '1', Name: 'Fred'}. This was a nice surprise.
     inputHandler.selectRow = function(selectedItem, opt_multi) {
-        //This is used to set the hidden value's... value whenever
-        //  and item is selected.
-        var hidden = goog.dom.getElement(hiddenName);
-        goog.dom.forms.setValue(hidden, selectedItem['Id']);
+        var hidden = getElement(hiddenName);
+        setValue(hidden, selectedItem['Id']);
         
-        
-        //This is the original code other than the
-        //  selectedItem['Name'] value retrieval.
         this.setTokenText(selectedItem['Name']);
         return false;
     };
-    
-    ac.setMethod('POST');
 };
-
-//    ;
-//  renderer.renderRowContents_ =
-//   function(row, token, node) {
-//     var createdDiv = Div({}, row['data']['Name']);
-//     node.innerHTML = goog.dom.getOuterHtml(createdDiv);
-// };
 
 /**
  @param {Object} renderer the renderer attached to the autocomplete.
  @param {?function(Object, Object) : Object} createADiv The method used to create a div element.
  @param {function(Object) : string} getOuterHtml The method used to get the hmtl from an element object.
- @export
  */
 src.base.control.autocomplete.setRenderRowContents = function(renderer, createADiv, getOuterHtml)  {
     renderer.renderRowContents_ = function(row, token, node) {
         var createdDiv = createADiv({}, row['data']['Name']);
         node.innerHTML = getOuterHtml(createdDiv);
     };
+};
+
+
+/**
+ @param {Object} autocomplete The autocomplete control.
+ @return {Object} The renderer.
+ @private
+ */
+src.base.control.autocomplete.getTheRenderer_ = function(autocomplete) {
+    return autocomplete.getRenderer();
+};
+
+
+/**
+ @param {Object} autocomplete The autocomplete control.
+ @return {Object} The inputHandler.
+ @private
+ */
+src.base.control.autocomplete.getTheInputHandler_ = function(autocomplete) {
+    return autocomplete.getInputHandler();
 };
 
 /**
@@ -130,29 +108,48 @@ src.base.control.autocomplete.setRenderRowContents = function(renderer, createAD
  control.
  @param {?function(Object, function, function} setRenderRowContents Method used to replace the
  renderRowContents_ method on a renderer.
- @param {?function(string, Object) : Object} getTheRenderer The method used facade the autocomplete.getRenderer
- method.
+ @param {?function(Object) : Object} getTheRenderer The method used facade the autocomplete.getRenderer.
+ @param {?function(Object) : Object} getTheInputHandler The method used facade the autocomplete.getInputHandler.
+ @param {?function(Object, string, function, function}) setInputHandlerSelectRow The method used to reassign
+ the setRow method on an inputHandler.
  @return {Object} The created autocomplete element.
  @export
  */
-src.base.control.autocomplete.initialize = function(options, createADiv, createATextbox, appendChild, createAHidden, createAnAutocomplete, setRenderRowContents, getTheRenderer) {
+src.base.control.autocomplete.initialize = function(options, createADiv, createATextbox, appendChild, createAHidden, createAnAutocomplete, setRenderRowContents, getTheRenderer, getTheInputHandler, setInputHandlerSelectRow) {
     var Current = src.base.control.autocomplete;
+    
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+    createATextbox = createATextbox ? createATextbox : src.base.helper.domCreation.textbox;
+    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
+    createAnAutocomplete = createAnAutocomplete ? createAnAutocomplete : goog.ui.ac.Remote;
+    
+    getTheRenderer = getTheRenderer ? getTheRenderer : Current.getTheRenderer_;
+    setRenderRowContents = setRenderRowContents ? setRenderRowContents : Current.setRenderRowContents;
+    getTheInputHandler = getTheInputHandler ? getTheInputHandler : Current.getTheInputHandler_;
+    setInputHandlerSelectRow = setInputHandlerSelectRow ? setInputHandlerSelectRow : Current.setInputHandlerSelectRow;
     
     var parentContainer = createADiv({'id': options[Current.ContainerId]});
     var textbox = createATextbox({'id': Current.TextboxId});
     appendChild(parentContainer, textbox);
     
+    //TODO This should be getting the id from options
     var hidden = createAHidden({'id': Current.HiddenId});
     appendChild(parentContainer, hidden);
     
-    var autocomplete = createAnAutocomplete(options[Current.Url], textbox);
-    var renderer = getTheRenderer(autocomplete);
-
-    setRenderRowContents(renderer, createADiv, goog.dom.getOuterHtml);
+    //TODO This was not tested as a constructor.
+    var autocomplete = new createAnAutocomplete(options[Current.Url], textbox);
     
-    //inputHandler.selectRow = function(selectedItem, opt_multi)
-    //renderer.renderRowHtml = function(row, token)
-    //var ac = new goog.ui.ac.Remote(url, input);
+    var renderer = getTheRenderer(autocomplete);
+    setRenderRowContents(renderer, createADiv, goog.dom.getOuterHtml); //
+    
+    var inputHandler = getTheInputHandler(autocomplete);
+    
+    //Untested
+    setInputHandlerSelectRow(inputHandler, Current.HiddenId, goog.dom.getElement, goog.dom.forms.setValue); //
+
+    //TODO Test setting the method
+    autocomplete.setMethod('POST');
     
     return parentContainer;
 };

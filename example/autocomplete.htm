@@ -10,19 +10,18 @@
   </head>
   
   <body>
-    <div id="">
-      <input type="text" name="targetTextbox" id="targetTextbox" value="" />
-    </div>
-    <div id="">
-      <input type="hidden" name="idHolder" id="idHolder" value="" />
-    </div>
-    <div>
-      <input type="button" name="showId" value="" onclick="clickIt();" />
-    </div> 
+    <div id="mainContainer" ></div> 
   </body>
   
   <script type="text/javascript">
-    src.base.control.autocomplete.tempAutocomplete('targetTextbox', 'idHolder', 'http://localhost:57388/Test/AutocompleteWithObjectArray');
+    var options = {};
     
+    options[src.base.control.autocomplete.ContainerId] = 'parentContainer';
+    options[src.base.control.autocomplete.Url] = 'http://localhost:57388/Test/AutocompleteWithObjectArray';
+    
+    var result = src.base.control.autocomplete.initialize(options);
+    var container = document.getElementById('mainContainer');
+    
+    container.appendChild(result);
   </script>
 </html>
