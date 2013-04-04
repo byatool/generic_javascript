@@ -2,13 +2,27 @@
   <head>
     <link rel="stylesheet" href="../content/style/css/final.css" type="text/css" media="screen" />
     <script type="text/javascript" src="../content/script/live/final.js"></script>
+    <script type="text/javascript">
+      var clickIt = function() {
+      alert(document.getElementById('idHolder').value);
+      }
+    </script>
   </head>
   
   <body>
-    <input type="text" name="targetTextbox" id="targetTextbox" value="" />
+    <div id="">
+      <input type="text" name="targetTextbox" id="targetTextbox" value="" />
+    </div>
+    <div id="">
+      <input type="hidden" name="idHolder" id="idHolder" value="" />
+    </div>
+    <div>
+      <input type="button" name="showId" value="" onclick="clickIt();" />
+    </div> 
   </body>
-
+  
   <script type="text/javascript">
-    src.base.control.autocomplete.initialize('targetTextbox','http://localhost:57388/Test/AutocompleteWithStringArrayReturn');
+    src.base.control.autocomplete.tempAutocomplete('targetTextbox', 'idHolder', 'http://localhost:57388/Test/AutocompleteWithObjectArray');
+    
   </script>
 </html>

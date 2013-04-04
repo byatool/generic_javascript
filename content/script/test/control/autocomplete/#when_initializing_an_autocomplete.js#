@@ -162,6 +162,8 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
         
         expect(methodWasCalled).toBe(true);
     });
+
+    
 };
 
 
