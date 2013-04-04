@@ -13,7 +13,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^
 --namespace="src.test.control.autocomplete.whenInitializingAnAutocomplete" ^
---namespace="src.test.control.autocomplete.whenRenderingARow" ^
+--namespace="src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod" ^
 --namespace="src.test.control.buttonList.whenCreatingAButtonList" ^
 --namespace="src.test.control.buttonList.whenTogglingAClass" ^
 --namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^

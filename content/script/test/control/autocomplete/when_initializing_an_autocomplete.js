@@ -1,3 +1,4 @@
+goog.require('goog.dom');
 goog.require('goog.string');
 goog.require('src.base.control.autocomplete');
 
@@ -10,12 +11,12 @@ goog.provide('src.test.control.autocomplete.whenInitializingAnAutocomplete');
 src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function() {
     //Using
     var Current = src.base.control.autocomplete;
-    
+
 
     //Fields
     var ParentContainerId_ = goog.string.getRandomString();
     var Url_ = goog.string.getRandomString();
-    
+
     var appendChild_;
     var autocomplete_;
     var createADiv_;
@@ -28,9 +29,10 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
     var parentCall_;
     var parentContainer_;
     var renderer_;
+    var setRenderRowContents_;
     var textbox_;
-    
-    
+
+
     //Test Hooks
     beforeEach(function() {
         autocomplete_ = {};
@@ -38,128 +40,144 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
         parentContainer_ = {};
         textbox_ = {};
         renderer_ = {};
-        
+
         options_ = {};
         options_[Current.ContainerId] = ParentContainerId_;
         options_[Current.Url] = Url_;
-        
+
         createADiv_ = function() { return parentContainer_; };
         createAHidden_ = function() { return hidden_; };
         appendChild_ = function() {};
         createATextbox_ = function() { return textbox_; };
-        createAnAutocomplete_  = function(){ return autocomplete_;};
+        createAnAutocomplete_ = function() { return autocomplete_;};
+        setRenderRowContents_ = function() { };
         getTheRenderer_ = function() { return renderer_;};
     });
-    
-    
+
+
      //Support Methods
      var callTheMethod_ = function() {
-         return Current.initialize(options_, createADiv_, createATextbox_, appendChild_, createAHidden_, createAnAutocomplete_, getTheRenderer_);
+         return Current.initialize(options_, createADiv_, createATextbox_, appendChild_, createAHidden_, createAnAutocomplete_, setRenderRowContents_, getTheRenderer_);
      };
-    
-     //Test Methods
-    
+
+    //Test Methods
+
      it('should create a parent container.', function() {
          var methodWasCalled = false;
-         
+
          createADiv_ = function(attributes) {
              methodWasCalled = methodWasCalled ||
                  attributes['id'] === options_[Current.ContainerId];
 
              return parentContainer_;
          };
-         
+
          callTheMethod_();
-         
+
          expect(methodWasCalled).toBe(true);
      });
-    
-    
+
+
      it('should return the parent container.', function() {
          expect(callTheMethod_()).toBe(parentContainer_);
      });
 
 
-     it('should create a textbox.', function() {
+    it('should create a textbox.', function() {
          var methodWasCalled = false;
-         
+
          createATextbox_ = function(attributes) {
              methodWasCalled = attributes['id'] === Current.TextboxId;
              return textbox_;
          };
-         
+
          callTheMethod_();
-         
+
          expect(methodWasCalled).toBe(true);
      });
-    
-    
+
+
      it('should add the textbox to the parent container.', function() {
          var methodWasCalled = false;
-         
+
          appendChild_ = function(parent, child) {
              methodWasCalled = methodWasCalled ||
                  (parent === parentContainer_ &&
                   child === textbox_);
          };
-         
-         callTheMethod_();
-         
-         expect(methodWasCalled).toBe(true);
-     });
-    
-    
-     it('should create a hidden input.', function() {
-         var methodWasCalled = false;
-         
-         createAHidden_ = function(attributes) {
-             methodWasCalled = attributes['id'] === Current.HiddenId;
-         };
-         
+
          callTheMethod_();
 
          expect(methodWasCalled).toBe(true);
      });
-    
-    
+
+
+     it('should create a hidden input.', function() {
+         var methodWasCalled = false;
+
+         createAHidden_ = function(attributes) {
+             methodWasCalled = attributes['id'] === Current.HiddenId;
+         };
+
+         callTheMethod_();
+
+         expect(methodWasCalled).toBe(true);
+     });
+
+
     it('should add the hidden to the parent container.', function() {
         var methodWasCalled = false;
-        
+
         appendChild_ = function(parent, child) {
             methodWasCalled = methodWasCalled ||
                 (parent === parentContainer_ &&
                  child === hidden_);
         };
-        
+
         callTheMethod_();
 
         expect(methodWasCalled).toBe(true);
     });
-    
-    
+
+
     it('should create the autocomplete control.', function() {
         var methodWasCalled = false;
-        
-        createAnAutocomplete_ = function(url, textbox){
+
+        createAnAutocomplete_ = function(url, textbox) {
             methodWasCalled = url === Url_ &&
                 textbox === textbox_;
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(true);
     });
-    
-    
+
+
     it('should get the autocomplete renderer.', function() {
         var methodWasCalled = false;
 
-        getTheRenderer_ = function(autocomplete){
+        getTheRenderer_ = function(autocomplete) {
             methodWasCalled = autocomplete === autocomplete_;
         };
-        
+
         callTheMethod_();
-        
+
+        expect(methodWasCalled).toBe(true);
+    });
+
+
+    it('should set the renderRowContents method on the renderer.', function() {
+        var methodWasCalled = false;
+
+        setRenderRowContents_ = function(renderer, createADiv, getOuterHtml) {
+            methodWasCalled = renderer === renderer_ &&
+                createADiv === createADiv_ &&
+                getOuterHtml === goog.dom.getOuterHtml;
+        };
+
+        callTheMethod_();
+
         expect(methodWasCalled).toBe(true);
     });
 };

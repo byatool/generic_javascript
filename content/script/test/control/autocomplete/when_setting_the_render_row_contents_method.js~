@@ -1,0 +1,31 @@
+
+/**
+ @export
+ */
+goog.provide('src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod');
+
+src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod.describe = function () {
+    //Using
+    
+    //Fields
+    
+    //Test Hooks
+    beforeEach(function() {
+        
+    });
+    
+    //Support Methods
+    var callTheMethod_ = function() {
+        
+    };
+    
+    
+    //Test Methods
+};
+
+
+describe('When when, it', function() {
+    
+    src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod.describe();
+    
+});
