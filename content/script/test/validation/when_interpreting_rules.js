@@ -14,8 +14,11 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
     
     //Fields
     
+    var DefaultName_ = 'derp';
+    var DefaultUsername_ = 'herp';
     var NameEmptyError_ = goog.string.getRandomString();
     var UsernameEmptyError_ = goog.string.getRandomString();
+    var UsernameTooLongError_ = goog.string.getRandomString();
     
     var interpreter_;
     var methodList_;
@@ -37,21 +40,41 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
             };
         };
         
+        var isNotTooLong = function(settings){
+            return function(toCheck) {
+                var result = settings[2];
+                
+                if(toCheck[settings[0]].length < settings[1]) {
+                    result = '';
+                };
+                
+                return result;
+            };
+        };
+        
         interpreter_ = {};
+        toCheck_ = {'Username': DefaultUsername_, 'Name': DefaultName_};
         
         methodList_ = [
-            ['isNotEmpty', isNotEmpty]];
+            ['isNotEmpty', isNotEmpty],
+            ['isNotTooLong', isNotTooLong]];
         
-        rules_ = [];
+        
         rules_ = [
             ['isNotEmpty',
              ['Username', UsernameEmptyError_],
-             ['Name', NameEmptyError_]]];
+             ['Name', NameEmptyError_]],
+            ['isNotTooLong',
+             ['Username', 6, UsernameTooLongError_]]];
     });
     
     //Support Methods
     var callTheMethod_ = function() {
-        return Current.interpret(rules_, methodList_);
+        var result = Current.interpret(rules_, methodList_);
+        
+        return goog.array.map(result, function(currentItem) {
+            return currentItem(toCheck_);
+        });
     };
     
     
@@ -65,14 +88,25 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
         
         var result = callTheMethod_();
         
-        var ending = goog.array.map(result, function(currentItem) {
-            return currentItem(toCheck_);
-        });
-        
-        expect(goog.array.every(ending, function(item) {
-            return item === UsernameEmptyError_ || item === NameEmptyError_;
-        })).toBe(true);
+        expect(goog.array.count(result, function(item) {
+            return item === UsernameEmptyError_ ||
+                item === NameEmptyError_;
+        })).toBe(2);
     });
+    
+    it('should find string that is too long', function() {
+        toCheck_ = {
+            'Name': 'hi',
+            'Username': '1234567'
+        };
+        
+        var result = callTheMethod_();
+        
+        expect(goog.array.count(result, function(item) {
+            return item === UsernameTooLongError_;
+        })).toBe(1);
+    });
+    
 };
 
 
