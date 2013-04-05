@@ -11,9 +11,6 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.popupDatePicker" ^
 --namespace="src.site.validation.validateSocialSecurityNumber" ^
 --namespace="src.site.validation.validateText" ^
---namespace="src.site.view.addEmployee" ^
---namespace="src.site.view.editEmployee" ^
---namespace="src.site.view.retrieveBySocialSecurityNumber" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
