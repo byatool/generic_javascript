@@ -72,20 +72,20 @@ src.base.control.formComponent.RedirectUrl = 'RedirectUrl';
  @param {function(string)} openWindow The method used to redirect.
  */
 src.base.control.formComponent.handleCallback = function(result, messageBox, filter, createAResult, updateTheMessageBox, showElement, openWindow) {
-  var Current = src.base.control.formComponent;
-  var Constants = src.base.helper.constants;
-
-  if (result[Current.MessageItems].length > 0) {
-    var justMessages = filter(result[Current.MessageItems], function(item) {
-      return item['Message'];
-    });
-
-    updateTheMessageBox(messageBox, createAResult(justMessages));
-    showElement(messageBox, true);
-  }
-  else {
-    openWindow(result[Current.RedirectUrl]);
-  }
+    var Current = src.base.control.formComponent;
+    var Constants = src.base.helper.constants;
+    
+    if (result[Current.MessageItems].length > 0) {
+        var justMessages = filter(result[Current.MessageItems], function(item) {
+            return item['Message'];
+        });
+        
+        updateTheMessageBox(messageBox, createAResult(justMessages));
+        showElement(messageBox, true);
+    }
+    else {
+        openWindow(result[Current.RedirectUrl]);
+    }
 };
 
 
@@ -106,21 +106,21 @@ src.base.control.formComponent.handleCallback = function(result, messageBox, fil
  @param {function(Object)} callBack The method called once the server responds.
  */
 src.base.control.formComponent.handleSubmit = function(form, messageBox, retrieveFormValues, validate, createAResult, updateTheMessageBox, showElement, submitMethod, callBack) {
-  var values = retrieveFormValues(form);
-  var errors = validate(values);
+    var values = retrieveFormValues(form);
+    var errors = validate(values);
 
-  if (errors && errors.length > 0) {
-    var result = createAResult(errors, false);
-    updateTheMessageBox(messageBox, result);
-    showElement(messageBox, true);
-  }
-  else {
-    showElement(messageBox, false);
-    values.action = form.action;
+    if (errors && errors.length > 0) {
+        var result = createAResult(errors, false);
+        updateTheMessageBox(messageBox, result);
+        showElement(messageBox, true);
+    }
+    else {
+        showElement(messageBox, false);
+        values.action = form.action;
 
 
-    submitMethod(values, callBack);
-  }
+        submitMethod(values, callBack);
+    }
 };
 
 
@@ -151,69 +151,69 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
                                                      getElement, createMessageBox, appendChild, createDatepicker,
                                                      getFormDataMap, createAResult, updateMessagesByResult,
                                                      showElement, submitData) {
-  var Current = src.base.control.formComponent;
-  var DomHelper = src.base.helper.domHelper;
-  var MessageBox = src.base.control.messageBox;
-  
-  setupTheForm = setupTheForm ? setupTheForm : Current.setupTheForm;
-  getElement = getElement ? getElement : goog.dom.getElement;
-  createMessageBox = createMessageBox ? createMessageBox : MessageBox.createMessageBox;
-  appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  createDatepicker = createDatepicker ? createDatepicker : src.base.control.popupDatePicker.create;
-  
-  var setupItems = setupTheForm(formId,
-                                datePickerOptions[Current.DatepickerOptions],
-                                datePickerOptions[Current.DatepickerTextboxes],
-                                formId + Current.MessageBoxSuffix,
-                                getElement,
-                                createMessageBox,
-                                appendChild,
-                                createDatepicker
-                               );
-  
-  
-  handleSubmit = handleSubmit ? handleSubmit : Current.handleSubmit;
-  getFormDataMap = getFormDataMap ? getFormDataMap : goog.dom.forms.getFormDataMap;
-  validate = validate ? validate : Current.Validate;
-  createAResult = createAResult ? createAResult : MessageBox.createAResult;
-  updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
-  showElement = showElement ? showElement : goog.style.showElement;
-  submitData = submitData ? submitData : DomHelper.submitData;
-  
-  var handleCallback = Current.handleCallback;
-  
-  //Can't test...
-  //Export this out to a method that creates a method?
-  var whenFinished = function(formResult) {
-    handleCallback(formResult,
-                   setupItems['messageBox'],
-                   goog.array.map,    //This needs to be added to the method signature.
-                   createAResult,
-                   updateMessagesByResult,
-                   showElement,
-                   function(url) {window.location = url;});
-  };
+    var Current = src.base.control.formComponent;
+    var DomHelper = src.base.helper.domHelper;
+    var MessageBox = src.base.control.messageBox;
+    
+    setupTheForm = setupTheForm ? setupTheForm : Current.setupTheForm;
+    getElement = getElement ? getElement : goog.dom.getElement;
+    createMessageBox = createMessageBox ? createMessageBox : MessageBox.createMessageBox;
+    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    createDatepicker = createDatepicker ? createDatepicker : src.base.control.popupDatePicker.create;
+    
+    var setupItems = setupTheForm(formId,
+                                  datePickerOptions[Current.DatepickerOptions],
+                                  datePickerOptions[Current.DatepickerTextboxes],
+                                  formId + Current.MessageBoxSuffix,
+                                  getElement,
+                                  createMessageBox,
+                                  appendChild,
+                                  createDatepicker
+                                 );
+    
+    
+    handleSubmit = handleSubmit ? handleSubmit : Current.handleSubmit;
+    getFormDataMap = getFormDataMap ? getFormDataMap : goog.dom.forms.getFormDataMap;
+    validate = validate ? validate : Current.Validate;
+    createAResult = createAResult ? createAResult : MessageBox.createAResult;
+    updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
+    showElement = showElement ? showElement : goog.style.showElement;
+    submitData = submitData ? submitData : DomHelper.submitData;
+    
+    var handleCallback = Current.handleCallback;
+    
+    //Can't test...
+    //Export this out to a method that creates a method?
+    var whenFinished = function(formResult) {
+        handleCallback(formResult,
+                       setupItems['messageBox'],
+                       goog.array.map,    //This needs to be added to the method signature.
+                       createAResult,
+                       updateMessagesByResult,
+                       showElement,
+                       function(url) {window.location = url;});
+    };
 
 
-  //Can't test...
-  //Export this out to a method that creates a method?
-  var whenClicked = function() {
-    handleSubmit(setupItems['form'],
-                 setupItems['messageBox'],
-                 getFormDataMap,
-                 validate,
-                 createAResult,
-                 updateMessagesByResult,
-                 showElement,
-                 submitData,
-                 whenFinished);
-  };
-  
-  findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
-  var button = findTheButton(Current.ButtonClass, setupItems['form']);
+    //Can't test...
+    //Export this out to a method that creates a method?
+    var whenClicked = function() {
+        handleSubmit(setupItems['form'],
+                     setupItems['messageBox'],
+                     getFormDataMap,
+                     validate,
+                     createAResult,
+                     updateMessagesByResult,
+                     showElement,
+                     submitData,
+                     whenFinished);
+    };
+    
+    findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
+    var button = findTheButton(Current.ButtonClass, setupItems['form']);
 
-  setClick = setClick ? setClick : src.base.helper.events.setClick;
-  setClick(button, whenClicked);
+    setClick = setClick ? setClick : src.base.helper.events.setClick;
+    setClick(button, whenClicked);
 
 };
 
@@ -232,27 +232,27 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
  @return {Object} The updated form.
  */
 src.base.control.formComponent.setupTheForm = function(formId, datePickerOptions, datePickerContainerAndTextboxes, messageBoxName, findElement, createAMessageBox, addElement, createADatePicker) {
-  var Popup = src.base.control.popupDatePicker;
+    var Popup = src.base.control.popupDatePicker;
 
-  var ifNullThen = function(toCheck, toSet) {
-    return toCheck ? toCheck : toSet;
-  };
+    var ifNullThen = function(toCheck, toSet) {
+        return toCheck ? toCheck : toSet;
+    };
 
-  var form = findElement(formId);
-  var messageBox = createAMessageBox(messageBoxName);
-  addElement(form, messageBox);
-  
-  //TODO this should probably use a passed in method for testing reasons
-  //  src.test.control.formComponent.whenSettingUpAForm
-  //   'should create a datepicker for every textbox named'
-  //     This is the test for making sure the forEach works.  It does so
-  //     by counting the calls to createADatePicker.  That is ok for now...
-  goog.array.forEach(datePickerContainerAndTextboxes, function(item) {
-    datePickerOptions[Popup.TextboxName] = item[1];
-    addElement(findElement(item[0]), createADatePicker(datePickerOptions));
-  });
+    var form = findElement(formId);
+    var messageBox = createAMessageBox(messageBoxName);
+    addElement(form, messageBox);
+    
+    //TODO this should probably use a passed in method for testing reasons
+    //  src.test.control.formComponent.whenSettingUpAForm
+    //   'should create a datepicker for every textbox named'
+    //     This is the test for making sure the forEach works.  It does so
+    //     by counting the calls to createADatePicker.  That is ok for now...
+    goog.array.forEach(datePickerContainerAndTextboxes, function(item) {
+        datePickerOptions[Popup.TextboxName] = item[1];
+        addElement(findElement(item[0]), createADatePicker(datePickerOptions));
+    });
 
-  return {'form': form, 'messageBox': messageBox};
+    return {'form': form, 'messageBox': messageBox};
 };
 
 
@@ -263,6 +263,6 @@ src.base.control.formComponent.setupTheForm = function(formId, datePickerOptions
  @param {function} setTheClick The method used to assing onClick to the onClick event.
  */
 src.base.control.formComponent.setTheSubmitButton = function(parentForm, onClick, findTheButton, setTheClick) {
-  var button = findTheButton(parentForm, src.base.control.formComponent.ButtonClass);
-  setTheClick(button, onClick);
+    var button = findTheButton(parentForm, src.base.control.formComponent.ButtonClass);
+    setTheClick(button, onClick);
 };
