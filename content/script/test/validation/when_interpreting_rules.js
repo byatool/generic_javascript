@@ -101,7 +101,7 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
                 item === NameEmptyError_;
         })).toBe(2);
     });
-
+    
     it('should find string that is too long', function() {
         toCheck_ = {
             'Name': 'hi',
