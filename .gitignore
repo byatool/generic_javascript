@@ -17,7 +17,7 @@
 bin/
 ep/Bin/Microsoft.*.dll
 ep/Bin/MCTWF.*.dll
-
+view/
 !ep/Bin
 
 
