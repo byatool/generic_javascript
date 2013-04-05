@@ -1,0 +1,26 @@
+goog.provide('src.base.helper.validationInterpreter');
+
+
+
+/*
+ --  ['Username',
+ --    [isAlphaNumberic, 'Username must only container letters and numbers'],
+ --    [requires 'Name', 'Username and Name must be filled in.'],
+ --    ]
+ 
+ 
+ 
+ --  function requires(object, required, error)
+ --    var result = []
+ --    if(object[required] is null
+ --      push result[error]
+ --    return result
+ 
+ */
+src.base.helper.validationInterpreter.interpret = function(dsl) {
+};
+
+
+function testMe() {
+    alert('rar');
+}
