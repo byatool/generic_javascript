@@ -1,5 +1,6 @@
 goog.require('goog.array');
 goog.require('goog.string');
+goog.require('src.base.helper.arrayHelper');
 goog.require('src.site.validation.validationInterpreter');
 
 goog.provide('src.test.validation.validationInterpreter.whenInterpretingRules');
@@ -11,12 +12,12 @@ goog.provide('src.test.validation.validationInterpreter.whenInterpretingRules');
 src.test.validation.validationInterpreter.whenInterpretingRules.describe = function() {
   //Using
   var Current = src.site.validation.validationInterpreter;
-
+  
   //Fields
-
+  
   var DefaultName_ = 'derp';
   var DefaultUsername_ = 'herp';
-
+  
   var IsNotEmpty_ = goog.string.getRandomString();
   var IsNotLongerThan_ = goog.string.getRandomString();
   var Name_ = goog.string.getRandomString();
@@ -60,13 +61,13 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
         return result;
       };
     };
-
+    
     car_ = function(input) {
-      return src.site.validation.validationInterpreter.car(input);
+      return src.base.helper.arrayHelper.car(input);
     };
 
     cdr_ = function(input) {
-      return src.site.validation.validationInterpreter.cdr(input);
+      return src.base.helper.arrayHelper.cdr(input);
     };
 
     flatten_ = function() {
@@ -107,7 +108,7 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
     car_ = function(list) {
       methodWasCalled += list === rules_[0] ||
         list === rules_[1];
-      return src.site.validation.validationInterpreter.car(list);
+      return src.base.helper.arrayHelper.car(list);
     };
 
     callTheMethod_();
@@ -122,7 +123,7 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
     cdr_ = function(list) {
       methodWasCalled += list === rules_[0] ||
         list === rules_[1];
-      return src.site.validation.validationInterpreter.cdr(list);
+      return src.base.helper.arrayHelper.cdr(list);
     };
 
     callTheMethod_();

@@ -1,7 +1,9 @@
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --root="c:/lib/closure/closure-library/" ^
+--root="content/script/live/helper/" ^
 --root="content/script/live/validation/" ^
 --root="content/script/test/validation/" ^
+--namespace="src.base.helper.arrayHelper" ^
 --namespace="src.site.validation.validationInterpreter" ^
 --namespace="src.site.validation.validateSocialSecurityNumber" ^
 --namespace="src.site.validation.validateText" ^

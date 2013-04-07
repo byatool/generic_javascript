@@ -2,10 +2,13 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/" ^
 --root="content/script/test/helper/" ^
+--namespace="src.base.helper.arrayHelper" ^
 --namespace="src.base.helper.constants" ^
 --namespace="src.base.helper.domCreation" ^
 --namespace="src.base.helper.domHelper" ^
 --namespace="src.base.helper.events" ^
+--namespace="src.test.helper.arrayHelper.whenUsingCar" ^
+--namespace="src.test.helper.arrayHelper.whenUsingCdr" ^
 --namespace="src.test.helper.domCreation.whenCreatingACheckbox" ^
 --namespace="src.test.helper.domCreation.whenCreatingADropDownList" ^
 --namespace="src.test.helper.domCreation.whenCreatingALabel" ^
