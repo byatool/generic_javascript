@@ -1,0 +1,31 @@
+
+/**
+ @export
+ */
+goog.provide('src.test.validation.validationInterpreter.whenCreatingAValidtionCall');
+
+src.test.validation.validationInterpreter.whenCreatingAValidtionCall.describe = function () {
+    //Using
+    
+    //Fields
+    
+    //Test Hooks
+    beforeEach(function() {
+        
+    });
+    
+    //Support Methods
+    var callTheMethod_ = function() {
+        
+    };
+    
+    
+    //Test Methods
+};
+
+
+describe('When when creating a validtion call, it', function() {
+    
+    src.test.validation.validationInterpreter.whenCreatingAValidtionCall.describe();
+    
+});
