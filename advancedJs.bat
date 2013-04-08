@@ -7,6 +7,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.helper.domHelper" ^
 --namespace="src.base.helper.events" ^
 --namespace="src.base.control.autocomplete" ^
+--namespace="src.base.control.buttonList" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^

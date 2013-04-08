@@ -91,7 +91,7 @@ src.base.control.autocomplete.getTheRenderer_ = function(autocomplete) {
  @private
  */
 src.base.control.autocomplete.setTheAutocompleteMethod_ = function(autocomplete, method) {
-     autocomplete.setMethod(method);
+    autocomplete.setMethod(method);
 };
 
 /* Support Methods */
@@ -161,7 +161,7 @@ src.base.control.autocomplete.initialize = function(options, createADiv, createA
     setRenderRowContents = setRenderRowContents ? setRenderRowContents : Current.setRenderRowContents;
     getTheInputHandler = getTheInputHandler ? getTheInputHandler : Current.getTheInputHandler_;
     setInputHandlerSelectRow = setInputHandlerSelectRow ? setInputHandlerSelectRow : Current.setInputHandlerSelectRow;
-    setTheAutocompleteMethod = setTheAutocompleteMethod ? setTheAutocompleteMethod : Current.setTheAutocompleteMethod__;
+    setTheAutocompleteMethod = setTheAutocompleteMethod ? setTheAutocompleteMethod : Current.setTheAutocompleteMethod_;
     
     var parentContainer = createADiv({'id': options[Current.ContainerId]});
     var textbox = createATextbox({'id': Current.TextboxId});
