@@ -56,9 +56,7 @@ src.site.validation.validationInterpreter.interpret = function(rules, methods, c
     var find = goog.array.find;
     var peek = goog.array.peek;
     var sink = src.base.helper.arrayHelper.sink;
-    
-    //TODO create a testable method so that it can be injected... maybe
-    //  Too many untestable areas in this...
+     
     var methodGroups = goog.array.map(rules, function(currentRule) {
         var propertyName = car(currentRule);
         var toCheck = cdr(currentRule);
@@ -67,30 +65,6 @@ src.site.validation.validationInterpreter.interpret = function(rules, methods, c
             return createAValidationCall(propertyName, methods, innerRule, find, car, cdr, peek, sink);
         });
         
-        // var toCall = goog.array.map(toCheck, function(innerRule) {
-        //     var methodToUse = goog.array.find(methods, function(method) {
-        //         return car(method) === car(innerRule);
-        //     })[1];
-        
-        //     var arguments = goog.array.flatten([[propertyName], cdr(innerRule)]);
-        
-        //     return methodToUse(arguments);
-        // });
-        
-        
-        // var toCall = goog.array.map(toCheck, function(innerRule) {
-        //      var methodToUse = goog.array.find(methods, function(method) {
-        //          return car(method) === car(innerRule);
-        //      })[1];
-
-        //     return function(obj) {
-        //         var error = peek(innerRule);
-        //         var values = sink(innerRule);
-        //         return methodToUse(obj, propertyName, error, values);
-        //     };
-        // });
-
-
         return toCall;
     });
 
