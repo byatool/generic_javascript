@@ -7,6 +7,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.helper.domCreation" ^
 --namespace="src.base.helper.domHelper" ^
 --namespace="src.base.helper.events" ^
+--namespace="src.test.helper.arrayHelper.whenGettingAllButTheLastItemFromTheList" ^
 --namespace="src.test.helper.arrayHelper.whenUsingCar" ^
 --namespace="src.test.helper.arrayHelper.whenUsingCdr" ^
 --namespace="src.test.helper.domCreation.whenCreatingACheckbox" ^

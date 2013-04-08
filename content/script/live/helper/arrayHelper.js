@@ -8,7 +8,7 @@ goog.provide('src.base.helper.arrayHelper');
  @return {?Object} The first item in the list if on exists.
  */
 src.base.helper.arrayHelper.car = function(list) {
-  return list.length === 0 ? null : list[0];
+    return list.length === 0 ? null : list[0];
 };
 
 /**
@@ -17,5 +17,20 @@ src.base.helper.arrayHelper.car = function(list) {
  @return {?Array} The is the rest of the items.
  */
 src.base.helper.arrayHelper.cdr = function(list) {
-  return goog.array.slice(list, 1);
+    return goog.array.slice(list, 1);
+};
+
+/**
+ @param {Array} list The original list.
+ @return {Array} All but the last item in a list.
+ */
+src.base.helper.arrayHelper.sink = function(list) {
+    var result = null;
+
+    if (list && list.length > 1) {
+
+        result = goog.array.slice(list, 0, list.length - 1);
+    }
+
+    return result;
 };

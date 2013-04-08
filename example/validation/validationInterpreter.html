@@ -1,0 +1,72 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    
+  </head>
+  
+  <body>
+    <div id="mainContainer" ></div>
+  </body>
+  
+  <script type="text/javascript">
+    function isNotEmpty(toCheck, propertyName, error, rest) {
+    
+    return toCheck[propertyName] === '' ? error : null;
+    
+    };
+    
+    function isNotLongerThan(toCheck, propertyName, error, rest) {
+    
+    return toCheck[propertyName].length > rest[0] ? error : null;
+    };
+    
+    function isBetween(toCheck, propertyName, error, rest) {
+    var length = toCheck[propertyName].length;
+    
+    return (length < rest[0] || length > rest[1]) ? error : null;
+    };
+      
+      
+    /*  Pretty format... Emacs html-mode is awesome.
+    --  var methods = [
+    --    ['is not empty', isNotEmpty],
+    --    ['is not longer than', isNotLongerThan],
+    --    ['length is between', isBetween]];
+    */
+    var methods = [['is not empty', isNotEmpty], ['is not longer than', isNotLongerThan],
+      ['length is between', isBetween]];
+      
+      
+    /*
+    --  Pretty format!
+    --  ['Username',
+    --    ['is not empty', 'Username is required.'],
+    --    ['is not longer than', 7, 'Username is too long.']],
+    --  ['Name',
+    --    ['is not empty', 'Name is required.']],
+    --  ['Password',
+    --    ['length is between', 4, 6, 'Password is not acceptable.']]];
+    */
+    var rules = [
+    ['Username',
+    ['is not empty', 'Username is required.'],
+    ['is not longer than', 7, 'Username is too long.']
+    ],
+    ['Name',
+    ['is not empty', 'Name is required.']
+    ],
+    ['Password',
+    ['length is between', 4, 6, 'Password is not acceptable.']]
+    ];
+      
+    var result = src.site.validation.validationInterpreter.interpret(rules, methods);
+      
+    var errorList = [];
+    var something = document.getElementById('mainContainer');
+      
+    var toValidate = {'Username': '12345678', 'Name': '', 'Password': '123'};
+    for(var i = 0; i < result.length; i++) { something.innerText += '\n' + result[i](toValidate); };
+                       
+    </script>
+</html>

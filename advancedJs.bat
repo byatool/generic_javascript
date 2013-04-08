@@ -1,6 +1,7 @@
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/" ^
+--namespace="src.base.helper.arrayHelper" ^
 --namespace="src.base.helper.constants" ^
 --namespace="src.base.helper.domCreation" ^
 --namespace="src.base.helper.domHelper" ^
@@ -11,6 +12,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.popupDatePicker" ^
 --namespace="src.site.validation.validateSocialSecurityNumber" ^
 --namespace="src.site.validation.validateText" ^
+--namespace="src.site.validation.validationInterpreter" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^

@@ -12,7 +12,7 @@ goog.provide('src.test.validation.validationInterpreter.whenInterpretingRules');
 src.test.validation.validationInterpreter.whenInterpretingRules.describe = function() {
     //Using
     var Current = src.site.validation.validationInterpreter;
-    
+
     //Fields
 
     var DefaultName_ = 'derp';
@@ -51,7 +51,7 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
         methodList_ = [
             [IsNotEmpty_, isNotEmpty_],
             [IsNotLongerThan_, isNotTooLong_]];
-        
+
         rules_ = [
             [Username_,
              [IsNotEmpty_, UsernameEmptyError_],
@@ -59,21 +59,21 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
             [Name_,
              [IsNotEmpty_, NameEmptyError_]]];
     });
-    
+
 
     //Support Methods
     var callTheMethod_ = function() {
         var result = Current.interpret(rules_, methodList_, createAValidationCall_, car_, cdr_, flatten_);
-        
+
         return result;
     };
-    
-    
+
+
     //Test Methods
-    
+
     it('should retrieve the property name for each rule.', function() {
         var methodWasCalled = 0;
-        
+
         car_ = function(list) {
             methodWasCalled += list === rules_[0] ||
                 list === rules_[1];
@@ -120,20 +120,23 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
             return src.base.helper.arrayHelper.cdr(rules_[0]);
         };
 
-        createAValidationCall_ = function(propertyName, methods, innerRule, find, car, peek, sink) {
+        createAValidationCall_ = function(propertyName, methods, innerRule, find, car, cdr, peek, sink) {
             methodWasCalled += (propertyName === Username_ &&
                                 goog.array.equals(methods, methodList_) &&
                                 goog.array.equals(innerRule, firstRules) &&
                                 find === goog.array.find &&
                                 car === car_ &&
+                                cdr === cdr_ &&
                                 peek === goog.array.peek &&
-                                sink === null) || (propertyName === Username_ &&
-                                                   goog.array.equals(methods, methodList_) &&
-                                                   goog.array.equals(innerRule, secondRules) &&
-                                                   find === goog.array.find &&
-                                                   car === car_ &&
-                                                   peek === goog.array.peek &&
-                                                   sink === null);
+                                sink === src.base.helper.arrayHelper.sink) ||
+                (propertyName === Username_ &&
+                 goog.array.equals(methods, methodList_) &&
+                 goog.array.equals(innerRule, secondRules) &&
+                 find === goog.array.find &&
+                 car === car_ &&
+                 cdr === cdr_ &&
+                 peek === goog.array.peek &&
+                 sink === src.base.helper.arrayHelper.sink);
         };
 
         callTheMethod_();

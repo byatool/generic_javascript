@@ -1,5 +1,6 @@
 goog.require('goog.array');
 goog.require('goog.string');
+goog.require('src.base.helper.arrayHelper');
 goog.require('src.site.validation.validationInterpreter');
 
 goog.provide('src.test.validation.validationInterpreter.whenCreatingAValidtionCall');
@@ -18,6 +19,7 @@ src.test.validation.validationInterpreter.whenCreatingAValidtionCall.describe = 
     var PropertyName_ = goog.string.getRandomString();
 
     var car_;
+    var cdr_;
     var fakeMethod_;
     var find_;
     var innerRule_;
@@ -32,6 +34,7 @@ src.test.validation.validationInterpreter.whenCreatingAValidtionCall.describe = 
         methodPair_ = [FakeMethodName_, fakeMethod_];
 
         car_ = function() { };
+        cdr_ = function() {};
         fakeMethod_ = function() { };
         find_ = function() { return methodPair_; };
         innerRule_ = [FakeMethodName_, 7, Error_];
@@ -43,7 +46,7 @@ src.test.validation.validationInterpreter.whenCreatingAValidtionCall.describe = 
 
     //Support Methods
     var callTheMethod_ = function() {
-        return Current.createAValidationCall(PropertyName_, methods_, innerRule_, find_, car_, peek_, sink_);
+        return Current.createAValidationCall(PropertyName_, methods_, innerRule_, find_, car_, cdr_, peek_, sink_);
     };
 
 
@@ -94,9 +97,15 @@ src.test.validation.validationInterpreter.whenCreatingAValidtionCall.describe = 
 
     it('should find the values to use.', function() {
         var methodWasCalled = false;
+        var cdrResult = [];
+
+        cdr_ = function(rule) {
+            methodWasCalled = goog.array.equals(rule, innerRule_);
+            return cdrResult;
+        };
 
         sink_ = function(rule) {
-            methodWasCalled = goog.array.equals(rule, innerRule_);
+            methodWasCalled = rule === cdrResult;
         };
 
         callTheMethod_()({});
