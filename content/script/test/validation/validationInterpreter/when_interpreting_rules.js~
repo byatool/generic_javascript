@@ -33,8 +33,6 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
     var isNotEmpty_;
     var isNotTooLong_;
     var methodList_;
-    var peek_;
-    var sink_;
     var rules_;
     var toCheck_;
 
@@ -47,15 +45,13 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
         flatten_ = function() {return []; };
         isNotEmpty_ = function() {};
         isNotTooLong_ = function() {};
-        peek_ = function() { return ''; };
-        sink_ = function() { return ''; };
-        
+
         toCheck_ = {};
-        
+
         methodList_ = [
             [IsNotEmpty_, isNotEmpty_],
             [IsNotLongerThan_, isNotTooLong_]];
-        
+
         rules_ = [
             [Username_,
              [IsNotEmpty_, UsernameEmptyError_],
@@ -67,7 +63,7 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
     
     //Support Methods
     var callTheMethod_ = function() {
-        var result = Current.interpret(rules_, methodList_, createAValidationCall_, car_, cdr_, peek_, sink_, flatten_);
+        var result = Current.interpret(rules_, methodList_, createAValidationCall_, car_, cdr_, flatten_);
         
         return result;
     };
@@ -83,90 +79,92 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
                 list === rules_[1];
             return {};
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(2);
     });
-    
-    
+
+
     it('should retrieve the rest of the list.', function() {
         var methodWasCalled = 0;
-        
+
         cdr_ = function(list) {
             methodWasCalled += list === rules_[0] ||
                 list === rules_[1];
             return {};
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(2);
     });
-    
-    
+
+
     it('should create a method for each rule.', function() {
         var methodWasCalled = 0;
-        
+
         rules_ = [
             [Username_,
              [IsNotEmpty_, UsernameEmptyError_],
              [IsNotLongerThan_, UsernameTooLongError_]]];
-        
-        var firstRules  = rules_[0][1];
-        var secondRules  = rules_[0][2];
-        
+
+        var firstRules = rules_[0][1];
+        var secondRules = rules_[0][2];
+
         car_ = function() {
             return Username_;
         };
-        
-        cdr_ = function(){
+
+        cdr_ = function() {
             return src.base.helper.arrayHelper.cdr(rules_[0]);
         };
-        
-        createAValidationCall_ = function(propertyName, methods, innerRule, car, peek, sink) {
+
+        createAValidationCall_ = function(propertyName, methods, innerRule, find, car, peek, sink) {
             methodWasCalled += (propertyName === Username_ &&
                                 goog.array.equals(methods, methodList_) &&
                                 goog.array.equals(innerRule, firstRules) &&
+                                find === goog.array.find &&
                                 car === car_ &&
-                                peek_ === peek_ &&
-                                sink === sink_) || (propertyName === Username_ &&
-                                                    goog.array.equals(methods, methodList_) &&
-                                                    goog.array.equals(innerRule, secondRules) &&
-                                                    car === car_ &&
-                                                    peek_ === peek_ &&
-                                                    sink === sink_);
+                                peek === goog.array.peek &&
+                                sink === null) || (propertyName === Username_ &&
+                                                   goog.array.equals(methods, methodList_) &&
+                                                   goog.array.equals(innerRule, secondRules) &&
+                                                   find === goog.array.find &&
+                                                   car === car_ &&
+                                                   peek === goog.array.peek &&
+                                                   sink === null);
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(2);
     });
-    
-    
+
+
     // it('should call the method correctly.', function() {
     //     var methodWasCalled = false;
-    
+
     //     flatten_ = function(list) {
     //         return goog.array.flatten(list);
     //     };
-    
+
     //     isNotEmpty_ = function(toCheck, propertyName, error, rest) {
     //         methodWasCalled = toCheck === toCheck_ &&
     //             propertyName === Username_ &&
     //             error === UsernameEmptyError_ &&
     //             goog.array.equals(rest, []);
     //     };
-    
+
     //     methodList_ = [[IsNotEmpty_, isNotEmpty_]];
-    
+
     //     rules_ = [
     //         [Username_,
     //          [IsNotEmpty_, UsernameEmptyError_]]];
-    
+
     //     var result = callTheMethod_();
     //     var method = result[0](toCheck_);
-    
+
     //     expect(methodWasCalled).toBe(true);
     // });
 
@@ -234,6 +232,6 @@ src.test.validation.validationInterpreter.whenInterpretingRules.describe = funct
 };
 
 
-describe('When when, it', function() {
+describe('When interpreting rules, it', function() {
     src.test.validation.validationInterpreter.whenInterpretingRules.describe();
 });
