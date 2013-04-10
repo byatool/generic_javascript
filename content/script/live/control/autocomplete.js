@@ -60,7 +60,7 @@ src.base.control.autocomplete.Url = 'Url';
  @return {Object} The autocomplete control.
  @private
  */
-src.base.control.autocomplete.createAnAutocomplete_ = function(url, textbox, autocompleteConstructor){
+src.base.control.autocomplete.createAnAutocomplete_ = function(url, textbox, autocompleteConstructor) {
     return new autocompleteConstructor(url, textbox);
 };
 
@@ -130,55 +130,55 @@ src.base.control.autocomplete.setRenderRowContents = function(renderer, createAD
 
 /**
  @param {Object} options The is the set of options for building.
+ @param {?function(Object, function, function} setRenderRowContents Method used to replace the
+ renderRowContents_ method on a renderer.  The default value is: src.base.control.autocomplete.setRenderRowContents.
+ @param {?function(Object, string, function, function}) setInputHandlerSelectRow The method used to reassign
+ the setRow method on an inputHandler. The default value is: src.base.control.autocomplete.setInputHandlerSelectRow.
  @param {?function(Object, Object) : Object} createADiv The method used to create a div element.
  @param {?function(Object, Object) : Object} createATextbox The method used to create a textbox.
  @param {?function(Object, Object)} appendChild The method used to append a child to a parent element.
  @param {?function(Object) : Object} createAHidden The method used to create a hidden input.
  @param {?function(string, Object) : Object} createAnAutocomplete The method used to create an autocomplete
  control.
- @param {?function(Object, function, function} setRenderRowContents Method used to replace the
- renderRowContents_ method on a renderer.
  @param {?function(Object) : Object} getTheRenderer The method used to facade the autocomplete.getRenderer
  function.
  @param {?function(Object) : Object} getTheInputHandler The method used facade the autocomplete.getInputHandler.
- @param {?function(Object, string, function, function}) setInputHandlerSelectRow The method used to reassign
- the setRow method on an inputHandler.
  @param {?function(Object, string)} setTheAutocompleteMethod The method used to facase the autocomplete.setMethod
  function.
  @return {Object} The created autocomplete element.
  @export
  */
-src.base.control.autocomplete.initialize = function(options, createADiv, createATextbox, appendChild, createAHidden, createAnAutocomplete, setRenderRowContents, getTheRenderer, getTheInputHandler, setInputHandlerSelectRow, setTheAutocompleteMethod) {
+src.base.control.autocomplete.initialize = function(options, setRenderRowContents, setInputHandlerSelectRow, createADiv, createATextbox, appendChild, createAHidden, createAnAutocomplete,  getTheRenderer, getTheInputHandler, setTheAutocompleteMethod) {
     var Current = src.base.control.autocomplete;
-    
+
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     createATextbox = createATextbox ? createATextbox : src.base.helper.domCreation.textbox;
     appendChild = appendChild ? appendChild : goog.dom.appendChild;
     createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
-    
+
     createAnAutocomplete = createAnAutocomplete ? createAnAutocomplete : Current.createAnAutocomplete_;
     getTheRenderer = getTheRenderer ? getTheRenderer : Current.getTheRenderer_;
     setRenderRowContents = setRenderRowContents ? setRenderRowContents : Current.setRenderRowContents;
     getTheInputHandler = getTheInputHandler ? getTheInputHandler : Current.getTheInputHandler_;
     setInputHandlerSelectRow = setInputHandlerSelectRow ? setInputHandlerSelectRow : Current.setInputHandlerSelectRow;
     setTheAutocompleteMethod = setTheAutocompleteMethod ? setTheAutocompleteMethod : Current.setTheAutocompleteMethod_;
-    
+
     var parentContainer = createADiv({'id': options[Current.ContainerId]});
     var textbox = createATextbox({'id': Current.TextboxId});
     appendChild(parentContainer, textbox);
-    
+
     var hidden = createAHidden({'id': options[Current.HiddenId]});
     appendChild(parentContainer, hidden);
-    
+
     var autocomplete = createAnAutocomplete(options[Current.Url], textbox, goog.ui.ac.Remote);
-    
+
     var renderer = getTheRenderer(autocomplete);
     setRenderRowContents(renderer, createADiv, goog.dom.getOuterHtml); //
-    
+
     var inputHandler = getTheInputHandler(autocomplete);
     setInputHandlerSelectRow(inputHandler, options[Current.HiddenId], goog.dom.getElement, goog.dom.forms.setValue); //
-    
+
     setTheAutocompleteMethod(autocomplete, 'POST');
-    
+
     return parentContainer;
 };

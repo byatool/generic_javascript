@@ -64,14 +64,14 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
         getTheRenderer_ = function() { return renderer_;};
         getTheInputHandler_ = function() { return inputHandler_; };
         setInputHandlerSelectRow_ = function() { };
-        setTheAutocompleteMethod_ = function(){ };
+        setTheAutocompleteMethod_ = function() { };
     });
-    
-    
+
+
     //Support Methods
-    
+
     var callTheMethod_ = function() {
-        return Current.initialize(options_, createADiv_, createATextbox_, appendChild_, createAHidden_, createAnAutocomplete_, setRenderRowContents_, getTheRenderer_, getTheInputHandler_, setInputHandlerSelectRow_, setTheAutocompleteMethod_);
+        return Current.initialize(options_, setRenderRowContents_, setInputHandlerSelectRow_, createADiv_, createATextbox_, appendChild_, createAHidden_, createAnAutocomplete_, getTheRenderer_, getTheInputHandler_, setTheAutocompleteMethod_);
     };
 
     //Test Methods
@@ -177,68 +177,68 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
         getTheRenderer_ = function(autocomplete) {
             methodWasCalled = autocomplete === autocomplete_;
         };
-        
-        callTheMethod_();                  
+
+        callTheMethod_();
         expect(methodWasCalled).toBe(true);
     });
-    
-    
+
+
     it('should set the renderRowContents method on the renderer.', function() {
         var methodWasCalled = false;
-        
+
         setRenderRowContents_ = function(renderer, createADiv, getOuterHtml) {
             methodWasCalled = renderer === renderer_ &&
                 createADiv === createADiv_ &&
                 getOuterHtml === goog.dom.getOuterHtml;
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(true);
     });
-    
-    
+
+
     it('should get the input handler.', function() {
         var methodWasCalled = false;
-        
+
         getTheInputHandler_ = function(autocomplete) {
             methodWasCalled = autocomplete === autocomplete_;
             return inputHandler_;
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(true);
     });
-    
-    
+
+
     it('should set the row builder method on the input handler.', function() {
         var methodWasCalled = false;
-        
+
         setInputHandlerSelectRow_ = function(inputHandler, hiddenId, getElement, setValue) {
             methodWasCalled = inputHandler === inputHandler_ &&
                 hiddenId === HiddenId_ &&
                 getElement === goog.dom.getElement &&
                 setValue === goog.dom.forms.setValue;
         };
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(true);
     });
 
-    
+
     it('should set the autocomplete method to post.', function() {
         var methodWasCalled = false;
-        
-        setTheAutocompleteMethod_ = function(autocomplete, method){
+
+        setTheAutocompleteMethod_ = function(autocomplete, method) {
             methodWasCalled = autocomplete === autocomplete_ &&
                 method === 'POST';
         };
 
-        
+
         callTheMethod_();
-        
+
         expect(methodWasCalled).toBe(true);
     });
 };
