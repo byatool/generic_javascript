@@ -31,6 +31,14 @@ src.base.control.autocomplete.HiddenId = 'hiddenId';
  @type {string}
  @export
  */
+src.base.control.autocomplete.Id = 'Id';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.autocomplete.LabelId = 'autocompleteLabel';
 
 /**
@@ -97,30 +105,57 @@ src.base.control.autocomplete.setTheAutocompleteMethod_ = function(autocomplete,
 /* Support Methods */
 
 /**
- TODO Test this
  @param {Object} inputHandler description.
  @param {string} hiddenName description.
  @param {function(string) : Object} getElement description.
  @param {function(Object, string)} setValue description.
+ @param {?function(string)} setTokenText The method needed to set the text value for the
+ associated textbox to that of the selected item.
  */
-src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, hiddenName, getElement, setValue) {
+src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, hiddenName, getElement, setValue, setTokenText) {
     inputHandler.selectRow = function(selectedItem, opt_multi) {
+        var Current = src.base.control.autocomplete;
         var hidden = getElement(hiddenName);
-        setValue(hidden, selectedItem['Id']);
-
-        this.setTokenText(selectedItem['Name']);
+        
+        setTokenText = setTokenText ? setTokenText : function(text) {
+            inputHandler.setTokenText(text);
+        };
+        
+        setValue(hidden, selectedItem[Current.Id]);
+        setTokenText(selectedItem[Current.LastName] + ', ' + selectedItem[Current.FirstName]);
+        
         return false;
     };
 };
 
+
+/**
+ @param {Object} currentRow This is row of data retrieved from the server.
+ @param {function} stringFormat This is the string format method used to convert the data
+ to string.
+ @return {string} The formatted string.
+ */
+src.base.control.autocomplete.formatTheAutocompleteResultText = function(currentRow, stringFormat) {
+    var Current = src.base.control.autocomplete;
+    
+    return stringFormat('%s', currentRow[Current.Name]);
+};
+
+
 /**
  @param {Object} renderer the renderer attached to the autocomplete.
  @param {?function(Object, Object) : Object} createADiv The method used to create a div element.
- @param {function(Object) : string} getOuterHtml The method used to get the hmtl from an element object.
+ @param {?function(Object) : string} getOuterHtml The method used to get the hmtl from an element object.
+ @param {?function : string} format The method used format the returned data.
+ @export
  */
-src.base.control.autocomplete.setRenderRowContents = function(renderer, createADiv, getOuterHtml)  {
+src.base.control.autocomplete.setRenderRowContents = function(renderer, createADiv, getOuterHtml, format)  {
     renderer.renderRowContents_ = function(row, token, node) {
-        var createdDiv = createADiv({}, row['data']['Name']);
+        format = format ? format : src.base.control.autocomplete.formatTheAutocompleteResultText;
+        
+        var data = row['data'];
+        var label = format(data, goog.string.format);
+        var createdDiv = createADiv({}, label);
         node.innerHTML = getOuterHtml(createdDiv);
     };
 };
@@ -150,7 +185,7 @@ src.base.control.autocomplete.setRenderRowContents = function(renderer, createAD
  */
 src.base.control.autocomplete.initialize = function(options, setRenderRowContents, setInputHandlerSelectRow, createADiv, createATextbox, appendChild, createAHidden, createAnAutocomplete,  getTheRenderer, getTheInputHandler, setTheAutocompleteMethod) {
     var Current = src.base.control.autocomplete;
-
+    
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     createATextbox = createATextbox ? createATextbox : src.base.helper.domCreation.textbox;
     appendChild = appendChild ? appendChild : goog.dom.appendChild;

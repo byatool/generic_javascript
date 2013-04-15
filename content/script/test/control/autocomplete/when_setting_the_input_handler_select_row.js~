@@ -1,0 +1,108 @@
+goog.require('goog.string');
+goog.require('goog.ui.ac.InputHandler');
+goog.require('src.site.view.employeeLookup');
+
+
+goog.provide('src.test.view.employeeLookup.whenSettingTheInputHandlerSelectRow');
+
+
+/**
+ @export
+ */
+src.test.view.employeeLookup.whenSettingTheInputHandlerSelectRow.describe = function () {
+    //Using
+    
+    var Current = src.site.view.employeeLookup;
+    
+    
+    //Fields
+    
+    var CompanyMemberId_ = goog.string.getRandomString();
+    var FirstName_ = goog.string.getRandomString();
+    var LastName_ = goog.string.getRandomString();
+    var HiddenName_ = goog.string.getRandomString();
+    
+    var getElement_;
+    var hiddenElement_;
+    var hiddenName_;
+    var selectedItem_;
+    var inputHandler_;
+    var opt_multi_;
+    var setTokenText_;
+    var setValue_;
+    
+    //Test Hooks
+    beforeEach(function() {
+        // inputHandler_ = {};
+        setTokenText_ = function() {};
+        inputHandler_ = new goog.ui.ac.InputHandler();
+        
+        //inputHandler_['setTokenText'] = setTokenText_;
+        
+        hiddenElement_ = {};
+        hiddenName_ = HiddenName_;
+        
+        selectedItem_ = {};
+        selectedItem_[Current.CompanyMemberId] = CompanyMemberId_;
+        selectedItem_[Current.LastName] = LastName_;
+        selectedItem_[Current.FirstName] = FirstName_;
+        
+        getElement_ = function() { return hiddenElement_; };
+        setValue_ = function() {};
+    });
+    
+    //Support Methods
+    var callTheMethod_ = function() {
+        Current.setInputHandlerSelectRow(inputHandler_, hiddenName_, getElement_, setValue_);
+        
+        return inputHandler_.selectRow(selectedItem_, opt_multi_);
+    };
+    
+    //Test Methods
+    
+    it('should call find the hidden element.', function() {
+        var methodWasCalled = false;
+        
+        getElement_ = function(hiddenName) {
+            methodWasCalled = hiddenName === HiddenName_;
+        };
+        
+        callTheMethod_();
+        
+        expect(methodWasCalled).toBe(true);
+    });
+    
+    
+    it('should set the value of the hidden.', function() {
+        var methodWasCalled = false;
+        
+        setValue_ = function(hiddenElement, companyMemberId){
+            methodWasCalled = hiddenElement === hiddenElement_ &&
+                companyMemberId === CompanyMemberId_;
+        };
+        
+        callTheMethod_();
+        
+        expect(methodWasCalled).toBe(true);
+    });
+    
+    
+    it('should set the token text.', function() {
+        var methodWasCalled = false;
+        
+        setTokenText_ = function(text) {
+            methodWasCalled = text === selectedItem_[Current.LastName] +
+                ', ' +
+                selectedItem_[Current.FirstName];
+        };
+        
+        callTheMethod_();
+        
+        expect(methodWasCalled).toBe(true);
+    });
+};
+
+
+describe('When setting the input handler select row, it', function() {
+    src.test.view.employeeLookup.whenSettingTheInputHandlerSelectRow.describe();
+});

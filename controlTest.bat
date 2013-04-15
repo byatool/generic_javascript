@@ -12,6 +12,8 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^
+--namespace="src.test.control.autocomplete.whenFormattingTheAutocompleteResultText" ^
+--namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
 --namespace="src.test.control.autocomplete.whenInitializingAnAutocomplete" ^
 --namespace="src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod" ^
 --namespace="src.test.control.buttonList.whenCreatingAButtonList" ^

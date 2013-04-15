@@ -6,90 +6,98 @@ goog.provide('src.test.control.autocomplete.whenSettingTheRenderRowContentsMetho
 /**
  @export
  */
-src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod.describe = function() {
+src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod.describe = function () {
     //Using
-
+    
+    var Current = src.base.control.autocomplete;
+    
+    
     //Fields
-
-    var Name_ = goog.string.getRandomString();
-    var OuterHtml_ = goog.string.getRandomString();
-
+    
+    var FormatResult_ = goog.string.getRandomString();
+    
     var createADiv_;
     var createdDiv_;
+    var currentRow_;
+    var formatTheResultText_;
     var getOuterHtml_;
     var node_;
     var renderer_;
-    var row_;
     var token_;
-
+    
+    
     //Test Hooks
     beforeEach(function() {
-        node_ = {};
-        node_.innerHTML = '';
-
+        currentRow_ = {};
         createdDiv_ = {};
+        
+        node_ = {'innerHTML': ''};
         renderer_ = {};
-        renderer_.renderRowContents_ = null;
-        row_ = {};
-        row_['data'] = {'Name': Name_};
+        renderer_.renderRowContents_ = function() {};
         token_ = {};
-
-        createADiv_ = function() {
-            return createdDiv_;
-        };
-
-        getOuterHtml_ = function() {
-            return OuterHtml_;
-        };
+        
+        createADiv_ = function(){ return createdDiv_; };
+        formatTheResultText_ = function(){ return FormatResult_;};
+        getOuterHtml_ = function(){ };
     });
-
+    
+    
     //Support Methods
     var callTheMethod_ = function() {
-        return src.base.control.autocomplete.setRenderRowContents(renderer_, createADiv_, getOuterHtml_);
+        Current.setRenderRowContents(renderer_, createADiv_, getOuterHtml_, formatTheResultText_);
+        renderer_.renderRowContents_(currentRow_, token_, node_);
+        
+        return renderer_;
     };
-
+    
+    
     //Test Methods
-
-    it('should set the renderer method.', function() {
-        callTheMethod_();
-        expect(renderer_.renderRowContents_).not.toBe(null);
-    });
-
-
-    it('should create a div.', function() {
+    
+    
+    it('should format the current row.', function() {
         var methodWasCalled = false;
-
+        
+        formatTheResultText_ = function(row, format) {
+            methodWasCalled = row === currentRow_['data'] &&
+                format === goog.string.format;
+        };
+        
+        callTheMethod_();
+        
+        expect(methodWasCalled).toBe(true);
+    });
+    
+    it('should create a container div.', function() {
+        var methodWasCalled = false;
         createADiv_ = function(attributes, text) {
-            methodWasCalled = text === Name_;
-            return createdDiv_;
+            methodWasCalled = text === FormatResult_;
         };
-
+        
         callTheMethod_();
-        renderer_.renderRowContents_(row_, token_, node_);
-
+        
         expect(methodWasCalled).toBe(true);
     });
-
-    it('should get the outer html for the created div.', function() {
+    
+    
+    it('should convert the div to html.', function() {
         var methodWasCalled = false;
-
-        getOuterHtml_ = function(div) {
+        
+        getOuterHtml_ = function(div){
             methodWasCalled = div === createdDiv_;
-            return OuterHtml_;
         };
-
+        
         callTheMethod_();
-        renderer_.renderRowContents_(row_, token_, node_);
-
+        
         expect(methodWasCalled).toBe(true);
     });
-
-
-    it('should set the node inner html.', function() {
+    
+    
+    it('should set the node innterHTML.', function() {
+        var html = goog.string.getRandomString();
+        
+        getOuterHtml_ = function() { return html; };
         callTheMethod_();
-        renderer_.renderRowContents_(row_, token_, node_);
-
-        expect(node_.innerHTML).toBe(OuterHtml_);
+        expect(node_.innerHTML).toBe(html);
     });
 };
 

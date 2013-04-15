@@ -1,0 +1,77 @@
+goog.require('goog.string');
+goog.require('src.site.view.employeeLookup');
+
+goog.provide('src.test.view.employeeLookup.whenFormattingTheAutocompleteResultText');
+
+/**
+ @export
+ */
+src.test.view.employeeLookup.whenFormattingTheAutocompleteResultText.describe = function() {
+    //Using
+    var Current = src.site.view.employeeLookup;
+
+
+    //Fields
+
+    var CompanyName_ = goog.string.getRandomString();
+    var EmployerSpecificEmployeeNumber_ = goog.string.getRandomString();
+    var FirstName_ = goog.string.getRandomString();
+    var LastName_ = goog.string.getRandomString();
+    var SocialSecurityNumber_ = goog.string.getRandomString();
+
+
+    var currentRow_;
+    var format_;
+
+    //Test Hooks
+    beforeEach(function() {
+        currentRow_ = {};
+
+        currentRow_[Current.CompanyName] = CompanyName_;
+        currentRow_[Current.EmployerSpecificEmployeeNumber] = EmployerSpecificEmployeeNumber_;
+        currentRow_[Current.FirstName] = FirstName_;
+        currentRow_[Current.LastName] = LastName_;
+        currentRow_[Current.SocialSecurityNumber] = SocialSecurityNumber_;
+    });
+
+    //Support Methods
+
+    var callTheMethod_ = function() {
+        return Current.formatTheAutocompleteResultText(currentRow_, format_);
+    };
+
+
+    //Test Methods
+
+    it('should call the format method.', function() {
+        var methodWasCalled = false;
+
+        format_ = function(format, lastName, firstName, socialSecurityNumber, employerSpecificEmloyeeNumber, companyName) {
+            methodWasCalled = format === '%s, %s  %s  %s %s' &&
+                firstName === FirstName_ &&
+                socialSecurityNumber === SocialSecurityNumber_ &&
+                employerSpecificEmloyeeNumber === EmployerSpecificEmployeeNumber_ &&
+                companyName === CompanyName_;
+        };
+
+        callTheMethod_();
+
+        expect(methodWasCalled).toBe(true);
+    });
+    
+
+    it('should return the format result.', function() {
+        var formatResult = goog.string.getRandomString();
+
+        format_ = function() {
+            return formatResult;
+        };
+
+        expect(callTheMethod_()).toBe(formatResult);
+    });
+};
+
+
+describe('When formatting the autocomplete result text, it', function() {
+    src.test.view.employeeLookup.whenFormattingTheAutocompleteResultText.describe();
+});
