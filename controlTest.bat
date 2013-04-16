@@ -12,6 +12,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^
+--namespace="src.base.control.redirectList" ^
 --namespace="src.test.control.autocomplete.whenFormattingTheAutocompleteResultText" ^
 --namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
 --namespace="src.test.control.autocomplete.whenInitializingAnAutocomplete" ^
@@ -32,6 +33,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.messageBox.whenUpdatingMesssagesInAMessageBoxByAResult" ^
 --namespace="src.test.control.popupDatePicker.whenCreatingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
+--namespace="src.test.control.redirectList.whenInitializingARedirectList" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
