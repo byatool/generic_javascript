@@ -59,6 +59,22 @@ src.base.control.redirectList.For = 'For';
 src.base.control.redirectList.Goto = 'Goto';
 
 
+/**
+ @param {string} elementId The name of the element that holds the needed value.
+ @param {string} url The intended destination.
+ @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
+ @param {function(string)} redirect The method used to change the current url.
+ @return {function} The created click event.
+ @export
+ */
+src.base.control.redirectList.createTheClickEvent = function(elementId, url, getValue, redirect){
+    return function() {
+        var elementValue = getValue(elementId);
+        redirect(url + '?' + elementId + '=' + elementValue);
+    };
+};
+
+
 
 /**
  @param {Object} options The collection of options to build the customize the control.
@@ -74,17 +90,14 @@ src.base.control.redirectList.Goto = 'Goto';
  */
 src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, redirect, setClick) {
     var Current = src.base.control.redirectList;
-
+    
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.createADiv;
     createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
-
-    createTheClickEvent = createTheClickEvent ? createTheClickEvent : null;
-
+    createTheClickEvent = createTheClickEvent ? createTheClickEvent : Current.createTheClickEvent;
     getValue = getValue ? getValue : goog.dom.forms.getValue;
     redirect = redirect ? redirect : window.location;
     setClick = setClick ? setClick : src.base.helper.events.setClick;
-
-
+    
     var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
 
     var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
@@ -94,8 +107,7 @@ src.base.control.redirectList.initialize = function(options, createADiv, createA
 
         var createdButton = createAButton(attributes);
 
-        var clickEventHandler = createTheClickEvent(createdButton,
-                                                    currentItem[Current.For],
+        var clickEventHandler = createTheClickEvent(currentItem[Current.For],
                                                     currentItem[Current.Goto],
                                                     getValue,
                                                     redirect);

@@ -9,7 +9,7 @@ goog.provide('src.test.control.redirectList.whenInitializingARedirectList');
 src.test.control.redirectList.whenInitializingARedirectList.describe = function() {
     //Using
     var Current = src.base.control.redirectList;
-
+    
 
     //Fields
     var ContainerClass_ = goog.string.getRandomString();
@@ -124,15 +124,12 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
     it('should create the click event for all buttons.', function() {
         var methodWasCalled = 0;
 
-        createTheClickEvent_ = function(button, elementId, url, getValue, redirect) {
-
-            methodWasCalled += (button === firstButton_ &&
-                                elementId === FirstFor_ &&
+        createTheClickEvent_ = function(elementId, url, getValue, redirect) {
+            methodWasCalled += (elementId === FirstFor_ &&
                                 url === FirstGoto_ &&
                                 getValue === getValue_ &&
                                 redirect === redirect_) ||
-                (button === secondButton_ &&
-                 elementId === SecondFor_ &&
+                (elementId === SecondFor_ &&
                  url === SecondGoto_ &&
                  getValue === getValue_ &&
                  redirect === redirect_);
@@ -159,7 +156,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
 
         setClickEvent_ = function(button, method) {
             methodWasCalled += (button === firstButton_ &&
-                               method === firstEvent) ||
+                                method === firstEvent) ||
                 (button === secondButton_ &&
                  method === secondEvent);
 
