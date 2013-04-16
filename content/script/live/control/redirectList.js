@@ -60,20 +60,34 @@ src.base.control.redirectList.Goto = 'Goto';
 
 
 /**
- @param {string} elementId The name of the element that holds the needed value.
- @param {string} url The intended destination.
+ @param {string} elementIds The name of the elements that hold the needed values.
+ @param {string} url The intended destination.[
  @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
  @param {function(string)} redirect The method used to change the current url.
  @return {function} The created click event.
  @export
  */
-src.base.control.redirectList.createTheClickEvent = function(elementId, url, getValue, redirect){
+src.base.control.redirectList.createTheClickEvent= function(elementIds, url, getValue, redirect){
     return function() {
-        var elementValue = getValue(elementId);
-        redirect(url + '?' + elementId + '=' + elementValue);
+        var firstTime = true;
+        
+        var values = goog.array.map(elementIds, function(currentItem){
+            //TODO This might need to be a function
+            var value = getValue(currentItem);
+            
+            var result = (firstTime ? '?' : '&') + currentItem + '=' + value;
+            firstTime = false;
+            
+            return result;
+        });
+        
+        var finalText = goog.array.reduce(values, function(left, right) {
+            return left + right;
+        }, '');
+        
+        redirect(url + finalText);
     };
 };
-
 
 
 /**
@@ -99,14 +113,14 @@ src.base.control.redirectList.initialize = function(options, createADiv, createA
     setClick = setClick ? setClick : src.base.helper.events.setClick;
     
     var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-
+    
     var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
         var attributes = {};
         attributes['id'] = currentItem[Current.ButtonId];
         attributes['value'] = currentItem[Current.ButtonText];
-
+        
         var createdButton = createAButton(attributes);
-
+        
         var clickEventHandler = createTheClickEvent(currentItem[Current.For],
                                                     currentItem[Current.Goto],
                                                     getValue,

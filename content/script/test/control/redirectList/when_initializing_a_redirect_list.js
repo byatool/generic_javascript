@@ -39,36 +39,40 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
 
     //Test Hooks
     beforeEach(function() {
-        var createFakeButtonAttributes = function(id, text, controlId, url) {
+        var createFakeButtonAttributes = function(id, text, controlIds, url) {
             var button = {};
             button[Current.ButtonId] = id;
             button[Current.ButtonText] = text;
-            button[Current.For] = controlId;
+            button[Current.For] = controlIds;
             button[Current.Goto] = url;
-
+            
             return button;
         };
-
+        
         parentContainer_ = {};
         options_ = {};
         options_[Current.ContainerClass] = ContainerClass_;
         options_[Current.ContainerId] = ParentContainerId_;
+        
+        var firstButton = createFakeButtonAttributes(FirstButtonId_, FirstButtonText_,
+                                                     [FirstFor_, SecondFor_], FirstGoto_);
+        
+        var secondButton = createFakeButtonAttributes(SecondButtonId_, SecondButtonText_,
+                                                      [FirstFor_, SecondFor_], SecondGoto_);
 
-        var firstButton = createFakeButtonAttributes(FirstButtonId_, FirstButtonText_, FirstFor_, FirstGoto_);
-        var secondButton = createFakeButtonAttributes(SecondButtonId_, SecondButtonText_, SecondFor_, SecondGoto_);
         buttonList_ = [firstButton, secondButton];
         options_[Current.ButtonList] = buttonList_;
-
+        
         var wasCalled = false;
         firstButton_ = {};
         secondButton_ = {};
         createAButton_ = function() {
             var result = wasCalled ? secondButton_ : firstButton_;
             wasCalled = true;
-
+            
             return result;
         };
-
+        
         createADiv_ = function() { return parentContainer_; };
         createTheClickEvent_ = function() {};
         getValue_ = function() { };
@@ -76,7 +80,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
         setClickEvent_ = function() {};
     });
 
-
+    
     //Support Methods
     var callTheMethod_ = function() {
         return Current.initialize(options_, createADiv_, createAButton_, createTheClickEvent_, getValue_, redirect_, setClickEvent_);
@@ -84,7 +88,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
 
 
     //Test Methods
-
+    
     it('should create a parent container.', function() {
         var methodWasCalled = false;
 
@@ -120,40 +124,37 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
         expect(methodWasCalled).toBe(2);
     });
 
-
+    
     it('should create the click event for all buttons.', function() {
         var methodWasCalled = 0;
 
-        createTheClickEvent_ = function(elementId, url, getValue, redirect) {
-            methodWasCalled += (elementId === FirstFor_ &&
-                                url === FirstGoto_ &&
-                                getValue === getValue_ &&
-                                redirect === redirect_) ||
-                (elementId === SecondFor_ &&
-                 url === SecondGoto_ &&
-                 getValue === getValue_ &&
-                 redirect === redirect_);
+        createTheClickEvent_ = function(elementIds, url, getValue, redirect) {
+            
+            methodWasCalled += goog.array.equals(elementIds, [FirstFor_, SecondFor_]) &&
+                redirect === redirect_ &&
+                getValue === getValue_ &&
+                (url === FirstGoto_ || url === SecondGoto_);
         };
-
+        
         callTheMethod_();
-
+        
         expect(methodWasCalled).toBe(2);
     });
-
-
+    
+    
     it('should set the click event on the button.', function() {
         var methodWasCalled = 0;
         var wasCalled = false;
         var firstEvent = {};
         var secondEvent = {};
-
+        
         createTheClickEvent_ = function() {
             var result = wasCalled ? secondEvent : firstEvent;
             wasCalled = true;
-
+            
             return result;
         };
-
+        
         setClickEvent_ = function(button, method) {
             methodWasCalled += (button === firstButton_ &&
                                 method === firstEvent) ||
@@ -161,7 +162,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
                  method === secondEvent);
 
         };
-
+        
         callTheMethod_();
 
         expect(methodWasCalled).toBe(2);
