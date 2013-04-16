@@ -63,28 +63,30 @@ src.base.control.redirectList.Goto = 'Goto';
  @param {string} elementIds The name of the elements that hold the needed values.
  @param {string} url The intended destination.
  @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
+ @param {function(string) : Object} getElement description.
  @param {function(string)} redirect The method used to change the current url.
  @return {function} The created click event.
  @export
  */
-src.base.control.redirectList.createTheClickEvent= function(elementIds, url, getValue, redirect){
+src.base.control.redirectList.createTheClickEvent = function(elementIds, url, getValue, getElement, redirect) {
     return function() {
         var firstTime = true;
-        
-        var values = goog.array.map(elementIds, function(currentItem){
+
+        var values = goog.array.map(elementIds, function(currentItem) {
             //TODO This might need to be a function
-            var value = getValue(currentItem);
-            
+            var element = getElement(currentItem);
+            var value = getValue(element);
+
             var result = (firstTime ? '?' : '&') + currentItem + '=' + value;
             firstTime = false;
-            
+
             return result;
         });
-        
+
         var finalText = goog.array.reduce(values, function(left, right) {
             return left + right;
         }, '');
-        
+
         redirect(url + finalText);
     };
 };
@@ -96,46 +98,53 @@ src.base.control.redirectList.createTheClickEvent= function(elementIds, url, get
  @param {?function(Object, Object) : Object} createAButton The method used to create a button.
  @param {?function(Object, string, string, function, function) : function} createTheClickEvent The method
  compose the click handler for a created button.
- @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
- @param {function(string)} redirect The method used to change the current url.
+ @param {?function(Object) : string} getValue The method used to get the value from the "sister" control.
+ @param {?function(string) : Object} getElement description.
+ @param {?function(string)} redirect The method used to change the current url.
  @param {?function(Object, Object)} setClick The method used to set the click event.
- @param {function(Object, Object)} appendChild The method used to append a child to a parent element.
+ @param {?function(Object, Object)} appendChild The method used to append a child to a parent element.
  @return {Object} The control.
  @export
  */
-src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, redirect, setClick, appendChild) {
+src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, getElement, redirect, setClick, appendChild) {
     var Current = src.base.control.redirectList;
 
     appendChild = appendChild ? appendChild : goog.dom.appendChild;
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
     createTheClickEvent = createTheClickEvent ? createTheClickEvent : Current.createTheClickEvent;
+    getElement = getElement ? getElement : goog.dom.getElement;
     getValue = getValue ? getValue : goog.dom.forms.getValue;
-    redirect = redirect ? redirect : window.location;
+
+    //TODO Probably should create a utility method that wraps window.location
+    //  instead of doing it inline.
+    redirect = redirect ? redirect : function(item) { window.location = item; };
+
     setClick = setClick ? setClick : src.base.helper.events.setClick;
-    
+
     var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-    
+
     var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
         var attributes = {};
         attributes['id'] = currentItem[Current.ButtonId];
         attributes['value'] = currentItem[Current.ButtonText];
-        
+
         var createdButton = createAButton(attributes);
-        
+
         var clickEventHandler = createTheClickEvent(currentItem[Current.For],
                                                     currentItem[Current.Goto],
                                                     getValue,
+                                                    getElement,
                                                     redirect);
-        
+
         setClick(createdButton, clickEventHandler);
-        
+
         return createdButton;
     });
-    
+
     goog.array.forEach(buttonList, function(item) {
         appendChild(container, item);
     });
-    
+
     return container;
 };
