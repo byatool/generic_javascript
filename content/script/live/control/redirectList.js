@@ -61,7 +61,7 @@ src.base.control.redirectList.Goto = 'Goto';
 
 /**
  @param {string} elementIds The name of the elements that hold the needed values.
- @param {string} url The intended destination.[
+ @param {string} url The intended destination.
  @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
  @param {function(string)} redirect The method used to change the current url.
  @return {function} The created click event.
@@ -99,13 +99,15 @@ src.base.control.redirectList.createTheClickEvent= function(elementIds, url, get
  @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
  @param {function(string)} redirect The method used to change the current url.
  @param {?function(Object, Object)} setClick The method used to set the click event.
+ @param {function(Object, Object)} appendChild The method used to append a child to a parent element.
  @return {Object} The control.
  @export
  */
-src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, redirect, setClick) {
+src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, redirect, setClick, appendChild) {
     var Current = src.base.control.redirectList;
-    
-    createADiv = createADiv ? createADiv : src.base.helper.domCreation.createADiv;
+
+    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
     createTheClickEvent = createTheClickEvent ? createTheClickEvent : Current.createTheClickEvent;
     getValue = getValue ? getValue : goog.dom.forms.getValue;
@@ -125,11 +127,15 @@ src.base.control.redirectList.initialize = function(options, createADiv, createA
                                                     currentItem[Current.Goto],
                                                     getValue,
                                                     redirect);
-
+        
         setClick(createdButton, clickEventHandler);
-
+        
         return createdButton;
     });
-
+    
+    goog.array.forEach(buttonList, function(item) {
+        appendChild(container, item);
+    });
+    
     return container;
 };

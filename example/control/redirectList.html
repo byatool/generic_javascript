@@ -8,20 +8,41 @@
   </head>
   
   <body>
-    <div id="mainContainer" ></div>
+    <div id="mainContainer" >
+      <input type="hidden" id="firstHiddenA" value="1a">
+      <input type="hidden" id="firstHiddenB" value="1b">
+      <input type="hidden" id="secondHiddenA" value="2a">
+      <input type="hidden" id="secondHiddenB" value="2b">
+    </div>
     
   </body>
   
   <script type="text/javascript">
-    //var options = {};
     
-    //options[src.base.control.rediredList.ContainerId] = 'parentContainer';
-    //options[src.base.control.rediredList.Url] = 'http://localhost:57388/Test/AutocompleteWithObjectArray';
-    //options[src.base.control.rediredList.HiddenId] = 'someHiddenId';
+    var createButtonOptions = function(id, text, controlIds, url) {
+    var button = {};
+    button[src.base.control.redirectList.ButtonId] = id;
+    button[src.base.control.redirectList.ButtonText] = text;
+    button[src.base.control.redirectList.For] = controlIds;
+    button[src.base.control.redirectList.Goto] = url;
     
-    //var result = src.base.control.rediredList.initialize(options);
-    //var container = document.getElementById('mainContainer');
+    return button;
+    };
     
-    //container.appendChild(result);
+    
+    var options = {};
+    options[src.base.control.redirectList.ContainerClass] = 'container';
+    options[src.base.control.redirectList.ContainerId] = 'container';
+    
+    var firstButton = createButtonOptions('firstButton', 'first button',  ['firstHiddenA', 'firstHiddenB'], 'redirectList.html');
+    var secondButton = createButtonOptions('secondButton', 'second button',  ['firstHiddenA', 'firstHiddenB'], 'redirectList.html');
+    buttonList_ = [firstButton, secondButton];
+    
+    options[src.base.control.redirectList.ButtonList] = buttonList_;
+    
+    var result = src.base.control.redirectList.initialize(options);
+    
+    var container = document.getElementById('mainContainer');
+    container.appendChild(result);
   </script>
 </html>

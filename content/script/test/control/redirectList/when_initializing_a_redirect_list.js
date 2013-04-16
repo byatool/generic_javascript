@@ -24,6 +24,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
     var SecondFor_ = goog.string.getRandomString();
     var SecondGoto_ = goog.string.getRandomString();
 
+    var appendChild_;
     var buttonList_;
     var createAButton_;
     var createADiv_;
@@ -35,8 +36,8 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
     var redirect_;
     var secondButton_;
     var setClickEvent_;
-
-
+    
+    
     //Test Hooks
     beforeEach(function() {
         var createFakeButtonAttributes = function(id, text, controlIds, url) {
@@ -59,7 +60,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
         
         var secondButton = createFakeButtonAttributes(SecondButtonId_, SecondButtonText_,
                                                       [FirstFor_, SecondFor_], SecondGoto_);
-
+        
         buttonList_ = [firstButton, secondButton];
         options_[Current.ButtonList] = buttonList_;
         
@@ -78,20 +79,21 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
         getValue_ = function() { };
         redirect_ = function() {};
         setClickEvent_ = function() {};
+        appendChild_ = function() {};
     });
-
+    
     
     //Support Methods
     var callTheMethod_ = function() {
-        return Current.initialize(options_, createADiv_, createAButton_, createTheClickEvent_, getValue_, redirect_, setClickEvent_);
+        return Current.initialize(options_, createADiv_, createAButton_, createTheClickEvent_, getValue_, redirect_, setClickEvent_, appendChild_);
     };
-
-
+    
+    
     //Test Methods
     
     it('should create a parent container.', function() {
         var methodWasCalled = false;
-
+        
         createADiv_ = function(attributes) {
             methodWasCalled = attributes['id'] === options_[Current.ContainerId] &&
                 attributes['class'] === options_[Current.ContainerClass];
@@ -102,12 +104,12 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
 
         expect(methodWasCalled).toBe(true);
     });
-
+    
 
     it('should return the parent container.', function() {
         expect(callTheMethod_()).toBe(parentContainer_);
     });
-
+    
 
     it('should create the needed buttons.', function() {
         var methodWasCalled = 0;
@@ -160,14 +162,28 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
                                 method === firstEvent) ||
                 (button === secondButton_ &&
                  method === secondEvent);
-
+            
         };
         
         callTheMethod_();
-
+        
         expect(methodWasCalled).toBe(2);
     });
-
+    
+    
+    it('should add the created buttons.', function() {
+        var methodWasCalled = 0;
+        
+        appendChild_ = function(parent, child){
+            methodWasCalled += parent === parentContainer_ &&
+                (child === firstButton_ || child === secondButton_);
+        };
+        
+        callTheMethod_();
+        
+        expect(methodWasCalled).toBe(2);
+    });
+    
 };
 
 
