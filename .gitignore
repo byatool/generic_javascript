@@ -6,25 +6,6 @@
 # *~
 
 
-*.DotSettings.user
-*.pdb
-*.rb
-*.suo
-*.exclude
-*.user
-
 .sass-cache/
-bin/
-ep/Bin/Microsoft.*.dll
-ep/Bin/MCTWF.*.dll
-view/
-!ep/Bin
-
-
-.nuget/
-obj/
-packages/
-_ReSharper.TableSearch.Mvc.Engine/
-Visual Studio 2010/
-
-!move_all_needed_dlls.rb
+*~
+*#
