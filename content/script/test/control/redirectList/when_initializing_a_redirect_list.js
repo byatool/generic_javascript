@@ -9,7 +9,7 @@ goog.provide('src.test.control.redirectList.whenInitializingARedirectList');
 src.test.control.redirectList.whenInitializingARedirectList.describe = function() {
     //Using
     var Current = src.base.control.redirectList;
-
+    
 
     //Fields
     var ContainerClass_ = goog.string.getRandomString();
@@ -116,19 +116,19 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
     it('should create the needed buttons.', function() {
         var methodWasCalled = 0;
 
-        createAButton_ = function(attributes) {
+        createAButton_ = function(attributes, text) {
             methodWasCalled += (attributes['id'] === FirstButtonId_ &&
-                                attributes['value'] === FirstButtonText_) ||
+                                text === FirstButtonText_) ||
                 (attributes['id'] === SecondButtonId_ &&
-                 attributes['value'] === SecondButtonText_);
+                 text === SecondButtonText_);
         };
-
+        
         callTheMethod_();
-
+        
         expect(methodWasCalled).toBe(2);
     });
-
-
+    
+    
     it('should create the click event for all buttons.', function() {
         var methodWasCalled = 0;
 

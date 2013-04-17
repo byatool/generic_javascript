@@ -125,11 +125,8 @@ src.base.control.redirectList.initialize = function(options, createADiv, createA
     var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
 
     var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
-        var attributes = {};
-        attributes['id'] = currentItem[Current.ButtonId];
-        attributes['value'] = currentItem[Current.ButtonText];
-
-        var createdButton = createAButton(attributes);
+        var createdButton = createAButton({'id': currentItem[Current.ButtonId]},
+                                          currentItem[Current.ButtonText]);
 
         var clickEventHandler = createTheClickEvent(currentItem[Current.For],
                                                     currentItem[Current.Goto],
