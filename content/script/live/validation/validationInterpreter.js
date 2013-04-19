@@ -3,6 +3,18 @@ goog.require('src.base.helper.arrayHelper');
 
 goog.provide('src.site.validation.validationInterpreter');
 
+src.site.validation.validationInterpreter.methodLookup = [
+    ['is a valid social security number', function(toCheck, propertyName, error, rest) {
+        return src.site.validation.validateSocialSecurityNumber.isValid(toCheck) ? null : error;
+    }],
+    ['is not empty', function(toCheck, propertyName, error, rest) {
+        return !src.site.validation.validateText.isEmpty(toCheck[propertyName]) ? null : error;
+    }],
+    ['is not empty or the default', function(toCheck, propertyName, error, rest) {
+        return !src.site.validation.validateText.isEmptyOrIsDefault(toCheck[propertyName], rest[0]) ? null : error;
+    }]
+];
+
 /**
  @param {string} propertyName description.
  @param {Array.<function>} methods description.
@@ -18,13 +30,13 @@ goog.provide('src.site.validation.validationInterpreter');
  @export
  */
 src.site.validation.validationInterpreter.createAValidationCall = function(propertyName, methods, innerRule, find, car, cdr, peek, sink) {
-    
+
     var methodPair = find(methods, function(method) {
         return car(method) === car(innerRule);
     });
-    
+
     var methodToUse = peek(methodPair);
-    
+
     return function(obj) {
         var error = peek(innerRule);
         var values = sink(cdr(innerRule));
@@ -32,6 +44,34 @@ src.site.validation.validationInterpreter.createAValidationCall = function(prope
     };
 };
 
+
+/**
+ @param {Array} rules The supplied rules to interpret.
+ @param {?Array} methods The method lookup table.
+ @param {?function(Array, Array) : Array.<function>} interpret The method used to create the
+ validation group.
+ @return {function(Object) : Array.<string>} The created method used to call all the
+ validation methods supplied by interpret.
+ @export
+ */
+src.site.validation.validationInterpreter.createAValidationWrapper = function(rules, methods, interpret) {
+    var Current = src.site.validation.validationInterpreter;
+
+    methods = methods ? methods : src.site.validation.validationInterpreter.methodLookup;
+    interpret = interpret ? interpret : Current.interpret;
+
+    var methodGroup = interpret(rules, methods);
+
+    return function(value) {
+        var errors = goog.array.map(methodGroup, function(method) {
+            return method(value);
+        });
+
+        return goog.array.filter(errors, function(error) {
+            return !goog.string.isEmptySafe(error);
+        });
+    };
+};
 
 /**
  @param {Array.<Array>} rules description.
@@ -52,19 +92,19 @@ src.site.validation.validationInterpreter.interpret = function(rules, methods, c
     car = car ? car : src.base.helper.arrayHelper.car;
     cdr = cdr ? cdr : src.base.helper.arrayHelper.cdr;
     flatten = flatten ? flatten : goog.array.flatten;
-    
+
     var find = goog.array.find;
     var peek = goog.array.peek;
     var sink = src.base.helper.arrayHelper.sink;
-     
+
     var methodGroups = goog.array.map(rules, function(currentRule) {
         var propertyName = car(currentRule);
         var toCheck = cdr(currentRule);
-        
+
         var toCall = goog.array.map(toCheck, function(innerRule) {
             return createAValidationCall(propertyName, methods, innerRule, find, car, cdr, peek, sink);
         });
-        
+
         return toCall;
     });
 

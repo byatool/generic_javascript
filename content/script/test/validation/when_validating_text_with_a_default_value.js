@@ -8,43 +8,41 @@ goog.provide('src.test.validation.whenValidatingTextWithADefaultValue');
  @export
  */
 src.test.validation.whenValidatingTextWithADefaultValue.describe = function() {
-  //Fields
-  var Validation = src.site.validation.validateText;
-
-  var ConceptName = goog.string.getRandomString();
-  var DefaultText = goog.string.getRandomString();
-
-  //Test Hooks
-  beforeEach(function() {
-
-  });
-
-  //Support Methods
-
-  var errorCount = function(textValue) {
-    return goog.array.count(Validation.isEmptyOrIsDefault(textValue, ConceptName, DefaultText), function(item) {
-      return item === 'Pick a ' + ConceptName + '.';
+    //Fields
+    var Current = src.site.validation.validateText;
+    
+    var DefaultText_ = goog.string.getRandomString();
+    
+    //Test Hooks
+    beforeEach(function() {
+        
     });
-  };
-
-
-  //Test Methods
-
-  it('should return an error if there is no text.', function() {
-    expect(errorCount('')).toBe(1);
-  });
-
-
-  it('should return an error if the text is the default.', function() {
-    expect(errorCount(DefaultText)).toBe(1);
-  });
-
-
-  it('should not return an error for valid text.', function() {
-    expect(errorCount(goog.string.getRandomString())).toBe(0);
-  });
+    
+    
+    //Support Methods
+    
+    var callTheMethod_ = function(text) {
+        return Current.isEmptyOrIsDefault(text, DefaultText_);
+    };
+    
+    
+    //Test Methods
+    
+    it('should succeed if there is no text.', function() {
+        expect(callTheMethod_('')).toBe(true);
+    });
+    
+    
+    it('should succeed if there the text is the default text.', function() {
+        expect(callTheMethod_(DefaultText_)).toBe(true);
+    });
+    
+    
+    it('should fail if the text is not the default or empty.', function() {
+        expect(callTheMethod_('adfa')).toBe(false);
+    });
 };
 
 describe('When validating text with a default value, it', function() {
-  src.test.validation.whenValidatingTextWithADefaultValue.describe();
+    src.test.validation.whenValidatingTextWithADefaultValue.describe();
 });

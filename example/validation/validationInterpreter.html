@@ -10,63 +10,36 @@
   </body>
   
   <script type="text/javascript">
-    function isNotEmpty(toCheck, propertyName, error, rest) {
     
-    return toCheck[propertyName] === '' ? error : null;
-    
-    };
-    
-    function isNotLongerThan(toCheck, propertyName, error, rest) {
-    
-    return toCheck[propertyName].length > rest[0] ? error : null;
-    };
-    
-    function isBetween(toCheck, propertyName, error, rest) {
-    var length = toCheck[propertyName].length;
-    
-    return (length < rest[0] || length > rest[1]) ? error : null;
-    };
+      var rules = [
+      ['SocialSecurityNumber',
+      ['is a valid social security number', 'Invalid social security number.']
+      ],
+      ['Name',
+      ['is not empty', 'Name is required.']
+      ],
+      ['Username',
+      ['is not empty', 'Username is required']
+      ],
+      ['Password',
+      ['is not empty or the default', 'default', 'Password is not acceptable.']]];
       
+      var validationMethod = src.site.validation.validationInterpreter.createAValidationWrapper(rules);
       
-    /*  Pretty format... Emacs html-mode is awesome.
-    --  var methods = [
-    --    ['is not empty', isNotEmpty],
-    --    ['is not longer than', isNotLongerThan],
-    --    ['length is between', isBetween]];
-    */
-    var methods = [['is not empty', isNotEmpty], ['is not longer than', isNotLongerThan],
-      ['length is between', isBetween]];
+      var toCheck = {};
+      toCheck['SocialSecurityNumber'] = 'dffds';
+      toCheck['Name'] = '';
+      toCheck['Password'] = 'default';
+      toCheck['Username'] = 'hihi'
       
+      var errors = validationMethod(toCheck);
       
-    /*
-    --  Pretty format!
-    --  ['Username',
-    --    ['is not empty', 'Username is required.'],
-    --    ['is not longer than', 7, 'Username is too long.']],
-    --  ['Name',
-    --    ['is not empty', 'Name is required.']],
-    --  ['Password',
-    --    ['length is between', 4, 6, 'Password is not acceptable.']]];
-    */
-    var rules = [
-    ['Username',
-    ['is not empty', 'Username is required.'],
-    ['is not longer than', 7, 'Username is too long.']
-    ],
-    ['Name',
-    ['is not empty', 'Name is required.']
-    ],
-    ['Password',
-    ['length is between', 4, 6, 'Password is not acceptable.']]
-    ];
+      var blah = '';
       
-    var result = src.site.validation.validationInterpreter.interpret(rules, methods);
+      var container = document.getElementById('mainContainer');
       
-    var errorList = [];
-    var something = document.getElementById('mainContainer');
-      
-    var toValidate = {'Username': '12345678', 'Name': '', 'Password': '123'};
-    for(var i = 0; i < result.length; i++) { something.innerText += '\n' + result[i](toValidate); };
-                       
-    </script>
+      for(var i = 0; i < errors.length; i++) {blah += " " + errors[i]; }
+                         container.innerHTML = blah;
+                         
+  </script>
 </html>

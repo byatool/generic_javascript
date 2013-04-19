@@ -20,21 +20,21 @@ src.test.validation.whenValidatingAString.describe = function() {
     //Test Methods
     
     
-    it('should return a message if there is no text', function() {
+    it('should fail if the text is null.', function() {
         var result = ValidateText.isEmpty(null, ConceptName);
-        expect(result).toBe(ConceptName + ' is required.');
+        expect(result).toBe(true);
     });
     
     
-    it('should return a message if it is an empty string.', function() {
+    it('should fail if the text is emtpy.', function() {
         var result = ValidateText.isEmpty('', ConceptName);
-        expect(result).toBe(ConceptName + ' is required.');
+        expect(result).toBe(true);
     });
     
     
-    it('should return a null if it a valid string.', function() {
+    it('should fail if there is text..', function() {
         var result = ValidateText.isEmpty('derp', ConceptName);
-        expect(result).toBe(null);
+        expect(result).toBe(false);
     });
 };
 

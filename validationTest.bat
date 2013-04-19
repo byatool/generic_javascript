@@ -9,6 +9,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.site.validation.validateText" ^
 --namespace="src.test.validation.whenCheckingIfASocialSecurityNumberIsValid" ^
 --namespace="src.test.validation.whenValidatingAString" ^
+--namespace="src.test.validation.validationInterpreter.whenCreatingAValidationWrapper" ^
 --namespace="src.test.validation.whenValidatingTextWithADefaultValue" ^
 --namespace="src.test.validation.validationInterpreter.whenCreatingAValidtionCall" ^
 --namespace="src.test.validation.validationInterpreter.whenInterpretingRules" ^
