@@ -1,4 +1,5 @@
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
+--jvm_flags="-d32" ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/" ^
 --root="content/script/test/control/" ^
@@ -8,6 +9,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.helper.events" ^
 --namespace="src.base.control.autocomplete" ^
 --namespace="src.base.control.buttonList" ^
+--namespace="src.base.control.dropDownList" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
@@ -20,6 +22,8 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.buttonList.whenCreatingAButtonList" ^
 --namespace="src.test.control.buttonList.whenTogglingAClass" ^
 --namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^
+--namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
+--namespace="src.test.control.dropDownList.whenCreatingAParameterList" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^
 --namespace="src.test.control.formComponent.whenSettingTheSubmitButton" ^
