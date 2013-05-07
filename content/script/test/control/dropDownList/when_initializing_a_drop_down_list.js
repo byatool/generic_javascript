@@ -1,5 +1,6 @@
 goog.require('goog.string');
 goog.require('src.base.control.dropDownList');
+goog.require('src.base.helper.domCreation');
 
 
 goog.provide('src.test.control.dropDownList.whenInitializingADropDownList');
@@ -11,13 +12,13 @@ goog.provide('src.test.control.dropDownList.whenInitializingADropDownList');
 src.test.control.dropDownList.whenInitializingADropDownList.describe = function() {
   //Using
   var Current = src.base.control.dropDownList;
-
-
+  
+  
   //Fields
   var ControlId_ = goog.string.getRandomString();
   var ParameterString_ = goog.string.getRandomString();
   var Url_ = goog.string.getRandomString();
-
+  
   var createdListFillMethod_;
   var createRequestParameterText_;
   var dropDownList_;
@@ -25,13 +26,13 @@ src.test.control.dropDownList.whenInitializingADropDownList.describe = function(
   var findElement_;
   var parameters_;
   var submitData_;
-
-
+  
+  
   //Test Hooks
   beforeEach(function() {
     dropDownList_ = {};
     parameters_ = {};
-
+    
     submitData_ = function() {};
     createRequestParameterText_ = function() { return ParameterString_;};
     fillTheList_ = function() { return createdListFillMethod_;};
@@ -55,48 +56,49 @@ src.test.control.dropDownList.whenInitializingADropDownList.describe = function(
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should get the drop down list.', function() {
     var methodWasCalled = false;
-
+    
     findElement_ = function(elementId) {
       methodWasCalled = elementId === ControlId_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the needed method to fill the list.', function() {
     var methodWasCalled = false;
-
-    fillTheList_ = function(dropDownList) {
-      methodWasCalled = dropDownList === dropDownList_;
+    
+    fillTheList_ = function(dropDownList, fillASelect) {
+      methodWasCalled = dropDownList === dropDownList_ &&
+        fillASelect === src.base.helper.domCreation.fillASelect$;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should request for the data.', function() {
     var methodWasCalled = false;
-
+    
     submitData_ = function(url, parameters,  successMethod) {
       methodWasCalled = url === Url_ &&
         parameters === ParameterString_ &&
         successMethod === createdListFillMethod_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 

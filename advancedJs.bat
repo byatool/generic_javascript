@@ -1,4 +1,5 @@
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
+--jvm_flags="-d32" ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/" ^
 --namespace="src.base.helper.arrayHelper" ^
@@ -8,6 +9,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.helper.events" ^
 --namespace="src.base.control.autocomplete" ^
 --namespace="src.base.control.buttonList" ^
+--namespace="src.base.control.dropDownList" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^

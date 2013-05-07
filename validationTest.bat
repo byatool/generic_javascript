@@ -1,4 +1,5 @@
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
+--jvm_flags="-d32" ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/helper/" ^
 --root="content/script/live/validation/" ^

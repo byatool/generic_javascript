@@ -3,6 +3,8 @@ goog.require('goog.dom');
 
 goog.provide('src.base.helper.domCreation');
 
+//Creation Methods
+
 /**
  @param {Object|string} attributes This is the html attributes
  for the parent element.
@@ -13,6 +15,22 @@ goog.provide('src.base.helper.domCreation');
 src.base.helper.domCreation.button = function(attributes, elements) {
   attributes = attributes ? attributes : {};
   return goog.dom.createDom('button', attributes, elements);
+};
+
+
+/**
+ @param {Object|string} attributes This is the html attributes.
+ @param {boolean} checked Whether the checkbox is in a checked
+ state.
+ @return {Object} The checkbox input element.
+ @export
+ */
+src.base.helper.domCreation.checkBox = function(attributes, checked) {
+  attributes = attributes ? attributes : {};
+  attributes['type'] = 'checkbox';
+  attributes['checked'] = checked;
+
+  return goog.dom.createDom('input', attributes);
 };
 
 
@@ -42,20 +60,6 @@ src.base.helper.domCreation.form = function(attributes, elements) {
 };
 
 
-/**
- @param {Object|string} attributes This is the html attributes.
- @param {boolean} checked Whether the checkbox is in a checked
- state.
- @return {Object} The checkbox input element.
- @export
- */
-src.base.helper.domCreation.checkBox = function(attributes, checked) {
-  attributes = attributes ? attributes : {};
-  attributes['type'] = 'checkbox';
-  attributes['checked'] = checked;
-  
-  return goog.dom.createDom('input', attributes);
-};
 
 /**
  @param {Object|string} attributes This is the html attributes
@@ -101,11 +105,7 @@ src.base.helper.domCreation.select = function(attributes, data,  defaultItem) {
     goog.dom.forms.setValue(select, defaultItem);
   }
 
-  if (data && data.length > 0) {
-    goog.array.forEach(data, function(item) {
-      select.add(goog.dom.createDom('option', {text: item.text, value: item.value}));
-    });
-  }
+  src.base.helper.domCreation.fillASelect$(select, data);
 
   return select;
 };
@@ -126,4 +126,20 @@ src.base.helper.domCreation.textbox = function(attributes, value) {
   textbox.value = value ? value : '';
 
   return textbox;
+};
+
+
+//Helper Methods
+
+/**
+ @param {Object} select The select control to fill.
+ @param {Array.<Object>} data The array of objects to create options from.
+ @export
+ */
+src.base.helper.domCreation.fillASelect$ = function(select, data) {
+  if (data && data.length > 0) {
+    goog.array.forEach(data, function(item) {
+      select.add(goog.dom.createDom('option', {text: item.text, value: item.value}));
+    });
+  }
 };

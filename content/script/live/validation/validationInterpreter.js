@@ -5,13 +5,13 @@ goog.provide('src.site.validation.validationInterpreter');
 
 src.site.validation.validationInterpreter.methodLookup = [
     ['is a valid social security number', function(toCheck, propertyName, error, rest) {
-        return src.site.validation.validateSocialSecurityNumber.isValid(toCheck) ? null : error;
+        return src.site.validation.validateSocialSecurityNumber.isValid(toCheck.get(propertyName)) ? null : error;
     }],
     ['is not empty', function(toCheck, propertyName, error, rest) {
-        return !src.site.validation.validateText.isEmpty(toCheck[propertyName]) ? null : error;
+        return !src.site.validation.validateText.isEmpty(toCheck.get(propertyName)) ? null : error;
     }],
     ['is not empty or the default', function(toCheck, propertyName, error, rest) {
-        return !src.site.validation.validateText.isEmptyOrIsDefault(toCheck[propertyName], rest[0]) ? null : error;
+        return !src.site.validation.validateText.isEmptyOrIsDefault(toCheck.get(propertyName), rest[0]) ? null : error;
     }]
 ];
 

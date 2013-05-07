@@ -22,8 +22,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.buttonList.whenCreatingAButtonList" ^
 --namespace="src.test.control.buttonList.whenTogglingAClass" ^
 --namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^
---namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
+--namespace="src.test.control.dropDownList.whenCreatingAFillListHandler" ^
 --namespace="src.test.control.dropDownList.whenCreatingAParameterList" ^
+--namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^
 --namespace="src.test.control.formComponent.whenSettingTheSubmitButton" ^

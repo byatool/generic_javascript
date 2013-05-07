@@ -58,3 +58,16 @@ src.base.helper.domHelper.submitData = function(dataMap, successMethod) {
   
   request.send(dataMap.action, 'POST', data.toString());
 };
+
+/**
+ @export
+ */
+src.base.helper.domHelper.submitToUrl = function(url, paramterString, successMethod) {
+  var request = new goog.net.XhrIo();
+  
+  goog.events.listen(request, 'complete', function(result) {
+    successMethod(result.target.getResponseJson());
+  });
+  
+  request.send(url, 'POST', paramterString);
+};
