@@ -16,11 +16,9 @@ src.test.control.dropDownList.whenInitializingADropDownList.describe = function(
   
   //Fields
   var ControlId_ = goog.string.getRandomString();
-  var ParameterString_ = goog.string.getRandomString();
   var Url_ = goog.string.getRandomString();
   
   var createdListFillMethod_;
-  var createRequestParameterText_;
   var dropDownList_;
   var fillTheList_;
   var findElement_;
@@ -34,32 +32,18 @@ src.test.control.dropDownList.whenInitializingADropDownList.describe = function(
     parameters_ = {};
     
     submitData_ = function() {};
-    createRequestParameterText_ = function() { return ParameterString_;};
     fillTheList_ = function() { return createdListFillMethod_;};
     findElement_ = function() { return dropDownList_; };
   });
-
-
+  
+  
   //Support Methods
   var callTheMethod_ = function() {
-    return Current.initialize(ControlId_, Url_, parameters_, findElement_, createRequestParameterText_, submitData_, fillTheList_);
+    return Current.initialize(ControlId_, Url_, parameters_, findElement_, submitData_, fillTheList_);
   };
-
-
-  //Test Methods
-
-  it('should create the request parameters', function() {
-    var methodWasCalled = false;
-
-    createRequestParameterText_ = function(parameters) {
-      methodWasCalled = parameters === parameters;
-    };
-
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
   
+  
+  //Test Methods
   
   it('should get the drop down list.', function() {
     var methodWasCalled = false;
@@ -93,7 +77,7 @@ src.test.control.dropDownList.whenInitializingADropDownList.describe = function(
     
     submitData_ = function(url, parameters,  successMethod) {
       methodWasCalled = url === Url_ &&
-        parameters === ParameterString_ &&
+        parameters === parameters_ &&
         successMethod === createdListFillMethod_;
     };
     

@@ -62,12 +62,14 @@ src.base.helper.domHelper.submitData = function(dataMap, successMethod) {
 /**
  @export
  */
-src.base.helper.domHelper.submitToUrl = function(url, paramterString, successMethod) {
+src.base.helper.domHelper.submitToUrl = function(url, parameters, successMethod) {
   var request = new goog.net.XhrIo();
   
   goog.events.listen(request, 'complete', function(result) {
     successMethod(result.target.getResponseJson());
   });
   
-  request.send(url, 'POST', paramterString);
+  var data = goog.Uri.QueryData.createFromMap(parameters);
+  
+  request.send(url, 'POST', data.toString());
 };

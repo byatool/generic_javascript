@@ -1,38 +1,7 @@
-goog.require('goog.array');
 goog.require('goog.dom');
-goog.provide('src.base.control.dropDownList');
 goog.require('src.base.helper.domCreation');
 
-
-/**
- @param {Array.<Object>} item The array of parameters needed for the request.
- @return {string} This is the string for a url created from the parameters.
- @private
- */
-src.base.control.dropDownList.toUseful_ = function(item) {
-  var itemResult = '';
-
-  for (var name in item) {
-    itemResult += name + '=' + item[name] + '&';
-  }
-
-  return itemResult;
-};
-
-
-/**
- @param {Array.<string, string>} parameters The parameter map.
- @return {string} The created request parameter string.
- @protected
- */
-src.base.control.dropDownList.createRequestParameterText = function(parameters) {
-  var result = goog.array.reduce(parameters, function(also, parameter) {
-    return also += src.base.control.dropDownList.toUseful_(parameter);
-  }, '?');
-  
-  return result.substring(0, result.length - 1);
-};
-
+goog.provide('src.base.control.dropDownList');
 
 /**
  @param {Object} select The select to fill.
@@ -60,15 +29,13 @@ src.base.control.dropDownList.createFillListHandler = function(select, fillASele
  @param {?function} fillTheList This is used to set the drop down list with the retrieve values.
  @export
  */
-src.base.control.dropDownList.initialize = function(controlId, url, parameters, getElement, createRequestParameterText, submitData, fillTheList) {
+src.base.control.dropDownList.initialize = function(controlId, url, parameters, getElement, submitData, fillTheList) {
   getElement = getElement ? getElement : goog.dom.getElement;
-  createRequestParameterText = createRequestParameterText ? createRequestParameterText : src.base.control.dropDownList.createRequestParameterText;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
   fillTheList = fillTheList ? fillTheList : src.base.control.dropDownList.createFillListHandler;
   
-  var requestParameterString = createRequestParameterText(parameters);
   var dropDownList = getElement(controlId);
   
-  submitData(url, requestParameterString, fillTheList(dropDownList, src.base.helper.domCreation.fillASelect$));
+  submitData(url, parameters, fillTheList(dropDownList, src.base.helper.domCreation.fillASelect$));
 };
 
