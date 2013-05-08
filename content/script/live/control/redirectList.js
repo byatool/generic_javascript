@@ -1,7 +1,8 @@
 goog.require('goog.array');
 goog.require('goog.dom.forms');
-goog.provide('src.base.control.redirectList');
 goog.require('src.base.helper.domCreation');
+
+goog.provide('src.base.control.redirectList');
 
 /**
  @const
@@ -60,6 +61,26 @@ src.base.control.redirectList.Goto = 'Goto';
 
 
 /**
+ @param {string} id The intended button id.
+ @param {string} text The button text.
+ @param {Array.<string>} controlIds The controls to get the value from.
+ @param {string} url The url the button should redirect to.
+ @return {Object} The created redirect button option.
+ @export
+ */
+src.base.control.redirectList.createRedirectButtonOptions = function(id, text, controlIds, url) {
+  var button = {};
+  
+  button[src.base.control.redirectList.ButtonId] = id;
+  button[src.base.control.redirectList.ButtonText] = text;
+  button[src.base.control.redirectList.For] = controlIds;
+  button[src.base.control.redirectList.Goto] = url;
+  
+  return button;
+};
+
+
+/**
  @param {string} elementIds The name of the elements that hold the needed values.
  @param {string} url The intended destination.
  @param {function(Object) : string} getValue The method used to get the value from the "sister" control.
@@ -76,17 +97,17 @@ src.base.control.redirectList.createTheClickEvent = function(elementIds, url, ge
             //TODO This might need to be a function
             var element = getElement(currentItem);
             var value = getValue(element);
-
+          
             var result = (firstTime ? '?' : '&') + currentItem + '=' + value;
             firstTime = false;
-
+          
             return result;
         });
-
+      
         var finalText = goog.array.reduce(values, function(left, right) {
             return left + right;
         }, '');
-
+      
         redirect(url + finalText);
     };
 };
