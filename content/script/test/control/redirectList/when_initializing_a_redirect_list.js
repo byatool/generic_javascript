@@ -50,31 +50,31 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
 
             return button;
         };
-
+      
         parentContainer_ = {};
         options_ = {};
         options_[Current.ContainerClass] = ContainerClass_;
         options_[Current.ContainerId] = ParentContainerId_;
-
+      
         var firstButton = createFakeButtonAttributes(FirstButtonId_, FirstButtonText_,
                                                      [FirstFor_, SecondFor_], FirstGoto_);
-
+      
         var secondButton = createFakeButtonAttributes(SecondButtonId_, SecondButtonText_,
                                                       [FirstFor_, SecondFor_], SecondGoto_);
-
+      
         buttonList_ = [firstButton, secondButton];
         options_[Current.ButtonList] = buttonList_;
-
+      
         var wasCalled = false;
         firstButton_ = {};
         secondButton_ = {};
         createAButton_ = function() {
             var result = wasCalled ? secondButton_ : firstButton_;
             wasCalled = true;
-
+          
             return result;
         };
-
+      
         createADiv_ = function() { return parentContainer_; };
         createTheClickEvent_ = function() {};
         getValue_ = function() { };
@@ -83,44 +83,43 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
         setClickEvent_ = function() {};
         appendChild_ = function() {};
     });
-
-
+  
+  
     //Support Methods
     var callTheMethod_ = function() {
         return Current.initialize(options_, createADiv_, createAButton_, createTheClickEvent_, getValue_, getElement_, redirect_, setClickEvent_, appendChild_);
     };
-
-
+  
+  
     //Test Methods
-
+  
     it('should create a parent container.', function() {
         var methodWasCalled = false;
-
+      
         createADiv_ = function(attributes) {
             methodWasCalled = attributes['id'] === options_[Current.ContainerId] &&
                 attributes['class'] === options_[Current.ContainerClass];
-
+          
             return parentContainer_;
         };
         callTheMethod_();
-
+      
         expect(methodWasCalled).toBe(true);
     });
-
-
+  
+  
     it('should return the parent container.', function() {
         expect(callTheMethod_()).toBe(parentContainer_);
     });
-
-
+  
+  
     it('should create the needed buttons.', function() {
         var methodWasCalled = 0;
-
-        createAButton_ = function(attributes, text) {
-            methodWasCalled += (attributes['id'] === FirstButtonId_ &&
-                                text === FirstButtonText_) ||
-                (attributes['id'] === SecondButtonId_ &&
-                 text === SecondButtonText_);
+      
+      createAButton_ = function(attributes, text) {
+        methodWasCalled +=  attributes['type'] === 'button' &&
+          (attributes['id'] === FirstButtonId_ && text === FirstButtonText_) ||
+          (attributes['id'] === SecondButtonId_ && text === SecondButtonText_);
         };
         
         callTheMethod_();

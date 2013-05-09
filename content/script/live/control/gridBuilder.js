@@ -27,14 +27,33 @@ src.base.control.gridBuilder.ContainerId = 'containerId';
  */
 src.base.control.gridBuilder.initialize = function(options, createADiv) {
     var Current = src.base.control.gridBuilder;
-    
+  
     var parentContainer = createADiv({
         'id': options[Current.ContainerId],
         'class': options[Current.ContainerClass]
     });
-    
-    return parentContainer;
-    /*
+  
+  return parentContainer;
+  
+  
+  /*
+   -- Information Block Builder
+   --
+   -- create(url, requestValues, columns)
+   --   requestValues <- {'employeeId': 1}
+   --   columns       <- {'firstName', 'lastName'}
+   --   return        <- {'firstName': 'bob', 'lastName': 'bobbert'}
+   --
+   -- [div
+   --  [div class='row' id='firstName'
+   --    [div class='columnLabel' "First Name"]
+   --    [div class='columnValue' @firstName]}]
+   --
+   -- {firstName: 'hihi'} where id === propertyName (for in)
+   --
+   */
+  
+  /*
      
      
      options[Current.Columns] = [
