@@ -135,15 +135,19 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
  @param {?function(Object) : Object} createLayoutItem description.
  @param {?function(Object, Object)} appendChild The method used to append a child to a parent element.
  @param {?function(Object, function) : function(Object}) createTheCallBack a.
- @param {?function(string, Object, function)} submitData a.
- @param {?function} fillTheRows a.
+ @param {?function(string, Object, function)} submitData The method used to retrieve
+ the data for the rows.
+ @param {?function} fillTheRows The method used to handle the async response, and to fill
+ the rows.
+ @param {function} createAHidden Method used to create a hidden input.
  @return {Object} The created display.
  @export
  */
-src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows) {
+src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows, createAHidden) {
   var Current = src.base.control.simpleInformationDisplay;
   
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
+  createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createLayoutItem = createLayoutItem ? createLayoutItem : src.base.control.simpleInformationDisplay.createLayoutItem;
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
@@ -153,17 +157,16 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
   
-  //UPDATE WITH NEW SIGNATURE
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
-    return createLayoutItem(currentItem);
+    return createLayoutItem(currentItem, options, createADiv, createAHidden, appendChild); //
   });
-
+  
   goog.array.forEach(rows, function(item) {
     appendChild(parentContainer, item);
   });
-
+  
   submitData(url, parameters, createTheCallBack(parentContainer, fillTheRows));
-
+  
   return parentContainer;
 };
 

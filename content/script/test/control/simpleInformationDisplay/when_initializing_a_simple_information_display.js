@@ -21,6 +21,7 @@ src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisp
   var appendChild_;
   var containerDiv_;
   var createADiv_;
+  var createAHidden_;
   var createLayoutItem_;
   var createTheCallBack_;
   var fillTheRows_;
@@ -47,61 +48,64 @@ src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisp
 
     appendChild_ = function() {};
     createADiv_ = function() { return containerDiv_; };
+    createAHidden_ = function() {};
     createLayoutItem_ = function() { return {}; };
     createTheCallBack_ = function() {};
     fillTheRows_ = function() {};
     submitData_ = function() {};
   });
 
-
+  
   //Support Methods
   var callTheMethod_ = function() {
     return Current.initialize(Url_, parameters_, options_, createADiv_, createLayoutItem_, appendChild_,
-                              createTheCallBack_, submitData_, fillTheRows_);
+                              createTheCallBack_, submitData_, fillTheRows_, createAHidden_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should create a parent container.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled = attributes['id'] === options_[Current.ContainerId] &&
         attributes['class'] === options_[Current.ContainerClass];
       return parentContainer_;
     };
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create a layout row for each item.', function() {
     var methodWasCalled = 0;
-
-    createLayoutItem_ = function(item) {
-      methodWasCalled += item === layoutItems_[0] ||
-        item === layoutItems_[1];
+    
+    createLayoutItem_ = function(item, options, createADiv, createAHidden, appendChild) {
+      methodWasCalled += options === options_ &&
+        createADiv === createADiv_ &&
+        createAHidden === createAHidden_ &&
+        (item === layoutItems_[0] || item === layoutItems_[1]);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(2);
   });
-
-
+  
+  
   it('should append each created row.', function() {
     var callCount = 0;
     var firstItem = {};
     var methodWasCalled = 0;
     var secondItem = {};
-
+    
     createLayoutItem_ = function() {
       callCount += 1;
       return callCount < 2 ? firstItem : secondItem;
     };
-
+    
     appendChild_ = function(parentContainer, item) {
       methodWasCalled += parentContainer === containerDiv_ &&
         (item === firstItem || item === secondItem);
