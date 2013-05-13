@@ -89,16 +89,16 @@ src.base.control.simpleInformationDisplay.RowClass = 'RowClass';
  */
 src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, createAHidden, appendChild) {
   var Current_ = src.base.control.simpleInformationDisplay;
-  
+
   var row = createADiv({'class': options[Current_.RowClass]});
   var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
   var valueColumn = createADiv({'class': options[Current_.ColumnClass]});
   var hidden = createAHidden({'value': layoutInformation[Current_.PropertyName]});
-  
+
   appendChild(row, labelColumn);
   appendChild(row, valueColumn);
   appendChild(row, hidden);
-  
+
   return row;
 };
 
@@ -121,7 +121,9 @@ src.base.control.simpleInformationDisplay.createRowsHandler = function(container
  @protected
  */
 src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
-  
+  //loop through for property in result.Item
+  //find the hidden for the row with the property name
+  //  set the value column
 };
 
 
@@ -145,7 +147,7 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
  */
 src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows, createAHidden) {
   var Current = src.base.control.simpleInformationDisplay;
-  
+
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
@@ -153,20 +155,20 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
-  
-  
+
+
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-  
+
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
     return createLayoutItem(currentItem, options, createADiv, createAHidden, appendChild); //
   });
-  
+
   goog.array.forEach(rows, function(item) {
     appendChild(parentContainer, item);
   });
-  
+
   submitData(url, parameters, createTheCallBack(parentContainer, fillTheRows));
-  
+
   return parentContainer;
 };
 
