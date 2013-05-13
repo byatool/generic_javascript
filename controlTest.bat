@@ -41,6 +41,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.redirectList.whenCreatingRedirectButtonOptions" ^
 --namespace="src.test.control.redirectList.whenCreatingTheClickEvent" ^
 --namespace="src.test.control.redirectList.whenInitializingARedirectList" ^
+--namespace="src.test.control.simpleInformationDisplay.whenCreatingALayoutItem" ^
 --namespace="src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisplay" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^

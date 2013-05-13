@@ -19,11 +19,19 @@
  */
 goog.require('goog.array');
 goog.require('goog.dom');
-goog.provide('src.base.control.simpleInformationDisplay');
 goog.require('src.base.helper.domHelper');
+goog.provide('src.base.control.simpleInformationDisplay');
 
 
 /* Fields */
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.simpleInformationDisplay.ColumnClass = 'ColumnClass';
 
 /**
  @const
@@ -44,8 +52,55 @@ src.base.control.simpleInformationDisplay.ContainerId = 'ContainerId';
  @type {string}
  @export
  */
+src.base.control.simpleInformationDisplay.Label = 'Label';
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.simpleInformationDisplay.LayoutItems = 'LayoutItems';
 
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.simpleInformationDisplay.PropertyName = 'PropertyName';
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.simpleInformationDisplay.RowClass = 'RowClass';
+
+
+/* Support Methods */
+
+/**
+ @param {Object} layoutInformation The information needed to create the row.
+ @param {Object} options The is the set of options for building.
+ @param {function(Object, Object) : Object} createADiv The method used to create a div element.
+ @param {function} createAHidden Method used to create a hidden input.
+ @param {function(Object, Object)} appendChild The method used to append a child to a parent element.
+ @return {Object} The created item row.
+ @export
+ */
+src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, createAHidden, appendChild) {
+  var Current_ = src.base.control.simpleInformationDisplay;
+  
+  var row = createADiv({'class': options[Current_.RowClass]});
+  var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
+  var valueColumn = createADiv({'class': options[Current_.ColumnClass]});
+  var hidden = createAHidden({'value': layoutInformation[Current_.PropertyName]});
+  
+  appendChild(row, labelColumn);
+  appendChild(row, valueColumn);
+  appendChild(row, hidden);
+  
+  return row;
+};
 
 
 /**
@@ -66,7 +121,7 @@ src.base.control.simpleInformationDisplay.createRowsHandler = function(container
  @protected
  */
 src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
-
+  
 };
 
 
@@ -87,17 +142,18 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
  */
 src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows) {
   var Current = src.base.control.simpleInformationDisplay;
-
+  
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-  createLayoutItem = createLayoutItem ? createLayoutItem : null;
+  createLayoutItem = createLayoutItem ? createLayoutItem : src.base.control.simpleInformationDisplay.createLayoutItem;
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
-
-
+  
+  
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-
+  
+  //UPDATE WITH NEW SIGNATURE
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
     return createLayoutItem(currentItem);
   });
