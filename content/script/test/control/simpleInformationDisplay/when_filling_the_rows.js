@@ -18,8 +18,7 @@ src.test.control.simpleInformationDisplay.whenFillingTheRows.describe = function
   var FirstName_ = goog.string.getRandomString();
   var FirstValue_ = goog.string.getRandomString();
   var LabelText_ = goog.string.getRandomString();
-  //var SecondName_  = goog.string.getRandomString();
-  //var SecondValue_  = goog.string.getRandomString();
+
 
   var container_;
   var firstItem_;
@@ -32,10 +31,8 @@ src.test.control.simpleInformationDisplay.whenFillingTheRows.describe = function
   //Test Hooks
 
   beforeEach(function() {
-    // items_ = [];
     firstItem_ = {};
     firstItem_[FirstName_] = FirstValue_;
-    //items_.push(firstItem_);
 
     options_ = {};
     options_[Current_.RowClass] = '';

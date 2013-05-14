@@ -90,17 +90,14 @@ src.base.control.simpleInformationDisplay.RowClass = 'RowClass';
  */
 src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, appendChild) {
   var Current_ = src.base.control.simpleInformationDisplay;
-  
+
   var row = createADiv({'id': layoutInformation[Current_.PropertyName], 'class': options[Current_.RowClass]});
   var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
   var valueColumn = createADiv({'class': options[Current_.ColumnClass]});
-  //May not be needed
-  //var hidden = createAHidden({'value': layoutInformation[Current_.PropertyName]});
-  
+
   appendChild(row, labelColumn);
   appendChild(row, valueColumn);
-  //appendChild(row, hidden);
-  
+
   return row;
 };
 
@@ -142,8 +139,6 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
 
 
 /* Exports */
-//, createAHidden) {
-// @param {function} createAHidden Method used to create a hidden input.
 
 /**
  @param {string} url The url to retrieve the needed info.
@@ -166,7 +161,6 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   var Current = src.base.control.simpleInformationDisplay;
 
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  //createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createLayoutItem = createLayoutItem ? createLayoutItem : src.base.control.simpleInformationDisplay.createLayoutItem;
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
