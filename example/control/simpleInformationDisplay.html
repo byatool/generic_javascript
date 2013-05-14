@@ -1,0 +1,43 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+      
+    </script>
+  </head>
+  
+  <body>
+    <div id="mainContainer" >
+      
+    </div>
+  </body>
+  
+  <script type="text/javascript">
+    var Current_ = src.base.control.simpleInformationDisplay;
+    
+    var options_ = {};
+    options_[Current_.ContainerId] = 'informationContiner';
+    options_[Current_.ContainerClass] = ''
+    options_[Current_.RowClass] = ''
+    options_[Current_.ColumnClass] = ''
+    
+    var layoutItem_ = {};
+    layoutItem_[Current_.Label] = 'First Name:';
+    layoutItem_[Current_.PropertyName] = 'firstName';
+    
+    var layoutItemTwo_ = {};
+    layoutItemTwo_[Current_.Label] = 'Last Name:';
+    layoutItemTwo_[Current_.PropertyName] = 'lastName';
+    
+    layoutItems_ = [layoutItem_, layoutItemTwo_];
+    options_[Current_.LayoutItems] = layoutItems_;
+
+    //The expect object signature is {'firstName': 'someName', 'lastName': 'someLastName'}
+    //The localhost port will vary... like duh!
+    var container =
+      Current_.initialize('http://localhost:55250/Home/RetrieveBasicInformation/', {'memberId': 1}, options_);
+    
+    document.getElementById('mainContainer').appendChild(container);
+  </script>
+</html>

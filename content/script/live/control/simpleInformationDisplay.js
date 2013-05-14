@@ -19,6 +19,8 @@
  */
 goog.require('goog.array');
 goog.require('goog.dom');
+goog.require('goog.object');
+goog.require('goog.string');
 goog.require('src.base.helper.domHelper');
 goog.provide('src.base.control.simpleInformationDisplay');
 
@@ -82,23 +84,23 @@ src.base.control.simpleInformationDisplay.RowClass = 'RowClass';
  @param {Object} layoutInformation The information needed to create the row.
  @param {Object} options The is the set of options for building.
  @param {function(Object, Object) : Object} createADiv The method used to create a div element.
- @param {function} createAHidden Method used to create a hidden input.
  @param {function(Object, Object)} appendChild The method used to append a child to a parent element.
  @return {Object} The created item row.
- @export
+ @protected
  */
-src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, createAHidden, appendChild) {
+src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, appendChild) {
   var Current_ = src.base.control.simpleInformationDisplay;
-
-  var row = createADiv({'class': options[Current_.RowClass]});
+  
+  var row = createADiv({'id': layoutInformation[Current_.PropertyName], 'class': options[Current_.RowClass]});
   var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
   var valueColumn = createADiv({'class': options[Current_.ColumnClass]});
-  var hidden = createAHidden({'value': layoutInformation[Current_.PropertyName]});
-
+  //May not be needed
+  //var hidden = createAHidden({'value': layoutInformation[Current_.PropertyName]});
+  
   appendChild(row, labelColumn);
   appendChild(row, valueColumn);
-  appendChild(row, hidden);
-
+  //appendChild(row, hidden);
+  
   return row;
 };
 
@@ -116,18 +118,32 @@ src.base.control.simpleInformationDisplay.createRowsHandler = function(container
   };
 };
 
+
 /**
+ @param {Object} container The parent control that holds the rows.
  @param {Object} result The result with the retrieved information.
- @protected
+ @export
  */
-src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
-  //loop through for property in result.Item
-  //find the hidden for the row with the property name
-  //  set the value column
+src.base.control.simpleInformationDisplay.fillTheRows = function(container, result) {
+  var item = result;
+  goog.array.forEach(goog.object.getKeys(item), function(propertyName) {
+
+    var row = goog.dom.findNode(container, function(control) {
+      return control['id'] === propertyName;
+    });
+
+    var valueContainer = goog.dom.findNode(row, function(column) {
+      return goog.string.isEmptySafe(goog.dom.getTextContent(column));
+      });
+
+    goog.dom.setTextContent(valueContainer, item[propertyName]);
+  });
 };
 
 
 /* Exports */
+//, createAHidden) {
+// @param {function} createAHidden Method used to create a hidden input.
 
 /**
  @param {string} url The url to retrieve the needed info.
@@ -141,15 +157,16 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(result) {
  the data for the rows.
  @param {?function} fillTheRows The method used to handle the async response, and to fill
  the rows.
- @param {function} createAHidden Method used to create a hidden input.
  @return {Object} The created display.
  @export
  */
-src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows, createAHidden) {
+
+src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows) {
+
   var Current = src.base.control.simpleInformationDisplay;
 
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
+  //createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createLayoutItem = createLayoutItem ? createLayoutItem : src.base.control.simpleInformationDisplay.createLayoutItem;
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
@@ -160,7 +177,7 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
 
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
-    return createLayoutItem(currentItem, options, createADiv, createAHidden, appendChild); //
+    return createLayoutItem(currentItem, options, createADiv, appendChild);
   });
 
   goog.array.forEach(rows, function(item) {
