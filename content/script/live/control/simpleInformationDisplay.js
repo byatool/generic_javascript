@@ -1,27 +1,9 @@
-/*
-
- options['ContainerClass']
- options['RowClass']
- options['LabelClass']
- options['ValueClass']
- options['Information',  {'name': 'FirstName', 'label': 'First Name'}]
-
- - <div class="containerClass">
- -  <div class="rowClass">
- -    <div class="labelClass">
- -      model.name
- -    </div>
- -   <div class="valueClass">
- -     model.value
- -   </div>
- -  </div>
- - </div>
- */
 goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.object');
 goog.require('goog.string');
 goog.require('src.base.helper.domHelper');
+
 goog.provide('src.base.control.simpleInformationDisplay');
 
 

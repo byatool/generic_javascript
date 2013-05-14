@@ -8,7 +8,7 @@
   </head>
   
   <body>
-    <div id="mainContainer" >
+    <div id="mainContainer">
       
     </div>
   </body>
@@ -18,9 +18,9 @@
     
     var options_ = {};
     options_[Current_.ContainerId] = 'informationContiner';
-    options_[Current_.ContainerClass] = ''
-    options_[Current_.RowClass] = ''
-    options_[Current_.ColumnClass] = ''
+    options_[Current_.ContainerClass] = 'simpleInformationDisplayContainer'
+    options_[Current_.RowClass] = 'informationRow'
+    options_[Current_.ColumnClass] = 'informationColumn'
     
     var layoutItem_ = {};
     layoutItem_[Current_.Label] = 'First Name:';
@@ -32,7 +32,7 @@
     
     layoutItems_ = [layoutItem_, layoutItemTwo_];
     options_[Current_.LayoutItems] = layoutItems_;
-
+    
     //The expect object signature is {'firstName': 'someName', 'lastName': 'someLastName'}
     //The localhost port will vary... like duh!
     var container =

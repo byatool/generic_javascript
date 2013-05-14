@@ -193,3 +193,19 @@ td.goog-date-picker-selected {
   height: 2em;
   padding: 0 0 0 0;
   width: 2.8em; }
+
+.simpleInformationDisplayContainer {
+  background-color: #6493ff;
+  border-color: #6d052a;
+  border-style: solid;
+  border-width: 0.2em;
+  height: 3em;
+  padding: 0 0 0 0.8em;
+  width: 10em; }
+  .simpleInformationDisplayContainer .informationRow {
+    margin-bottom: 0.8em;
+    clear: both; }
+    .simpleInformationDisplayContainer .informationRow .informationColumn {
+      color: white;
+      float: left;
+      width: 5em; }
