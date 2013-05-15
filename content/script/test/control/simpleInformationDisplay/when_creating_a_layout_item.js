@@ -57,79 +57,95 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
 
   it('should create the container.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled ||
         (attributes['class'] === options_[Current_.RowClass] &&
          attributes['id'] === layoutItem_[Current_.PropertyName]);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the label container.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes, text) {
       methodWasCalled = methodWasCalled ||
         (attributes['class'] === options_[Current_.ColumnClass] &&
         text === layoutItem_[Current_.Label]);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the value container.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes, text) {
       methodWasCalled = methodWasCalled ||
         (attributes['class'] === options_[Current_.ColumnClass] &&
          text === undefined);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
+  
+  
+  it('should create a clear both div.', function() {
+    var methodWasCalled = false;
 
-
+    createADiv_ = function(attributes, text) {
+      methodWasCalled = methodWasCalled ||
+        (attributes['class'] === 'clearBoth');
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should append all children.', function() {
     var methodWasCalled = 0;
     var currentCount = 0;
+    var clearBoth = {};
     var label = {};
     var valueHolder = {};
-
+    
     createADiv_ = function() {
       currentCount += 1;
-      return currentCount === 1 ? parent_ : currentCount === 3 ? label : valueHolder;
+      return currentCount === 1 ? parent_ : currentCount === 2 ?
+        label : currentCount === 3 ? valueHolder : clearBoth;
     };
-
+    
     appendChild_ = function(container, child) {
       methodWasCalled += container === parent_ &&
-        (child === label || child === valueHolder);
+        (child === label || child === valueHolder || child === clearBoth);
     };
-
+    
     callTheMethod_();
-
-    expect(methodWasCalled).toBe(2);
+    
+    expect(methodWasCalled).toBe(3);
   });
-
-
+  
+  
   it('should return the parent', function() {
     var currentCount = 0;
-
+    
     createADiv_ = function() {
       currentCount += 1;
       return currentCount === 1 ? parent_ : null;
     };
-
+    
     expect(callTheMethod_()).toBe(parent_);
   });
 };

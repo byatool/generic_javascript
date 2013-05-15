@@ -72,13 +72,15 @@ src.base.control.simpleInformationDisplay.RowClass = 'RowClass';
  */
 src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, appendChild) {
   var Current_ = src.base.control.simpleInformationDisplay;
-
+  
   var row = createADiv({'id': layoutInformation[Current_.PropertyName], 'class': options[Current_.RowClass]});
   var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
   var valueColumn = createADiv({'class': options[Current_.ColumnClass]});
-
+  var clearBoth = createADiv({'class': 'clearBoth'});
+  
   appendChild(row, labelColumn);
   appendChild(row, valueColumn);
+  appendChild(row, clearBoth);
 
   return row;
 };
@@ -110,7 +112,7 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
     var row = goog.dom.findNode(container, function(control) {
       return control['id'] === propertyName;
     });
-
+    
     var valueContainer = goog.dom.findNode(row, function(column) {
       return goog.string.isEmptySafe(goog.dom.getTextContent(column));
       });
