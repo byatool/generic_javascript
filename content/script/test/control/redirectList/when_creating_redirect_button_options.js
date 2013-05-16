@@ -14,6 +14,7 @@ src.test.control.redirectList.whenCreatingRedirectButtonOptions.describe = funct
   
   //Fields
   
+  var Disabled_ = true;
   var Id_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
   var Url_ = goog.string.getRandomString();
@@ -29,7 +30,7 @@ src.test.control.redirectList.whenCreatingRedirectButtonOptions.describe = funct
   
   //Support Methods
   var callTheMethod_ = function() {
-    return Current_.createRedirectButtonOptions(Id_, Text_, controlIds_, Url_);
+    return Current_.createRedirectButtonOptions(Id_, Text_, controlIds_, Url_, Disabled_);
   };
   
   
@@ -51,6 +52,16 @@ src.test.control.redirectList.whenCreatingRedirectButtonOptions.describe = funct
   
   it('should set the url.', function() {
       expect(callTheMethod_()[Current_.Goto]).toBe(Url_);
+  });
+  
+  it('should set disabled..', function() {
+    expect(callTheMethod_()[Current_.Disabled]).toBe(Disabled_);
+  });
+
+  
+  it('should set disabled to false if null.', function() {
+    Disabled_ = null;
+    expect(callTheMethod_()[Current_.Disabled]).toBe(false);
   });
 };
 

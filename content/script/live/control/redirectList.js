@@ -49,6 +49,14 @@ src.base.control.redirectList.ContainerId = 'ContainerId';
  @type {string}
  @export
  */
+src.base.control.redirectList.Disabled = 'Disabled';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.redirectList.For = 'For';
 
 
@@ -65,17 +73,19 @@ src.base.control.redirectList.Goto = 'Goto';
  @param {string} text The button text.
  @param {Array.<string>} controlIds The controls to get the value from.
  @param {string} url The url the button should redirect to.
+ @param {boolean} disabled Whether the button should be enabled.
  @return {Object} The created redirect button option.
  @export
  */
-src.base.control.redirectList.createRedirectButtonOptions = function(id, text, controlIds, url) {
+src.base.control.redirectList.createRedirectButtonOptions = function(id, text, controlIds, url, disabled) {
   var button = {};
-  
+
   button[src.base.control.redirectList.ButtonId] = id;
   button[src.base.control.redirectList.ButtonText] = text;
   button[src.base.control.redirectList.For] = controlIds;
   button[src.base.control.redirectList.Goto] = url;
-  
+  button[src.base.control.redirectList.Disabled] = disabled ? disabled : false;
+
   return button;
 };
 
@@ -90,26 +100,26 @@ src.base.control.redirectList.createRedirectButtonOptions = function(id, text, c
  @export
  */
 src.base.control.redirectList.createTheClickEvent = function(elementIds, url, getValue, getElement, redirect) {
-    return function() {
-        var firstTime = true;
+  return function() {
+    var firstTime = true;
 
-        var values = goog.array.map(elementIds, function(currentItem) {
-            //TODO This might need to be a function
-            var element = getElement(currentItem);
-            var value = getValue(element);
-          
-            var result = (firstTime ? '?' : '&') + currentItem + '=' + value;
-            firstTime = false;
-          
-            return result;
-        });
-      
-        var finalText = goog.array.reduce(values, function(left, right) {
-            return left + right;
-        }, '');
-      
-        redirect(url + finalText);
-    };
+    var values = goog.array.map(elementIds, function(currentItem) {
+      //TODO This might need to be a function
+      var element = getElement(currentItem);
+      var value = getValue(element);
+
+      var result = (firstTime ? '?' : '&') + currentItem + '=' + value;
+      firstTime = false;
+
+      return result;
+    });
+
+    var finalText = goog.array.reduce(values, function(left, right) {
+      return left + right;
+    }, '');
+
+    redirect(url + finalText);
+  };
 };
 
 
@@ -128,41 +138,46 @@ src.base.control.redirectList.createTheClickEvent = function(elementIds, url, ge
  @export
  */
 src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, getElement, redirect, setClick, appendChild) {
-    var Current = src.base.control.redirectList;
+  var Current = src.base.control.redirectList;
   
-    appendChild = appendChild ? appendChild : goog.dom.appendChild;
-    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-    createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
-    createTheClickEvent = createTheClickEvent ? createTheClickEvent : Current.createTheClickEvent;
-    getElement = getElement ? getElement : goog.dom.getElement;
-    getValue = getValue ? getValue : goog.dom.forms.getValue;
+  appendChild = appendChild ? appendChild : goog.dom.appendChild;
+  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+  createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
+  createTheClickEvent = createTheClickEvent ? createTheClickEvent : Current.createTheClickEvent;
+  getElement = getElement ? getElement : goog.dom.getElement;
+  getValue = getValue ? getValue : goog.dom.forms.getValue;
   
-    //TODO Probably should create a utility method that wraps window.location
-    //  instead of doing it inline.
-    redirect = redirect ? redirect : function(item) { window.location = item; };
+  //TODO Probably should create a utility method that wraps window.location
+  //  instead of doing it inline.
+  redirect = redirect ? redirect : function(item) { window.location = item; };
   
-    setClick = setClick ? setClick : src.base.helper.events.setClick;
+  setClick = setClick ? setClick : src.base.helper.events.setClick;
   
-    var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
+  var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
   
-    var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
-        var createdButton = createAButton({'id': currentItem[Current.ButtonId], 'type': 'button'},
-                                          currentItem[Current.ButtonText]);
+  var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
+    var createdButton = createAButton(
+      {'id': currentItem[Current.ButtonId],
+       'type': 'button',
+       'disabled' : currentItem[Current.Disabled] ? 'disabled' : undefined,
+       'class' : currentItem[Current.Disabled] ? 'disabled' : undefined
+      }, currentItem[Current.ButtonText]);
+    
+     
+    var clickEventHandler = createTheClickEvent(currentItem[Current.For],
+                                                currentItem[Current.Goto],
+                                                getValue,
+                                                getElement,
+                                                redirect);
 
-        var clickEventHandler = createTheClickEvent(currentItem[Current.For],
-                                                    currentItem[Current.Goto],
-                                                    getValue,
-                                                    getElement,
-                                                    redirect);
+    setClick(createdButton, clickEventHandler);
 
-        setClick(createdButton, clickEventHandler);
+    return createdButton;
+  });
 
-        return createdButton;
-    });
+  goog.array.forEach(buttonList, function(item) {
+    appendChild(container, item);
+  });
 
-    goog.array.forEach(buttonList, function(item) {
-        appendChild(container, item);
-    });
-
-    return container;
+  return container;
 };
