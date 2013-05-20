@@ -60,18 +60,21 @@ src.base.control.popupDatePicker.TextboxName = 'textboxName';
 
 /* Support Methods */
 
+
+
+
 /**
  @return {Object} A datepicker control.
  @private
-
+ 
  */
 src.base.control.popupDatePicker.createTheDatePicker_ = function() {
   var Div = src.base.helper.domCreation.div;
   var datepickerControl = new goog.ui.DatePicker();
   var datepickerParent = Div({'id': 'test'});
-
+  
   datepickerControl.render(datepickerParent);
-
+  
   return [datepickerParent, datepickerControl];
 };
 
@@ -82,11 +85,11 @@ src.base.control.popupDatePicker.createTheDatePicker_ = function() {
 src.base.control.popupDatePicker.createThePopup_ = function() {
   var Div = src.base.helper.domCreation.div;
   var popUpDiv = Div({'class': 'popup'});
-
+  
   var popup = new goog.ui.Popup(popUpDiv);
   popup.setHideOnEscape(true);
   popup.setAutoHide(true);
-
+  
   return popup;
 };
 
@@ -112,14 +115,30 @@ src.base.control.popupDatePicker.showPopup_ = function(popup, toClick) {
  change event.
  @param {string} eventType Name of the event to be handled.
  @param {function} setValue This is used to the value of a textbox.
+ @param {function(goog.date.Date) : string} formatTheDate This is to format the date.
  */
-src.base.control.popupDatePicker.setTheDatePickerEvent = function(datePicker, textboxName, findElement, listen, eventType, setValue) {
+src.base.control.popupDatePicker.setTheDatePickerEvent = function(datePicker, textboxName, findElement, listen, eventType, setValue, formatTheDate) {
   var textbox = findElement(textboxName);
-
+  
   listen(datePicker, eventType, function(event) {
-    setValue(textbox, event.date ? event.date.toIsoString(true) : 'none');
+    
+    // setValue(textbox, event.date ? event.date.toIsoString(true) : 'none');
+    //IMPORTANT: This is where the date format is set before updating the textbox.
+    //TODO: Not sure how to test that the date is formatted correctly...
+    setValue(textbox, event.date ? formatTheDate(event.date) : 'none');
   });
 };
+
+
+/**
+ @param {goog.date.Date} date The date to be formatted.
+ @return {string} The formatted date.
+ @protected
+ */
+src.base.control.popupDatePicker.formatTheDate = function(date) {
+  return date.getMonth() + '/' +  date.getDate() + '/' + date.getYear();
+};
+
 
 /**
  @param {Object} options The various control options..
@@ -131,7 +150,7 @@ src.base.control.popupDatePicker.setTheDatePickerEvent = function(datePicker, te
  @param {function} setTheDatePickerEvent This is used to attack the change event of the
  datepicker to an existing textbox.
  @param {function} showPopup Function to be called on the button click.
-
+ 
  @return {Object} The created popup datepicker container.
  @export
  */
@@ -140,41 +159,42 @@ src.base.control.popupDatePicker.create = function(options, appendChild, createT
   var Current = src.base.control.popupDatePicker;
   var Div = src.base.helper.domCreation.div;
   var Textbox = src.base.helper.domCreation.textbox;
-
-
+  
+  
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   setTheEvent = setTheEvent ? setTheEvent : src.base.helper.events.setClick;
   createThePopup = createThePopup ? createThePopup : src.base.control.popupDatePicker.createThePopup_;
   createTheDatePicker = createTheDatePicker ? createTheDatePicker : src.base.control.popupDatePicker.createTheDatePicker_;
   setTheDatePickerEvent = setTheDatePickerEvent ? setTheDatePickerEvent : src.base.control.popupDatePicker.setTheDatePickerEvent;
   showPopup = showPopup ? showPopup : src.base.control.popupDatePicker.showPopup_;
-
-
+  
+  
   var parentContainer = Div({'class': options[Current.ContainerClass]});
-
+  
   var clickControl = Button({'class': options[Current.ButtonClass], 'type': 'button' }, options[Current.ButtonText]);
   appendChild(parentContainer, clickControl);
-
+  
   var datePickerPair = createTheDatePicker(options[Current.DatePickerClass]);
-
+  
   setTheDatePickerEvent(datePickerPair[1],
                         options[Current.TextboxName],
                         goog.dom.getElement,
                         goog.events.listen,
                         goog.ui.DatePicker.Events.CHANGE,
-                        goog.dom.forms.setValue);
-
+                        goog.dom.forms.setValue,
+                        src.base.control.popupDatePicker.formatTheDate);
+  
   var popup = createThePopup(options[Current.PopupClass]);
-
+  
   popup['element'] = popup.element_;
-
+  
   setTheEvent(clickControl, function() { showPopup(popup, clickControl); });
-
+  
   appendChild(popup['element'], datePickerPair[0]);
-
+  
   appendChild(parentContainer, clickControl);
   appendChild(parentContainer, popup['element']);
-
+  
   return parentContainer;
 };
 

@@ -1,5 +1,8 @@
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
+goog.require('goog.events');
+goog.require('goog.ui.DatePicker');
+goog.require('goog.ui.DatePicker.Events');
 goog.require('src.base.control.popupDatePicker');
 
 goog.provide('src.test.control.popupDatePicker.whenCreatingAPopupDatePicker');
@@ -54,23 +57,23 @@ src.test.control.popupDatePicker.whenCreatingAPopupDatePicker.describe = functio
     setTheDatePickerEvent_ = function() {};
     showPopup_ = function() {};
   });
-
+  
   //Support Methods
-
+  
   var callTheMethod = function() {
     control_ = Popup.create(options_, appendChild_, createThePopup_, createTheDatePicker_, setTheEvent_,
                             setTheDatePickerEvent_, showPopup_);
   };
-
+  
   //Test Methods
-
+  
   it('should create the parent container.', function() {
     callTheMethod();
-
+    
     expect(control_ && goog.dom.classes.has(control_, ContainerClass) ? true : false).toBe(true);
   });
-
-
+  
+  
   it('should add a button.', function() {
     var calledCount = 0;
 
@@ -111,19 +114,24 @@ src.test.control.popupDatePicker.whenCreatingAPopupDatePicker.describe = functio
       methodWasCalled = cssClass === DatePickerClass;
       return [fakeDatePicker_, fakeDatePickerDomObject_];
     };
-
+    
     callTheMethod();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should set the change event for the date picker.', function() {
     var methodWasCalled = false;
-
-    setTheDatePickerEvent_ = function(datePicker, textboxName) {
+    
+    setTheDatePickerEvent_ = function(datePicker, textboxName, getElement, listen, change, setValue, formatDate) {
       methodWasCalled = datePicker === fakeDatePickerDomObject_ &&
-        textboxName === options_[Popup.TextboxName];
+        textboxName === options_[Popup.TextboxName] &&
+        getElement === goog.dom.getElement &&
+        listen === goog.events.listen &&
+        change === goog.ui.DatePicker.Events.CHANGE &&
+        setValue === goog.dom.forms.setValue &&
+        formatDate === src.base.control.popupDatePicker.formatTheDate;
     };
 
     callTheMethod();

@@ -139,22 +139,22 @@ src.base.control.redirectList.createTheClickEvent = function(elementIds, url, ge
  */
 src.base.control.redirectList.initialize = function(options, createADiv, createAButton, createTheClickEvent, getValue, getElement, redirect, setClick, appendChild) {
   var Current = src.base.control.redirectList;
-  
+
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createAButton = createAButton ? createAButton : src.base.helper.domCreation.button;
   createTheClickEvent = createTheClickEvent ? createTheClickEvent : Current.createTheClickEvent;
   getElement = getElement ? getElement : goog.dom.getElement;
   getValue = getValue ? getValue : goog.dom.forms.getValue;
-  
+
   //TODO Probably should create a utility method that wraps window.location
   //  instead of doing it inline.
   redirect = redirect ? redirect : function(item) { window.location = item; };
-  
+
   setClick = setClick ? setClick : src.base.helper.events.setClick;
-  
+
   var container = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-  
+
   var buttonList = goog.array.map(options[Current.ButtonList], function(currentItem) {
     var createdButton = createAButton(
       {'id': currentItem[Current.ButtonId],
@@ -162,8 +162,8 @@ src.base.control.redirectList.initialize = function(options, createADiv, createA
        'disabled' : currentItem[Current.Disabled] ? 'disabled' : undefined,
        'class' : currentItem[Current.Disabled] ? 'disabled' : undefined
       }, currentItem[Current.ButtonText]);
-    
-     
+
+
     var clickEventHandler = createTheClickEvent(currentItem[Current.For],
                                                 currentItem[Current.Goto],
                                                 getValue,

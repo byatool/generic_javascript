@@ -12,55 +12,58 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
   var ChangeType = goog.string.getRandomString();
   var Popup = src.base.control.popupDatePicker;
   var TextboxName = goog.string.getRandomString();
-
-
+  
+  
   var datePicker_;
   var findElement_;
+  var formatTheDate_;
   var listen_;
   var setValue_;
   var textbox_;
-
+  
   //Test Hooks
   beforeEach(function() {
-
-      findElement_ = function() { {} };
-      listen_ = function() {};
-      setValue_ = function() {};
-
-      datePicker_ = {};
-      textbox_ = {};
-    });
-
-    //Support Methods
-
-    var callTheMethod = function() {
-      Popup.setTheDatePickerEvent(datePicker_, TextboxName, findElement_, listen_, ChangeType, setValue_);
-    };
-
-    //Test Methods
+    
+    findElement_ = function() { {} };
+    formatTheDate_ = function() { return ''; };
+    listen_ = function() {};
+    
+    setValue_ = function() {};
+    
+    datePicker_ = {};
+    textbox_ = {};
+  });
+  
+  //Support Methods
+  
+  var callTheMethod = function() {
+    Popup.setTheDatePickerEvent(datePicker_, TextboxName, findElement_, listen_, ChangeType, setValue_, formatTheDate_);
+  };
+  
+  //Test Methods
   it('should find the textbox.', function() {
     var methodWasCalled = false;
-
+    
     findElement_ = function(textboxName) {
       methodWasCalled = textboxName === TextboxName;
       return {};
     };
-
+    
     callTheMethod();
-      expect(methodWasCalled).toBe(true);
-
+    expect(methodWasCalled).toBe(true);
+    
   });
-
+  
   it('should set using the listen function.', function() {
     var methodWasCalled = false;
-
+    
     listen_ = function(datePicker, changeType, setValue) {
       methodWasCalled = datePicker === datePicker_ &&
-          changeType === ChangeType;
+        changeType === ChangeType;
     };
-
+    
     callTheMethod();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 };
