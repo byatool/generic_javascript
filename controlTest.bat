@@ -25,6 +25,8 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^
 --namespace="src.test.control.dropDownList.whenCreatingAFillListHandler" ^
 --namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
+--namespace="src.test.control.formBuilder.whenInitializingAFormBuilder" ^
+--namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^
 --namespace="src.test.control.formComponent.whenSettingTheSubmitButton" ^
@@ -38,6 +40,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.messageBox.whenUpdatingMesssagesInAMessageBoxByAResult" ^
 --namespace="src.test.control.popupDatePicker.whenCreatingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
+--namespace="src.test.control.popupDatePicker.whenFormattingTheDate" ^
 --namespace="src.test.control.redirectList.whenCreatingRedirectButtonOptions" ^
 --namespace="src.test.control.redirectList.whenCreatingTheClickEvent" ^
 --namespace="src.test.control.redirectList.whenInitializingARedirectList" ^

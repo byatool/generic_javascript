@@ -108,7 +108,7 @@ src.base.control.simpleInformationDisplay.createRowsHandler = function(container
 src.base.control.simpleInformationDisplay.fillTheRows = function(container, result) {
   var item = result;
   goog.array.forEach(goog.object.getKeys(item), function(propertyName) {
-
+    
     var row = goog.dom.findNode(container, function(control) {
       return control['id'] === propertyName;
     });
@@ -131,7 +131,8 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
  @param {?function(Object, Object) : Object} createADiv The method used to create a div element.
  @param {?function(Object) : Object} createLayoutItem description.
  @param {?function(Object, Object)} appendChild The method used to append a child to a parent element.
- @param {?function(Object, function) : function(Object}) createTheCallBack a.
+ @param {?function(Object, function) : function(Object}) createTheCallBack This is used to create a callback
+ method that only takes in a result, and uses closures for other information.
  @param {?function(string, Object, function)} submitData The method used to retrieve
  the data for the rows.
  @param {?function} fillTheRows The method used to handle the async response, and to fill
@@ -141,29 +142,29 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
  */
 
 src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, submitData, fillTheRows) {
-
+  
   var Current = src.base.control.simpleInformationDisplay;
-
+  
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createLayoutItem = createLayoutItem ? createLayoutItem : src.base.control.simpleInformationDisplay.createLayoutItem;
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
-
-
+  
+  
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-
+  
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
     return createLayoutItem(currentItem, options, createADiv, appendChild);
   });
-
+  
   goog.array.forEach(rows, function(item) {
     appendChild(parentContainer, item);
   });
-
+  
   submitData(url, parameters, createTheCallBack(parentContainer, fillTheRows));
-
+  
   return parentContainer;
 };
 

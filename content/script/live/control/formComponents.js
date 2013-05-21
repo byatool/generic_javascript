@@ -17,6 +17,13 @@ goog.provide('src.base.control.formComponent');
  @type {string}
  @export
  */
+src.base.control.formComponent.AutoFillUrl = 'autoFillUrl';
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.formComponent.ButtonClass = 'submitButton';
 
 
@@ -60,6 +67,39 @@ src.base.control.formComponent.MessageItems = 'MessageItems';
 src.base.control.formComponent.RedirectUrl = 'RedirectUrl';
 
 
+/* Support Methods */
+
+/**
+ @param {Object} container The form element.
+ @param {?function} fillTheElements The method needed to set the form element values.
+ @param {?function} setValue The method used to set an element's value.
+ @return {function} The method that will be called as the event handler for the data request.
+ @protected
+ */
+src.base.control.formComponent.createTheRetrieveFormDataCallback = function(container, fillTheElements, setValue) {
+  return function(result) { return fillTheElements(container, result, setValue); };
+};
+
+
+/**
+ @param {Object} container The parent control that holds the rows.
+ @param {Object} result The result with the retrieved information.
+ @param {?function} setValue The method used to set an element's value.
+ @protected
+ */
+src.base.control.formComponent.fillTheFormElements = function(container, result, setValue) {
+  var item = result;
+  goog.array.forEach(goog.object.getKeys(item), function(propertyName) {
+
+    var element = goog.dom.findNode(container, function(control) {
+      return control['id'] === propertyName;
+    });
+
+    setValue(element, item[propertyName]);
+  });
+};
+
+
 /**
  @param {Object} result The result from a form submital.
  @param {Object} messageBox The message box container element.
@@ -74,12 +114,12 @@ src.base.control.formComponent.RedirectUrl = 'RedirectUrl';
 src.base.control.formComponent.handleCallback = function(result, messageBox, filter, createAResult, updateTheMessageBox, showElement, openWindow) {
     var Current = src.base.control.formComponent;
     var Constants = src.base.helper.constants;
-    
+
     if (result[Current.MessageItems].length > 0) {
         var justMessages = filter(result[Current.MessageItems], function(item) {
             return item['Message'];
         });
-        
+
         updateTheMessageBox(messageBox, createAResult(justMessages));
         showElement(messageBox, true);
     }
@@ -125,10 +165,64 @@ src.base.control.formComponent.handleSubmit = function(form, messageBox, retriev
 
 
 /**
+ @param {string} formId This is the id of the form that will be setup.
+ @param {Object} datePickerOptions The options for any created date picker.
+ @param {Array.<Array.<string>>} datePickerContainerAndTextboxes The containers to add
+ the date pickers to, and the names of each textbox that needs a date picker attached to it.
+ @param {string} messageBoxName This is the name of the form's message box..
+ @param {function(string) : Object} findElement Method used to find the form..
+ @param {function(string) : Object} createAMessageBox The method needed to.
+ @param {funtion(string)} addElement Method used to add the message box to the.
+ @param {function(Object) : Object} createADatePicker Method used to create a
+ datepicker when in conjuction with the datePickerOptions..
+ @return {Object} The updated form.
+ */
+src.base.control.formComponent.setupTheForm = function(formId, datePickerOptions, datePickerContainerAndTextboxes, messageBoxName, findElement, createAMessageBox, addElement, createADatePicker) {
+  var Popup = src.base.control.popupDatePicker;
+
+  var ifNullThen = function(toCheck, toSet) {
+    return toCheck ? toCheck : toSet;
+  };
+
+  var form = findElement(formId);
+  var messageBox = createAMessageBox(messageBoxName);
+  addElement(form, messageBox);
+
+  //TODO this should probably use a passed in method for testing reasons
+  //  src.test.control.formComponent.whenSettingUpAForm
+  //   'should create a datepicker for every textbox named'
+  //     This is the test for making sure the forEach works.  It does so
+  //     by counting the calls to createADatePicker.  That is ok for now...
+  goog.array.forEach(datePickerContainerAndTextboxes, function(item) {
+    datePickerOptions[Popup.TextboxName] = item[1];
+    addElement(findElement(item[0]), createADatePicker(datePickerOptions));
+  });
+
+  return {'form': form, 'messageBox': messageBox};
+};
+
+
+/**
+ @param {Object} parentForm This is the button holder.
+ @param {function} onClick The onClick event hook.
+ @param {function} findTheButton The method used to find the button element in the form.
+ @param {function} setTheClick The method used to assing onClick to the onClick event.
+ */
+src.base.control.formComponent.setTheSubmitButton = function(parentForm, onClick, findTheButton, setTheClick) {
+  var button = findTheButton(parentForm, src.base.control.formComponent.ButtonClass);
+  setTheClick(button, onClick);
+};
+
+
+/* Exports */
+
+/**
  @param {string} formId This is the form that will be updated for submital.
  @param {Object} datePickerOptions The options for any created date picker.
  @param {function} validate The method used for validating the form.
- @param {function} onClick The method to call when the submit is finished.
+ @param {?Object} autoFillParameters Parameters needed to retrieve the data for a form.
+ @param {?function} onClick The method to call when the submit is finished. Not used yet,
+ but will be.
  @param {?function(string) : Object} setupTheForm This will find the form,  create a message
  box, append that message box, and return both.
  @param {?function : Object} handleSubmit The method used to create the click event handler.
@@ -144,125 +238,96 @@ src.base.control.formComponent.handleSubmit = function(form, messageBox, retriev
  @param {?function} updateMessagesByResult Method used to update a message box.
  @param {?function} showElement Method used to show an element.
  @param {?function} submitData Method used submit the data.
+ @param {?function(Object, Object)} setValue The method used to set an element's value.
+ @param {?function(Object, function) : function(Object}) createTheRetrieveFormDataCallback This is used to create a
+ callback method that only takes in a result, and uses closures for other information.
+ @param {?function} fillTheRows The method used to handle the async response, and to fill
+ the rows.
+ @param {?function(string, Object, function)} submitAutoFill The method used to retrieve
+ the data for the form elements.
  @export
  */
-src.base.control.formComponent.initialize = function(formId, datePickerOptions, validate, onClick,
-                                                     setupTheForm, handleSubmit, findTheButton, setClick,
+src.base.control.formComponent.initialize = function(formId, datePickerOptions, validate, autoFillParameters,
+                                                     onClick, setupTheForm, handleSubmit, findTheButton, setClick,
                                                      getElement, createMessageBox, appendChild, createDatepicker,
                                                      getFormDataMap, createAResult, updateMessagesByResult,
-                                                     showElement, submitData) {
-    var Current = src.base.control.formComponent;
-    var DomHelper = src.base.helper.domHelper;
-    var MessageBox = src.base.control.messageBox;
-    
-    setupTheForm = setupTheForm ? setupTheForm : Current.setupTheForm;
-    getElement = getElement ? getElement : goog.dom.getElement;
-    createMessageBox = createMessageBox ? createMessageBox : MessageBox.createMessageBox;
-    appendChild = appendChild ? appendChild : goog.dom.appendChild;
-    createDatepicker = createDatepicker ? createDatepicker : src.base.control.popupDatePicker.create;
-    
-    var setupItems = setupTheForm(formId,
-                                  datePickerOptions[Current.DatepickerOptions],
-                                  datePickerOptions[Current.DatepickerTextboxes],
-                                  formId + Current.MessageBoxSuffix,
-                                  getElement,
-                                  createMessageBox,
-                                  appendChild,
-                                  createDatepicker
-                                 );
-    
-    
-    handleSubmit = handleSubmit ? handleSubmit : Current.handleSubmit;
-    getFormDataMap = getFormDataMap ? getFormDataMap : goog.dom.forms.getFormDataMap;
-    validate = validate ? validate : Current.Validate;
-    createAResult = createAResult ? createAResult : MessageBox.createAResult;
-    updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
-    showElement = showElement ? showElement : goog.style.showElement;
-    submitData = submitData ? submitData : DomHelper.submitData;
-    
-    var handleCallback = Current.handleCallback;
-    
-    //Can't test...
-    //Export this out to a method that creates a method?
-    var whenFinished = function(formResult) {
-        handleCallback(formResult,
-                       setupItems['messageBox'],
-                       goog.array.map,    //This needs to be added to the method signature.
-                       createAResult,
-                       updateMessagesByResult,
-                       showElement,
-                       function(url) {window.location = url;});
-    };
+                                                     showElement, submitData, setValue,
+                                                     createTheRetrieveFormDataCallback, fillTheRows,
+                                                     submitAutoFill) {
+  var Current = src.base.control.formComponent;
+  var DomHelper = src.base.helper.domHelper;
+  var MessageBox = src.base.control.messageBox;
+
+  setupTheForm = setupTheForm ? setupTheForm : Current.setupTheForm;
+  getElement = getElement ? getElement : goog.dom.getElement;
+  createMessageBox = createMessageBox ? createMessageBox : MessageBox.createMessageBox;
+  appendChild = appendChild ? appendChild : goog.dom.appendChild;
+  createDatepicker = createDatepicker ? createDatepicker : src.base.control.popupDatePicker.create;
+  //Autofill
+  setValue = setValue ? setValue : goog.dom.forms.setValue;
+  createTheRetrieveFormDataCallback = createTheRetrieveFormDataCallback ? createTheRetrieveFormDataCallback : Current.createTheRetrieveFormDataCallback;
+  fillTheRows = fillTheRows ? fillTheRows : Current.fillTheFormElements;
+  submitAutoFill = submitAutoFill ? submitAutoFill : src.base.helper.domHelper.submitToUrl;
+  //Submit handling
+  handleSubmit = handleSubmit ? handleSubmit : Current.handleSubmit;
+  getFormDataMap = getFormDataMap ? getFormDataMap : goog.dom.forms.getFormDataMap;
+  validate = validate ? validate : Current.Validate;
+  createAResult = createAResult ? createAResult : MessageBox.createAResult;
+  updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
+  showElement = showElement ? showElement : goog.style.showElement;
+  submitData = submitData ? submitData : DomHelper.submitData;
 
 
-    //Can't test...
-    //Export this out to a method that creates a method?
-    var whenClicked = function() {
-        handleSubmit(setupItems['form'],
-                     setupItems['messageBox'],
-                     getFormDataMap,
-                     validate,
-                     createAResult,
-                     updateMessagesByResult,
-                     showElement,
-                     submitData,
-                     whenFinished);
-    };
-    
-    findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
-    var button = findTheButton(Current.ButtonClass, setupItems['form']);
 
-    setClick = setClick ? setClick : src.base.helper.events.setClick;
-    setClick(button, whenClicked);
+  /* Actual Code */
 
-};
+  var setupItems = setupTheForm(formId,
+                                datePickerOptions[Current.DatepickerOptions],
+                                datePickerOptions[Current.DatepickerTextboxes],
+                                formId + Current.MessageBoxSuffix,
+                                getElement,
+                                createMessageBox,
+                                appendChild,
+                                createDatepicker);
 
+  if (autoFillParameters) {
+    var callBackToHandleReturnedFormData = createTheRetrieveFormDataCallback(setupItems['form'], fillTheRows, setValue);
+    submitAutoFill(autoFillParameters[Current.AutoFillUrl], autoFillParameters[Current.AutoFillParameters], callBackToHandleReturnedFormData);
+  }
 
-/**
- @param {string} formId This is the id of the form that will be setup.
- @param {Object} datePickerOptions The options for any created date picker.
- @param {Array.<Array.<string>>} datePickerContainerAndTextboxes The containers to add
- the date pickers to, and the names of each textbox that needs a date picker attached to it.
- @param {string} messageBoxName This is the name of the form's message box..
- @param {function(string) : Object} findElement Method used to find the form..
- @param {function(string) : Object} createAMessageBox The method needed to.
- @param {funtion(string)} addElement Method used to add the message box to the.
- @param {function(Object) : Object} createADatePicker Method used to create a
- datepicker when in conjuction with the datePickerOptions..
- @return {Object} The updated form.
- */
-src.base.control.formComponent.setupTheForm = function(formId, datePickerOptions, datePickerContainerAndTextboxes, messageBoxName, findElement, createAMessageBox, addElement, createADatePicker) {
-    var Popup = src.base.control.popupDatePicker;
+  var handleCallback = Current.handleCallback;
 
-    var ifNullThen = function(toCheck, toSet) {
-        return toCheck ? toCheck : toSet;
-    };
-
-    var form = findElement(formId);
-    var messageBox = createAMessageBox(messageBoxName);
-    addElement(form, messageBox);
-    
-    //TODO this should probably use a passed in method for testing reasons
-    //  src.test.control.formComponent.whenSettingUpAForm
-    //   'should create a datepicker for every textbox named'
-    //     This is the test for making sure the forEach works.  It does so
-    //     by counting the calls to createADatePicker.  That is ok for now...
-    goog.array.forEach(datePickerContainerAndTextboxes, function(item) {
-        datePickerOptions[Popup.TextboxName] = item[1];
-        addElement(findElement(item[0]), createADatePicker(datePickerOptions));
-    });
-
-    return {'form': form, 'messageBox': messageBox};
-};
+  //Can't test...
+  //Export this out to a method that creates a method?
+  var whenFinished = function(formResult) {
+    handleCallback(formResult,
+                   setupItems['messageBox'],
+                   goog.array.map,    //This needs to be added to the method signature.
+                   createAResult,
+                   updateMessagesByResult,
+                   showElement,
+                   function(url) {window.location = url;});
+  };
 
 
-/**
- @param {Object} parentForm This is the button holder.
- @param {function} onClick The onClick event hook.
- @param {function} findTheButton The method used to find the button element in the form.
- @param {function} setTheClick The method used to assing onClick to the onClick event.
- */
-src.base.control.formComponent.setTheSubmitButton = function(parentForm, onClick, findTheButton, setTheClick) {
-    var button = findTheButton(parentForm, src.base.control.formComponent.ButtonClass);
-    setTheClick(button, onClick);
+  //Can't test...
+  //Export this out to a method that creates a method?
+  var whenClicked = function() {
+    handleSubmit(setupItems['form'],
+                 setupItems['messageBox'],
+                 getFormDataMap,
+                 validate,
+                 createAResult,
+                 updateMessagesByResult,
+                 showElement,
+                 submitData,
+                 whenFinished);
+  };
+
+  findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
+  var button = findTheButton(Current.ButtonClass, setupItems['form']);
+
+  setClick = setClick ? setClick : src.base.helper.events.setClick;
+  setClick(button, whenClicked);
+
 };
