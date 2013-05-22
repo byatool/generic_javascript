@@ -50,6 +50,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.simpleInformationDisplay.whenCreatingALayoutItem" ^
 --namespace="src.test.control.simpleInformationDisplay.whenFillingTheRows" ^
 --namespace="src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisplay" ^
+--namespace="src.test.control.simpleInformationDisplay.whenRefreshingASimpleInformationDisplay" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^

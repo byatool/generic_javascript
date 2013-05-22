@@ -90,7 +90,8 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
     
     createADiv_ = function(attributes, text) {
       methodWasCalled = methodWasCalled ||
-        (attributes['class'] === options_[Current_.ColumnClass] &&
+        (goog.string.contains(attributes['class'], options_[Current_.ColumnClass])  &&
+         goog.string.contains(attributes['class'], Current_.InformationColumn) &&
          text === undefined);
     };
     
