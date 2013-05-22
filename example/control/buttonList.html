@@ -12,6 +12,18 @@
     
     
   </body>
+
+  <!--
+      This is used to create a list of buttons that make up one actual
+      control.  There is a hidden element that holds the combined
+      value of any "checked" button in the list.  This combined value
+      is space delimeted.  When a button is clicked, its value is
+      added to the list.  When it is clicked again, that value is
+      removed.
+
+      Style example:
+      ~\generic_javascript\content\style\sass\autocomplete.sass
+    -->
   
   <script type="text/javascript">
     var Current = src.base.control.buttonList;
@@ -21,8 +33,8 @@
     options[Current.ElementId] = 'parentContainer';
     options[Current.SelectedButtonClass] = 'selectedButton';
     options[Current.ButtonOptions] = [
-    {'text': 'hi', 'value': 'there'},
-    {'text': 'hello', 'value': 'thar'}
+      {'text': 'hi', 'value': 'there'},
+      {'text': 'hello', 'value': 'thar'}
     ];
     
     var container = src.base.control.buttonList.createAButtonList(options);
