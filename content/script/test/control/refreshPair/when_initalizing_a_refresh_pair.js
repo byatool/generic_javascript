@@ -47,7 +47,7 @@ src.test.control.refreshPair.whenInitializingARefreshPair.describe = function() 
   
   //Support Methods
   var callTheMethod_ = function() {
-    Current_.initialize(ToWatch_, ToUpdate_, Url_, ParameterName_, getElement_, getValue_, createUrlSubmitHandler_, setValue_, createOnChangeHandler_, setOnChange_, submitToUrl_);
+    Current_.initialize(ToWatch_, ToUpdate_, Url_, getElement_, getValue_, createUrlSubmitHandler_, setValue_, createOnChangeHandler_, setOnChange_, submitToUrl_);
   };
   
   
@@ -105,9 +105,9 @@ src.test.control.refreshPair.whenInitializingARefreshPair.describe = function() 
       return id === ToWatch_ ? toWatch : {};
     };
     
-    createOnChangeHandler_ = function(url, parameterName, toWatchElement, getValue, submitUrl, submitResultHandler) {
+    createOnChangeHandler_ = function(url, toWatchElement, getValue, submitUrl, submitResultHandler) {
       methodWasCalled = url === Url_ &&
-        parameterName === ParameterName_ &&
+        //parameterName === ParameterName_ &&
         toWatchElement === toWatch &&
         getValue === getValue_ &&
         submitUrl === submitToUrl_ &&
@@ -129,7 +129,7 @@ src.test.control.refreshPair.whenInitializingARefreshPair.describe = function() 
     getElement_ = function(id) {
       return id === ToWatch_ ? toWatch : {};
     };
-
+    
     setOnChange_ = function(toWatch, onChangeHandler) {
       methodWasCalled = toWatch === toWatch &&
         onChangeHandler === onChangeHandler_;

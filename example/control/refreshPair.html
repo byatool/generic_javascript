@@ -11,9 +11,23 @@
     <input type="text" name="toWatch" id="toWatch" value="" />
     <input type="text" name="toUpdate" id="toUpdate" value="" />
   </body>
+
+  <!--
+  example action to handle the call:
+  
+  [AllowCrossSiteJson]
+  [HttpPost]
+  public JsonResult RetrieveReverse(string toWatch)
+  {
+    return new JsonResult {Data = toWatch.Reverse()};
+  }
+
+  Noice that the input paramter is the same as the id on the element
+  being watched.
+  -->
   
   <script type="text/javascript">
-    src.base.control.refreshPair.initialize('toWatch', 'toUpdate', 'http://localhost:55250/Home/RetrieveReverse/', 'theText');
+    src.base.control.refreshPair.initialize('toWatch', 'toUpdate', 'http://localhost:55250/Home/RetrieveReverse/');
   </script>
 </html>
 

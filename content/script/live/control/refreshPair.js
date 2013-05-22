@@ -7,7 +7,6 @@ goog.require('src.base.helper.events');
 
 /**
  @param {string} url The url to submit to.
- @param {Object} parameterName The values to use in the request string.
  @param {Object} elementToWatch The element needed for the request paramter.
  @param {function} getValue The method used to get the element value.
  @param {function} submitToUrl The function used to submit the request.
@@ -15,11 +14,12 @@ goog.require('src.base.helper.events');
  @return {function} The function to handle the change event.
  @protected
  */
-src.base.control.refreshPair.createOnChangeHandler = function(url, parameterName, elementToWatch, getValue, submitToUrl, submitResultHandler) {
+src.base.control.refreshPair.createOnChangeHandler = function(url, elementToWatch, getValue, submitToUrl, submitResultHandler) {
   return function() {
     var parameter = {};
-    parameter[parameterName] = getValue(elementToWatch);
-    
+    var elementId = elementToWatch['id'];
+
+    parameter[elementId] = getValue(elementToWatch);
     submitToUrl(url, parameter, submitResultHandler);
   };
 };
@@ -45,7 +45,6 @@ src.base.control.refreshPair.createTheUrlSubmitHandler = function(elementToUpdat
  @param {string} toUpdate The id of the element that needs to be updated
  on the toWatch's change.
  @param {string} url description.
- @param {Object} parameterName description.
  @param {?function} getElement Method for getting an element by id.
  @param {?function} getValue The method used to get an element value.
  @param {?function} createUrlSubmitHandler description.
@@ -55,7 +54,7 @@ src.base.control.refreshPair.createTheUrlSubmitHandler = function(elementToUpdat
  @param {?function} submitToUrl description.
  @export
  */
-src.base.control.refreshPair.initialize = function(toWatch, toUpdate, url, parameterName, getElement, getValue, createUrlSubmitHandler, setValue, createOnChangeHandler, setOnChange, submitToUrl) {
+src.base.control.refreshPair.initialize = function(toWatch, toUpdate, url, getElement, getValue, createUrlSubmitHandler, setValue, createOnChangeHandler, setOnChange, submitToUrl) {
   createOnChangeHandler = createOnChangeHandler ? createOnChangeHandler : src.base.control.refreshPair.createOnChangeHandler;
   createUrlSubmitHandler = createUrlSubmitHandler ? createUrlSubmitHandler : src.base.control.refreshPair.createTheUrlSubmitHandler;
   getElement = getElement ? getElement : goog.dom.getElement;
@@ -63,14 +62,14 @@ src.base.control.refreshPair.initialize = function(toWatch, toUpdate, url, param
   setOnChange = setOnChange ? setOnChange : src.base.helper.events.setOnChange;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
   setValue = setValue ? setValue : goog.dom.forms.setValue;
-  
-  
+
+
   /* Actual Code */
-  
+
   var elementToWatch = getElement(toWatch);
   var elementToUpdate = getElement(toUpdate);
   var submitResultHandler = createUrlSubmitHandler(elementToUpdate, setValue);
-  var onChangeHandler = createOnChangeHandler(url, parameterName, elementToWatch, getValue,  submitToUrl, submitResultHandler);
-  
+  var onChangeHandler = createOnChangeHandler(url, elementToWatch, getValue, submitToUrl, submitResultHandler);
+
   setOnChange(elementToWatch, onChangeHandler);
 };
