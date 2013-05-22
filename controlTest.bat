@@ -15,6 +15,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^
 --namespace="src.base.control.redirectList" ^
+--namespace="src.base.control.refreshPair" ^
 --namespace="src.base.control.simpleInformationDisplay" ^
 --namespace="src.test.control.autocomplete.whenFormattingTheAutocompleteResultText" ^
 --namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
@@ -25,7 +26,6 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^
 --namespace="src.test.control.dropDownList.whenCreatingAFillListHandler" ^
 --namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
---namespace="src.test.control.formBuilder.whenInitializingAFormBuilder" ^
 --namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^
@@ -44,6 +44,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.redirectList.whenCreatingRedirectButtonOptions" ^
 --namespace="src.test.control.redirectList.whenCreatingTheClickEvent" ^
 --namespace="src.test.control.redirectList.whenInitializingARedirectList" ^
+--namespace="src.test.control.refreshPair.whenCreatingTheUrlSubmitHandler" ^
+--namespace="src.test.control.refreshPair.whenInitializingARefreshPair" ^
+--namespace="src.test.control.refreshPair.whenCreatingTheOnChangeHandler" ^
 --namespace="src.test.control.simpleInformationDisplay.whenCreatingALayoutItem" ^
 --namespace="src.test.control.simpleInformationDisplay.whenFillingTheRows" ^
 --namespace="src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisplay" ^

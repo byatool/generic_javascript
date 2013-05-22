@@ -3,10 +3,10 @@
     <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
     <script type="text/javascript" src="../../content/script/live/final.js"></script>
     <script type="text/javascript">
-      
+
     </script>
   </head>
-  
+
   <body>
     <div id="mainContainer" >
       <input type="hidden" id="firstHiddenA" name="firstHiddenA" value="1a">
@@ -15,34 +15,35 @@
       <input type="hidden" id="secondHiddenB" value="2b">
     </div>
   </body>
-  
+
   <script type="text/javascript">
-    
+
     var createButtonOptions = function(id, text, controlIds, url) {
     var button = {};
     button[src.base.control.redirectList.ButtonId] = id;
     button[src.base.control.redirectList.ButtonText] = text;
     button[src.base.control.redirectList.For] = controlIds;
     button[src.base.control.redirectList.Goto] = url;
-    
+
     return button;
     };
-    
-    
+
+
     var options = {};
     options[src.base.control.redirectList.ContainerClass] = 'container';
     options[src.base.control.redirectList.ContainerId] = 'container';
-    
+
     var firstButton = createButtonOptions('firstButton', 'first button',  ['firstHiddenA', 'firstHiddenB'], 'redirectList.html');
     var secondButton = createButtonOptions('secondButton', 'second button',  ['secondHiddenA', 'secondHiddenB'], 'redirectList.html');
     buttonList_ = [firstButton, secondButton];
-    
+
     options[src.base.control.redirectList.ButtonList] = buttonList_;
-    
+
     var result = src.base.control.redirectList.initialize(options);
-    
+
     var container = document.getElementById('mainContainer');
     container.appendChild(result);
-    
+
   </script>
 </html>
+

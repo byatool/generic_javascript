@@ -13,6 +13,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^
+--namespace="src.base.control.refreshPair" ^
 --namespace="src.base.control.redirectList" ^
 --namespace="src.base.control.simpleInformationDisplay" ^
 --namespace="src.base.control.tabs" ^
