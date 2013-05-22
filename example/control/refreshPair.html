@@ -11,9 +11,15 @@
     <input type="text" name="toWatch" id="toWatch" value="" />
     <input type="text" name="toUpdate" id="toUpdate" value="" />
   </body>
-
+  
   <!--
-  example action to handle the call:
+  This is used to update a element value based on the change of
+  another.  In this example: when the toWatch element change event fires,
+  there is a call to the server (ajax) to get a new value for the
+  toUpdate element.  It then updates the toUpdate element with the
+  returned value from the server.
+  
+  Example action to handle the call:
   
   [AllowCrossSiteJson]
   [HttpPost]
@@ -21,7 +27,7 @@
   {
     return new JsonResult {Data = toWatch.Reverse()};
   }
-
+  
   Noice that the input paramter is the same as the id on the element
   being watched.
   -->

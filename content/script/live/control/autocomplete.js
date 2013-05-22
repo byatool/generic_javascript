@@ -2,12 +2,40 @@ goog.require('goog.dom');
 goog.require('goog.dom.a11y');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.forms');
+goog.require('goog.string.format');
 goog.require('goog.ui.IdGenerator');
 goog.require('goog.ui.ac.InputHandler');
 goog.require('goog.ui.ac.Remote');
 goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.autocomplete');
+
+/* Default Column Names for instant use of this control */
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.autocomplete.FirstName = 'FirstName';
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.autocomplete.LastName = 'LastName';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.autocomplete.Name = 'Name';
+
+/* End Default Column Names for instant use of this control */
+
 
 
 /**
@@ -129,10 +157,10 @@ src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, 
     setTokenText = setTokenText ? setTokenText : function(text) {
       inputHandler.setTokenText(text);
     };
-
+    
     setValue(hidden, selectedItem[Current.Id]);
     setTokenText(selectedItem[Current.LastName] + ', ' + selectedItem[Current.FirstName]);
-
+    
     return false;
   };
 };
