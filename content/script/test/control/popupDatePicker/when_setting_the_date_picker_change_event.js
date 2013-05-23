@@ -24,14 +24,18 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
   //Test Hooks
   beforeEach(function() {
     
-    findElement_ = function() { {} };
+    findElement_ = function() { return textbox_; };
     formatTheDate_ = function() { return ''; };
-    listen_ = function() {};
+    
+    listen_ = function(item, eventType, toCall){
+      item[eventType] = toCall;
+    };
     
     setValue_ = function() {};
     
     datePicker_ = {};
     textbox_ = {};
+    textbox_['focus'] = function() {};
   });
   
   //Support Methods
@@ -66,9 +70,37 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
     
     expect(methodWasCalled).toBe(true);
   });
+  
+  it('should set the value.', function() {
+    var eventIn = {};
+    var methodWasCalled = false;
+    
+    setValue_ = function(textbox, event){
+      methodWasCalled = textbox === textbox_ &&
+        event === 'none';
+    };
+    
+    callTheMethod();
+    datePicker_[ChangeType](eventIn);
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+ 
+  it('should call focus when the change event is fired.', function() {
+    var methodWasCalled = false;
+    textbox_['focus'] = function() {
+      methodWasCalled = true;
+    };
+     
+    callTheMethod();
+    datePicker_[ChangeType]({});
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
 };
 
 describe('When setting the date picker change event, it', function() {
   src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe();
 });
-

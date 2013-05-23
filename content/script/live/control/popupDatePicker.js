@@ -58,10 +58,8 @@ src.base.control.popupDatePicker.PopupClass = 'popupClass';
  */
 src.base.control.popupDatePicker.TextboxName = 'textboxName';
 
+
 /* Support Methods */
-
-
-
 
 /**
  @return {Object} A datepicker control.
@@ -77,6 +75,7 @@ src.base.control.popupDatePicker.createTheDatePicker_ = function() {
 
   return [datepickerParent, datepickerControl];
 };
+
 
 /**
  @return {Object} A popup control.
@@ -121,11 +120,8 @@ src.base.control.popupDatePicker.setTheDatePickerEvent = function(datePicker, te
   var textbox = findElement(textboxName);
 
   listen(datePicker, eventType, function(event) {
-
-    // setValue(textbox, event.date ? event.date.toIsoString(true) : 'none');
-    //IMPORTANT: This is where the date format is set before updating the textbox.
-    //TODO: Not sure how to test that the date is formatted correctly...
     setValue(textbox, event.date ? formatTheDate(event.date) : 'none');
+    textbox['focus']();
   });
 };
 
@@ -136,7 +132,7 @@ src.base.control.popupDatePicker.setTheDatePickerEvent = function(datePicker, te
  @protected
  */
 src.base.control.popupDatePicker.formatTheDate = function(date) {
-  return date.getMonth() + '/' + date.getDate() + '/' + date.getYear();
+  return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getYear();
 };
 
 

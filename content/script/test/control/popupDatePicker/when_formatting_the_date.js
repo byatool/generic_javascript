@@ -32,7 +32,9 @@ src.test.control.popupDatePicker.whenFormattingTheDate.describe = function () {
   //Test Methods
   
   it('should return the correct format.', function() {
-    expect(callTheMethod_()).toBe('12/12/2012');
+    expect(callTheMethod_()).toBe('13/12/2012');
+    //That's right kids, js .getMonth method returns 0-11, not 1-12.
+    //  Makes the test look odd though.
   });
 };
 

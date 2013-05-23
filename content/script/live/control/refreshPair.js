@@ -59,17 +59,17 @@ src.base.control.refreshPair.initialize = function(toWatch, toUpdate, url, getEl
   createUrlSubmitHandler = createUrlSubmitHandler ? createUrlSubmitHandler : src.base.control.refreshPair.createTheUrlSubmitHandler;
   getElement = getElement ? getElement : goog.dom.getElement;
   getValue = getValue ? getValue : goog.dom.forms.getValue;
-  setOnChange = setOnChange ? setOnChange : src.base.helper.events.setOnChange;
+  setOnChange = setOnChange ? setOnChange : src.base.helper.events.setOnBlur;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
   setValue = setValue ? setValue : goog.dom.forms.setValue;
-
-
+  
+  
   /* Actual Code */
-
+  
   var elementToWatch = getElement(toWatch);
   var elementToUpdate = getElement(toUpdate);
   var submitResultHandler = createUrlSubmitHandler(elementToUpdate, setValue);
   var onChangeHandler = createOnChangeHandler(url, elementToWatch, getValue, submitToUrl, submitResultHandler);
-
+  
   setOnChange(elementToWatch, onChangeHandler);
 };
