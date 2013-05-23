@@ -12,6 +12,19 @@
     
     <input type="button" name="exampleButton" id="exampleButton" value="exampleButton"  />
   </body>
+  <!--
+      This is used to create an message container that can be updated
+      by passing in a result.  The result structure demands a specific
+      format:
+  
+      Messages ->  An array of strings
+      Success  ->  Boolean flag that tells the message box if the messages
+        are errors.  This will toggle the message box style between
+        two css clases: 'error' and 'info'
+
+      The message box will remove past messages when refreshed.
+  -->
+  
   
   <script type="text/javascript">
     var MessageBoxNamespace = src.base.control.messageBox;
@@ -24,8 +37,10 @@
     parentContainer.appendChild(messageBox);
     
     window.showTheBox = function() {
-    var newResult = MessageBoxNamespace.createAResult(['hi there'], true);
-    MessageBoxNamespace.updateMessagesByResult(messageBox, newResult);
+      var messages = ['hi there']
+      var successful = true;
+      var newResult = MessageBoxNamespace.createAResult(messages, succesful);
+      MessageBoxNamespace.updateMessagesByResult(messageBox, newResult);
     };
     
     var button = document.getElementById('exampleButton');
