@@ -19,6 +19,14 @@ goog.provide('src.base.control.formComponent');
  */
 src.base.control.formComponent.AutoFillUrl = 'autoFillUrl';
 
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.formComponent.AutoFillParameters = 'autoFillParameters';
+
 /**
  @const
  @type {string}
