@@ -95,7 +95,7 @@ src.base.control.messageBox.createAResult = function(messages, success) {
  */
 src.base.control.messageBox.createMessageBox = function(givenName, createADiv, showElement) {
     'use strict';
-
+  
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     showElement = showElement ? showElement : goog.style.showElement;
 
@@ -129,20 +129,20 @@ src.base.control.messageBox.createMessageBox = function(givenName, createADiv, s
  */
 src.base.control.messageBox.updateMessagesByResult = function(parentMessageBox, result, clearAllMessages, findMessageBox, createADiv, appendChild, setTheAppearanceByResult, showElement) {
     var ResultConstants = src.base.helper.constants.result;
-
+  
     clearAllMessages = clearAllMessages ? clearAllMessages : src.base.control.messageBox.clearAllMessages;
     findMessageBox = findMessageBox ? findMessageBox : src.base.control.messageBox.findMessageBox_;
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     appendChild = appendChild ? appendChild : goog.dom.appendChild;
     setTheAppearanceByResult = setTheAppearanceByResult ? setTheAppearanceByResult : src.base.control.messageBox.setTheAppearanceByResult;
     showElement = showElement ? showElement : goog.style.showElement;
-
-
+  
+  
     clearAllMessages(parentMessageBox, src.base.control.messageBox.findMessageBox_, goog.dom.removeChildren); //Abstract?
-
+  
     var divMessageContainer = findMessageBox(parentMessageBox);
     var messages = result[ResultConstants.MESSAGES]; //Abstract?
-
+  
     if (messages && messages.length > 0) {
         var children = goog.array.map(messages, function(messageItem) { //Abstract?
             return createADiv({}, messageItem);
@@ -152,7 +152,7 @@ src.base.control.messageBox.updateMessagesByResult = function(parentMessageBox, 
             appendChild(divMessageContainer, createdMessage);
         });
     }
-
+  
     setTheAppearanceByResult(divMessageContainer, result, goog.dom.classes.addRemove);
     showElement(parentMessageBox, true);
 };

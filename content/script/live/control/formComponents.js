@@ -75,6 +75,14 @@ src.base.control.formComponent.MessageItems = 'MessageItems';
 src.base.control.formComponent.RedirectUrl = 'RedirectUrl';
 
 
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.formComponent.ErrorType = 0;
+
+
 /* Support Methods */
 
 /**
@@ -98,11 +106,11 @@ src.base.control.formComponent.createTheRetrieveFormDataCallback = function(cont
 src.base.control.formComponent.fillTheFormElements = function(container, result, setValue) {
   var item = result;
   goog.array.forEach(goog.object.getKeys(item), function(propertyName) {
-
+    
     var element = goog.dom.findNode(container, function(control) {
       return control['id'] === propertyName;
     });
-
+    
     setValue(element, item[propertyName]);
   });
 };
@@ -119,21 +127,25 @@ src.base.control.formComponent.fillTheFormElements = function(container, result,
  @param {function(Object, boolean} showElement The method used to show or hide an element.
  @param {function(string)} openWindow The method used to redirect.
  */
-src.base.control.formComponent.handleCallback = function(result, messageBox, filter, createAResult, updateTheMessageBox, showElement, openWindow) {
-    var Current = src.base.control.formComponent;
-    var Constants = src.base.helper.constants;
-
-    if (result[Current.MessageItems].length > 0) {
-        var justMessages = filter(result[Current.MessageItems], function(item) {
-            return item['Message'];
-        });
-
-        updateTheMessageBox(messageBox, createAResult(justMessages));
-        showElement(messageBox, true);
-    }
-    else {
-        openWindow(result[Current.RedirectUrl]);
-    }
+src.base.control.formComponent.handleCallback = function(result, messageBox, filter, some, createAResult, updateTheMessageBox, showElement, openWindow) {
+  var Current = src.base.control.formComponent;
+  var Constants = src.base.helper.constants;
+  
+  if (result[Current.MessageItems].length > 0) {
+    var justMessages = filter(result[Current.MessageItems], function(item) {
+      return item['Message'];
+    });
+    
+    var errorsExist = some(result[Current.MessageItems], function(item) {
+      return item['MessageType'] === Current.ErrorType;
+    });
+    
+    updateTheMessageBox(messageBox, createAResult(justMessages, !errorsExist));
+    showElement(messageBox, true);
+  }
+  else {
+    openWindow(result[Current.RedirectUrl]);
+  }
 };
 
 
@@ -284,11 +296,11 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
   updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
   showElement = showElement ? showElement : goog.style.showElement;
   submitData = submitData ? submitData : DomHelper.submitData;
-
-
-
+  
+  
+  
   /* Actual Code */
-
+  
   var setupItems = setupTheForm(formId,
                                 datePickerOptions[Current.DatepickerOptions],
                                 datePickerOptions[Current.DatepickerTextboxes],
@@ -297,20 +309,21 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
                                 createMessageBox,
                                 appendChild,
                                 createDatepicker);
-
+  
   if (autoFillParameters) {
     var callBackToHandleReturnedFormData = createTheRetrieveFormDataCallback(setupItems['form'], fillTheRows, setValue);
     submitAutoFill(autoFillParameters[Current.AutoFillUrl], autoFillParameters[Current.AutoFillParameters], callBackToHandleReturnedFormData);
   }
-
+  
   var handleCallback = Current.handleCallback;
-
+  
   //Can't test...
   //Export this out to a method that creates a method?
   var whenFinished = function(formResult) {
     handleCallback(formResult,
                    setupItems['messageBox'],
                    goog.array.map,    //This needs to be added to the method signature.
+                   goog.array.some,
                    createAResult,
                    updateMessagesByResult,
                    showElement,

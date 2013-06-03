@@ -58,17 +58,26 @@ src.test.control.refreshPair.whenCreatingTheOnChangeHandler.describe = function(
     var methodWasCalled = false;
     var parameter = {};
     var parameterValue = {};
-
+    
     getValue_ = function() { return parameterValue; };
-
+    
     submitToUrl_ = function(url, parameter, submitResultHandler) {
       methodWasCalled = url === Url_ &&
         parameter[ElementId_] === parameterValue &&
         submitResultHandler === submitResultHandler;
     };
-
+    
     callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
 
+  
+  it('should not submit if there is no date.', function() {
+    var methodWasCalled = false;
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
 };
