@@ -8,9 +8,7 @@ goog.provide('src.site.validation.validateSocialSecurityNumber');
  @private
  */
 src.site.validation.validateSocialSecurityNumber.containsOnlyNumbers_ = function(currentText) {
-  return currentText || !goog.array.some(currentText, function(node) {
-    return isNaN(node);
-  });
+  return !goog.array.some(currentText, function(node) {return isNaN(node); });
 };
 
 /**

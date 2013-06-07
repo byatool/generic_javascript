@@ -37,7 +37,6 @@ src.base.control.autocomplete.Name = 'Name';
 /* End Default Column Names for instant use of this control */
 
 
-
 /**
  @const
  @type {string}
@@ -84,6 +83,14 @@ src.base.control.autocomplete.LabelId = 'autocompleteLabel';
  @export
  */
 src.base.control.autocomplete.TextboxId = 'autocompleteTextbox';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.autocomplete.ToCall = 'methodsToCallOnSuccess';
 
 
 /**
@@ -144,21 +151,28 @@ src.base.control.autocomplete.setTheAutocompleteMethod_ = function(autocomplete,
 /**
  @param {Object} inputHandler description.
  @param {string} hiddenName description.
- @param {function(string) : Object} getElement description.
- @param {function(Object, string)} setValue description.
- @param {?function(string)} setTokenText The method needed to set the text value for the
+ @param {Array<function>} toCall A list of methods to call that take in the chosen id.
+ @param {?function(string) : Object} getElement description.
+ @param {?function(Object, string)} setValue description.
+ @param {?function(string)} setTokenText The method needed to set the text value for the.
  associated textbox to that of the selected item.
  */
-src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, hiddenName, getElement, setValue, setTokenText) {
+src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, hiddenName, toCall, getElement, setValue, setTokenText) {
   inputHandler.selectRow = function(selectedItem, opt_multi) {
     var Current = src.base.control.autocomplete;
     var hidden = getElement(hiddenName);
-
+    
     setTokenText = setTokenText ? setTokenText : function(text) {
       inputHandler.setTokenText(text);
     };
     
-    setValue(hidden, selectedItem[Current.Id]);
+    var id = selectedItem[Current.Id];
+    setValue(hidden, id);
+    
+    if(toCall) {
+      goog.array.every(toCall, function(item) { item(id);  }); //TODO extract each?
+    }
+    
     setTokenText(selectedItem[Current.LastName] + ', ' + selectedItem[Current.FirstName]);
     
     return false;
@@ -174,7 +188,7 @@ src.base.control.autocomplete.setInputHandlerSelectRow = function(inputHandler, 
  */
 src.base.control.autocomplete.formatTheAutocompleteResultText = function(currentRow, stringFormat) {
   var Current = src.base.control.autocomplete;
-
+  
   return stringFormat('%s', currentRow[Current.Name]);
 };
 
@@ -222,38 +236,39 @@ src.base.control.autocomplete.setRenderRowContents = function(renderer, createAD
  */
 src.base.control.autocomplete.initialize = function(options, setRenderRowContents, setInputHandlerSelectRow, createADiv, createATextbox, appendChild, createAHidden, createAnAutocomplete,  getTheRenderer, getTheInputHandler, setTheAutocompleteMethod) {
   var Current = src.base.control.autocomplete;
-
+  
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createATextbox = createATextbox ? createATextbox : src.base.helper.domCreation.textbox;
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   createAHidden = createAHidden ? createAHidden : src.base.helper.domCreation.hidden;
-
+  
   createAnAutocomplete = createAnAutocomplete ? createAnAutocomplete : Current.createAnAutocomplete_;
   getTheRenderer = getTheRenderer ? getTheRenderer : Current.getTheRenderer_;
   setRenderRowContents = setRenderRowContents ? setRenderRowContents : Current.setRenderRowContents;
   getTheInputHandler = getTheInputHandler ? getTheInputHandler : Current.getTheInputHandler_;
   setInputHandlerSelectRow = setInputHandlerSelectRow ? setInputHandlerSelectRow : Current.setInputHandlerSelectRow;
   setTheAutocompleteMethod = setTheAutocompleteMethod ? setTheAutocompleteMethod : Current.setTheAutocompleteMethod_;
-
+  
   var parentContainer = createADiv({'id': options[Current.ContainerId]});
   var textbox = createATextbox({'id': Current.TextboxId, 'class': options[Current.InputClass]});
   appendChild(parentContainer, textbox);
-
-  var hidden = createAHidden({'id': options[Current.HiddenId]});
+  
+  var hidden = createAHidden({'id': options[Current.HiddenId], 'name': options[Current.HiddenId]});
   appendChild(parentContainer, hidden);
-
+  
   var clearDiv = createADiv({'class': 'clearBoth'});
   appendChild(parentContainer, clearDiv);
-
+  
   var autocomplete = createAnAutocomplete(options[Current.Url], textbox, goog.ui.ac.Remote);
-
+  
   var renderer = getTheRenderer(autocomplete);
   setRenderRowContents(renderer, createADiv, goog.dom.getOuterHtml); //
-
+  
   var inputHandler = getTheInputHandler(autocomplete);
-  setInputHandlerSelectRow(inputHandler, options[Current.HiddenId], goog.dom.getElement, goog.dom.forms.setValue); //
-
+  var toCall = options[Current.ToCall] ? options[Current.ToCall] : [];
+  setInputHandlerSelectRow(inputHandler, options[Current.HiddenId], toCall, goog.dom.getElement, goog.dom.forms.setValue); //
+  
   setTheAutocompleteMethod(autocomplete, 'POST');
-
+  
   return parentContainer;
 };
