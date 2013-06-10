@@ -85,14 +85,14 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
   });
   
   
-  it('should create the value container.', function() {
+  it('should create the value container, and initialize it with N/A.', function() {
     var methodWasCalled = false;
     
     createADiv_ = function(attributes, text) {
       methodWasCalled = methodWasCalled ||
         (goog.string.contains(attributes['class'], options_[Current_.ColumnClass])  &&
          goog.string.contains(attributes['class'], Current_.InformationColumn) &&
-         text === undefined);
+         text === 'N/A');
     };
     
     callTheMethod_();

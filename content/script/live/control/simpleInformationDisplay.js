@@ -80,16 +80,16 @@ src.base.control.simpleInformationDisplay.RowClass = 'RowClass';
  */
 src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInformation, options, createADiv, appendChild) {
   var Current_ = src.base.control.simpleInformationDisplay;
-  
+
   var row = createADiv({'id': layoutInformation[Current_.PropertyName], 'class': options[Current_.RowClass]});
   var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
-  var valueColumn = createADiv({'class': options[Current_.ColumnClass] + ' ' + Current_.InformationColumn});
+  var valueColumn = createADiv({'class': options[Current_.ColumnClass] + ' ' + Current_.InformationColumn}, 'N/A');
   var clearBoth = createADiv({'class': 'clearBoth'});
-  
+
   appendChild(row, labelColumn);
   appendChild(row, valueColumn);
   appendChild(row, clearBoth);
-  
+
   return row;
 };
 
@@ -131,8 +131,8 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
       return goog.dom.classes.has(column, Current_.InformationColumn);
     });
     
-    if(valueContainer) {
-      setTextContent(valueContainer, item[propertyName]);
+    if (valueContainer) {
+      setTextContent(valueContainer, item[propertyName] ? item[propertyName] : 'N/A');
     }
   });
 };
@@ -158,9 +158,9 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
  @export
  */
 src.base.control.simpleInformationDisplay.initialize = function(url, parameters, options, createADiv, createLayoutItem, appendChild, createTheCallBack, setTextContent, submitData, fillTheRows) {
-  
+
   var Current = src.base.control.simpleInformationDisplay;
-  
+
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createLayoutItem = createLayoutItem ? createLayoutItem : src.base.control.simpleInformationDisplay.createLayoutItem;
@@ -168,18 +168,18 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
-  
-  
+
+
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-  
+
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
     return createLayoutItem(currentItem, options, createADiv, appendChild);
   });
-  
+
   goog.array.forEach(rows, function(item) {
     appendChild(parentContainer, item);
   });
-  
+
   submitData(url, parameters, createTheCallBack(parentContainer, fillTheRows, setTextContent));
   
   return parentContainer;
