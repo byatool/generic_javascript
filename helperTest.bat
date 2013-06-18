@@ -18,6 +18,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.helper.domCreation.whenFillingASelect" ^
 --namespace="src.test.helper.domHelper.whenRetrievingAChildById" ^
 --namespace="src.test.helper.domHelper.whenRetrievingSpecificDataFromADataMap" ^
+--namespace="src.test.helper.domHelper.whenEnablingAButton" ^
 --namespace="src.test.helper.events.whenSettingTheClickEvent" ^
 --namespace="src.test.helper.events.whenSettingTheSelectectedEvent" ^
 --output_mode=compiled ^

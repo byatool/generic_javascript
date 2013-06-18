@@ -106,11 +106,11 @@ src.base.control.formComponent.createTheRetrieveFormDataCallback = function(cont
 src.base.control.formComponent.fillTheFormElements = function(container, result, setValue) {
   var item = result;
   goog.array.forEach(goog.object.getKeys(item), function(propertyName) {
-    
+
     var element = goog.dom.findNode(container, function(control) {
       return control['id'] === propertyName;
     });
-    
+
     setValue(element, item[propertyName]);
   });
 };
@@ -119,39 +119,45 @@ src.base.control.formComponent.fillTheFormElements = function(container, result,
 /**
  @param {Object} result The result from a form submital.
  @param {Object} messageBox The message box container element.
+ @param {Object} button The form button to enable.
  @param {function} filter This is the filter method to get all the message text.
+ @param {function} some A check to see if at least on item matches the comparison.
  @param {function(Array.<string>, boolean) : Object} createAResult The method used to take in
  messages, and create a result for a message box.
  @param {function(Object, Object} updateTheMessageBox The method used to update the message box
  with a failure result.
  @param {function(Object, boolean} showElement The method used to show or hide an element.
+ @param {function(Objct, boolean}} toBeEnabled The method used to enable the submit button.
  @param {function(string)} openWindow The method used to redirect.
  */
-src.base.control.formComponent.handleCallback = function(result, messageBox, filter, some, createAResult, updateTheMessageBox, showElement, openWindow) {
+src.base.control.formComponent.handleCallback = function(result, messageBox, button, filter, some, createAResult, updateTheMessageBox, showElement, toBeEnabled, openWindow) {
   var Current = src.base.control.formComponent;
   var Constants = src.base.helper.constants;
-  
+
   if (result[Current.MessageItems].length > 0) {
     var justMessages = filter(result[Current.MessageItems], function(item) {
       return item['Message'];
     });
-    
+
     var errorsExist = some(result[Current.MessageItems], function(item) {
       return item['MessageType'] === Current.ErrorType;
     });
-    
+
     updateTheMessageBox(messageBox, createAResult(justMessages, !errorsExist));
     showElement(messageBox, true);
   }
   else {
     openWindow(result[Current.RedirectUrl]);
   }
+
+  toBeEnabled(button, true);
 };
 
 
 /**
  @param {Object} form The parent form.
  @param {Object} messageBox The message box...
+ @param {Object} submitButton The button to disable on submittion.
  @param {function(Object) : Object} retrieveFormValues The method to retrieve all values
  from the parent form.
  @param {function(Object) : Array.<string>} validate The method used to validate the form
@@ -161,26 +167,28 @@ src.base.control.formComponent.handleCallback = function(result, messageBox, fil
  @param {function(Object, Object} updateTheMessageBox The method used to update the message box
  with a failure result.
  @param {function(Object, boolean} showElement The method used to show or hide an element.
+ @param {function(string, bool)}  toBeEnabled This will enable an element if true, otherwise will
+ disable.
  @param {function(Object, function(Object)} submitMethod The final method to call when there are no
  errors.
  @param {function(Object)} callBack The method called once the server responds.
  */
-src.base.control.formComponent.handleSubmit = function(form, messageBox, retrieveFormValues, validate, createAResult, updateTheMessageBox, showElement, submitMethod, callBack) {
-    var values = retrieveFormValues(form);
-    var errors = validate(values);
+src.base.control.formComponent.handleSubmit = function(form, messageBox, submitButton,  retrieveFormValues, validate, createAResult, updateTheMessageBox, showElement, toBeEnabled, submitMethod, callBack) {
+  toBeEnabled(submitButton, false);
 
-    if (errors && errors.length > 0) {
-        var result = createAResult(errors, false);
-        updateTheMessageBox(messageBox, result);
-        showElement(messageBox, true);
-    }
-    else {
-        showElement(messageBox, false);
-        values.action = form.action;
+  var values = retrieveFormValues(form);
+  var errors = validate(values);
 
-
-        submitMethod(values, callBack);
-    }
+  if (errors && errors.length > 0) {
+    var result = createAResult(errors, false);
+    updateTheMessageBox(messageBox, result);
+    showElement(messageBox, true);
+  }
+  else {
+    showElement(messageBox, false);
+    values.action = form.action;
+    submitMethod(values, callBack);
+  }
 };
 
 
@@ -296,11 +304,11 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
   updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
   showElement = showElement ? showElement : goog.style.showElement;
   submitData = submitData ? submitData : DomHelper.submitData;
-  
-  
-  
+
+
+
   /* Actual Code */
-  
+
   var setupItems = setupTheForm(formId,
                                 datePickerOptions[Current.DatepickerOptions],
                                 datePickerOptions[Current.DatepickerTextboxes],
@@ -309,24 +317,29 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
                                 createMessageBox,
                                 appendChild,
                                 createDatepicker);
-  
+
   if (autoFillParameters) {
     var callBackToHandleReturnedFormData = createTheRetrieveFormDataCallback(setupItems['form'], fillTheRows, setValue);
     submitAutoFill(autoFillParameters[Current.AutoFillUrl], autoFillParameters[Current.AutoFillParameters], callBackToHandleReturnedFormData);
   }
-  
+
   var handleCallback = Current.handleCallback;
-  
+
+  findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
+  var button = findTheButton(Current.ButtonClass, setupItems['form']);
+
   //Can't test...
   //Export this out to a method that creates a method?
   var whenFinished = function(formResult) {
     handleCallback(formResult,
                    setupItems['messageBox'],
+                   button,
                    goog.array.map,    //This needs to be added to the method signature.
                    goog.array.some,
                    createAResult,
                    updateMessagesByResult,
                    showElement,
+                   src.base.helper.domHelper.toBeEnabled,
                    function(url) {window.location = url;});
   };
 
@@ -336,19 +349,19 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
   var whenClicked = function() {
     handleSubmit(setupItems['form'],
                  setupItems['messageBox'],
+                 button,
                  getFormDataMap,
                  validate,
                  createAResult,
                  updateMessagesByResult,
                  showElement,
+                 src.base.helper.domHelper.toBeEnabled,
                  submitData,
                  whenFinished);
   };
-
-  findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
-  var button = findTheButton(Current.ButtonClass, setupItems['form']);
 
   setClick = setClick ? setClick : src.base.helper.events.setClick;
   setClick(button, whenClicked);
 
 };
+

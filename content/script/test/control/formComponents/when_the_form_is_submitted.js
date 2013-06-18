@@ -11,6 +11,7 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
   var FormComponent = src.base.control.formComponent;
   var FormAction = goog.string.getRandomString();
 
+  var _button;
   var _form;
   var _createTheResult;
   var _messageBox;
@@ -18,6 +19,7 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
   var _showElement;
   var _submitCallback;
   var _submitTheData;
+  var _toBeEnabled;
   var _updateMessageBox;
   var _validateAllValues;
 
@@ -27,22 +29,36 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
     _form = {'action': FormAction};
     _messageBox = {};
     _submitCallback = {};
-
+    _button = {};
     _retrieveFormValues = function() { return {}; };
     _validateAllValues = function() { return []; };
     _createTheResult = function() { return {}; };
     _updateMessageBox = function() { };
     _showElement = function() {};
     _submitTheData = function() {};
+    _toBeEnabled = function() {};
   });
 
   //Support Methods
   var callMethod = function() {
-    FormComponent.handleSubmit(_form, _messageBox, _retrieveFormValues, _validateAllValues, _createTheResult, _updateMessageBox, _showElement, _submitTheData, _submitCallback);
+    FormComponent.handleSubmit(_form, _messageBox, _button, _retrieveFormValues, _validateAllValues, _createTheResult, _updateMessageBox, _showElement, _toBeEnabled, _submitTheData, _submitCallback);
   };
 
 
   //Test Methods
+
+  it('should disable the submit button.', function() {
+    var methodWasCalled = false;
+
+    _toBeEnabled = function(theButton, toEnable) {
+      methodWasCalled = theButton === _button &&
+        toEnable === false;
+    };
+
+    callMethod();
+
+    expect(methodWasCalled).toBe(true);
+  });
 
   it('should get the data from the form.', function() {
     var methodWasCalled = false;
@@ -179,6 +195,9 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
 
     expect(methodWasCalled).toBe(false);
   });
+
+
+
 
 
   it('should add the action to the values', function() {

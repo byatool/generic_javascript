@@ -14,14 +14,14 @@ goog.provide('src.test.control.formComponent.whenInitializingTheForm');
  */
 src.test.control.formComponent.whenInitializingTheForm.describe = function() {
   var Current_ = src.base.control.formComponent;
-  
-  
+
+
   //Fields
-  
+
   var FormComponent = src.base.control.formComponent;
   var FormId = goog.string.getRandomString();
   var SubmitToUrl_ = goog.string.getRandomString();
-  
+
   var appendChild_;
   var autoFillParameters_;
   var callBackFunction_;
@@ -56,25 +56,25 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     datepickerOptions_[FormComponent.DatepickerTextboxes] = {};
 
     findTheButton_ = function() {};
-    
+
     form_ = {};
     handleSubmit_ = function() {};
     setClick_ = function() {};
-    
+
     result_ = {};
     result_['form'] = form_;
     result_['messageBox'] = {};
-    
+
     setupTheForm_ = function() {
       return result_;
     };
-    
+
     validate_ = {};
     getElement_ = {};
     createMessageBox_ = {};
     appendChild_ = {};
     createDatepicker_ = {};
-    
+
     //Form fill options
     submitToParameters_ = {};
     autoFillParameters_ = {};
@@ -83,10 +83,10 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     callBackFunction_ = {};
     createTheRetrieveFormDataCallback_ = function() { return callBackFunction_; };
     fillTheRows_ = function() {};
-    setValue_ = function () {};
+    setValue_ = function() {};
     submitTheAutoFill_ = function() {};
   });
-  
+
   //Support Methods
   var callTheMethod_ = function() {
     FormComponent.initialize(FormId,
@@ -111,15 +111,15 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
                              createTheRetrieveFormDataCallback_,
                              fillTheRows_,
                              submitTheAutoFill_);
-    
-    
+
+
   };
-  
+
   //Test Methods
-  
+
   it('should set up the form.', function() {
     var methodWasCalled = false;
-    
+
     setupTheForm_ = function(formId, datepickerOptions, datepickerTextboxes, messageBoxName, getElement, createMessageBox, appendChild, createDatepicker, createTheRetrieveFormDataCallback_, fillTheRows_) {
       methodWasCalled = formId === FormId &&
         datepickerOptions === datepickerOptions_[FormComponent.DatepickerOptions] &&
@@ -132,65 +132,60 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
 
       return result_;
     };
-    
+
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should create the retreive data callback.', function() {
     var methodWasCalled = false;
-    
+
     createTheRetrieveFormDataCallback_ = function(form, fillMethod, setValue) {
       methodWasCalled = form === result_['form'] &&
         fillMethod === fillTheRows_ &&
         setValue === setValue_;
-      
+
       return callBackFunction_;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should retrieve the data for the form.', function() {
     var methodWasCalled = false;
-    
+
     submitTheAutoFill_ = function(url, parameter, callBackFunction) {
       methodWasCalled = url === autoFillParameters_[Current_.AutoFillUrl] &&
         parameter === autoFillParameters_[Current_.AutoFillParameters] &&
         callBackFunction === callBackFunction_;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should not retrieve the data if the autofill parameter is null.', function() {
     var methodWasCalled = false;
-    
+
     submitTheAutoFill_ = function() {
       methodWasCalled = true;
     };
 
     autoFillParameters_ = null;
-    
+
     callTheMethod_();
     
     expect(methodWasCalled).toBe(false);
   });
   
   
-  it('should create the click event handler.', function() {
-    expect('This').toBe('tested when possible.');
-  });
-
-
   it('should find the button.', function() {
 
     var methodWasCalled = false;
@@ -209,25 +204,13 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
 
     expect(methodWasCalled).toBe(true);
   });
-
-
-  /*
-  it('should find the button.', function() {
-    var methodWasCalled = false;
-
-    findTheButton_ = function(className, createdForm) {
-      methodWasCalled = className === FormComponent.ButtonClass &&
-        createdForm === form_;
-
-      return {};
-    };
-
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(true);
+  
+  
+  it('should create the click event handler.', function() {
+    expect('This').toBe('tested when possible.');
   });
-
-   */
+  
+  
 
 
   it('should set the button click.', function() {
