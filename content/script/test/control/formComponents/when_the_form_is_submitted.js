@@ -10,8 +10,8 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
   //Fields
   var FormComponent = src.base.control.formComponent;
   var FormAction = goog.string.getRandomString();
-
-  var _button;
+  
+  var button_;
   var _form;
   var _createTheResult;
   var _messageBox;
@@ -19,153 +19,172 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
   var _showElement;
   var _submitCallback;
   var _submitTheData;
-  var _toBeEnabled;
+  var toBeEnabled_;
   var _updateMessageBox;
-  var _validateAllValues;
-
-
+  var validateAllValues_;
+  
+  
   //Test Hooks
   beforeEach(function() {
     _form = {'action': FormAction};
     _messageBox = {};
     _submitCallback = {};
-    _button = {};
+    button_ = {};
     _retrieveFormValues = function() { return {}; };
-    _validateAllValues = function() { return []; };
+    validateAllValues_ = function() { return []; };
     _createTheResult = function() { return {}; };
     _updateMessageBox = function() { };
     _showElement = function() {};
     _submitTheData = function() {};
-    _toBeEnabled = function() {};
+    toBeEnabled_ = function() {};
   });
-
+  
   //Support Methods
-  var callMethod = function() {
-    FormComponent.handleSubmit(_form, _messageBox, _button, _retrieveFormValues, _validateAllValues, _createTheResult, _updateMessageBox, _showElement, _toBeEnabled, _submitTheData, _submitCallback);
+  var callTheMethod_ = function() {
+    FormComponent.handleSubmit(_form, _messageBox, button_, _retrieveFormValues, validateAllValues_, _createTheResult, _updateMessageBox, _showElement, toBeEnabled_, _submitTheData, _submitCallback);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should disable the submit button.', function() {
     var methodWasCalled = false;
-
-    _toBeEnabled = function(theButton, toEnable) {
-      methodWasCalled = theButton === _button &&
+    
+    toBeEnabled_ = function(theButton, toEnable) {
+      methodWasCalled = theButton === button_ &&
         toEnable === false;
     };
-
-    callMethod();
-
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
+  
   it('should get the data from the form.', function() {
     var methodWasCalled = false;
-
+    
     _retrieveFormValues = function(formToCheck) {
       methodWasCalled = formToCheck === _form;
-
+      
       return _form;
     };
     //goog.dom.forms.getFormDataMap
-    callMethod();
-
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should validate the data.', function() {
     var methodWasCalled = false;
     var data = {};
-
+    
     _retrieveFormValues = function() {
       return data;
     };
-
-    _validateAllValues = function(toValidate) {
+    
+    validateAllValues_ = function(toValidate) {
       methodWasCalled = toValidate === data;
     };
-
-    callMethod();
-
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create a result to send to the message box.', function() {
     var methodWasCalled = false;
     var errors = ['ads'];
-
-    _validateAllValues = function() {
+    
+    validateAllValues_ = function() {
       return errors;
     };
-
+    
     _createTheResult = function(list, success) {
       methodWasCalled = list === errors && !success;
     };
-
-    callMethod();
-
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
+  it('should enable the submit button on validation errors.', function() {
+    var methodWasCalled = false;
+    
+    validateAllValues_ = function() {
+      return ['asd'];
+    };
+    
+    toBeEnabled_ = function(button, enable) {
+      methodWasCalled = button === button_ &&
+        enable;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
   it('should update the message box.', function() {
     var methodWasCalled = false;
     var result = {};
-
-    _validateAllValues = function() {
+    
+    validateAllValues_ = function() {
       return ['ad'];
     };
-
+    
     _createTheResult = function() {
       return result;
     };
-
+    
     _updateMessageBox = function(messageBox, resultToCheck) {
       methodWasCalled = resultToCheck === result && messageBox === _messageBox;
     };
-
-    callMethod();
-
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should show the message box when there are errors.', function() {
     var methodWasCalled = false;
-
-    _validateAllValues = function() {
+    
+    validateAllValues_ = function() {
       return ['ad'];
     };
-
+    
     _showElement = function(element, show) {
       methodWasCalled = element === _messageBox && show;
     };
-
-    callMethod();
+    
+    callTheMethod_();
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should hide the message box if there are no errors.', function() {
     var methodWasCalled = false;
-
-
+    
+    
     _showElement = function(element, show) {
       methodWasCalled = element === _messageBox && !show;
     };
-
-    callMethod();
-
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
+  
   it('should submit the data if there are no errors.', function() {
     var methodWasCalled = false;
     var data = {};
-
+    
     _retrieveFormValues = function() {
       return data;
     };
@@ -174,7 +193,7 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
       methodWasCalled = data === dataToSend && callBack == _submitCallback;
     };
 
-    callMethod();
+    callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
   });
@@ -183,7 +202,7 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
   it('should not submit the data if there are errors', function() {
     var methodWasCalled = false;
 
-    _validateAllValues = function() {
+    validateAllValues_ = function() {
       return ['daf'];
     };
 
@@ -191,7 +210,7 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
       methodWasCalled = true;
     };
 
-    callMethod();
+    callTheMethod_();
 
     expect(methodWasCalled).toBe(false);
   });
@@ -208,7 +227,7 @@ src.test.control.formComponent.whenTheFormIsSubmitted.describe = function() {
       methodWasCalled = values.action === _form.action;
     };
 
-    callMethod();
+    callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
   });

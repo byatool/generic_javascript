@@ -175,14 +175,15 @@ src.base.control.formComponent.handleCallback = function(result, messageBox, but
  */
 src.base.control.formComponent.handleSubmit = function(form, messageBox, submitButton,  retrieveFormValues, validate, createAResult, updateTheMessageBox, showElement, toBeEnabled, submitMethod, callBack) {
   toBeEnabled(submitButton, false);
-
+  
   var values = retrieveFormValues(form);
   var errors = validate(values);
-
+  
   if (errors && errors.length > 0) {
     var result = createAResult(errors, false);
     updateTheMessageBox(messageBox, result);
     showElement(messageBox, true);
+    toBeEnabled(submitButton, true);
   }
   else {
     showElement(messageBox, false);
