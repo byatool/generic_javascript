@@ -48,6 +48,7 @@ src.test.control.dropDownList.whenCreatingAFillListHandler.describe = function()
   it('should fill the select without any default text', function() {
     var methodWasCalled = false;
     DefaultText_ = null;
+    
     fillASelect_ = function(select, data, defaultText) {
       methodWasCalled = select === select_ &&
         data === result_ &&

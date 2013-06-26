@@ -20,7 +20,7 @@ src.base.control.dropDownList.createFillListHandler = function(select, defaultTe
 
 
 /**
- 
+
  @param {string} controlId The id of the drop down list.
  @param {string} url The url for retrieving the needed items.
  @param {Array.<string>} parameters The parameters used to append to the url.
@@ -35,9 +35,9 @@ src.base.control.dropDownList.initialize = function(controlId, url, parameters, 
   getElement = getElement ? getElement : goog.dom.getElement;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
   fillTheList = fillTheList ? fillTheList : src.base.control.dropDownList.createFillListHandler;
-  
+
   var dropDownList = getElement(controlId);
-  
-  submitData(url, parameters, fillTheList(dropDownList, src.base.helper.domCreation.fillASelect$, defaultText));
+
+  submitData(url, parameters, fillTheList(dropDownList, defaultText, src.base.helper.domCreation.fillASelect$));
 };
 

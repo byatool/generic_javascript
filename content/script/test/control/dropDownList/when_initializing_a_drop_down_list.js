@@ -59,48 +59,48 @@ src.test.control.dropDownList.whenInitializingADropDownList.describe = function(
     expect(methodWasCalled).toBe(true);
   });
 
-
+  
   it('should create the needed method to fill the list.', function() {
     var methodWasCalled = false;
-
-    fillTheList_ = function(dropDownList, fillASelect, defaultItem) {
+    
+    fillTheList_ = function(dropDownList, defaultItem, fillASelect) {
       methodWasCalled = dropDownList === dropDownList_ &&
-        fillASelect === src.base.helper.domCreation.fillASelect$ &&
-        defaultItem === null;
+        defaultItem === null &&
+        fillASelect === src.base.helper.domCreation.fillASelect$;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should allow a default item text to be passed in.', function() {
     var methodWasCalled = false;
-
+    
     defaultItem_ = {};
-
-    fillTheList_ = function(dropDownList, fillASelect, defaultItem) {
+    
+    fillTheList_ = function(dropDownList, defaultItem, fillASelect) {
       methodWasCalled = dropDownList === dropDownList_ &&
-        fillASelect === src.base.helper.domCreation.fillASelect$ &&
-        defaultItem === defaultItem_;
+        defaultItem === defaultItem_ &&
+        fillASelect === src.base.helper.domCreation.fillASelect$ ;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should request for the data.', function() {
     var methodWasCalled = false;
-
-    submitData_ = function(url, parameters,  successMethod) {
+    
+    submitData_ = function(url, parameters, successMethod) {
       methodWasCalled = url === Url_ &&
         parameters === parameters_ &&
         successMethod === createdListFillMethod_;
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);

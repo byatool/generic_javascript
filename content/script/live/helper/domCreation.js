@@ -122,9 +122,9 @@ src.base.helper.domCreation.textbox = function(attributes, value) {
   attributes = attributes ? attributes : {};
   attributes['type'] = 'text';
   var textbox = goog.dom.createDom('input', attributes);
-
+  
   textbox.value = value ? value : '';
-
+  
   return textbox;
 };
 
@@ -134,10 +134,19 @@ src.base.helper.domCreation.textbox = function(attributes, value) {
 /**
  @param {Object} select The select control to fill.
  @param {Array.<Object>} data The array of objects to create options from.
+ @param {?string} defaultText This is the optional text that will be the first item text if it
+ is not null.
  @export
  */
-src.base.helper.domCreation.fillASelect$ = function(select, data) {
+src.base.helper.domCreation.fillASelect$ = function(select, data, defaultText) {
+  //TODO Should pull goog.dom.createDom so that the call can be tested, not the
+  // result
   if (data && data.length > 0) {
+    
+    if(defaultText !== null && defaultText !== undefined) {
+      select.add(goog.dom.createDom('option', {text: defaultText, value: ''}));
+    }
+      
     goog.array.forEach(data, function(item) {
       select.add(goog.dom.createDom('option', {text: item.text, value: item.value}));
     });
