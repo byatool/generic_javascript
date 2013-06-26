@@ -20,6 +20,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
   var location_;
   var messageBox_;
   var messageItem_;
+  var onClick_;
   var openWindow_;
   var postResult_;
   var showElement_;
@@ -48,6 +49,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     updateTheMessageBox_ = function() {};
     some_ = function() { return false; };
     toBeEnabled_ = function() {};
+    onClick_ = function() {};
   });
 
 
@@ -55,7 +57,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
 
 
   var callTheMethod_ = function() {
-    Current.handleCallback(postResult_, messageBox_, button_, filter_, some_, createAResult_, updateTheMessageBox_, showElement_, toBeEnabled_, openWindow_);
+    Current.handleCallback(postResult_, messageBox_, button_, onClick_, filter_, some_, createAResult_, updateTheMessageBox_, showElement_, toBeEnabled_, openWindow_);
   };
 
 
@@ -73,12 +75,53 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
 
+  it('should call the onClick method if the result is successful.', function() {
+    var methodWasCalled = false;
+    
+    filter_ = function(messages, lambda) {
+      return true;
+    };
+
+    some_ = function() {
+      return false;
+    };
+    
+    onClick_ = function() {
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not call the onClick method if the result is a failure.', function() {
+    var methodWasCalled = false;
+    
+    filter_ = function() {
+      return true;
+    };
+    
+    some_ = function(){
+      return true;
+    };
+    
+    onClick_ = function() {
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
+
 
   it('should create a result from the error messages.', function() {
     var methodWasCalled = false;
     var messageList = [messageItem_.Message];
     var wasFailure = true;
-
+    
     filter_ = function() {
       return messageList;
     };
@@ -88,9 +131,9 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     };
 
     createAResult_ = function(messages, success) {
-      methodWasCalled = messages === messageList && success == !wasFailure;
+      methodWasCalled = messages === messageList && success === !wasFailure;
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
@@ -110,7 +153,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 
@@ -128,7 +171,6 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
   });
 
 
-
   it('should reenable the button.', function() {
     var methodWasCalled = false;
 
@@ -141,6 +183,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
 
     expect(methodWasCalled).toBe(true);
   });
+
 
   it('should redirect when there are no errors.', function() {
     var methodWasCalled = false;

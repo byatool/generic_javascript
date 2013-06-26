@@ -11,7 +11,8 @@ goog.provide('src.base.helper.events');
   @export
   */
 src.base.helper.events.setOnBlur = function(element, whenSelected) {
-  goog.events.listen(element, goog.events.EventType.CHANGE, whenSelected, true);goog.events.listen(element, goog.events.EventType.BLUR, whenSelected, true);
+  goog.events.listen(element, goog.events.EventType.CHANGE, whenSelected, true);
+  goog.events.listen(element, goog.events.EventType.BLUR, whenSelected, true);
 };
 
 

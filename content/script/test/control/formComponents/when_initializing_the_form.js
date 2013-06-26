@@ -48,19 +48,19 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
   var submitToParameters_;
   var updateMessagesByResult_;
   var validate_;
-
+  
   //Test Hooks
   beforeEach(function() {
     datepickerOptions_ = {};
     datepickerOptions_[FormComponent.DatepickerOptions] = {};
     datepickerOptions_[FormComponent.DatepickerTextboxes] = {};
-
+    
     findTheButton_ = function() {};
-
+    
     form_ = {};
     handleSubmit_ = function() {};
     setClick_ = function() {};
-
+    
     result_ = {};
     result_['form'] = form_;
     result_['messageBox'] = {};
@@ -111,15 +111,15 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
                              createTheRetrieveFormDataCallback_,
                              fillTheRows_,
                              submitTheAutoFill_);
-
-
+    
+    
   };
-
+  
   //Test Methods
-
+  
   it('should set up the form.', function() {
     var methodWasCalled = false;
-
+    
     setupTheForm_ = function(formId, datepickerOptions, datepickerTextboxes, messageBoxName, getElement, createMessageBox, appendChild, createDatepicker, createTheRetrieveFormDataCallback_, fillTheRows_) {
       methodWasCalled = formId === FormId &&
         datepickerOptions === datepickerOptions_[FormComponent.DatepickerOptions] &&
@@ -155,7 +155,7 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
 
-
+  
   it('should retrieve the data for the form.', function() {
     var methodWasCalled = false;
 
@@ -179,7 +179,7 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     };
 
     autoFillParameters_ = null;
-
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(false);
@@ -187,10 +187,10 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
   
   
   it('should find the button.', function() {
-
+    
     var methodWasCalled = false;
     var form = {};
-
+    
     setupTheForm_ = function() {
       return {'form': form};
     };

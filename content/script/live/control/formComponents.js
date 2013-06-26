@@ -120,6 +120,7 @@ src.base.control.formComponent.fillTheFormElements = function(container, result,
  @param {Object} result The result from a form submital.
  @param {Object} messageBox The message box container element.
  @param {Object} button The form button to enable.
+ @param {function} onClick The function to call after a successful result.
  @param {function} filter This is the filter method to get all the message text.
  @param {function} some A check to see if at least on item matches the comparison.
  @param {function(Array.<string>, boolean) : Object} createAResult The method used to take in
@@ -130,7 +131,7 @@ src.base.control.formComponent.fillTheFormElements = function(container, result,
  @param {function(Objct, boolean}} toBeEnabled The method used to enable the submit button.
  @param {function(string)} openWindow The method used to redirect.
  */
-src.base.control.formComponent.handleCallback = function(result, messageBox, button, filter, some, createAResult, updateTheMessageBox, showElement, toBeEnabled, openWindow) {
+src.base.control.formComponent.handleCallback = function(result, messageBox, button, onClick, filter, some, createAResult, updateTheMessageBox, showElement, toBeEnabled, openWindow) {
   var Current = src.base.control.formComponent;
   var Constants = src.base.helper.constants;
 
@@ -142,6 +143,10 @@ src.base.control.formComponent.handleCallback = function(result, messageBox, but
     var errorsExist = some(result[Current.MessageItems], function(item) {
       return item['MessageType'] === Current.ErrorType;
     });
+
+    if (!errorsExist) {
+      onClick();
+    }
 
     updateTheMessageBox(messageBox, createAResult(justMessages, !errorsExist));
     showElement(messageBox, true);
@@ -175,10 +180,10 @@ src.base.control.formComponent.handleCallback = function(result, messageBox, but
  */
 src.base.control.formComponent.handleSubmit = function(form, messageBox, submitButton,  retrieveFormValues, validate, createAResult, updateTheMessageBox, showElement, toBeEnabled, submitMethod, callBack) {
   toBeEnabled(submitButton, false);
-  
+
   var values = retrieveFormValues(form);
   var errors = validate(values);
-  
+
   if (errors && errors.length > 0) {
     var result = createAResult(errors, false);
     updateTheMessageBox(messageBox, result);
@@ -335,6 +340,7 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
     handleCallback(formResult,
                    setupItems['messageBox'],
                    button,
+                   onClick,
                    goog.array.map,    //This needs to be added to the method signature.
                    goog.array.some,
                    createAResult,
