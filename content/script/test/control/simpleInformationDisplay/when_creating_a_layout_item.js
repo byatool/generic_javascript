@@ -18,6 +18,7 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
   var ColumnClass_ = goog.string.getRandomString();
   var ColumnText_ = goog.string.getRandomString();
   var Label_ = goog.string.getRandomString();
+  var LabelClass_ = goog.string.getRandomString();
   var LabelText_ = goog.string.getRandomString();
   var PropertyName_ = goog.string.getRandomString();
   var RowClass_ = goog.string.getRandomString();
@@ -36,6 +37,7 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
     options_ = {};
     options_[Current_.RowClass] = RowClass_;
     options_[Current_.ColumnClass] = ColumnClass_;
+    options_[Current_.LabelClass] = LabelClass_;
 
     layoutItem_ = {};
     layoutItem_[Current_.Label] = LabelText_;
@@ -75,7 +77,7 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
     
     createADiv_ = function(attributes, text) {
       methodWasCalled = methodWasCalled ||
-        (attributes['class'] === options_[Current_.ColumnClass] &&
+        (attributes['class'] === options_[Current_.LabelClass] &&
         text === layoutItem_[Current_.Label]);
     };
     
@@ -103,7 +105,7 @@ src.test.control.simpleInformationDisplay.whenCreatingALayoutItem.describe = fun
   
   it('should create a clear both div.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes, text) {
       methodWasCalled = methodWasCalled ||
         (attributes['class'] === 'clearBoth');

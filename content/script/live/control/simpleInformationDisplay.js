@@ -10,7 +10,6 @@ goog.provide('src.base.control.simpleInformationDisplay');
 
 /* Fields */
 
-
 /**
  @const
  @type {string}
@@ -25,6 +24,15 @@ src.base.control.simpleInformationDisplay.ColumnClass = 'ColumnClass';
  */
 src.base.control.simpleInformationDisplay.ContainerClass = 'ContainerClass';
 
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.simpleInformationDisplay.LabelClass = 'LabelClass';
+
+
 /**
  @const
  @type {string}
@@ -32,12 +40,14 @@ src.base.control.simpleInformationDisplay.ContainerClass = 'ContainerClass';
  */
 src.base.control.simpleInformationDisplay.ContainerId = 'ContainerId';
 
+
 /**
  @const
  @type {string}
  @export
  */
 src.base.control.simpleInformationDisplay.InformationColumn = 'InformationColumn';
+
 
 /**
  @const
@@ -82,7 +92,7 @@ src.base.control.simpleInformationDisplay.createLayoutItem = function(layoutInfo
   var Current_ = src.base.control.simpleInformationDisplay;
 
   var row = createADiv({'id': layoutInformation[Current_.PropertyName], 'class': options[Current_.RowClass]});
-  var labelColumn = createADiv({'class': options[Current_.ColumnClass]}, layoutInformation[Current_.Label]);
+  var labelColumn = createADiv({'class': options[Current_.LabelClass]}, layoutInformation[Current_.Label]);
   var valueColumn = createADiv({'class': options[Current_.ColumnClass] + ' ' + Current_.InformationColumn}, 'N/A');
   var clearBoth = createADiv({'class': 'clearBoth'});
 
@@ -122,15 +132,15 @@ src.base.control.simpleInformationDisplay.fillTheRows = function(container, resu
   //  Should at least pull classes.has, and dom.setTextContext into the method
   //  signature.
   goog.array.forEach(goog.object.getKeys(item), function(propertyName) {
-    
+
     var row = goog.dom.findNode(container, function(control) {
       return control['id'] === propertyName;
     });
-    
+
     var valueContainer = goog.dom.findNode(row, function(column) {
       return goog.dom.classes.has(column, Current_.InformationColumn);
     });
-    
+
     if (valueContainer) {
       setTextContent(valueContainer, item[propertyName] ? item[propertyName] : 'N/A');
     }
@@ -181,7 +191,7 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   });
 
   submitData(url, parameters, createTheCallBack(parentContainer, fillTheRows, setTextContent));
-  
+
   return parentContainer;
 };
 
@@ -201,7 +211,7 @@ src.base.control.simpleInformationDisplay.refresh = function(container, url, par
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
-  
+
   var callBack = createTheCallBack(container, fillTheRows, setTextContent);
   submitData(url, parameter, callBack);
 };
