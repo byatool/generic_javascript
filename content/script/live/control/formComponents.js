@@ -118,8 +118,10 @@ src.base.control.formComponent.fillTheFormElements = function(container, result,
 
 /**
  @param {Object} result The result from a form submital.
+ @param {Object} form The form the result belongs to.
  @param {Object} messageBox The message box container element.
  @param {Object} button The form button to enable.
+ @param {boolean} shouldResetFormOnSuccess This toggles whether to reset the form on success.
  @param {function} onClick The function to call after a successful result.
  @param {function} filter This is the filter method to get all the message text.
  @param {function} some A check to see if at least on item matches the comparison.
@@ -129,9 +131,10 @@ src.base.control.formComponent.fillTheFormElements = function(container, result,
  with a failure result.
  @param {function(Object, boolean} showElement The method used to show or hide an element.
  @param {function(Objct, boolean}} toBeEnabled The method used to enable the submit button.
+ @param {function} resetTheForm The function used to reset the form on success if directed to.
  @param {function(string)} openWindow The method used to redirect.
  */
-src.base.control.formComponent.handleCallback = function(result, messageBox, button, onClick, filter, some, createAResult, updateTheMessageBox, showElement, toBeEnabled, openWindow) {
+src.base.control.formComponent.handleCallback = function(result, form, messageBox, button, shouldResetFormOnSuccess, onClick, filter, some, createAResult, updateTheMessageBox, showElement, toBeEnabled, resetTheForm, openWindow) {
   var Current = src.base.control.formComponent;
   var Constants = src.base.helper.constants;
 
@@ -146,6 +149,10 @@ src.base.control.formComponent.handleCallback = function(result, messageBox, but
 
     if (!errorsExist) {
       onClick();
+    }
+
+    if (!errorsExist && shouldResetFormOnSuccess) {
+      resetTheForm(form);
     }
 
     updateTheMessageBox(messageBox, createAResult(justMessages, !errorsExist));
@@ -310,11 +317,11 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
   updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
   showElement = showElement ? showElement : goog.style.showElement;
   submitData = submitData ? submitData : DomHelper.submitData;
-
-
-
+  
+  
+  
   /* Actual Code */
-
+  
   var setupItems = setupTheForm(formId,
                                 datePickerOptions[Current.DatepickerOptions],
                                 datePickerOptions[Current.DatepickerTextboxes],
@@ -323,23 +330,25 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
                                 createMessageBox,
                                 appendChild,
                                 createDatepicker);
-
+  
   if (autoFillParameters) {
     var callBackToHandleReturnedFormData = createTheRetrieveFormDataCallback(setupItems['form'], fillTheRows, setValue);
     submitAutoFill(autoFillParameters[Current.AutoFillUrl], autoFillParameters[Current.AutoFillParameters], callBackToHandleReturnedFormData);
   }
-
+  
   var handleCallback = Current.handleCallback;
-
+  
   findTheButton = findTheButton ? findTheButton : goog.dom.getElementByClass;
   var button = findTheButton(Current.ButtonClass, setupItems['form']);
-
+  
   //Can't test...
   //Export this out to a method that creates a method?
   var whenFinished = function(formResult) {
     handleCallback(formResult,
+                   setupItems['form'],
                    setupItems['messageBox'],
                    button,
+                   true,
                    onClick,
                    goog.array.map,    //This needs to be added to the method signature.
                    goog.array.some,
@@ -347,10 +356,11 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
                    updateMessagesByResult,
                    showElement,
                    src.base.helper.domHelper.toBeEnabled,
+                   src.base.helper.domHelper.resetAForm,
                    function(url) {window.location = url;});
   };
-
-
+  
+  
   //Can't test...
   //Export this out to a method that creates a method?
   var whenClicked = function() {

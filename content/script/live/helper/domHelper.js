@@ -1,4 +1,5 @@
 goog.require('goog.Uri.QueryData');
+goog.require('goog.array');
 goog.require('goog.debug');
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
@@ -28,6 +29,32 @@ src.base.helper.domHelper.toBeEnabled = function(button, enabled, addRemove) {
   }
 };
 
+
+/**
+ @param {Object} form The form to reset.
+ @param {?function} findNodes The function used to find elements of a type.
+ @param {?function} getChildren The function used to get the select items.
+ @param {?function} setValue The function used to reset a select.
+ @export
+ */
+src.base.helper.domHelper.resetAForm = function(form, findNodes, getChildren, setValue) {
+  findNodes = findNodes ? findNodes : goog.dom.findNodes;
+  setValue = setValue ? setValue : goog.dom.forms.setValue;
+  getChildren = getChildren ? getChildren : goog.dom.getChildren;
+  
+  var textBoxes = findNodes(form, function(item) { return item.nodeName === 'INPUT' && item.type === 'text'; });
+  
+  goog.array.forEach(textBoxes, function(item){
+    setValue(item, '');
+  });
+  
+  var selects = findNodes(form, function(item) { return item.nodeName === 'SELECT'; });
+  
+  goog.array.forEach(selects, function(select){
+    var children = getChildren(select);
+    setValue(select, children[0]);
+  });
+};
 
 /**
  @param {!Object} parentDiv Parent element to check for child.

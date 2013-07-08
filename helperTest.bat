@@ -17,6 +17,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.helper.domCreation.whenCreatingTextbox" ^
 --namespace="src.test.helper.domCreation.whenFillingASelect" ^
 --namespace="src.test.helper.domHelper.whenRetrievingAChildById" ^
+--namespace="src.test.helper.domHelper.whenResettingAForm" ^
 --namespace="src.test.helper.domHelper.whenRetrievingSpecificDataFromADataMap" ^
 --namespace="src.test.helper.domHelper.whenEnablingAButton" ^
 --namespace="src.test.helper.events.whenSettingTheClickEvent" ^

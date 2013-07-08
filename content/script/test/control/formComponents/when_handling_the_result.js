@@ -17,12 +17,15 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
   var createAResult_;
   var createdResult_;
   var filter_;
+  var form_;
   var location_;
   var messageBox_;
   var messageItem_;
   var onClick_;
   var openWindow_;
   var postResult_;
+  var resetTheFormOnSuccess_;
+  var resetTheForm_;
   var showElement_;
   var some_;
   var toBeEnabled_;
@@ -30,8 +33,10 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
 
   //Test Hooks
   beforeEach(function() {
-    messageBox_ = {};
     button_ = {};
+    form_ = {};
+    messageBox_ = {};
+    resetTheFormOnSuccess_ = false;
 
     messageItem_ = {};
     messageItem_['Message'] = goog.string.getRandomString();
@@ -50,6 +55,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     some_ = function() { return false; };
     toBeEnabled_ = function() {};
     onClick_ = function() {};
+    resetTheForm_ = function() {};
   });
 
 
@@ -57,7 +63,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
 
 
   var callTheMethod_ = function() {
-    Current.handleCallback(postResult_, messageBox_, button_, onClick_, filter_, some_, createAResult_, updateTheMessageBox_, showElement_, toBeEnabled_, openWindow_);
+    Current.handleCallback(postResult_, form_, messageBox_, button_, resetTheFormOnSuccess_, onClick_, filter_, some_, createAResult_, updateTheMessageBox_, showElement_, toBeEnabled_, resetTheForm_, openWindow_);
   };
 
 
@@ -77,7 +83,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
 
   it('should call the onClick method if the result is successful.', function() {
     var methodWasCalled = false;
-    
+
     filter_ = function(messages, lambda) {
       return true;
     };
@@ -85,34 +91,34 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     some_ = function() {
       return false;
     };
-    
+
     onClick_ = function() {
       methodWasCalled = true;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should not call the onClick method if the result is a failure.', function() {
     var methodWasCalled = false;
-    
+
     filter_ = function() {
       return true;
     };
-    
-    some_ = function(){
+
+    some_ = function() {
       return true;
     };
-    
+
     onClick_ = function() {
       methodWasCalled = true;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(false);
   });
 
@@ -121,7 +127,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     var methodWasCalled = false;
     var messageList = [messageItem_.Message];
     var wasFailure = true;
-    
+
     filter_ = function() {
       return messageList;
     };
@@ -133,7 +139,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     createAResult_ = function(messages, success) {
       methodWasCalled = messages === messageList && success === !wasFailure;
     };
-    
+
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
@@ -153,7 +159,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     };
 
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
 
@@ -171,9 +177,39 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
   });
 
 
+  it('should clear the form on success if told to.', function() {
+    var methodWasCalled = false;
+    
+    resetTheFormOnSuccess_ = true;
+    
+    resetTheForm_ = function(formToReset) {
+      methodWasCalled = formToReset === form_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+  
+  it('should not clear the form on success if told to.', function() {
+    var methodWasCalled = false;
+    
+    resetTheFormOnSuccess_ = false;
+    
+    resetTheForm_ = function(formToReset) {
+      methodWasCalled = formToReset === form_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
+  
+  
   it('should reenable the button.', function() {
     var methodWasCalled = false;
-
+    
     toBeEnabled_ = function(theButton, toEnable) {
       methodWasCalled = theButton === button_ &&
         toEnable;
