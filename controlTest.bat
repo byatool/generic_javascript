@@ -17,6 +17,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.redirectList" ^
 --namespace="src.base.control.refreshPair" ^
 --namespace="src.base.control.simpleInformationDisplay" ^
+--namespace="src.base.control.tagContainer" ^
 --namespace="src.test.control.autocomplete.whenFormattingTheAutocompleteResultText" ^
 --namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
 --namespace="src.test.control.autocomplete.whenInitializingAnAutocomplete" ^
@@ -51,6 +52,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.simpleInformationDisplay.whenFillingTheRows" ^
 --namespace="src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisplay" ^
 --namespace="src.test.control.simpleInformationDisplay.whenRefreshingASimpleInformationDisplay" ^
+--namespace="src.test.control.tagContainer.whenInitializingATagContainer" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
