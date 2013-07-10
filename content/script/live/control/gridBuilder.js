@@ -88,16 +88,20 @@ src.base.control.gridBuilder.Url = 'url';
  @return {Object} The created row.
  @protected
  */
-src.base.control.gridBuilder.createARow = function(currentItem, mapping, createADiv, setTextContent, appendChild) { var current = src.base.control.gridBuilder;
-
+src.base.control.gridBuilder.createARow = function(currentItem, mapping, createADiv, setTextContent, appendChild) {
+  var current = src.base.control.gridBuilder;
   var currentRow = createADiv({'class' : current.RowClass });
-
+  
   goog.array.forEach(mapping, function(currentMapping) {
     var column = createADiv({'class' : current.ColumnClass});
     setTextContent(column, currentItem[currentMapping['propertyName']]);
     appendChild(currentRow, column);
   });
 
+  var clearBoth = createADiv({'class':'clearBoth'});
+  
+  appendChild(currentRow, clearBoth);
+  
   return currentRow;
 };
 
@@ -112,14 +116,19 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
  */
 src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, createADiv, setTextContent, appendChild) {
   var current = src.base.control.gridBuilder;
-
+  
   var headerRow = createADiv({'class': current.HeaderRowClass});
-
+  
   goog.array.forEach(mapping, function(currentMap) {
     var header = createADiv({'class': current.HeaderClass});
     setTextContent(header, currentMap['headerText']);
     appendChild(headerRow, header);
   });
+
+  var clearBoth = createADiv({'class':'clearBoth'});
+  appendChild(headerRow, clearBoth);
+  
+  appendChild(parentContainer, headerRow);
 };
 
 
@@ -181,7 +190,7 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
                                                    createTheHeaderRow, createRows, appendChild, setTextContent,
                                                    submitToUrl) {
   var Current = src.base.control.gridBuilder;
-
+  
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
   createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
@@ -190,13 +199,13 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-
-
+  
+  
   var parentContainer = createADiv({ 'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
   var resultHandler = createResultHandler(options[Current.Map], parentContainer, createTheHeaderRow, createRows,
                                           createARow, createADiv, appendChild, setTextContent);
-
+  
   submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
-
+  
   return parentContainer;
 };

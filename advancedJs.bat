@@ -11,6 +11,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.buttonList" ^
 --namespace="src.base.control.dropDownList" ^
 --namespace="src.base.control.formComponent" ^
+--namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.popupDatePicker" ^
 --namespace="src.base.control.refreshPair" ^

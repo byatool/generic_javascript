@@ -209,3 +209,15 @@ td.goog-date-picker-selected {
       color: white;
       float: left;
       width: 5em; }
+
+.gridBuilderHeaderRowClass {
+  background-color: blue; }
+  .gridBuilderHeaderRowClass .gridBuilderHeaderClass {
+    background-color: lime;
+    float: left; }
+
+.gridBuilderRowClass {
+  background-color: red; }
+  .gridBuilderRowClass .gridBuilderColumnClass {
+    background-color: #cccccc;
+    float: left; }
