@@ -38,6 +38,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function () {
     options_[Current_.ContainerId] = ContainerId_;
     options_[Current_.Url] = 'asdfsd';
     options_[Current_.Parameters] = {};
+    options_[Current_.Map] = [];
     
     appendChild_ = function(){};
     createADiv_ = function() { return parentContainer_; };
@@ -87,7 +88,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function () {
     createResultHandler_ = function(mapping, parentContainer, createTheHeaderRow, createRows, createARow,
                                     createADiv, appendChild, setTextContent) {
       
-      methodWasCalled = mapping === Current_.GridMapping &&
+      methodWasCalled = mapping === options_[Current_.Map] &&
         parentContainer === parentContainer_ &&
         createTheHeaderRow === createTheHeaderRow_ &&
         createRows === createRows_ &&
@@ -105,7 +106,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function () {
   
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-
+    
     var resultHandler = {};
     
     createResultHandler_ = function() {

@@ -49,6 +49,14 @@ src.base.control.gridBuilder.HeaderRowClass = 'gridBuilderHeaderRowClass';
  @type {string}
  @export
  */
+src.base.control.gridBuilder.Map = 'mapping';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.gridBuilder.Parameters = 'parameters';
 
 
@@ -68,10 +76,7 @@ src.base.control.gridBuilder.RowClass = 'gridBuilderRowClass';
 src.base.control.gridBuilder.Url = 'url';
 
 
-/**
- @protected
- */
-src.base.control.gridBuilder.GridMapping = [];
+//src.base.control.gridBuilder.GridMapping = [{'headerText':'Last Name', 'propertyName:'LastName}];
 
 
 /**
@@ -176,7 +181,7 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
                                                    createTheHeaderRow, createRows, appendChild, setTextContent,
                                                    submitToUrl) {
   var Current = src.base.control.gridBuilder;
-  
+
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
   createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
@@ -185,13 +190,13 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-  
-  
-  var parentContainer = createADiv({ 'id': options[Current.ContainerId],'class': options[Current.ContainerClass]});
-  var resultHandler = createResultHandler(Current.GridMapping, parentContainer, createTheHeaderRow, createRows,
+
+
+  var parentContainer = createADiv({ 'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
+  var resultHandler = createResultHandler(options[Current.Map], parentContainer, createTheHeaderRow, createRows,
                                           createARow, createADiv, appendChild, setTextContent);
-  
+
   submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
-  
+
   return parentContainer;
 };
