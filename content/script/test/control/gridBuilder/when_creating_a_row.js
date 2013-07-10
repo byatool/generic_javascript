@@ -6,11 +6,11 @@ goog.provide('src.test.control.gridBuilder.whenCreatingARow');
 /**
  @export
  */
-src.test.control.gridBuilder.whenCreatingARow.describe = function () {
+src.test.control.gridBuilder.whenCreatingARow.describe = function() {
   //Using
-
+  
   var Current_ = src.base.control.gridBuilder;
-
+  
   
   //Fields
   var appendChild_;
@@ -30,7 +30,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function () {
     nameColumn_ = {};
     professionColumn_ = {};
     row_ = {};
-
+    
     columnMapping_ = [
       {'headerText' : 'Name', 'propertyName': 'name'},
       {'headerText' : 'Profession', 'propertyName': 'profession'}
@@ -40,11 +40,11 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function () {
       {'name': 'Jim', 'profession': 'Dentist'}
     ];
 
-    
-    createADiv_ = function(){
+
+    createADiv_ = function() {
       var element;
-      
-      switch(createdCount_){
+
+      switch (createdCount_) {
       case 1:
         element = nameColumn_;
         break;
@@ -55,16 +55,16 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function () {
         element = row_;
         break;
       }
-      
+
       createdCount_ += 1;
-      
+
       return element;
     };
     
     setTextContent_ = function() {};
     appendChild_ = function() {};
   });
-
+  
   
   //Support Methods
   var callTheMethod_ = function() {
@@ -77,7 +77,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function () {
   it('should create a div for the result item.', function() {
     var methodWasCalled = 0;
     
-    createADiv_ = function(attributes){
+    createADiv_ = function(attributes) {
       methodWasCalled += attributes['class'] === Current_.RowClass;
     };
     
@@ -112,12 +112,12 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function () {
     
     expect(methodWasCalled).toBe(2);
   });
-
-
+  
+  
   
   it('should add the column to the parent row.', function() {
     var methodWasCalled = 0;
-
+    
     appendChild_ = function(parent, child) {
       methodWasCalled += parent === row_ &&
         (child === nameColumn_ || child === professionColumn_);
@@ -127,7 +127,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function () {
     
     expect(methodWasCalled).toBe(2);
   });
-
+  
   
   it('should return the row.', function() {
     
