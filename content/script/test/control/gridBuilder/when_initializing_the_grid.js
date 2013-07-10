@@ -9,7 +9,7 @@ goog.provide('src.test.control.gridBuilder.whenInitializingTheGrid');
 src.test.control.gridBuilder.whenInitializingTheGrid.describe = function () {
   //Using
   
-  var Current = src.base.control.gridBuilder;
+  var Current_ = src.base.control.gridBuilder;
   
   
   //Fields
@@ -17,28 +17,45 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function () {
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
   
-  var createADiv_;
   var options_;
   var parentContainer_;
-
+  
+  var createADiv_;
+  var createARow_;
+  var createResultHandler_;
+  var createTheHeaderRow_;
+  var createRows_;
+  var appendChild_;
+  var setTextContent_;
+  var submitToUrl_;
+  
   
   //Test Hooks
-
+  
   beforeEach(function() {
     options_ = {};
-    options_[Current.ContainerClass] = ContainerClass_;
-    options_[Current.ContainerId] = ContainerId_;
+    options_[Current_.ContainerClass] = ContainerClass_;
+    options_[Current_.ContainerId] = ContainerId_;
+    options_[Current_.Url] = 'asdfsd';
+    options_[Current_.Parameters] = {};
     
-    createADiv_ = function() {
-      return parentContainer_;
-    };
+    appendChild_ = function(){};
+    createADiv_ = function() { return parentContainer_; };
+    createARow_ = function(){};
+    createResultHandler_ = function(){};
+    createTheHeaderRow_ = function(){};
+    createRows_ = function(){};
+    setTextContent_ = function(){};
+    submitToUrl_ = function() {};
   });
   
   
   //Support Methods
-
+  
   var callTheMethod_ = function() {
-    return src.base.control.gridBuilder.initialize(options_, createADiv_);
+    return Current_.initialize(options_, createARow_, createADiv_, createResultHandler_,
+                               createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
+                               submitToUrl_);
   };
   
   
@@ -60,6 +77,50 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function () {
   
   it('should return the container div.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);
+  });
+  
+  
+  
+  it('should create the result handler.', function() {
+    var methodWasCalled = false;
+    
+    createResultHandler_ = function(mapping, parentContainer, createTheHeaderRow, createRows, createARow,
+                                    createADiv, appendChild, setTextContent) {
+      
+      methodWasCalled = mapping === Current_.GridMapping &&
+        parentContainer === parentContainer_ &&
+        createTheHeaderRow === createTheHeaderRow_ &&
+        createRows === createRows_ &&
+        createARow === createARow_ &&
+        createADiv === createADiv_ &&
+        appendChild === appendChild_ &&
+        setTextContent === setTextContent_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should retrieve the information.', function() {
+    var methodWasCalled = false;
+
+    var resultHandler = {};
+    
+    createResultHandler_ = function() {
+      return resultHandler;
+    };
+    
+    submitToUrl_ = function(url, parameters, handler) {
+      methodWasCalled = url === options_[Current_.Url] &&
+        parameters === options_[Current_.Parameters] &&
+        handler === resultHandler;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
   });
 };
 
