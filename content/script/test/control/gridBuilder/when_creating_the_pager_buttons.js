@@ -19,6 +19,8 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
 
   var appendChild_;
   var buttonsCreated_;
+  var buttonRow_;
+  var clearBoth_;
   var copyOptions_;
   var createADiv_;
   var nextButton_;
@@ -43,22 +45,34 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     result_['NextPage'] = NextPage_;
     parentContainer_ = {};
 
+    buttonRow_ = {};
+    clearBoth_ = {};
     options_ = {};
     nextButton_ = {'id': 'next'};
     previousButton_ = {'id': 'previous'};
 
     buttonsCreated_ = 0;
 
-    createADiv_ = function() {
-      if (buttonsCreated_ === 0) {
-        buttonsCreated_ += 1;
-        return previousButton_;
+    createADiv_ = function(attributes) {
+      if (attributes['class'] === Current_.PagerClass) {
+        if (buttonsCreated_ === 0) {
+          buttonsCreated_ += 1;
+          return previousButton_;
+        }
+        else {
+          return nextButton_;
+        }
       }
       else {
-        return nextButton_;
+
+        if (attributes['class'] === 'clearBoth') {
+          return clearBoth_;
+        }
+        else {
+          return buttonRow_;
+        }
       }
     };
-
 
     nextOptions_ = {'id': 'next'};
     previousOptions_ = {'id': 'previous'};
@@ -86,9 +100,12 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
 
   //Test Methods
 
+
+
+
   it('should create the two buttons.', function() {
     var methodWasCalled = 0;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled += attributes['class'] === Current_.PagerClass;
     };
@@ -145,19 +162,82 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   });
 
 
-  it('should add the buttons to the container', function() {
-    var methodWasCalled = 0;
+  it('should create the button row.', function() {
+    var methodWasCalled = false;
 
-    appendChild_ = function(parent, child) {
-      methodWasCalled += parent === parentContainer_ &&
-        (child === previousButton_ || child === nextButton_);
+    createADiv_ = function(attributes) {
+      methodWasCalled = methodWasCalled ||
+        attributes['class'] === Current_.ButtonRowClass;
+
+      return {};
     };
 
     callTheMethod_();
 
+    expect(methodWasCalled).toBe(true);
+  });
+   
+  
+  it('should add the buttons to the button row.', function() {
+    var methodWasCalled = 0;
+    
+    appendChild_ = function(parent, child) {
+      methodWasCalled += parent === buttonRow_ &&
+        (child === previousButton_ || child === nextButton_);
+    };
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(2);
   });
+  
+  
+  it('should create the clear div.', function() {
+    var methodWasCalled = false;
+    
+    createADiv_ = function(attributes) {
+      
+      methodWasCalled = methodWasCalled ||
+        attributes['class'] === 'clearBoth';
+      
+      return {};
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
 
+   
+  it('should add the clear div to the button row.', function() {
+    var methodWasCalled = false;
+
+    appendChild_ = function(parent, child) {
+      methodWasCalled = methodWasCalled ||
+        (parent === buttonRow_ && child === clearBoth_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should append the button row.', function() {
+    var methodWasCalled = false;
+    
+    appendChild_ = function(parent, child) {
+      methodWasCalled = methodWasCalled ||
+        (parent === parentContainer_ && child === buttonRow_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
 };
 
 

@@ -4,6 +4,16 @@ goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.gridBuilder');
 
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.gridBuilder.ButtonRowClass = 'gridBuilderButtonRowClass';
+
+
 /**
  @const
  @type {string}
@@ -26,6 +36,8 @@ src.base.control.gridBuilder.ContainerClass = 'containerClass';
  @export
  */
 src.base.control.gridBuilder.ContainerId = 'containerId';
+
+
 
 
 /**
@@ -119,7 +131,7 @@ src.base.control.gridBuilder.copyOptions = function(optionToCopy, pageNumber) {
   var newParameters = {};
   newOptions[current.Parameters] = newParameters;
   newOptions[current.Parameters][current.ParametersPageAttribute] = pageNumber;
-
+  
   return newOptions;
 };
 
@@ -138,7 +150,7 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
 
   var current = src.base.control.gridBuilder;
   var currentRow = createADiv({'class' : current.RowClass });
-
+  
   goog.array.forEach(mapping, function(currentMapping) {
     var column = createADiv({'class' : current.ColumnClass});
     setTextContent(column, currentItem[currentMapping['propertyName']]);
@@ -168,21 +180,32 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
 src.base.control.gridBuilder.createPagerButtons = function(result, options, parentContainer, createADiv,
                                                            appendChild, setClick, setTextContent, copyOptions,
                                                            refresh) {
-
+  
   var current = src.base.control.gridBuilder;
-
+  
+  
   var previousButton = createADiv({'class': current.PagerClass});
   setTextContent(previousButton, '<');
   var previousOptions = copyOptions(options, result['PreviousPage']);
   setClick(previousButton, function() { refresh(previousOptions, parentContainer); });
-  appendChild(parentContainer, previousButton);
-
-
+  
+  
   var nextButton = createADiv({'class': current.PagerClass});
   setTextContent(nextButton, '>');
   var nextOptions = copyOptions(options, result['NextPage']);
   setClick(nextButton, function() { refresh(nextOptions, parentContainer); });
-  appendChild(parentContainer, nextButton);
+  
+  
+  var containerRow = createADiv({'class': current.ButtonRowClass});
+  appendChild(containerRow, previousButton);
+  appendChild(containerRow, nextButton);
+
+  
+  var clearDiv = createADiv({'class': 'clearBoth'});
+  appendChild(containerRow, clearDiv);
+
+  
+  appendChild(parentContainer, containerRow);
 };
 
 /**
