@@ -20,9 +20,11 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
   var ContainerId_ = goog.string.getRandomString();
   var PageNumber_ = goog.string.getRandomString();
   var Url_ = goog.string.getRandomString();
-  
+
+  var mapping_;
   var optionToCopy_;
   var parameters_;
+  
   
   //Test Hooks
   beforeEach(function() {
@@ -35,6 +37,9 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
     optionToCopy_[Current_.ContainerId] = ContainerId_;
     optionToCopy_[Current_.Url] = Url_;
     optionToCopy_[Current_.Parameters] = parameters_;
+
+    mapping_ = {};
+    optionToCopy_[Current_.Map] = mapping_;
   });
   
   //Support Methods
@@ -62,6 +67,11 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
   
   it('should set the parameter page number.', function() {
     expect(callTheMethod_()[Current_.Parameters][Current_.ParametersPageAttribute]).toBe(PageNumber_);
+  });
+  
+  
+  it('should set the mapping.', function() {
+    expect(callTheMethod_()[Current_.Map]).toBe(mapping_);
   });
   
   

@@ -49,6 +49,14 @@ src.base.control.gridBuilder.HeaderRowClass = 'gridBuilderHeaderRowClass';
  @type {string}
  @export
  */
+src.base.control.gridBuilder.ListProperty = 'List';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.gridBuilder.Map = 'mapping';
 
 
@@ -102,16 +110,16 @@ src.base.control.gridBuilder.Url = 'url';
  */
 src.base.control.gridBuilder.copyOptions = function(optionToCopy, pageNumber) {
   var current = src.base.control.gridBuilder;
-  
+
   var newOptions = {};
   newOptions[current.ContainerClass] = optionToCopy[current.ContainerClass];
   newOptions[current.ContainerId] = optionToCopy[current.ContainerId];
   newOptions[current.Url] = optionToCopy[current.Url];
-  
+  newOptions[current.Map] = optionToCopy[current.Map];
   var newParameters = {};
   newOptions[current.Parameters] = newParameters;
   newOptions[current.Parameters][current.ParametersPageAttribute] = pageNumber;
-  
+
   return newOptions;
 };
 
@@ -127,20 +135,20 @@ src.base.control.gridBuilder.copyOptions = function(optionToCopy, pageNumber) {
  */
 src.base.control.gridBuilder.createARow = function(currentItem, mapping, createADiv,
                                                    setTextContent, appendChild) {
-  
+
   var current = src.base.control.gridBuilder;
   var currentRow = createADiv({'class' : current.RowClass });
-  
+
   goog.array.forEach(mapping, function(currentMapping) {
     var column = createADiv({'class' : current.ColumnClass});
     setTextContent(column, currentItem[currentMapping['propertyName']]);
     appendChild(currentRow, column);
   });
-  
+
   var clearBoth = createADiv({'class': 'clearBoth'});
-  
+
   appendChild(currentRow, clearBoth);
-  
+
   return currentRow;
 };
 
@@ -160,20 +168,20 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
 src.base.control.gridBuilder.createPagerButtons = function(result, options, parentContainer, createADiv,
                                                            appendChild, setClick, setTextContent, copyOptions,
                                                            refresh) {
-  
+
   var current = src.base.control.gridBuilder;
-  
+
   var previousButton = createADiv({'class': current.PagerClass});
   setTextContent(previousButton, '<');
   var previousOptions = copyOptions(options, result['PreviousPage']);
-  setClick(previousButton, function() { refresh(previousOptions); });
+  setClick(previousButton, function() { refresh(previousOptions, parentContainer); });
   appendChild(parentContainer, previousButton);
-  
-  
+
+
   var nextButton = createADiv({'class': current.PagerClass});
   setTextContent(nextButton, '>');
   var nextOptions = copyOptions(options, result['NextPage']);
-  setClick(nextButton, function() { refresh(nextOptions); });
+  setClick(nextButton, function() { refresh(nextOptions, parentContainer); });
   appendChild(parentContainer, nextButton);
 };
 
@@ -187,22 +195,22 @@ src.base.control.gridBuilder.createPagerButtons = function(result, options, pare
  */
 src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, createADiv,
                                                            setTextContent, appendChild) {
-  
+
   var current = src.base.control.gridBuilder;
-  
+
   var headerRow = createADiv({'class': current.HeaderRowClass});
-  
+
   goog.array.forEach(mapping, function(currentMap) {
     var header = createADiv({'class': current.HeaderClass});
     setTextContent(header, currentMap['headerText']);
     appendChild(headerRow, header);
   });
-  
+
   var clearBoth = createADiv({'class': 'clearBoth'});
   appendChild(headerRow, clearBoth);
-  
+
   appendChild(parentContainer, headerRow);
-  
+
 };
 
 
@@ -219,8 +227,9 @@ src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContai
 src.base.control.gridBuilder.createRows = function(result, parentContainer, mapping,
                                                    createADiv, appendChild, createARow,
                                                    setTextContent) {
-  
-  goog.array.forEach(result, function(item) {
+  var current = src.base.control.gridBuilder;
+
+  goog.array.forEach(result[current.ListProperty], function(item) {
     var currentRow = createARow(item, mapping, createADiv, setTextContent, appendChild);
     appendChild(parentContainer, currentRow);
   });
@@ -249,14 +258,14 @@ src.base.control.gridBuilder.createTheResultHandler = function(options, parentCo
                                                                setTextContent, refresh, setClick,
                                                                createPagerButtons, copyOptions) {
   var current = src.base.control.gridBuilder;
-  
+
   return function(result) {
     createTheHeaderRow(options[current.Map], parentContainer, createADiv, setTextContent, appendChild);
     createRows(result, parentContainer, options[current.Map], createADiv, appendChild, createARow, setTextContent);
-    
+
     createPagerButtons(result, options, parentContainer, createADiv, appendChild,
                        setClick, setTextContent, copyOptions, refresh);
-    
+
   };
 };
 
@@ -288,16 +297,16 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-  
-  
+
+
   var parentContainer = createADiv({ 'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
   var resultHandler = createResultHandler(options, parentContainer, createTheHeaderRow, createRows,
                                           createARow, createADiv, appendChild, setTextContent,
                                           Current.refresh, src.base.helper.events.setClick,
                                           Current.createPagerButtons, Current.copyOptions);
-  
+
   submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
-  
+
   return parentContainer;
 };
 
@@ -322,7 +331,7 @@ src.base.control.gridBuilder.refresh = function(options, grid, removeChildren, c
                                                 createResultHandler, createTheHeaderRow, createRows,
                                                 appendChild, setTextContent, submitToUrl) {
   var Current = src.base.control.gridBuilder;
-  
+
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
   createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
@@ -332,11 +341,11 @@ src.base.control.gridBuilder.refresh = function(options, grid, removeChildren, c
   removeChildren = removeChildren ? removeChildren : goog.dom.removeChildren;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-  
+
   //setClick
-  
-  
-  
+
+
+
   removeChildren(grid);
   var resultHandler = createResultHandler(options, grid, createTheHeaderRow, createRows,
                                           createARow, createADiv, appendChild, setTextContent,
