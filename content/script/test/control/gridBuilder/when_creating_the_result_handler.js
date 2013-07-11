@@ -8,7 +8,7 @@ goog.provide('src.test.control.gridBuilder.whenCreatingTheResultHandler');
 src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() {
 
   //Using
-  var Current = src.base.control.gridBuilder;
+  var Current_ = src.base.control.gridBuilder;
 
 
   //Fields
@@ -18,6 +18,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var createRows_;
   var createTheHeaderRow_;
   var mapping_;
+  var options_;
   var parentContainer_;
   var result_;
   var setTextContent_;
@@ -26,7 +27,11 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   //Test Hooks
 
   beforeEach(function() {
+
     mapping_ = {};
+    options_ = {};
+    options_[Current_.Map] = mapping_;
+
     parentContainer_ = {};
     result_ = {};
 
@@ -40,7 +45,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
 
   //Support Methods
   var callTheMethod_ = function() {
-    return src.base.control.gridBuilder.createTheResultHandler(mapping_, parentContainer_, createTheHeaderRow_,
+    return src.base.control.gridBuilder.createTheResultHandler(options_, parentContainer_, createTheHeaderRow_,
                                                                createRows_, createARow_, createADiv_, appendChild_,
                                                                setTextContent_)(result_);
   };

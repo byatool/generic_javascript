@@ -1,37 +1,37 @@
 goog.require('goog.string');
 goog.require('src.base.control.buttonList');
 
-goog.provide('src.test.control.gridBuilder.whenInitializingTheGrid');
+goog.provide('src.test.control.gridBuilder.whenRefreshingTheGrid');
 
 /**
  @export
  */
-src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
+src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   //Using
-  
+
   var Current_ = src.base.control.gridBuilder;
-  
-  
+
+
   //Fields
-  
+
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
-  
-  var options_;
-  var parentContainer_;
-  
+
+  var appendChild_;
   var createADiv_;
   var createARow_;
   var createResultHandler_;
-  var createTheHeaderRow_;
   var createRows_;
-  var appendChild_;
+  var createTheHeaderRow_;
+  var grid_;
+  var options_;
+  var removeChildren_;
   var setTextContent_;
   var submitToUrl_;
-  
-  
+
+
   //Test Hooks
-  
+
   beforeEach(function() {
     options_ = {};
     options_[Current_.ContainerClass] = ContainerClass_;
@@ -39,22 +39,25 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     options_[Current_.Url] = 'asdfsd';
     options_[Current_.Parameters] = {};
     options_[Current_.Map] = [];
-    
+
+    grid_ = {};
+
     appendChild_ = function() {};
-    createADiv_ = function() { return parentContainer_; };
+    createADiv_ = function() {};
     createARow_ = function() {};
     createResultHandler_ = function() {};
     createTheHeaderRow_ = function() {};
     createRows_ = function() {};
+    removeChildren_ = function() {};
     setTextContent_ = function() {};
     submitToUrl_ = function() {};
   });
-  
-  
+
+
   //Support Methods
-  
+
   var callTheMethod_ = function() {
-    return Current_.initialize(options_, createARow_, createADiv_, createResultHandler_,
+    return Current_.refresh(options_, grid_, removeChildren_, createARow_, createADiv_, createResultHandler_,
                                createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
                                submitToUrl_);
   };
@@ -62,24 +65,19 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   
   //Test Methods
   
-  it('should create the container div.', function() {
+  
+  
+  it('should remove all rows..', function() {
     var methodWasCalled = false;
     
-    createADiv_ = function(attributes) {
-      methodWasCalled = attributes['id'] === ContainerId_ &&
-        attributes['class'] === ContainerClass_;
+    removeChildren_ = function(parent) {
+      methodWasCalled = parent === grid_;
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-  
-  
-  it('should return the container div.', function() {
-    expect(callTheMethod_()).toBe(parentContainer_);
-  });
-  
   
   
   it('should create the result handler.', function() {
@@ -89,7 +87,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
                                     createADiv, appendChild, setTextContent, refresh) {
       
       methodWasCalled = options === options_ &&
-        parentContainer === parentContainer_ &&
+        parentContainer === grid_ &&
         createTheHeaderRow === createTheHeaderRow_ &&
         createRows === createRows_ &&
         createARow === createARow_ &&
@@ -100,33 +98,33 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     };
     
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-
+    
     var resultHandler = {};
-
+    
     createResultHandler_ = function() {
       return resultHandler;
     };
-
+    
     submitToUrl_ = function(url, parameters, handler) {
       methodWasCalled = url === options_[Current_.Url] &&
         parameters === options_[Current_.Parameters] &&
         handler === resultHandler;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 };
 
 
-describe('When initializing the grid, it', function() {
-  src.test.control.gridBuilder.whenInitializingTheGrid.describe();
+describe('When refreshing the grid, it', function() {
+  src.test.control.gridBuilder.whenRefreshingTheGrid.describe();
 });

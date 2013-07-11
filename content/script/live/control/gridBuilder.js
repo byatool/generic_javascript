@@ -76,9 +76,6 @@ src.base.control.gridBuilder.RowClass = 'gridBuilderRowClass';
 src.base.control.gridBuilder.Url = 'url';
 
 
-//src.base.control.gridBuilder.GridMapping = [{'headerText':'Last Name', 'propertyName:'LastName}];
-
-
 /**
  @param {Object} currentItem The current item from the list of results.
  @param {Array.<Object>} mapping The table mapping used to find the column headers.
@@ -88,18 +85,20 @@ src.base.control.gridBuilder.Url = 'url';
  @return {Object} The created row.
  @protected
  */
-src.base.control.gridBuilder.createARow = function(currentItem, mapping, createADiv, setTextContent, appendChild) {
+src.base.control.gridBuilder.createARow = function(currentItem, mapping, createADiv,
+                                                   setTextContent, appendChild) {
+
   var current = src.base.control.gridBuilder;
   var currentRow = createADiv({'class' : current.RowClass });
-  
+
   goog.array.forEach(mapping, function(currentMapping) {
     var column = createADiv({'class' : current.ColumnClass});
     setTextContent(column, currentItem[currentMapping['propertyName']]);
     appendChild(currentRow, column);
   });
 
-  var clearBoth = createADiv({'class':'clearBoth'});
-  
+  var clearBoth = createADiv({'class': 'clearBoth'});
+
   appendChild(currentRow, clearBoth);
   
   return currentRow;
@@ -114,20 +113,22 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
  @param {function} appendChild The function used to add an element to a parent element.
  @protected
  */
-src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, createADiv, setTextContent, appendChild) {
+src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, createADiv,
+                                                           setTextContent, appendChild) {
+
   var current = src.base.control.gridBuilder;
   
   var headerRow = createADiv({'class': current.HeaderRowClass});
-  
+
   goog.array.forEach(mapping, function(currentMap) {
     var header = createADiv({'class': current.HeaderClass});
     setTextContent(header, currentMap['headerText']);
     appendChild(headerRow, header);
   });
-
-  var clearBoth = createADiv({'class':'clearBoth'});
-  appendChild(headerRow, clearBoth);
   
+  var clearBoth = createADiv({'class': 'clearBoth'});
+  appendChild(headerRow, clearBoth);
+
   appendChild(parentContainer, headerRow);
 };
 
@@ -142,7 +143,10 @@ src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContai
  @param {function} setTextContent The function used to set a div's text.
  @protected
  */
-src.base.control.gridBuilder.createRows = function(result, parentContainer, mapping, createADiv, appendChild, createARow,  setTextContent) {
+src.base.control.gridBuilder.createRows = function(result, parentContainer, mapping,
+                                                   createADiv, appendChild, createARow,
+                                                   setTextContent) {
+  
   goog.array.forEach(result, function(item) {
     var currentRow = createARow(item, mapping, createADiv, setTextContent, appendChild);
     appendChild(parentContainer, currentRow);
@@ -151,7 +155,7 @@ src.base.control.gridBuilder.createRows = function(result, parentContainer, mapp
 
 
 /**
- @param {Object} mapping The various columns represented by an object.
+ @param {Object} options The options that are used to construct the grid.
  @param {Object} parentContainer The container to add the rows too.
  @param {?function} createTheHeaderRow The function used to create only the header of the grid.
  @param {?function} createRows The function used to create all but the header row.
@@ -162,18 +166,21 @@ src.base.control.gridBuilder.createRows = function(result, parentContainer, mapp
  @return {Object} The created result handler.
  @protected
  */
-src.base.control.gridBuilder.createTheResultHandler = function(mapping, parentContainer, createTheHeaderRow,
+src.base.control.gridBuilder.createTheResultHandler = function(options, parentContainer, createTheHeaderRow,
                                                                createRows, createARow, createADiv, appendChild,
                                                                setTextContent) {
+  
+  var current = src.base.control.gridBuilder;
+  
   return function(result) {
-    createTheHeaderRow(mapping, parentContainer, createADiv, setTextContent, appendChild);
-    createRows(result, parentContainer, mapping, createADiv, appendChild, createARow, setTextContent);
+    createTheHeaderRow(options[current.Map], parentContainer, createADiv, setTextContent, appendChild);
+    createRows(result, parentContainer, options[current.Map], createADiv, appendChild, createARow, setTextContent);
   };
 };
 
 
 /**
- @param {Object} options The options that are used to construct the form.
+ @param {Object} options The options that are used to construct the grid.
  @param {?function} createARow The function used to create each non header row.
  @param {?function} createADiv The method used to create a div element.
  @param {?function} createResultHandler The function used to create the call back method when posting to the
@@ -202,10 +209,51 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
   
   
   var parentContainer = createADiv({ 'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-  var resultHandler = createResultHandler(options[Current.Map], parentContainer, createTheHeaderRow, createRows,
-                                          createARow, createADiv, appendChild, setTextContent);
+  var resultHandler = createResultHandler(options, parentContainer, createTheHeaderRow, createRows,
+                                          createARow, createADiv, appendChild, setTextContent,
+                                         Current.refresh);
   
   submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
   
   return parentContainer;
+};
+
+
+/**
+ @param {Object} options The options that are used to construct the form.
+ @param {Object} grid The parent grid.
+ @param {?function} removeChildren The function used to remove all rows from the grid.
+ @param {?function} createARow The function used to create each non header row.
+ @param {?function} createADiv The method used to create a div element.
+ @param {?function} createResultHandler The function used to create the call back method when posting to the
+ server.
+ @param {?function} createTheHeaderRow The function used to create only the header of the grid.
+ @param {?function} createRows The function used to create all but the header row.
+ @param {?function} appendChild The method used to append a child to a parent element.
+ @param {?function} setTextContent The function used to set the text of a div.
+ @param {?function} submitToUrl The function used to post, and receive the data.
+ @return {Object} The created grid.
+ @export
+ */
+src.base.control.gridBuilder.refresh = function(options, grid, removeChildren, createARow, createADiv,
+                                                createResultHandler, createTheHeaderRow, createRows,
+                                                appendChild, setTextContent, submitToUrl) {
+  var Current = src.base.control.gridBuilder;
+  
+  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+  createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
+  createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
+  createRows = createRows ? createRows : Current.createRows;
+  createARow = createARow ? createARow : Current.createARow;
+  appendChild = appendChild ? appendChild : goog.dom.appendChild;
+  removeChildren = removeChildren ? removeChildren : goog.dom.removeChildren;
+  setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
+  submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
+  
+  removeChildren(grid);
+  var resultHandler = createResultHandler(options, grid, createTheHeaderRow, createRows,
+                                          createARow, createADiv, appendChild, setTextContent,
+                                         Current.refresh);
+  
+  submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
 };

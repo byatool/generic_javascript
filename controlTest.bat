@@ -34,10 +34,12 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.formComponent.whenSettingUpAForm" ^
 --namespace="src.test.control.formComponent.whenTheFormIsSubmitted" ^
 --namespace="src.test.control.gridBuilder.whenCreatingARow" ^
+--namespace="src.test.control.gridBuilder.whenCreatingThePagerButtons" ^
 --namespace="src.test.control.gridBuilder.whenCreatingRows" ^
 --namespace="src.test.control.gridBuilder.whenCreatingTheHeaderRow" ^
---namespace="src.test.control.gridBuilder.whenInitializingTheGrid" ^
 --namespace="src.test.control.gridBuilder.whenCreatingTheResultHandler" ^
+--namespace="src.test.control.gridBuilder.whenInitializingTheGrid" ^
+--namespace="src.test.control.gridBuilder.whenRefreshingTheGrid" ^
 --namespace="src.test.control.messageBox.whenClearingTheMessages" ^
 --namespace="src.test.control.messageBox.whenCreatingAMessageBox" ^
 --namespace="src.test.control.messageBox.whenCreatingAResult" ^
