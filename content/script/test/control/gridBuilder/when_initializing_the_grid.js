@@ -58,35 +58,36 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
                                createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
                                submitToUrl_);
   };
-  
+
   
   //Test Methods
-  
+
   it('should create the container div.', function() {
     var methodWasCalled = false;
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled = attributes['id'] === ContainerId_ &&
         attributes['class'] === ContainerClass_;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should return the container div.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);
   });
-  
-  
-  
+
+
+
   it('should create the result handler.', function() {
     var methodWasCalled = false;
-    
+
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
-                                    createADiv, appendChild, setTextContent, refresh) {
+                                    createADiv, appendChild, setTextContent, refresh, setClick,
+                                    createPagerButtons, copyOptions) {
       
       methodWasCalled = options === options_ &&
         parentContainer === parentContainer_ &&
@@ -96,30 +97,33 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         setTextContent === setTextContent_ &&
-        refresh === src.base.control.gridBuilder.refresh;
+        refresh === src.base.control.gridBuilder.refresh &&
+        setClick === src.base.helper.events.setClick &&
+        createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
+        copyOptions === src.base.control.gridBuilder.copyOptions;
     };
     
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-
+    
     var resultHandler = {};
-
+    
     createResultHandler_ = function() {
       return resultHandler;
     };
-
+    
     submitToUrl_ = function(url, parameters, handler) {
       methodWasCalled = url === options_[Current_.Url] &&
         parameters === options_[Current_.Parameters] &&
         handler === resultHandler;
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);

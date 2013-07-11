@@ -33,6 +33,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.formComponent.whenSettingTheSubmitButton" ^
 --namespace="src.test.control.formComponent.whenSettingUpAForm" ^
 --namespace="src.test.control.formComponent.whenTheFormIsSubmitted" ^
+--namespace="src.test.control.gridBuilder.whenCopyingOptions" ^
 --namespace="src.test.control.gridBuilder.whenCreatingARow" ^
 --namespace="src.test.control.gridBuilder.whenCreatingThePagerButtons" ^
 --namespace="src.test.control.gridBuilder.whenCreatingRows" ^

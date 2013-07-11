@@ -84,7 +84,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     var methodWasCalled = false;
     
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
-                                    createADiv, appendChild, setTextContent, refresh) {
+                                    createADiv, appendChild, setTextContent, refresh, setClick,
+                                    createPagerButtons, copyOptions) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
@@ -93,8 +94,10 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         createARow === createARow_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
-        setTextContent === setTextContent_ &&
-        refresh === src.base.control.gridBuilder.refresh;
+        refresh === src.base.control.gridBuilder.refresh &&
+        setClick === src.base.helper.events.setClick &&
+        createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
+        copyOptions === src.base.control.gridBuilder.copyOptions;
     };
     
     callTheMethod_();
