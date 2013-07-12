@@ -15,6 +15,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
   //Fields
 
   var createdCount_;
+  var findNode_;
   var firstColumn_;
   var mapping_;
   var parentRow_;
@@ -37,6 +38,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
     secondColumn_ = {};
     parentRow_ = {};
     createdCount_ = 0;
+    findNode_ = function() { return null; };
 
     createADiv_ = function() {
       var element;
@@ -57,34 +59,35 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
 
       return element;
     };
-
+    
     appendChild_ = function() {};
     setTextContent_ = function() {};
   });
-
+  
   //Support Methods
   var callTheMethod_ = function() {
-    return src.base.control.gridBuilder.createTheHeaderRow(mapping_, parentContainer_, createADiv_, setTextContent_, appendChild_);
+    return src.base.control.gridBuilder.createTheHeaderRow(mapping_, parentContainer_, findNode_,
+                                                           createADiv_, setTextContent_, appendChild_);
   };
-
+  
   //Test Methods
-
-
+  
+  
   it('should create the row.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled || attributes['class'] === Current_.HeaderRowClass;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
+  
   it('should create a column per mapping item.', function() {
     var methodWasCalled = 0;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled += attributes['class'] === Current_.HeaderClass;
     };
@@ -121,7 +124,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
     
     expect(methodWasCalled).toBe(2);
   });
-
+  
   it('should create a div for clearing floats.', function() {
     var methodWasCalled = false;
     
@@ -138,7 +141,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
   it('should append a clear both div to the parent row  column.', function() {
     var methodWasCalled = false;
     var clearBoth = {'id': 'clearBothDiv'};
-
+    
     createADiv_ = function(attributes) {
       return attributes['class'] === 'clearBoth' ? clearBoth : parentRow_;
     };
@@ -153,7 +156,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
   
-     
+  
   it('should append the parent row to the parentContainer.', function() {
     var methodWasCalled = false;
     
@@ -165,6 +168,23 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
+  });
+
+  
+  it('should not creat the header row if it exists.', function() {
+    var methodWasCalled = false;
+
+    findNode_ = function() {
+      return parentRow_;
+    };
+
+    createADiv_ = function(){
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
   });
   
 };

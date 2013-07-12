@@ -67,8 +67,10 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   it('should create the header row.', function() {
     var methodWasCalled = false;
     
-    createTheHeaderRow_ = function(mapping, parentContainer, createADiv, setTextContent, appendChild) {
+    createTheHeaderRow_ = function(mapping, parentContainer, findNode,
+                                   createADiv, setTextContent, appendChild) {
       methodWasCalled = mapping === mapping_ &&
+        findNode === findNode_ &&
         parentContainer === parentContainer_ &&
         createADiv === createADiv_ &&
         setTextContent === setTextContent_ &&

@@ -200,16 +200,16 @@ src.base.control.gridBuilder.createAndAppendPagerButton_ = function(isPrevious, 
                                                            containerRow, findNode, createADiv, setTextContent,
                                                            copyOptions, setClick, appendChild, refresh) {
   var current = src.base.control.gridBuilder;
-  
+
   var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
   var button = findNode(parentContainer, function(item) { return item['id'] === buttonId; });
-  
+
   if (!button) {
     button = createADiv({'id': buttonId, 'class': current.PagerClass});
     setTextContent(button, isPrevious ? '<' : '>');
     appendChild(containerRow, button);
   }
-  
+
   var resultKey = isPrevious ? 'PreviousPage' : 'NextPage';
   var currentOptions = copyOptions(options, result[resultKey]);
   setClick(button, function() { refresh(currentOptions, parentContainer); });
@@ -233,52 +233,56 @@ src.base.control.gridBuilder.createAndAppendPagerButton_ = function(isPrevious, 
 src.base.control.gridBuilder.createPagerButtons = function(result, options, parentContainer, findNode,
                                                            createADiv, appendChild, setClick, setTextContent,
                                                            copyOptions, refresh) {
-  
+
   var current = src.base.control.gridBuilder;
-  
+
   var containerRow = createADiv({'class': current.ButtonRowClass});
-  
+
   current.createAndAppendPagerButton_(true, options, result, parentContainer,
                              containerRow, findNode, createADiv, setTextContent,
                              copyOptions, setClick, appendChild, refresh);
-  
-  current.createAndAppendPagerButton_(false, options, result, parentContainer, 
+
+  current.createAndAppendPagerButton_(false, options, result, parentContainer,
                              containerRow, findNode, createADiv, setTextContent,
                              copyOptions, setClick, appendChild, refresh);
-  
-  
+
+
   var clearDiv = createADiv({'class': 'clearBoth'});
   appendChild(containerRow, clearDiv);
-  
+
   appendChild(parentContainer, containerRow);
 };
 
 /**
  @param {Array.<Object>} mapping The table mapping used to find the column headers.
  @param {Object} parentContainer The container to add the rows too.
+ @param {function} findNode The function used to find the pager buttons if the exist.
  @param {function} createADiv The function used to create a div.
  @param {function} setTextContent The function used to set a div's text.
  @param {function} appendChild The function used to add an element to a parent element.
  @protected
  */
-src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, createADiv,
-                                                           setTextContent, appendChild) {
-  
+src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, findNode,
+                                                           createADiv, setTextContent, appendChild) {
+
   var current = src.base.control.gridBuilder;
-  
-  var headerRow = createADiv({'class': current.HeaderRowClass});
-  
-  goog.array.forEach(mapping, function(currentMap) {
-    var header = createADiv({'class': current.HeaderClass});
-    setTextContent(header, currentMap['headerText']);
-    appendChild(headerRow, header);
-  });
-  
-  var clearBoth = createADiv({'class': 'clearBoth'});
-  appendChild(headerRow, clearBoth);
-  
-  appendChild(parentContainer, headerRow);
-  
+
+  var headerRow = findNode(parentContainer, function(row) { return row['class'] === current.HeaderRowClass;});
+
+  if (!headerRow) {
+    headerRow = createADiv({'class': current.HeaderRowClass});
+
+    goog.array.forEach(mapping, function(currentMap) {
+      var header = createADiv({'class': current.HeaderClass});
+      setTextContent(header, currentMap['headerText']);
+      appendChild(headerRow, header);
+    });
+
+    var clearBoth = createADiv({'class': 'clearBoth'});
+    appendChild(headerRow, clearBoth);
+
+    appendChild(parentContainer, headerRow);
+  }
 };
 
 
@@ -296,7 +300,7 @@ src.base.control.gridBuilder.createRows = function(result, parentContainer, mapp
                                                    createADiv, appendChild, createARow,
                                                    setTextContent) {
   var current = src.base.control.gridBuilder;
-  
+
   goog.array.forEach(result[current.ListProperty], function(item) {
     var currentRow = createARow(item, mapping, createADiv, setTextContent, appendChild);
     appendChild(parentContainer, currentRow);
@@ -327,14 +331,14 @@ src.base.control.gridBuilder.createTheResultHandler = function(options, parentCo
                                                                setTextContent, refresh, setClick,
                                                                findNode, createPagerButtons, copyOptions) {
   var current = src.base.control.gridBuilder;
-  
+
   return function(result) {
-    createTheHeaderRow(options[current.Map], parentContainer,
+    createTheHeaderRow(options[current.Map], parentContainer, findNode,
                        createADiv, setTextContent, appendChild);
-    
+
     createRows(result, parentContainer, options[current.Map],
                createADiv, appendChild, createARow, setTextContent);
-    
+
     createPagerButtons(result, options, parentContainer, findNode, createADiv, appendChild,
                        setClick, setTextContent, copyOptions, refresh);
   };
@@ -359,7 +363,7 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
                                                    createTheHeaderRow, createRows, appendChild, setTextContent,
                                                    submitToUrl) {
   var Current = src.base.control.gridBuilder;
-  
+
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
   createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
   createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
@@ -386,7 +390,8 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
 /**
  @param {Object} options The options that are used to construct the form.
  @param {Object} grid The parent grid.
- @param {?function} removeChildren The function used to remove all rows from the grid.
+ @param {?function} getElementsByClass The function used to find all the non header/footer rows.
+ @param {?function} removeNode The function used to remove the non header/footer rows.
  @param {?function} createARow The function used to create each non header row.
  @param {?function} createADiv The method used to create a div element.
  @param {?function} createResultHandler The function used to create the call back method when posting to the
@@ -398,26 +403,28 @@ src.base.control.gridBuilder.initialize = function(options, createARow, createAD
  @param {?function} submitToUrl The function used to post, and receive the data.
  @export
  */
-src.base.control.gridBuilder.refresh = function(options, grid, removeChildren, createARow, createADiv,
-                                                createResultHandler, createTheHeaderRow, createRows,
+src.base.control.gridBuilder.refresh = function(options, grid, getElementsByClass, removeNode, createARow,
+                                                createADiv, createResultHandler, createTheHeaderRow, createRows,
                                                 appendChild, setTextContent, submitToUrl) {
+
   var Current = src.base.control.gridBuilder;
-  
-  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-  createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
-  createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
-  createRows = createRows ? createRows : Current.createRows;
-  createARow = createARow ? createARow : Current.createARow;
+
   appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  removeChildren = removeChildren ? removeChildren : goog.dom.removeChildren;
+  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+  createARow = createARow ? createARow : Current.createARow;
+  createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
+  createRows = createRows ? createRows : Current.createRows;
+  createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
+  getElementsByClass = getElementsByClass ? getElementsByClass : goog.dom.getElementsByClass;
+  removeNode = removeNode ? removeNode : goog.dom.removeNode;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-  
-  //setClick
-  
-  
-  
-  removeChildren(grid);
+
+  var children = getElementsByClass(Current.RowClass, grid);
+
+  goog.array.forEach(children, function(item) { removeNode(item); });
+
+
   var resultHandler = createResultHandler(options, grid, createTheHeaderRow, createRows,
                                           createARow, createADiv, appendChild, setTextContent,
                                           Current.refresh, src.base.helper.events.setClick,

@@ -23,9 +23,10 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   var createResultHandler_;
   var createRows_;
   var createTheHeaderRow_;
+  var getElementByClass_;
   var grid_;
   var options_;
-  var removeChildren_;
+  var removeNode_;
   var setTextContent_;
   var submitToUrl_;
 
@@ -48,7 +49,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     createResultHandler_ = function() {};
     createTheHeaderRow_ = function() {};
     createRows_ = function() {};
-    removeChildren_ = function() {};
+    getElementByClass_ = function() { return [];};
+    removeNode_ = function() {};
     setTextContent_ = function() {};
     submitToUrl_ = function() {};
   });
@@ -57,36 +59,57 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   //Support Methods
 
   var callTheMethod_ = function() {
-    return Current_.refresh(options_, grid_, removeChildren_, createARow_, createADiv_, createResultHandler_,
-                               createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
-                               submitToUrl_);
+    return Current_.refresh(options_, grid_, getElementByClass_, removeNode_, createARow_,
+                            createADiv_, createResultHandler_, createTheHeaderRow_, createRows_,
+                            appendChild_, setTextContent_, submitToUrl_);
   };
-  
-  
+
+
   //Test Methods
-  
-  
-  
-  it('should remove all rows..', function() {
+
+
+  it('should find the information rows', function() {
     var methodWasCalled = false;
-    
-    removeChildren_ = function(parent) {
-      methodWasCalled = parent === grid_;
+
+    getElementByClass_ = function(cssClass, parent) {
+      methodWasCalled = methodWasCalled ||
+        (parent === grid_ && cssClass === Current_.RowClass);
+
+      return [];
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
+  it('should remove all the information rows.', function() {
+    var methodWasCalled = 0;
+    var firstChild = {};
+    var secondChild = {};
+
+    getElementByClass_ = function(cssClass, parent) {
+      return [firstChild, secondChild];
+    };
+
+    removeNode_ = function(node) {
+      methodWasCalled += node === firstChild || node === secondChild;
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(2);
+  });
+
+
   it('should create the result handler.', function() {
     var methodWasCalled = false;
-    
+
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
                                     createADiv, appendChild, setTextContent, refresh, setClick,
                                     findNode, createPagerButtons, copyOptions) {
-      
+
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
         createTheHeaderRow === createTheHeaderRow_ &&
@@ -100,30 +123,30 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
         copyOptions === src.base.control.gridBuilder.copyOptions;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-    
+
     var resultHandler = {};
-    
+
     createResultHandler_ = function() {
       return resultHandler;
     };
-    
+
     submitToUrl_ = function(url, parameters, handler) {
       methodWasCalled = url === options_[Current_.Url] &&
         parameters === options_[Current_.Parameters] &&
         handler === resultHandler;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
 };
