@@ -1,13 +1,33 @@
-.gridBuilderHeaderRowClass
-  background-color: #0000ff
+@mixin gridBuilderColumn
+  color                : $white
+  float                : left
+  font-weight          : bold
+  margin               : 0 .8 0 2em
+  padding              : .2em 0 .2em 0
+  width                : 9em
   
-  .gridBuilderHeaderClass
-    background-color: #00ff00
-    float: left
+.gridBuilderContainer
+  @include defaultBorder
+  background-color     : $midGrey
+  margin               : 2em 0 0 0
+  width                : 60em
   
-.gridBuilderRowClass
-  background-color: #FF0000
+  
+  .gridBuilderHeaderRowClass
+    background-color   : $lightGrey
+    margin             : 0 0 .8em 0
+    .gridBuilderHeaderClass
+      @include gridBuilderColumn
+  
+  .gridBuilderRowClass
+    .gridBuilderColumnClass
+      @include gridBuilderColumn
     
-  .gridBuilderColumnClass
-    background-color: #cccccc
-    float: left
+  .gridBuilderButtonRowClass
+    .gridBuilderPagerClass
+      @inlcude defaultBorder
+      background-color : $lightGrey
+      float            : left
+      margin           : 0 5em 0 5em
+      padding          : .5em .5em .5em .5em
+      width            : 4em

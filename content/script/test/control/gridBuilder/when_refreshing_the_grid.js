@@ -85,7 +85,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
                                     createADiv, appendChild, setTextContent, refresh, setClick,
-                                    createPagerButtons, copyOptions) {
+                                    findNode, createPagerButtons, copyOptions) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
@@ -96,6 +96,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         appendChild === appendChild_ &&
         refresh === src.base.control.gridBuilder.refresh &&
         setClick === src.base.helper.events.setClick &&
+        findNode === goog.dom.findNode &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
         copyOptions === src.base.control.gridBuilder.copyOptions;
     };

@@ -210,14 +210,35 @@ td.goog-date-picker-selected {
       float: left;
       width: 5em; }
 
-.gridBuilderHeaderRowClass {
-  background-color: blue; }
-  .gridBuilderHeaderRowClass .gridBuilderHeaderClass {
-    background-color: lime;
-    float: left; }
-
-.gridBuilderRowClass {
-  background-color: red; }
-  .gridBuilderRowClass .gridBuilderColumnClass {
-    background-color: #cccccc;
-    float: left; }
+.gridBuilderContainer {
+  border-color: #444444;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 0.1em;
+  background-color: #565656;
+  margin: 2em 0 0 0;
+  width: 60em; }
+  .gridBuilderContainer .gridBuilderHeaderRowClass {
+    background-color: #c9c3bc;
+    margin: 0 0 0.8em 0; }
+    .gridBuilderContainer .gridBuilderHeaderRowClass .gridBuilderHeaderClass {
+      color: white;
+      float: left;
+      font-weight: bold;
+      margin: 0 0.8 0 2em;
+      padding: 0.2em 0 0.2em 0;
+      width: 9em; }
+  .gridBuilderContainer .gridBuilderRowClass .gridBuilderColumnClass {
+    color: white;
+    float: left;
+    font-weight: bold;
+    margin: 0 0.8 0 2em;
+    padding: 0.2em 0 0.2em 0;
+    width: 9em; }
+  .gridBuilderContainer .gridBuilderButtonRowClass .gridBuilderPagerClass {
+    @inlcude defaultBorder;
+    background-color: #c9c3bc;
+    float: left;
+    margin: 0 5em 0 5em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    width: 4em; }

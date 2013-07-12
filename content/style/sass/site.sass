@@ -1,4 +1,16 @@
-$white: #ffffff
+$almostWhite        : #dfdfdf
+$black              : #000000
+$darkGrey           : #444444
+$errorRed           : #984545
+$green              : #37b75b
+$lightGrey          : #c9c3bc
+$lightMetroBlue     : #cceef8
+$metroBlue          : #00a2ce
+$midGrey            : #565656
+$readOnlyBlue       : #009cc7
+$white              : #ffffff
+
+$defaultBorderWidth : .1em
 
 @mixin defaultButton
   background-color: #c1131d !important
@@ -7,7 +19,13 @@ $white: #ffffff
   border-Width: .5em !important
   color: $white !important
   font-size: x-large !important
-
+    
+@mixin defaultBorder
+  border-color      : $darkGrey
+  border-radius     : 5px
+  border-style      : solid
+  border-width      : $defaultBorderWidth
+    
 .clearBoth
   clear: both
 

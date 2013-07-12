@@ -3,19 +3,7 @@
   <head>
      <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
     <script type="text/javascript" src="../../content/script/live/final.js"></script>
-    <style type="text/css">
-      .gridBuilderRowClass {
-      background-color:#FF0000;
-      
-      };
-      
-      .gridBuilderRowClass .gridBuilderColumnClass {
-      background-color:#cccccc !important;
-      float:left;
-      };
-    </style>
     <script type="text/javascript">
-      
     </script>
   </head>
   <body>
@@ -32,8 +20,10 @@
     options[src.base.control.gridBuilder.Parameters] = {'page':'0'};
     
     options[src.base.control.gridBuilder.Map] = [
-    {'headerText':'Last Name', 'propertyName':'lastName' },
-    {'headerText':'First Name' , 'propertyName':'firstName' }
+    {'headerText':'Last Name', 'propertyName':'LastName' },
+    {'headerText':'First Name' , 'propertyName':'FirstName' },
+    {'headerText':'Home Town' , 'propertyName':'City' },
+    {'headerText':'Social Security Number' , 'propertyName':'Ssn' }
     ];
     
     var result = src.base.control.gridBuilder.initialize(options);

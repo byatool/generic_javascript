@@ -19,6 +19,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var createPagerButtons_;
   var createRows_;
   var createTheHeaderRow_;
+  var findNode_;
   var mapping_;
   var options_;
   var parentContainer_;
@@ -45,6 +46,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     createPagerButtons_ = function() {};
     createRows_ = function() {};
     createTheHeaderRow_ = function() {};
+    findNode_ = function(){};
     refresh_ = function(){};
     setClick_ = function(){};
     setTextContent_ = function() {};
@@ -55,7 +57,8 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     return src.base.control.gridBuilder.createTheResultHandler(options_, parentContainer_, createTheHeaderRow_,
                                                                createRows_, createARow_, createADiv_, appendChild_,
                                                                setTextContent_, refresh_, setClick_,
-                                                               createPagerButtons_, copyOptions_)(result_);
+                                                               findNode_, createPagerButtons_, copyOptions_)
+    (result_);
   };
   
   
@@ -101,11 +104,12 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   it('should create the pager buttons.', function() {
     var methodWasCalled = false;
     
-    createPagerButtons_ = function(result, options, parentContainer, createADiv, appendChild, setClick,
+    createPagerButtons_ = function(result, options, parentContainer, findNode, createADiv, appendChild, setClick,
                                    setTextContent, copyOptions, refresh) {
       methodWasCalled = result === result_ &&
         options === options_ &&
         parentContainer === parentContainer_ &&
+        findNode === findNode_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         setClick === setClick_ &&
