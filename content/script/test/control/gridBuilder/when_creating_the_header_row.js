@@ -59,134 +59,150 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
 
       return element;
     };
-    
+
     appendChild_ = function() {};
     setTextContent_ = function() {};
   });
-  
+
   //Support Methods
   var callTheMethod_ = function() {
     return src.base.control.gridBuilder.createTheHeaderRow(mapping_, parentContainer_, findNode_,
                                                            createADiv_, setTextContent_, appendChild_);
   };
-  
+
   //Test Methods
-  
-  
+
+
   it('should create the row.', function() {
     var methodWasCalled = false;
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled || attributes['class'] === Current_.HeaderRowClass;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
+
   it('should create a column per mapping item.', function() {
     var methodWasCalled = 0;
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled += attributes['class'] === Current_.HeaderClass;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
-  
+
+
   it('should set each column text.', function() {
     var methodWasCalled = 0;
-    
+
     setTextContent_ = function(element, text) {
       methodWasCalled += (element === firstColumn_ && text === mapping_[0]['headerText']) ||
         (element === secondColumn_ && text === mapping_[1]['headerText']);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
-  
+
+
   it('should append each header column to the parent row', function() {
     var methodWasCalled = 0;
-    
+
     appendChild_ = function(parent, child) {
       methodWasCalled += parent === parentRow_ &&
         (child === firstColumn_ || child === secondColumn_);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
+
   it('should create a div for clearing floats.', function() {
     var methodWasCalled = false;
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled || attributes['class'] === 'clearBoth';
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should append a clear both div to the parent row  column.', function() {
     var methodWasCalled = false;
     var clearBoth = {'id': 'clearBothDiv'};
-    
+
     createADiv_ = function(attributes) {
       return attributes['class'] === 'clearBoth' ? clearBoth : parentRow_;
     };
-    
+
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === parentRow_ && child === clearBoth);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should append the parent row to the parentContainer.', function() {
     var methodWasCalled = false;
-    
+
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === parentContainer_ && child === parentRow_);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
 
-  
-  it('should not creat the header row if it exists.', function() {
+
+
+  it('should find the header row if it exists.', function() {
+    var methodWasCalled = false;
+
+    findNode_ = function(parent, toFind) {
+      methodWasCalled = parent === parentContainer_ &&
+        String(toFind) === String('function (a){return"gridBuilderHeaderRowClass"===a.className}');
+
+      return null;
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(true);
+  });
+
+  it('should not create the header row if it exists.', function() {
     var methodWasCalled = false;
 
     findNode_ = function() {
       return parentRow_;
     };
 
-    createADiv_ = function(){
+    createADiv_ = function() {
       methodWasCalled = true;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(false);
   });
-  
+
 };
 
 

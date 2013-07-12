@@ -82,14 +82,17 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     expect(methodWasCalled).toBe(true);
   });
   
-
+  
   it('should create the rows.', function() {
     var methodWasCalled = false;
-
-    createRows_ = function(result, parentContainer, mapping, createADiv, appendChild, createARow,  setTextContent) {
+    
+    createRows_ = function(result, parentContainer, mapping, findNode, createADiv,
+                           appendChild, createARow,  setTextContent) {
+      
       methodWasCalled = result === result_ &&
         parentContainer === parentContainer_ &&
         mapping === mapping_ &&
+        findNode === findNode_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         createARow === createARow_ &&
