@@ -228,13 +228,15 @@ td.goog-date-picker-selected {
       margin: 0 0.8 0 2em;
       padding: 0.2em 0 0.2em 0;
       width: 9em; }
-  .gridBuilderContainer .gridBuilderRowClass .gridBuilderColumnClass {
-    color: white;
-    float: left;
-    font-weight: bold;
-    margin: 0 0.8 0 2em;
-    padding: 0.2em 0 0.2em 0;
-    width: 9em; }
+  .gridBuilderContainer .gridBuilderRowContainer {
+    height: 10em; }
+    .gridBuilderContainer .gridBuilderRowContainer .gridBuilderRowClass .gridBuilderColumnClass {
+      color: white;
+      float: left;
+      font-weight: bold;
+      margin: 0 0.8 0 2em;
+      padding: 0.2em 0 0.2em 0;
+      width: 9em; }
   .gridBuilderContainer .gridBuilderButtonRowClass .gridBuilderPagerClass {
     @inlcude defaultBorder;
     background-color: #c9c3bc;

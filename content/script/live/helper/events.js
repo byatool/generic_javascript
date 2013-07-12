@@ -24,6 +24,7 @@ src.base.helper.events.setOnBlur = function(element, whenSelected) {
  @export
  */
 src.base.helper.events.setClick = function(element, whenClicked) {
+  goog.events.removeAll(element, goog.events.EventType.CLICK);
   goog.events.listen(element, goog.events.EventType.CLICK, whenClicked, true);
 };
 
