@@ -1,8 +1,8 @@
+goog.require('goog.dom');
 goog.require('src.base.helper.domCreation');
 goog.require('src.base.helper.domHelper');
 
 goog.provide('src.base.control.tagContainer');
-
 
 
 /**
@@ -18,15 +18,53 @@ src.base.control.tagContainer.TagItemClass = 'tagItem';
  @type {string}
  @export
  */
+src.base.control.tagContainer.TagItemId = 'Id';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.tagContainer.TagItemName = 'Name';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.tagContainer.TagItemTextClass = 'tagItemText';
 
 
-
 // src.base.control.tagContainer.refreshTagList = function(container, url, parameters){
-  
+
 //   //creat a hanlder ot update the container
 //   //submit to the url
 // };
+
+
+/**
+ @param {Object} tagItem The tag container that will be
+ affected by a tag deletion.
+ @param {string} deleteUrl The url used to delete a tag.
+ @param {Object} parameters The parameters used to create the list.
+ Will need UserId from it.
+ @param {function} submitToUrl The function used to submit the data.
+ @param {function} removeNode The function that will remove the
+ tag.
+ @return {function} The delete handler.
+ @protected
+ 
+ */
+src.base.control.tagContainer.createDeleteTagHandler = function(tagItem, deleteUrl, parameters, 
+                                                                submitToUrl, removeNode) {
+  return function(){
+    submitToUrl(deleteUrl, parameters, function(){});
+    removeNode(tagItem);
+  };
+};
+
 
 
 /**
@@ -50,15 +88,23 @@ src.base.control.tagContainer.TagItemTextClass = 'tagItemText';
 src.base.control.tagContainer.createTag = function(parentContainer, parameters, tagInformation,
                                                    deleteUrl, createADiv, setTextContent, createTagDeleteHandler,
                                                    setClick){
-  //create the tag container
-  //create the label
-  //create the x div
-  //  on click will need a result hanler
-  //    add tag id to the parameters
-  //    deleteUrl, parameters, call to remove tag
-  //  createTagDeleteHandler(parenctConainer, deleteUrl,
-
-  return null;
+  var current = src.base.control.tagContainer;
+  var tagItemContainer = createADiv({'class':current.TagItemClass});
+  var textContainer = createADiv({'class':current.TagItemTextClass});
+  
+  setTextContent(textContainer, tagInformation[current.TagItemName]);
+  
+  var deleteContainer = createADiv({});
+  setTextContent(deleteContainer, 'X');
+  
+  parameters[current.TagItemId] = tagInformation[current.TagItemId];
+  var resultHandler = createTagDeleteHandler(tagItemContainer, deleteUrl, parameters,
+                                             src.base.helper.domHelper.submitToUrl,
+                                             goog.dom.removeNode);
+  setClick(deleteContainer, resultHandler);
+  
+  
+  return tagItemContainer;
 };
 
 

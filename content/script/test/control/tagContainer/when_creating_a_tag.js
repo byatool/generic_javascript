@@ -1,5 +1,6 @@
 goog.require('goog.string');
 goog.require('src.base.control.tagContainer');
+goog.require('src.base.helper.domHelper');
 
 goog.provide('src.test.control.tagContainer.whenCreatingATag');
 
@@ -15,8 +16,11 @@ src.test.control.tagContainer.whenCreatingATag.describe = function () {
   
   
   //Fields
-  
+
   var DeleteUrl_ = goog.string.getRandomString();
+  var TagId_ = goog.string.getRandomString();
+  var TagName_ = goog.string.getRandomString();
+  
   
   var createADiv_;
   var parameters_;
@@ -24,8 +28,11 @@ src.test.control.tagContainer.whenCreatingATag.describe = function () {
   var createTagDeleteHandler_;
   var setClick_;
   var setTextContent_;
+  var tagContainer_;
+  var tagDeleteContainer_;
   var tagInformation_;
-  
+  var tagNameContainer_;
+
   
   //Test Hooks
   
@@ -33,18 +40,33 @@ src.test.control.tagContainer.whenCreatingATag.describe = function () {
     parameters_ = {};
     parentContainer_ = {};
     createTagDeleteHandler_ = {};
-    tagInformation_ = {};
     
-    createADiv_ = function() {};
+    tagInformation_ = {};
+    tagInformation_[Current_.TagItemId] = TagId_;
+    tagInformation_[Current_.TagItemName] = TagName_;
+     
+    createTagDeleteHandler_ = function(){};
+    tagContainer_ = {};
+    tagNameContainer_ = {};
+    tagDeleteContainer_ = {};
+    
+    createADiv_ = function(attributes) {
+      return attributes['class'] === Current_.TagItemClass ?
+        tagContainer_ :
+        attributes['class'] === Current_.TagItemTextClass ?
+        tagNameContainer_ :
+        tagDeleteContainer_;
+    };
+    
     setClick_ = function() {};
     setTextContent_ = function() {};
   });
   
   //Support Methods
   var callTheMethod_ = function() {
-    Current_.createTag(parentContainer_, parameters_, tagInformation_, DeleteUrl_,
-                      createADiv_, setTextContent_, createTagDeleteHandler_,
-                      setClick_);
+    return Current_.createTag(parentContainer_, parameters_, tagInformation_, DeleteUrl_,
+                              createADiv_, setTextContent_, createTagDeleteHandler_,
+                              setClick_);
   };
   
   
@@ -63,6 +85,104 @@ src.test.control.tagContainer.whenCreatingATag.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
+  
+  it('should create the tag name container.', function() {
+    var methodWasCalled = false;
+    
+    createADiv_ = function(attributes){
+      methodWasCalled = methodWasCalled || attributes['class'] === Current_.TagItemTextClass;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the text of the tag name container.', function() {
+    var methodWasCalled = false;
+    
+    setTextContent_ = function(element, text){
+      methodWasCalled = methodWasCalled ||
+        (element === tagNameContainer_ && text == TagName_);
+    };
+     
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the delete tag container.', function() {
+    var methodWasCalled = false;
+    
+    
+    createADiv_ = function(attributes){
+      methodWasCalled = methodWasCalled || !attributes['class'];
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the text for the delete tag container.', function() {
+    var methodWasCalled = false;
+    
+    setTextContent_ = function(element, text){
+      methodWasCalled = methodWasCalled ||
+        (element === tagDeleteContainer_ && text === 'X');
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the delete button handler.', function() {
+    var methodWasCalled = false;
+    
+    createTagDeleteHandler_ = function(tagItem, deleteUrl, parameters, submitUrl, removeNode) {
+      methodWasCalled = tagItem === tagContainer_ &&
+        DeleteUrl_ === DeleteUrl_ &&
+        parameters === parameters &&
+        parameters[Current_.TagItemId] === TagId_ &&
+        submitUrl === src.base.helper.domHelper.submitToUrl &&
+        removeNode === goog.dom.removeNode;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+
+  
+  it('should set the click event.', function() {
+    var methodWasCalled = false;
+    var deleteHandler = function(){};
+    
+    createTagDeleteHandler_ = function(){
+      return deleteHandler;
+    };
+    
+    setClick_ = function(element, method){
+      methodWasCalled = element === tagDeleteContainer_ &&
+        method === deleteHandler;
+    };
+     
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+
+  
+  it('should return tthe created container.', function() {
+    expect(callTheMethod_()).toBe(tagContainer_);
+  });
 };
 
 

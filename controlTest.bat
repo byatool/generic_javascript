@@ -59,6 +59,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.simpleInformationDisplay.whenFillingTheRows" ^
 --namespace="src.test.control.simpleInformationDisplay.whenInitializingASimpleInformationDisplay" ^
 --namespace="src.test.control.simpleInformationDisplay.whenRefreshingASimpleInformationDisplay" ^
+--namespace="src.test.control.tagContainer.whenCreatingADeleteResultHandler" ^
 --namespace="src.test.control.tagContainer.whenCreatingATag" ^
 --namespace="src.test.control.tagContainer.whenInitializingATagContainer" ^
 --output_mode=compiled ^
