@@ -175,7 +175,9 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
   var currentRow = createADiv({'class' : current.RowClass });
 
   goog.array.forEach(mapping, function(currentMapping) {
-    var column = createADiv({'class' : current.ColumnClass});
+    var extraClass = currentMapping['class'] ? ' ' + currentMapping['class'] : '';
+
+    var column = createADiv({'class' : current.ColumnClass + extraClass});
     setTextContent(column, currentItem[currentMapping['propertyName']]);
     appendChild(currentRow, column);
   });
@@ -292,8 +294,12 @@ src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContai
   if (!headerRow) {
     headerRow = createADiv({'class': current.HeaderRowClass});
 
+
+
     goog.array.forEach(mapping, function(currentMap) {
-      var header = createADiv({'class': current.HeaderClass});
+      var extraClass = currentMap['class'] ? ' ' + currentMap['class'] : '';
+
+      var header = createADiv({'class': current.HeaderClass + extraClass});
       setTextContent(header, currentMap['headerText']);
       appendChild(headerRow, header);
     });

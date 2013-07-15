@@ -14,6 +14,9 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
 
   //Fields
 
+  var FirstHeaderClass_ = goog.string.getRandomString();
+  var SecondHeaderClass_ = goog.string.getRandomString();
+
   var createdCount_;
   var findNode_;
   var firstColumn_;
@@ -30,7 +33,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
   //Test Hooks
   beforeEach(function() {
     mapping_ = [
-      {'headerText' : 'Name', 'propertyName': 'name'},
+      {'headerText' : 'Name', 'propertyName': 'name', 'class': FirstHeaderClass_},
       {'headerText' : 'Profession', 'propertyName': 'profession'}
     ];
 
@@ -85,11 +88,13 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
 
+
   it('should create a column per mapping item.', function() {
     var methodWasCalled = 0;
 
     createADiv_ = function(attributes) {
-      methodWasCalled += attributes['class'] === Current_.HeaderClass;
+      methodWasCalled += (attributes['class'] === Current_.HeaderClass + ' ' + FirstHeaderClass_) ||
+         (attributes['class'] === Current_.HeaderClass);
     };
 
     callTheMethod_();
@@ -124,6 +129,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
 
     expect(methodWasCalled).toBe(2);
   });
+
 
   it('should create a div for clearing floats.', function() {
     var methodWasCalled = false;

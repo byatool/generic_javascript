@@ -6,6 +6,74 @@ goog.provide('src.base.control.tagContainer');
 
 
 /**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.tagContainer.TagItemClass = 'tagItem';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.tagContainer.TagItemTextClass = 'tagItemText';
+
+
+
+// src.base.control.tagContainer.refreshTagList = function(container, url, parameters){
+  
+//   //creat a hanlder ot update the container
+//   //submit to the url
+// };
+
+
+/**
+ @param {Object} parentContainer The tag container that will be
+ affected by a tag deletion.
+ @param {Object} parameters The parameters used to create the list.
+ Will need UserId from it.
+ @param {Object} tagInformation The name, and if of the tag being represented.
+ @param {string} deleteUrl The url used to delete a tag.
+  @param {function} createADiv The function used to create the various parts
+ of the tag.
+ @param {function} setTextContent The functino used to set the text
+ for the tag.
+ @param {function} createTagDeleteHandler Create the on click delete
+ handler.
+ @param {function} setClick The function used to set the click event
+ on the tag.
+ @return {Object} The created tag.
+ @protected
+ */
+src.base.control.tagContainer.createTag = function(parentContainer, parameters, tagInformation,
+                                                   deleteUrl, createADiv, setTextContent, createTagDeleteHandler,
+                                                   setClick){
+  //create the tag container
+  //create the label
+  //create the x div
+  //  on click will need a result hanler
+  //    add tag id to the parameters
+  //    deleteUrl, parameters, call to remove tag
+  //  createTagDeleteHandler(parenctConainer, deleteUrl,
+
+  return null;
+};
+
+
+
+// src.base.control.tagContainer.removeTag = function(container, tag, url, parameters){
+//   //add tag id to the parameters object
+//   //fire off the post for deletion
+//   //remove the tag from the container
+//   //  May not need to handle the post result... dead end
+// };
+
+
+
+
+/**
  
  */
 
