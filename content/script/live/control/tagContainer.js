@@ -60,7 +60,7 @@ src.base.control.tagContainer.TagItemTextClass = 'tagItemText';
  affected by a tag deletion.
  @param {string} deleteUrl The url used to delete a tag.
  @param {Object} parameters The parameters used to create the list.
- Will need UserId from it.
+ Will need an id of the tag's owner from it.
  @param {function} submitToUrl The function used to submit the data.
  @param {function} removeNode The function that will remove the
  tag.
@@ -139,22 +139,22 @@ src.base.control.tagContainer.createTag = function(parentContainer, parameters, 
   var textContainer = createADiv({'class': current.TagItemTextClass});
 
   setTextContent(textContainer, tagInformation[current.TagItemName]);
-
+  
   var deleteContainer = createADiv({'class': current.TagItemDeleteClass});
   setTextContent(deleteContainer, 'X');
-
+  
   parameters[current.TagItemId] = tagInformation[current.TagItemId];
   var resultHandler = createTagDeleteHandler(tagItemContainer, deleteUrl, parameters,
                                              src.base.helper.domHelper.submitToUrl,
                                              goog.dom.removeNode);
   setClick(deleteContainer, resultHandler);
-
+  
   var clearDiv = createADiv({'class': 'clearBoth'});
-
+  
   appendChild(tagItemContainer, textContainer);
   appendChild(tagItemContainer, deleteContainer);
   appendChild(tagItemContainer, clearDiv);
-
+  
   return tagItemContainer;
 };
 
