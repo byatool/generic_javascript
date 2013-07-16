@@ -1,5 +1,8 @@
+goog.require('goog.dom');
 goog.require('goog.string');
 goog.require('src.base.control.tagContainer');
+goog.require('src.base.helper.events');
+
 
 goog.provide('src.test.control.tagContainer.whenInitializingATagContainer');
 
@@ -9,12 +12,15 @@ goog.provide('src.test.control.tagContainer.whenInitializingATagContainer');
 src.test.control.tagContainer.whenInitializingATagContainer.describe = function () {
 
   //Using
-  var Current = src.base.control.tagContainer;
+  var Current_ = src.base.control.tagContainer;
   
   
   //Fields
+  
+  var DeleteUrl_ = goog.string.getRandomString();
   var ParentContainerId_ = goog.string.getRandomString();
-  var Url_ = goog.string.getRandomString();
+  var RetrieveUrl_ = goog.string.getRandomString();
+  
   
   var createADiv_;
   var createTheTagListHandler_;
@@ -28,7 +34,7 @@ src.test.control.tagContainer.whenInitializingATagContainer.describe = function 
     parentContainer_ = {};
     
     tagListHandler_ =  function() {};
-
+    
     createADiv_ = function() {return parentContainer_; };
     createTheTagListHandler_ = function() {return tagListHandler_;};
     submitToUrl_ = function() {};
@@ -37,7 +43,7 @@ src.test.control.tagContainer.whenInitializingATagContainer.describe = function 
   
   //Support Methods
   var callTheMethod_ = function() {
-    return Current.initialize(ParentContainerId_, Url_, parameters_, createADiv_, createTheTagListHandler_, submitToUrl_);
+    return Current_.initialize(ParentContainerId_, RetrieveUrl_, DeleteUrl_, parameters_, createADiv_, createTheTagListHandler_, submitToUrl_);
   };
   
   
@@ -64,11 +70,25 @@ src.test.control.tagContainer.whenInitializingATagContainer.describe = function 
   it('should create the tag list handler.', function() {
     var methodWasCalled = false;
     
-    createTheTagListHandler_ = function(container) {
-      methodWasCalled = container === parentContainer_;
+    createTheTagListHandler_ = function(parentContainer, deleteUrl, createTag,
+                                        createTags, parameters, createADiv,
+                                        appendChild, setTextContent,
+                                        createTagDeleteHandler, setClick) {
       
-      return tagListHandler_ ;
+      methodWasCalled = parentContainer === parentContainer_ &&
+        deleteUrl === DeleteUrl_ &&
+        createTag === Current_.createTag &&
+        createTags === Current_.createTags &&
+        parameters === parameters_ &&
+        createADiv === createADiv_ &&
+        appendChild === goog.dom.appendChild &&
+        setTextContent === goog.dom.setTextContent &&
+        createTagDeleteHandler === Current_.createDeleteTagHandler &&
+        setClick === src.base.helper.events.setClick;
+      
+      return function(){};
     };
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
@@ -79,7 +99,7 @@ src.test.control.tagContainer.whenInitializingATagContainer.describe = function 
     var methodWasCalled = false;
     
     submitToUrl_ = function(url, parameters, resultHandler){
-      methodWasCalled = url === Url_ &&
+      methodWasCalled = url === RetrieveUrl_ &&
         parameters_ === parameters_ &&
         resultHandler === tagListHandler_;
     };

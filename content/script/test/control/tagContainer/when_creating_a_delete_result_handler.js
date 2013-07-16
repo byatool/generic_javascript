@@ -72,7 +72,7 @@ src.test.control.tagContainer.whenCreatingADeleteResultHandler.describe = functi
 };
 
 
-describe('When when, it', function() {
+describe('When creating a delete result handler, it', function() {
   
   src.test.control.tagContainer.whenCreatingADeleteResultHandler.describe();
   
