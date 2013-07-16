@@ -44,6 +44,14 @@ src.base.control.tagContainer.TagItemName = 'Name';
  @type {string}
  @export
  */
+src.base.control.tagContainer.TagItemDeleteClass = 'tagItemDelete';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.tagContainer.TagItemTextClass = 'tagItemText';
 
 
@@ -129,21 +137,24 @@ src.base.control.tagContainer.createTag = function(parentContainer, parameters, 
   var current = src.base.control.tagContainer;
   var tagItemContainer = createADiv({'class': current.TagItemClass});
   var textContainer = createADiv({'class': current.TagItemTextClass});
-
+  
   setTextContent(textContainer, tagInformation[current.TagItemName]);
-
-  var deleteContainer = createADiv({});
+  
+  var deleteContainer = createADiv({'class':current.TagItemDeleteClass});
   setTextContent(deleteContainer, 'X');
-
+  
   parameters[current.TagItemId] = tagInformation[current.TagItemId];
   var resultHandler = createTagDeleteHandler(tagItemContainer, deleteUrl, parameters,
                                              src.base.helper.domHelper.submitToUrl,
                                              goog.dom.removeNode);
   setClick(deleteContainer, resultHandler);
-
+  
+  var clearDiv = createADiv({'class':'clearBoth'});
+  
   appendChild(tagItemContainer, textContainer);
   appendChild(tagItemContainer, deleteContainer);
-
+  appendChild(tagItemContainer, clearDiv);
+  
   return tagItemContainer;
 };
 
@@ -173,16 +184,19 @@ src.base.control.tagContainer.createTags = function(result, parentContainer, del
                                                     createTag, parameters, createADiv,
                                                     appendChild, setTextContent, createTagDeleteHandler,
                                                     setClick) {
-
+  
   var current = src.base.control.tagContainer;
   var tagContainer = createADiv({'class': current.TagContainerClass});
-
+  
   goog.array.forEach(result, function(item) {
     var newTag = createTag(parentContainer, parameters, item, deleteUrl, createADiv,
                            setTextContent, createTagDeleteHandler, setClick, appendChild);
     
     appendChild(tagContainer, newTag);
   });
+  
+  var clear = createADiv({'class':'clearBoth'});
+  appendChild(tagContainer, clear);
   
   appendChild(parentContainer, tagContainer);
 };
