@@ -36,9 +36,8 @@ src.test.control.tagContainer.whenCreatingTags.describe = function() {
   //Test Hooks
 
   beforeEach(function() {
-    clearDiv_ = {};
-    parentContainer_ = {};
 
+    parentContainer_ = {};
     firstTagItem_ = {};
     firstTagItem_[Current_.TagItemName] = FirstName_;
     secondTagItem_ = {};
@@ -46,11 +45,8 @@ src.test.control.tagContainer.whenCreatingTags.describe = function() {
     result_ = [firstTagItem_, secondTagItem_];
 
     appendChild_ = function() {};
-
     createADiv_ = function(attributes) {
-      return attributes['class'] === Current_.TagContainerClass ?
-        tagContainer_ :
-        clearDiv_;
+      return clearDiv_;
     };
 
     createTag_ = function() {};
@@ -70,20 +66,6 @@ src.test.control.tagContainer.whenCreatingTags.describe = function() {
 
 
   //Test Methods
-
-  it('should create the tag container.', function() {
-    var methodWasCalled = false;
-
-    createADiv_ = function(attributes) {
-      methodWasCalled = methodWasCalled ||
-        attributes['class'] === Current_.TagContainerClass;
-      return {};
-    };
-
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(true);
-  });
 
 
   it('should create the tag for each item.', function() {
@@ -128,7 +110,7 @@ src.test.control.tagContainer.whenCreatingTags.describe = function() {
     };
 
     appendChild_ = function(parent, child) {
-      methodWasCalled += parent === tagContainer_ &&
+      methodWasCalled += parent === parentContainer_ &&
         (child === firstTag || child === secondTag);
     };
 
@@ -159,7 +141,7 @@ src.test.control.tagContainer.whenCreatingTags.describe = function() {
 
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
-        (parent === tagContainer_ && child === clearDiv_);
+        (parent === parentContainer_ && child === clearDiv_);
     };
 
     callTheMethod_();
@@ -167,18 +149,6 @@ src.test.control.tagContainer.whenCreatingTags.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
 
-  it('should append the tag container to the parent container.', function() {
-    var methodWasCalled = false;
-
-    appendChild_ = function(parent, element) {
-      methodWasCalled = parent === parentContainer_ &&
-        element === tagContainer_;
-    };
-
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(true);
-  });
 };
 
 

@@ -137,24 +137,24 @@ src.base.control.tagContainer.createTag = function(parentContainer, parameters, 
   var current = src.base.control.tagContainer;
   var tagItemContainer = createADiv({'class': current.TagItemClass});
   var textContainer = createADiv({'class': current.TagItemTextClass});
-  
+
   setTextContent(textContainer, tagInformation[current.TagItemName]);
-  
-  var deleteContainer = createADiv({'class':current.TagItemDeleteClass});
+
+  var deleteContainer = createADiv({'class': current.TagItemDeleteClass});
   setTextContent(deleteContainer, 'X');
-  
+
   parameters[current.TagItemId] = tagInformation[current.TagItemId];
   var resultHandler = createTagDeleteHandler(tagItemContainer, deleteUrl, parameters,
                                              src.base.helper.domHelper.submitToUrl,
                                              goog.dom.removeNode);
   setClick(deleteContainer, resultHandler);
-  
-  var clearDiv = createADiv({'class':'clearBoth'});
-  
+
+  var clearDiv = createADiv({'class': 'clearBoth'});
+
   appendChild(tagItemContainer, textContainer);
   appendChild(tagItemContainer, deleteContainer);
   appendChild(tagItemContainer, clearDiv);
-  
+
   return tagItemContainer;
 };
 
@@ -184,21 +184,17 @@ src.base.control.tagContainer.createTags = function(result, parentContainer, del
                                                     createTag, parameters, createADiv,
                                                     appendChild, setTextContent, createTagDeleteHandler,
                                                     setClick) {
-  
   var current = src.base.control.tagContainer;
-  var tagContainer = createADiv({'class': current.TagContainerClass});
-  
+
   goog.array.forEach(result, function(item) {
     var newTag = createTag(parentContainer, parameters, item, deleteUrl, createADiv,
                            setTextContent, createTagDeleteHandler, setClick, appendChild);
-    
-    appendChild(tagContainer, newTag);
+
+    appendChild(parentContainer, newTag);
   });
-  
-  var clear = createADiv({'class':'clearBoth'});
-  appendChild(tagContainer, clear);
-  
-  appendChild(parentContainer, tagContainer);
+
+  var clear = createADiv({'class': 'clearBoth'});
+  appendChild(parentContainer, clear);
 };
 
 
@@ -229,7 +225,7 @@ src.base.control.tagContainer.initialize = function(parentContainerId, retrieveU
   submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
 
 
-  var container = createADiv({'id': parentContainerId });
+  var container = createADiv({'id': parentContainerId, 'class': Current_.TagContainerClass });
 
   var retrieveTagLineHandler = createRetrieveTagHandler(container,
                                                         deleteUrl,
@@ -247,3 +243,52 @@ src.base.control.tagContainer.initialize = function(parentContainerId, retrieveU
   return container;
 };
 
+
+/**
+ @param {string} name The description for the tag.
+ @param {integer} id The id for the added tag.
+ @param {Object} tagContainer The tag container that will be
+ affected by a tag deletion.
+ @param {string} deleteUrl The url used to delete a tag.
+ @param {Object} parameters The parameters used to create the list.
+ Will need UserId from it.
+ @param {?function} createTag The function for creating the tag
+ to add.
+ @param {?function} getLastElementChild The function used to find the clear div.
+ @param {?function} insertSiblingBefore The function used to add the
+ new tag before the final clear div.
+ @param {?function} appendChild The function used to add a creeated tag to
+ the tag ilst container.
+ @export
+ */
+src.base.control.tagContainer.addTagToList = function(name, id, tagContainer, deleteUrl,
+                                                      parameters, createTag, getLastElementChild,
+                                                      insertSiblingBefore, appendChild) {
+  var Current_ = src.base.control.tagContainer;
+
+  appendChild = appendChild ? appendChild : goog.dom.appendChild;
+  createTag = createTag ? createTag : Current_.createTag;
+
+
+  getLastElementChild = getLastElementChild ? getLastElementChild : goog.dom.getLastElementChild;
+  insertSiblingBefore = insertSiblingBefore ? insertSiblingBefore : goog.dom.insertSiblingBefore;
+
+  var information = {};
+  information[Current_.TagItemName] = name;
+  information[Current_.TagItemId] = id;
+
+  var tag = createTag(
+    tagContainer,
+    parameters,
+    information,
+    deleteUrl,
+    src.base.helper.domCreation.div,
+    goog.dom.setTextContent,
+    Current_.createDeleteTagHandler,
+    src.base.helper.events.setClick,
+    appendChild);
+
+  var clearDiv = getLastElementChild(tagContainer);
+
+  insertSiblingBefore(tag, clearDiv);
+};
