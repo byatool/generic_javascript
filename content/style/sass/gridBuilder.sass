@@ -5,27 +5,27 @@
   margin               : 0 .8 0 2em
   padding              : .2em 0 .2em 0
   width                : 9em
-
+    
 .gridBuilderContainer
   @include defaultBorder
   background-color     : $midGrey
   margin               : 2em 0 0 0
   width                : 60em
-  
+    
   
   .gridBuilderHeaderRowClass
     background-color   : $lightGrey
     margin             : 0 0 .8em 0
     .gridBuilderHeaderClass
       @include gridBuilderColumn
-      
+
   .gridBuilderRowContainer
     height: 10em
-    
+      
     .gridBuilderRowClass
       .gridBuilderColumnClass
         @include gridBuilderColumn
-  
+      
   .gridBuilderButtonRowClass
     .gridBuilderPagerClass
       @inlcude defaultBorder
@@ -34,3 +34,6 @@
       margin           : 0 5em 0 5em
       padding          : .5em .5em .5em .5em
       width            : 4em
+
+    .disabled
+      background-color: $darkGrey

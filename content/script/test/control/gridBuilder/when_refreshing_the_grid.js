@@ -1,3 +1,5 @@
+goog.require('goog.dom.classes');
+goog.require('goog.events');
 goog.require('goog.string');
 goog.require('src.base.control.buttonList');
 
@@ -57,7 +59,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
 
 
   //Support Methods
-
+  
   var callTheMethod_ = function() {
     return Current_.refresh(options_, grid_, getElementByClass_, removeNode_, createARow_,
                             createADiv_, createResultHandler_, createTheHeaderRow_, createRows_,
@@ -107,9 +109,10 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     var methodWasCalled = false;
 
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
-                                    createADiv, appendChild, setTextContent, refresh, setClick,
-                                    findNode, createPagerButtons, copyOptions) {
-
+                                    createADiv, appendChild, setTextContent, refresh,
+                                    removeAllEvents, swap, setClick, findNode,
+                                    createPagerButtons, copyOptions) {
+      
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
         createTheHeaderRow === createTheHeaderRow_ &&
@@ -118,6 +121,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         refresh === src.base.control.gridBuilder.refresh &&
+        removeAllEvents === goog.events.removeAll &&
+        swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
         findNode === goog.dom.findNode &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&

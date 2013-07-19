@@ -11,11 +11,16 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   //Using
 
   var Current_ = src.base.control.gridBuilder;
-  var NextPage_ = goog.string.getRandomString();
-  var PreviousPage_ = goog.string.getRandomString();
+
+
 
 
   //Fields
+
+  var NextPage_ = 3;
+  var Page_ = 0;
+  var PreviousPage_ = 1;
+  var TotalCountOfPages_ = 10;
 
   var appendChild_;
   var buttonsCreated_;
@@ -31,24 +36,29 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   var previousButton_;
   var previousOptions_;
   var refresh_;
+  var removeAllEvents_;
   var result_;
   var setClick_;
   var setTextContent_;
+  var swap_;
 
 
   //Test Hooks
 
-
-
   beforeEach(function() {
-    result_ = {};
-    result_['PreviousPage'] = PreviousPage_;
-    result_['NextPage'] = NextPage_;
     parentContainer_ = {};
+
+    result_ = {};
+    result_[Current_.ResultNextPage] = NextPage_;
+    result_[Current_.ResultPreviousPage] = PreviousPage_;
+    result_[Current_.ResultTotalCountOfPages] = TotalCountOfPages_;
 
     buttonRow_ = {};
     clearBoth_ = {};
     options_ = {};
+    options_[Current_.Parameters] = {};
+    options_[Current_.Parameters][Current_.ParametersPageAttribute] = Page_;
+
     nextButton_ = {'id': Current_.NextButton};
     previousButton_ = {'id': Current_.PreviousButton};
 
@@ -85,104 +95,158 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     appendChild_ = function() {};
     findNode_ = function() { return null; };
     refresh_ = function(a) {};
+    removeAllEvents_ = function() {};
     setClick_ = function() {};
     setTextContent_ = function() {};
-    
+    swap_ = function() {};
   });
-  
+
+
   //Support Methods
-  
+
   var callTheMethod_ = function() {
     src.base.control.gridBuilder.createPagerButtons(result_, options_, parentContainer_,
                                                     findNode_, createADiv_, appendChild_,
-                                                    setClick_, setTextContent_, copyOptions_,
-                                                    refresh_);
+                                                    removeAllEvents_, swap_, setClick_,
+                                                    setTextContent_, copyOptions_, refresh_);
   };
-  
-  
+
+
   //Test Methods
-  
-  
+
+
   it('should create the two buttons.', function() {
     var methodWasCalled = 0;
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled += attributes['class'] === Current_.PagerClass &&
         (attributes['id'] === Current_.PreviousButton || attributes['id'] === Current_.NextButton);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
-  
+
+
   it('should set the text of the buttons', function() {
     var methodWasCalled = 0;
-    
+
     setTextContent_ = function(element, text) {
       methodWasCalled += (element === previousButton_ && text === '<') ||
         (element === nextButton_ && text === '>');
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
-  
-  
+
+
   it('should copy the options for both buttons.', function() {
     var methodWasCalled = 0;
-    
+
     copyOptions_ = function(options, pageNumber) {
       methodWasCalled += options === options_ &&
         (pageNumber === PreviousPage_ || pageNumber === NextPage_);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
-  
+
+
+  it('should remove all the events on the button.', function() {
+    var methodWasCalled = 0;
+
+    removeAllEvents_ = function(element) {
+      methodWasCalled += element === previousButton_ ||
+        element === nextButton_;
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(2);
+  });
+
+
+
+  it('should set the disable the previous button when the page is 0.', function() {
+    var methodWasCalled = 0;
+    options_[Current_.Parameters][Current_.ParametersPageAttribute] = 0;
+
+    swap_ = function(element, from, to) {
+      methodWasCalled += (element === previousButton_ &&
+                          from === Current_.PagerClass &&
+                          to === Current_.DisabledPagerClass) ||
+        (element === nextButton_ &&
+         from === Current_.DisabledPagerClass &&
+         to === Current_.PagerClass);
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(2);
+  });
+
+
+  it('should disable the next button when the page is one less than the page count.', function() {
+    var methodWasCalled = 0;
+    options_[Current_.Parameters][Current_.ParametersPageAttribute] = TotalCountOfPages_ - 1;
+
+    swap_ = function(element, from, to) {
+      methodWasCalled += (element === nextButton_ &&
+                          from === Current_.PagerClass &&
+                          to === Current_.DisabledPagerClass) ||
+        (element === previousButton_ &&
+         from === Current_.DisabledPagerClass &&
+         to === Current_.PagerClass);
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(2);
+  });
+
+
   it('should set the click events.', function() {
     var methodWasCalled = 0;
-    
+
     refresh_ = function(options, grid) {
       methodWasCalled += (options === previousOptions_ || options === nextOptions_) &&
         grid === parentContainer_;
     };
-    
+
     setClick_ = function(element, toDo) {
       toDo();
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(2);
   });
-  
-  
+
+
   it('should create the button row.', function() {
     var methodWasCalled = false;
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled ||
         attributes['class'] === Current_.ButtonRowClass;
-      
+
       return {};
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should add the buttons to the button row.', function() {
     var methodWasCalled = 0;
-    
+
     appendChild_ = function(parent, child) {
       methodWasCalled += parent === buttonRow_ &&
         (child === previousButton_ || child === nextButton_);
@@ -201,7 +265,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
 
       methodWasCalled = methodWasCalled ||
         attributes['class'] === 'clearBoth';
-      
+
       return {};
     };
 
@@ -211,7 +275,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
 
-  
+
   it('should add the clear div to the button row.', function() {
     var methodWasCalled = false;
 
@@ -244,7 +308,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   it('should not create a button if one exists.', function() {
     var methodWasCalled = 0;
     var callCount = 0;
-    
+
     findNode_ = function() {
       if (callCount === 0) {
         callCount += 1;
@@ -254,21 +318,21 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
         return nextButton_;
       }
     };
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled += attributes['class'] === Current_.PagerClass;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(0);
   });
-  
-  
+
+
   it('should not append the button if is exists already.', function() {
     var methodWasCalled = false;
     var callCount = 0;
-    
+
     findNode_ = function() {
       if (callCount === 0) {
         callCount += 1;
@@ -278,51 +342,51 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
         return nextButton_;
       }
     };
-    
+
     appendChild_ = function(parent, child) {
       methodWasCalled += parent === buttonRow_ &&
         (child === previousButton_ || child === nextButton_);
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(0);
   });
-   
 
-  it('should not create the button row if it exists..', function() {
+
+  it('should not create the button row if it exists.', function() {
     var methodWasCalled = false;
-    
-    findNode_ = function(){
+
+    findNode_ = function() {
       return buttonRow_;
     };
-    
+
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled ||
         attributes['class'] === Current_.ButtonRowClass;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(false);
   });
-  
-  
+
+
   it('should not append the clear div if the row existed already.', function() {
     var methodWasCalled = false;
-    
-    findNode_ = function(){
+
+    findNode_ = function() {
       return buttonRow_;
     };
-    
+
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === buttonRow_ && child === clearBoth_);
-      
+
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(false);
   });
 
@@ -330,7 +394,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
 
 
 describe('When creating the pager buttons, it', function() {
-  
+
   src.test.control.gridBuilder.whenCreatingThePagerButtons.describe();
 
 });

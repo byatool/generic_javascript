@@ -26,15 +26,15 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
   var result_;
   var row_;
   var setTextContent_;
-
-
+  
+  
   //Test Hooks
   beforeEach(function() {
     createdCount_ = 0;
     nameColumn_ = {};
     professionColumn_ = {};
     row_ = {};
-
+    
     columnMapping_ = [
       {'headerText' : 'Name', 'propertyName': 'name', 'class': FirstColumnClass_},
       {'headerText' : 'Profession', 'propertyName': 'profession'}
@@ -66,6 +66,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
     };
     
     setTextContent_ = function() {};
+    
     appendChild_ = function() {};
   });
   

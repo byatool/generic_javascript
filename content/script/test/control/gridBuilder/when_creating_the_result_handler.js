@@ -24,9 +24,11 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var options_;
   var parentContainer_;
   var refresh_;
+  var removeAllEvents_;
   var result_;
   var setClick_;
   var setTextContent_;
+  var swap_;
 
 
   //Test Hooks
@@ -48,8 +50,10 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     createTheHeaderRow_ = function() {};
     findNode_ = function() {};
     refresh_ = function() {};
+    removeAllEvents_ = function() {};
     setClick_ = function() {};
     setTextContent_ = function() {};
+    swap_ = function() {};
   });
 
   //Support Methods
@@ -57,18 +61,19 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     var methodToCall = src.base.control.gridBuilder.createTheResultHandler(options_, parentContainer_,
                                                                            createTheHeaderRow_, createRows_,
                                                                            createARow_, createADiv_, appendChild_,
-                                                                           setTextContent_, refresh_, setClick_,
-                                                                           findNode_, createPagerButtons_,
-                                                                           copyOptions_);
+                                                                           setTextContent_, refresh_,
+                                                                           removeAllEvents_, swap_,
+                                                                           setClick_, findNode_,
+                                                                           createPagerButtons_, copyOptions_);
     methodToCall(result_);
   };
-  
-  
+
+
   //Test Methods
-  
+
   it('should create the header row.', function() {
     var methodWasCalled = false;
-    
+
     createTheHeaderRow_ = function(mapping, parentContainer, findNode,
                                    createADiv, setTextContent, appendChild) {
       methodWasCalled = mapping === mapping_ &&
@@ -78,19 +83,19 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
         setTextContent === setTextContent_ &&
         appendChild === appendChild_;
     };
-    
+
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(true);
   });
-  
-  
+
+
   it('should create the rows.', function() {
     var methodWasCalled = false;
-    
+
     createRows_ = function(result, parentContainer, mapping, findNode, createADiv,
                            appendChild, createARow,  setTextContent) {
-      
+
       methodWasCalled = result === result_ &&
         parentContainer === parentContainer_ &&
         mapping === mapping_ &&
@@ -111,14 +116,17 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   it('should create the pager buttons.', function() {
     var methodWasCalled = false;
 
-    createPagerButtons_ = function(result, options, parentContainer, findNode, createADiv, appendChild, setClick,
-                                   setTextContent, copyOptions, refresh) {
+    createPagerButtons_ = function(result, options, parentContainer, findNode, createADiv, appendChild,
+                                   removeAllEvents, swap, setClick, setTextContent, copyOptions, refresh) {
+
       methodWasCalled = result === result_ &&
         options === options_ &&
         parentContainer === parentContainer_ &&
         findNode === findNode_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
+        removeAllEvents === removeAllEvents_ &&
+        swap === swap_ &&
         setClick === setClick_ &&
         setTextContent === setTextContent_ &&
         copyOptions === copyOptions_ &&
