@@ -26,6 +26,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var refresh_;
   var removeAllEvents_;
   var result_;
+  var rowClickHandler_;
   var setClick_;
   var setTextContent_;
   var swap_;
@@ -51,6 +52,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     findNode_ = function() {};
     refresh_ = function() {};
     removeAllEvents_ = function() {};
+    rowClickHandler_ = function() {};
     setClick_ = function() {};
     setTextContent_ = function() {};
     swap_ = function() {};
@@ -64,16 +66,17 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
                                                                            setTextContent_, refresh_,
                                                                            removeAllEvents_, swap_,
                                                                            setClick_, findNode_,
-                                                                           createPagerButtons_, copyOptions_);
+                                                                           createPagerButtons_, copyOptions_,
+                                                                           rowClickHandler_);
     methodToCall(result_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should create the header row.', function() {
     var methodWasCalled = false;
-
+    
     createTheHeaderRow_ = function(mapping, parentContainer, findNode,
                                    createADiv, setTextContent, appendChild) {
       methodWasCalled = mapping === mapping_ &&
@@ -83,19 +86,20 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
         setTextContent === setTextContent_ &&
         appendChild === appendChild_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the rows.', function() {
     var methodWasCalled = false;
-
+    
     createRows_ = function(result, parentContainer, mapping, findNode, createADiv,
-                           appendChild, createARow,  setTextContent) {
-
+                           appendChild, createARow,  setTextContent, rowClickHandler,
+                           setClick) {
+      
       methodWasCalled = result === result_ &&
         parentContainer === parentContainer_ &&
         mapping === mapping_ &&
@@ -103,7 +107,9 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         createARow === createARow_ &&
-        setTextContent === setTextContent_;
+        setTextContent === setTextContent_ &&
+        rowClickHandler === rowClickHandler_ &&
+        setClick === setClick_;
     };
 
     callTheMethod_();
@@ -117,8 +123,9 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     var methodWasCalled = false;
 
     createPagerButtons_ = function(result, options, parentContainer, findNode, createADiv, appendChild,
-                                   removeAllEvents, swap, setClick, setTextContent, copyOptions, refresh) {
-
+                                   removeAllEvents, swap, setClick, setTextContent, copyOptions, refresh,
+                                   rowClickHandler) {
+      
       methodWasCalled = result === result_ &&
         options === options_ &&
         parentContainer === parentContainer_ &&
@@ -130,7 +137,8 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
         setClick === setClick_ &&
         setTextContent === setTextContent_ &&
         copyOptions === copyOptions_ &&
-        refresh === refresh_;
+        refresh === refresh_ &&
+        rowClickHandler === rowClickHandler_;
     };
 
     callTheMethod_();

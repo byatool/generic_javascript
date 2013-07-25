@@ -21,7 +21,10 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   var parentContainer_;
   var rowContainer_;
   var result_;
+  var rowClickHandler_;
+  var setClick_;
   var setTextContent_;
+
 
   //Test Hooks
   beforeEach(function() {
@@ -35,13 +38,17 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
     createADiv_ = function() { return rowContainer_;};
     createARow_ = function() {};
     findNode_ = function() { return null; };
+    rowClickHandler_ = function() {};
+    setClick_ = function() {};
     setTextContent_ = function() {};
   });
 
 
   //Support Methods
   var callTheMethod_ = function() {
-    Current_.createRows(result_, parentContainer_, mapping_, findNode_, createADiv_, appendChild_, createARow_, setTextContent_);
+    Current_.createRows(result_, parentContainer_, mapping_, findNode_,
+                        createADiv_, appendChild_, createARow_, setTextContent_,
+                        rowClickHandler_, setClick_);
   };
 
 
@@ -111,12 +118,17 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   it('should create a row for each result item.', function() {
     var methodWasCalled = 0;
 
-    createARow_ = function(item, mapping, createADiv, setTextContent, appendChild) {
-      methodWasCalled += (item === result_[Current_.ListProperty][0] || item === result_[Current_.ListProperty][1]) &&
+    createARow_ = function(item, mapping, createADiv, setTextContent,
+                           appendChild, rowClickHandler, setClick) {
+
+      methodWasCalled += (item === result_[Current_.ListProperty][0] ||
+                          item === result_[Current_.ListProperty][1]) &&
         mapping === mapping_ &&
         createADiv === createADiv_ &&
         setTextContent === setTextContent_ &&
-        appendChild === appendChild_;
+        appendChild === appendChild_ &&
+        rowClickHandler === rowClickHandler_ &&
+        setClick === setClick_;
     };
 
     callTheMethod_();

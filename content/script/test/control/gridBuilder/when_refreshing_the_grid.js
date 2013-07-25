@@ -10,15 +10,15 @@ goog.provide('src.test.control.gridBuilder.whenRefreshingTheGrid');
  */
 src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   //Using
-
+  
   var Current_ = src.base.control.gridBuilder;
-
-
+  
+  
   //Fields
-
+  
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
-
+  
   var appendChild_;
   var createADiv_;
   var createARow_;
@@ -29,6 +29,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   var grid_;
   var options_;
   var removeNode_;
+  var rowClickHandler_;
   var setTextContent_;
   var submitToUrl_;
 
@@ -53,16 +54,18 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     createRows_ = function() {};
     getElementByClass_ = function() { return [];};
     removeNode_ = function() {};
+    rowClickHandler_ = function(){};
     setTextContent_ = function() {};
     submitToUrl_ = function() {};
   });
-
-
+  
+  
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.refresh(options_, grid_, getElementByClass_, removeNode_, createARow_,
-                            createADiv_, createResultHandler_, createTheHeaderRow_, createRows_,
+    return Current_.refresh(options_, grid_, rowClickHandler_,getElementByClass_,
+                            removeNode_, createARow_, createADiv_, createResultHandler_,
+                            createTheHeaderRow_, createRows_,
                             appendChild_, setTextContent_, submitToUrl_);
   };
 
@@ -98,7 +101,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     removeNode_ = function(node) {
       methodWasCalled += node === firstChild || node === secondChild;
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(2);
@@ -111,7 +114,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
                                     createADiv, appendChild, setTextContent, refresh,
                                     removeAllEvents, swap, setClick, findNode,
-                                    createPagerButtons, copyOptions) {
+                                    createPagerButtons, copyOptions, rowClickHandler) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
@@ -126,32 +129,33 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         setClick === src.base.helper.events.setClick &&
         findNode === goog.dom.findNode &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
-        copyOptions === src.base.control.gridBuilder.copyOptions;
+        copyOptions === src.base.control.gridBuilder.copyOptions &&
+        rowClickHandler === rowClickHandler_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-
+    
     var resultHandler = {};
-
+    
     createResultHandler_ = function() {
       return resultHandler;
     };
-
+    
     submitToUrl_ = function(url, parameters, handler) {
       methodWasCalled = url === options_[Current_.Url] &&
         parameters === options_[Current_.Parameters] &&
         handler === resultHandler;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 };

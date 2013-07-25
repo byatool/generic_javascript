@@ -37,28 +37,29 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   var previousOptions_;
   var refresh_;
   var removeAllEvents_;
+  var rowClickHandler_;
   var result_;
   var setClick_;
   var setTextContent_;
   var swap_;
-
-
+  
+  
   //Test Hooks
-
+  
   beforeEach(function() {
     parentContainer_ = {};
-
+    
     result_ = {};
     result_[Current_.ResultNextPage] = NextPage_;
     result_[Current_.ResultPreviousPage] = PreviousPage_;
     result_[Current_.ResultTotalCountOfPages] = TotalCountOfPages_;
-
+    
     buttonRow_ = {};
     clearBoth_ = {};
     options_ = {};
     options_[Current_.Parameters] = {};
     options_[Current_.Parameters][Current_.ParametersPageAttribute] = Page_;
-
+    
     nextButton_ = {'id': Current_.NextButton};
     previousButton_ = {'id': Current_.PreviousButton};
 
@@ -87,7 +88,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
 
     nextOptions_ = {'id': 'next'};
     previousOptions_ = {'id': 'previous'};
-
+    
     copyOptions_ = function(options, pageNumber) {
       return pageNumber === PreviousPage_ ? previousOptions_ : nextOptions_;
     };
@@ -96,19 +97,21 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     findNode_ = function() { return null; };
     refresh_ = function(a) {};
     removeAllEvents_ = function() {};
+    rowClickHandler_ = function(){};
     setClick_ = function() {};
     setTextContent_ = function() {};
     swap_ = function() {};
   });
-
-
+  
+  
   //Support Methods
-
+  
   var callTheMethod_ = function() {
     src.base.control.gridBuilder.createPagerButtons(result_, options_, parentContainer_,
                                                     findNode_, createADiv_, appendChild_,
                                                     removeAllEvents_, swap_, setClick_,
-                                                    setTextContent_, copyOptions_, refresh_);
+                                                    setTextContent_, copyOptions_, refresh_,
+                                                    rowClickHandler_);
   };
 
 
@@ -213,9 +216,10 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   it('should set the click events.', function() {
     var methodWasCalled = 0;
 
-    refresh_ = function(options, grid) {
+    refresh_ = function(options, grid, rowClickHandler) {
       methodWasCalled += (options === previousOptions_ || options === nextOptions_) &&
-        grid === parentContainer_;
+        grid === parentContainer_ &&
+        rowClickHandler === rowClickHandler_;
     };
 
     setClick_ = function(element, toDo) {
@@ -367,7 +371,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(false);
   });
 
