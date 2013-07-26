@@ -9,13 +9,13 @@ goog.provide('src.test.validation.whenValidatingADate');
 src.test.validation.whenValidatingADate.describe = function() {
   //Using
   var Current_ = src.site.validation.validateDate;
-
-
+  
+  
   //Fields
-
+  
   var Day_ = '12';
   var Month_ = '05';
-  var Separator_ = goog.string.getRandomString();
+  var Separator_ = '/';
   var SeparatorCount_ = 2;
   var Year_ = '2013';
 

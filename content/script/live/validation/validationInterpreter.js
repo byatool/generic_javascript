@@ -21,7 +21,7 @@ src.site.validation.validationInterpreter.methodLookup = [
     return !src.site.validation.validateText.isEmptyOrIsDefault(toCheck.get(propertyName), rest[0]) ? null : error;
   }],
   ['is a valid date', function(toCheck, propertyName, error, rest) {
-    return src.site.validation.validateDate.isValid(toCheck.get(propertyName)) ? null : error;
+    return src.site.validation.validateDate.isValid(toCheck.get(propertyName).toString()) ? null : error;
   }]
 ];
 
@@ -99,7 +99,7 @@ src.site.validation.validationInterpreter.createAValidationWrapper = function(ru
  */
 src.site.validation.validationInterpreter.interpret =
   function(rules, methods, createAValidationCall, car, cdr, flatten) {
-
+    
     var current = src.site.validation.validationInterpreter;
     
     createAValidationCall = createAValidationCall ? createAValidationCall : current.createAValidationCall;
