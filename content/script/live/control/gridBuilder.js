@@ -286,7 +286,8 @@ src.base.control.gridBuilder.createAndAppendPagerButton_ = function(isPrevious, 
   }
 
   if (!isPrevious) {
-    if (currentPage === result[current.ResultTotalCountOfPages] - 1) {
+    if (result[current.ResultTotalCountOfPages] === 0 ||
+        currentPage === result[current.ResultTotalCountOfPages] - 1) {
       swap(button, current.PagerClass, current.DisabledPagerClass);
     }
     else {

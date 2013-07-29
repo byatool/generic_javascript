@@ -42,24 +42,24 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   var setClick_;
   var setTextContent_;
   var swap_;
-  
-  
+
+
   //Test Hooks
-  
+
   beforeEach(function() {
     parentContainer_ = {};
-    
+
     result_ = {};
     result_[Current_.ResultNextPage] = NextPage_;
     result_[Current_.ResultPreviousPage] = PreviousPage_;
     result_[Current_.ResultTotalCountOfPages] = TotalCountOfPages_;
-    
+
     buttonRow_ = {};
     clearBoth_ = {};
     options_ = {};
     options_[Current_.Parameters] = {};
     options_[Current_.Parameters][Current_.ParametersPageAttribute] = Page_;
-    
+
     nextButton_ = {'id': Current_.NextButton};
     previousButton_ = {'id': Current_.PreviousButton};
 
@@ -88,7 +88,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
 
     nextOptions_ = {'id': 'next'};
     previousOptions_ = {'id': 'previous'};
-    
+
     copyOptions_ = function(options, pageNumber) {
       return pageNumber === PreviousPage_ ? previousOptions_ : nextOptions_;
     };
@@ -97,15 +97,15 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     findNode_ = function() { return null; };
     refresh_ = function(a) {};
     removeAllEvents_ = function() {};
-    rowClickHandler_ = function(){};
+    rowClickHandler_ = function() {};
     setClick_ = function() {};
     setTextContent_ = function() {};
     swap_ = function() {};
   });
-  
-  
+
+
   //Support Methods
-  
+
   var callTheMethod_ = function() {
     src.base.control.gridBuilder.createPagerButtons(result_, options_, parentContainer_,
                                                     findNode_, createADiv_, appendChild_,
@@ -186,6 +186,26 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
         (element === nextButton_ &&
          from === Current_.DisabledPagerClass &&
          to === Current_.PagerClass);
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(2);
+  });
+
+
+  it('should disable the next button when total count of pages is 0.', function() {
+    var methodWasCalled = 0;
+    options_[Current_.Parameters][Current_.ParametersPageAttribute] = 0;
+    result_[Current_.ResultTotalCountOfPages] = 0;
+
+    swap_ = function(element, from, to) {
+      methodWasCalled += (element === nextButton_ &&
+                          from === Current_.PagerClass &&
+                          to === Current_.DisabledPagerClass) ||
+        (element === previousButton_ &&
+         from === Current_.PagerClass &&
+         to === Current_.DisabledPagerClass);
     };
 
     callTheMethod_();
@@ -371,7 +391,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     };
 
     callTheMethod_();
-    
+
     expect(methodWasCalled).toBe(false);
   });
 
