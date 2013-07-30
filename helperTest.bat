@@ -11,6 +11,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.helper.arrayHelper.whenGettingAllButTheLastItemFromTheList" ^
 --namespace="src.test.helper.arrayHelper.whenUsingCar" ^
 --namespace="src.test.helper.arrayHelper.whenUsingCdr" ^
+--namespace="src.test.helper.domCreation.whenCreatingAClearDiv" ^
 --namespace="src.test.helper.domCreation.whenCreatingACheckbox" ^
 --namespace="src.test.helper.domCreation.whenCreatingADropDownList" ^
 --namespace="src.test.helper.domCreation.whenCreatingALabel" ^

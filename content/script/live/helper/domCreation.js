@@ -122,14 +122,26 @@ src.base.helper.domCreation.textbox = function(attributes, value) {
   attributes = attributes ? attributes : {};
   attributes['type'] = 'text';
   var textbox = goog.dom.createDom('input', attributes);
-  
+
   textbox.value = value ? value : '';
-  
+
   return textbox;
 };
 
 
 //Helper Methods
+
+/**
+ @param {?function} createADiv The function used to create a div.
+ @return {Object} The created clear both div.
+ @export
+ */
+src.base.helper.domCreation.createAClearDiv = function(createADiv) {
+  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+
+  return createADiv({'class': 'clearBoth'});
+};
+
 
 /**
  @param {Object} select The select control to fill.
@@ -142,11 +154,11 @@ src.base.helper.domCreation.fillASelect$ = function(select, data, defaultText) {
   //TODO Should pull goog.dom.createDom so that the call can be tested, not the
   // result
   if (data && data.length > 0) {
-    
-    if(defaultText !== null && defaultText !== undefined) {
+
+    if (defaultText !== null && defaultText !== undefined) {
       select.add(goog.dom.createDom('option', {text: defaultText, value: ''}));
     }
-      
+
     goog.array.forEach(data, function(item) {
       select.add(goog.dom.createDom('option', {text: item.text, value: item.value}));
     });

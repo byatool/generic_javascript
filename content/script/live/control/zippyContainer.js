@@ -1,6 +1,9 @@
 goog.require('goog.dom');
 goog.require('goog.ui.Zippy');
+goog.require('src.base.helper.domCreation');
+
 goog.provide('src.base.control.zippyContainer');
+
 
 /**
  @const
@@ -13,9 +16,33 @@ src.base.control.zippyContainer.ContainerId = 'containerId';
 /**
  @const
  @type {string}
- @export
+ @protected
+ */
+src.base.control.zippyContainer.ContentContainerClass = 'zippyContentContainerClass';
+
+
+/**
+ @const
+ @type {string}
+ @protected
  */
 src.base.control.zippyContainer.HeaderClass = 'zippyContainerHeaderClass';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.zippyContainer.HeaderExpandClass = 'zippyContainerExpand';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.zippyContainer.HeaderTitleClass = 'zippyContainerTitleClass';
 
 
 /**
@@ -42,63 +69,59 @@ src.base.control.zippyContainer.Title = 'title';
  parent container.
  @param {?function} setTextContent The functin used to set the visible
  text of a container element.
- @param {?function} createAZippy The function used to create the zippy.
-  @return {Object} The created control.
+ @param {?function} createAClearDiv The function used to create a div
+ that is clear:both.
+ @param {?function} zippy The zippy constructor.
+ @return {Object} The created control.
  @export
  */
 src.base.control.zippyContainer.initialize =
-  function(options, toHold, createADiv, appendChild, setTextContent, createAZippy) {
-    
+  function(options, toHold, createADiv, appendChild, setTextContent, createAClearDiv, zippy) {
+
     appendChild = appendChild ? appendChild : goog.dom.appendChild;
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-    createAZippy = createAZippy ? createAZippy : goog.ui.Zippy;
+    zippy = zippy ? zippy : goog.ui.Zippy;
     setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
-    
-  // <div class="transactionHistory">
-  // <div>
-  // <div id="transactionHistoryTopTitle" class="transactionHistoryTopTitle">Current Day Transactions</div>
-  // <div id="transactionHistoryExpand" class="transactionHistoryExpand"></div>
-  // <div class="clearBoth"></div>
-  // </div>
-  // <div id="transactionHistoryContainer" class="transactionHistoryContainer"></div>
-  // </div>
-    
-  // transactionHistoryTopTitle
-  // transactionHistoryExpand
-  // clearBoth
-    
-  // options[Current_.Title] -> header
-  //
-  //div container
-  //  div header
-  //    div title  div zippyButton
-  //    div showHideContainer
-  //      div toHold
-    
+    createAClearDiv = createAClearDiv ? createAClearDiv : src.base.helper.domCreation.createAClearDiv;
+
     var Current_ = src.base.control.zippyContainer;
-    
-    var container = createADiv(
-      {'id': options[Current_.ContainerId],
-       'class': options[Current_.ContainerId]});
-    
-    var header = createADiv({'class': Current_.HeaderClass});
 
-    //create the text div
-    //  set the header text
-    //create the button div
+    var container = createADiv({
+      'id': options[Current_.ContainerId],
+      'class': options[Current_.ContainerId]
+    });
 
-    //add both to the header.
-    
-    //create the content div
-    //  add the passed in element
+    var header = createADiv(
+      {'class': Current_.HeaderClass}
+    );
 
-    //create the zippy
-    
-    // var title = createADiv({'id': options[Current_.Title]});
-    
-    //appendChild(container, header);
-    
-    //new goog.ui.Zippy('transactionHistoryExpand', 'transactionHistoryContainer');
+    var headerTitle = createADiv({
+      'class': Current_.HeaderTitleClass
+    });
+
+    setTextContent(headerTitle, options[Current_.Title]);
+    appendChild(header, headerTitle);
+
+    var headerExpand = createADiv({
+      'id': Current_.HeaderExpandClass,
+      'class': Current_.HeaderExpandClass
+    });
+    appendChild(header, headerExpand);
+
+    var clearDiv = createAClearDiv();
+    appendChild(header, clearDiv);
+
+    appendChild(container, header);
+
+    var contentContainer = createADiv({
+      'id': Current_.ContentContainerClass,
+      'class': Current_.ContentContainerClass
+    });
+    appendChild(contentContainer, toHold);
+    appendChild(container, contentContainer);
+
+    new zippy(headerExpand, contentContainer);
+
     return container;
 };
 

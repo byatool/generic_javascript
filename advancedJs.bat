@@ -19,6 +19,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.simpleInformationDisplay" ^
 --namespace="src.base.control.tabs" ^
 --namespace="src.base.control.tagContainer" ^
+--namespace="src.base.control.zippyContainer" ^
 --namespace="src.site.validation.validateSocialSecurityNumber" ^
 --namespace="src.site.validation.validateText" ^
 --namespace="src.site.validation.validationInterpreter" ^
