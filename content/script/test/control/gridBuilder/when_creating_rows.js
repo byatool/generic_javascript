@@ -162,6 +162,73 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
 
     expect(methodWasCalled).toBe(2);
   });
+
+
+  it('should create a empty message if there are no rows to create.', function() {
+    var methodWasCalled = false;
+
+    result_[Current_.ListProperty] = [];
+
+    createADiv_ = function(attributes) {
+      methodWasCalled = methodWasCalled ||
+        attributes['class'] === Current_.MessageClass;
+
+      return {};
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(true);
+  });
+
+
+  it('should set the text of the message container if there are no rows.', function() {
+    var methodWasCalled = false;
+    var messageContainer = {};
+
+    result_[Current_.ListProperty] = [];
+
+    createADiv_ = function(attributes) {
+      return attributes['class'] === Current_.MessageClass ?
+        messageContainer :
+        {};
+    };
+
+    setTextContent_ = function(element, text) {
+      methodWasCalled = element === messageContainer &&
+        text === Current_.NoRowsText;
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(true);
+  });
+
+
+  it('should set the add message container if there are no rows.', function() {
+    var methodWasCalled = false;
+    var messageContainer = {};
+
+    result_[Current_.ListProperty] = [];
+
+    createADiv_ = function(attributes) {
+      return attributes['class'] === Current_.MessageClass ?
+        messageContainer :
+        attributes['class'] === Current_.RowContainerClass ?
+        rowContainer_ : {};
+
+    };
+
+    appendChild_ = function(parent, child) {
+      methodWasCalled = methodWasCalled ||
+        (parent === rowContainer_ && child === messageContainer);
+    };
+
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(true);
+  });
 };
 
 

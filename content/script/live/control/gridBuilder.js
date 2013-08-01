@@ -48,6 +48,15 @@ src.base.control.gridBuilder.ContainerId = 'containerId';
 src.base.control.gridBuilder.DisabledPagerClass = 'gridBuilderDisabledPagerClass';
 
 
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.gridBuilder.NoRowsText = 'There are no records.';
+
+
 /**
  @const
  @type {string}
@@ -85,6 +94,14 @@ src.base.control.gridBuilder.Map = 'mapping';
  @type {string}
  @export
  */
+src.base.control.gridBuilder.MessageClass = 'gridBuilderMessageClass';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.gridBuilder.PagerClass = 'gridBuilderPagerClass';
 
 
@@ -94,7 +111,6 @@ src.base.control.gridBuilder.PagerClass = 'gridBuilderPagerClass';
  @export
  */
 src.base.control.gridBuilder.NextButton = 'next';
-
 
 
 /**
@@ -170,33 +186,40 @@ src.base.control.gridBuilder.Url = 'url';
 
 
 /**
- @param {Object} optionToCopy The options that are used to construct the grid.
- @param {integer} pageNumber The page number to set in the parameters object.
+ @param {Object} optionToCopy The options that are used to construct
+ the grid.
+ @param {integer} pageNumber The page number to set in the parameters
+ object.
  @return {Object} The copied option with the new page number set.
  @protected
  */
-src.base.control.gridBuilder.copyOptions = function(optionToCopy, pageNumber) {
-  var current = src.base.control.gridBuilder;
+src.base.control.gridBuilder.copyOptions =
+  function(optionToCopy, pageNumber) {
 
-  var newOptions = {};
-  newOptions[current.ContainerClass] = optionToCopy[current.ContainerClass];
-  newOptions[current.ContainerId] = optionToCopy[current.ContainerId];
-  newOptions[current.Url] = optionToCopy[current.Url];
-  newOptions[current.Map] = optionToCopy[current.Map];
-  var newParameters = {};
-  newOptions[current.Parameters] = newParameters;
-  newOptions[current.Parameters][current.ParametersPageAttribute] = pageNumber;
+    var current = src.base.control.gridBuilder;
 
-  return newOptions;
+    var newOptions = {};
+    newOptions[current.ContainerClass] = optionToCopy[current.ContainerClass];
+    newOptions[current.ContainerId] = optionToCopy[current.ContainerId];
+    newOptions[current.Url] = optionToCopy[current.Url];
+    newOptions[current.Map] = optionToCopy[current.Map];
+
+    var newParameters = {};
+    newOptions[current.Parameters] = newParameters;
+    newOptions[current.Parameters][current.ParametersPageAttribute] = pageNumber;
+
+    return newOptions;
 };
 
 
 /**
  @param {Object} currentItem The current item from the list of results.
- @param {Array.<Object>} mapping The table mapping used to find the column headers.
+ @param {Array.<Object>} mapping The table mapping used to find the
+ column headers.
  @param {function} createADiv The function used to create a div.
  @param {function} setTextContent The function used to set a div's text.
- @param {function} appendChild The function used to add an element to a parent element.
+ @param {function} appendChild The function used to add an element to a
+ parent element.
  @param {?function} rowClickHandler The function to set the row onClick if it
  is not null.
  @param {?function} setClick The function used to set the row onClick event
@@ -204,32 +227,32 @@ src.base.control.gridBuilder.copyOptions = function(optionToCopy, pageNumber) {
  @return {Object} The created row.
  @protected
  */
-src.base.control.gridBuilder.createARow = function(currentItem, mapping, createADiv,
-                                                   setTextContent, appendChild, rowClickHandler,
-                                                   setClick) {
+src.base.control.gridBuilder.createARow =
+  function(currentItem, mapping, createADiv, setTextContent,
+           appendChild, rowClickHandler, setClick) {
 
-  var current = src.base.control.gridBuilder;
-  var currentRow = createADiv({'class' : current.RowClass });
+    var current = src.base.control.gridBuilder;
+    var currentRow = createADiv({'class' : current.RowClass });
 
-  if (rowClickHandler) {
-    setClick(currentRow, function() {
-      rowClickHandler(currentRow);
+    if (rowClickHandler) {
+      setClick(currentRow, function() {
+        rowClickHandler(currentRow);
+      });
+    }
+
+    goog.array.forEach(mapping, function(currentMapping) {
+      var extraClass = currentMapping['class'] ? ' ' + currentMapping['class'] : '';
+
+      var column = createADiv({'class' : current.ColumnClass + extraClass});
+      setTextContent(column, currentItem[currentMapping['propertyName']]);
+      appendChild(currentRow, column);
     });
-  }
 
-  goog.array.forEach(mapping, function(currentMapping) {
-    var extraClass = currentMapping['class'] ? ' ' + currentMapping['class'] : '';
+    var clearBoth = createADiv({'class': 'clearBoth'});
 
-    var column = createADiv({'class' : current.ColumnClass + extraClass});
-    setTextContent(column, currentItem[currentMapping['propertyName']]);
-    appendChild(currentRow, column);
-  });
+    appendChild(currentRow, clearBoth);
 
-  var clearBoth = createADiv({'class': 'clearBoth'});
-
-  appendChild(currentRow, clearBoth);
-
-  return currentRow;
+    return currentRow;
 };
 
 
@@ -254,50 +277,52 @@ src.base.control.gridBuilder.createARow = function(currentItem, mapping, createA
  is not null.
  @private
  */
-src.base.control.gridBuilder.createAndAppendPagerButton_ = function(isPrevious, options, result,
-                                                                    parentContainer, containerRow, findNode,
-                                                                    createADiv, setTextContent, copyOptions,
-                                                                    removeAllEvents, swap,
-                                                                    setClick, appendChild, refresh,
-                                                                    rowClickHandler) {
-  var current = src.base.control.gridBuilder;
+src.base.control.gridBuilder.createAndAppendPagerButton_ =
+  function(isPrevious, options, result, parentContainer, containerRow,
+           findNode, createADiv, setTextContent, copyOptions,
+           removeAllEvents, swap, setClick, appendChild, refresh,
+           rowClickHandler) {
 
-  var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
-  var button = findNode(parentContainer, function(item) { return item['id'] === buttonId; });
+    var current = src.base.control.gridBuilder;
 
-  if (!button) {
-    button = createADiv({'id': buttonId, 'class': current.PagerClass});
-    setTextContent(button, isPrevious ? '<' : '>');
-    appendChild(containerRow, button);
-  }
+    var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
+    var button = findNode(parentContainer, function(item) { return item['id'] === buttonId; });
 
-  var resultKey = isPrevious ? 'PreviousPage' : 'NextPage';
-  var currentOptions = copyOptions(options, result[resultKey]);
-
-  var currentPage = options[current.Parameters][current.ParametersPageAttribute];
-
-  if (isPrevious) {
-    if (currentPage === 0) {
-      swap(button, current.PagerClass, current.DisabledPagerClass);
+    if (!button) {
+      button = createADiv({'id': buttonId, 'class': current.PagerClass});
+      setTextContent(button, isPrevious ? '<' : '>');
+      appendChild(containerRow, button);
     }
-    else {
-      swap(button, current.DisabledPagerClass, current.PagerClass);
-    }
-  }
 
-  if (!isPrevious) {
-    if (result[current.ResultTotalCountOfPages] === 0 ||
-        currentPage === result[current.ResultTotalCountOfPages] - 1) {
-      swap(button, current.PagerClass, current.DisabledPagerClass);
-    }
-    else {
-      swap(button, current.DisabledPagerClass, current.PagerClass);
-    }
-  }
+    var resultKey = isPrevious ? 'PreviousPage' : 'NextPage';
+    var currentOptions = copyOptions(options, result[resultKey]);
+    
+    var currentPage = options[current.Parameters][current.ParametersPageAttribute];
 
-  removeAllEvents(button);
-  ///has to take in the row click handler...
-  setClick(button, function() { refresh(currentOptions, parentContainer, rowClickHandler); });
+    if (isPrevious) {
+      if (currentPage === 0) {
+        swap(button, current.PagerClass, current.DisabledPagerClass);
+      }
+      else {
+        swap(button, current.DisabledPagerClass, current.PagerClass);
+      }
+    }
+
+    if (!isPrevious) {
+      if (result[current.ResultTotalCountOfPages] === 0 ||
+          currentPage === result[current.ResultTotalCountOfPages] - 1) {
+        swap(button, current.PagerClass, current.DisabledPagerClass);
+      }
+      else {
+        swap(button, current.DisabledPagerClass, current.PagerClass);
+      }
+    }
+
+    removeAllEvents(button);
+
+    setClick(button, function() {
+      refresh(currentOptions, parentContainer, rowClickHandler);
+    });
 };
 
 
@@ -305,176 +330,234 @@ src.base.control.gridBuilder.createAndAppendPagerButton_ = function(isPrevious, 
  @param {Object} result The result returned from the server.
  @param {Object} options The options that are used to construct the grid.
  @param {Object} parentContainer The container to add the rows too.
- @param {function} findNode The function used to find the pager buttons if the exist.
+ @param {function} findNode The function used to find the pager buttons
+ if they exist.
  @param {function} createADiv The function used to create a div.
- @param {function} appendChild The method used to append a child to a parent element.
+ @param {function} appendChild The method used to append a child to a
+ parent element.
  @param {function} removeAllEvents The function used to strip the pager buttons of
  any prior event hooks.
- @param {function} swap The function used to set or remove the disabled class.
- @param {function} setClick The function used to set the click event for the pagers.
+ @param {function} swap The function used to set or remove the disabled
+ class.
+ @param {function} setClick The function used to set the click event
+ for the pagers.
  @param {function} setTextContent The function used to set a div's text.
  @param {function} copyOptions The function used to copy the option values, and
  change the page parameter value to the next or previous page.
- @param {function} refresh The function needed to refresh the grid when a pager is clicked.
- @param {?function} rowClickHandler The function to set the row onClick if it
- is not null.
+ @param {function} refresh The function needed to refresh the grid when a
+ pager is clicked.
+ @param {?function} rowClickHandler The function to set the row onClick if
+ it is not null.
  @protected
  */
-src.base.control.gridBuilder.createPagerButtons = function(result, options, parentContainer, findNode,
-                                                           createADiv, appendChild, removeAllEvents,
-                                                           swap, setClick, setTextContent, copyOptions,
-                                                           refresh, rowClickHandler) {
+src.base.control.gridBuilder.createPagerButtons =
+  function(result, options, parentContainer, findNode,
+           createADiv, appendChild, removeAllEvents,
+           swap, setClick, setTextContent, copyOptions,
+           refresh, rowClickHandler) {
+    
+    var current = src.base.control.gridBuilder;
 
-  var current = src.base.control.gridBuilder;
+    var containerRow = findNode(parentContainer, function(item) {
+      return item['className'] === current.ButtonRowClass;
+    });
 
-  var containerRow = findNode(parentContainer, function(item) {
-    return item['className'] === current.ButtonRowClass;
-  });
+    var didNotExist = !containerRow;
 
-  var didNotExist = !containerRow;
+    if (didNotExist) {
+      containerRow = createADiv({'class': current.ButtonRowClass});
+    }
 
-  if (didNotExist) {
-    containerRow = createADiv({'class': current.ButtonRowClass});
-  }
+    current.createAndAppendPagerButton_(true, options, result, parentContainer,
+                                        containerRow, findNode, createADiv,
+                                        setTextContent, copyOptions, removeAllEvents,
+                                        swap, setClick, appendChild, refresh, rowClickHandler);
 
-  current.createAndAppendPagerButton_(true, options, result, parentContainer,
-                                      containerRow, findNode, createADiv,
-                                      setTextContent, copyOptions, removeAllEvents,
-                                      swap, setClick, appendChild, refresh, rowClickHandler);
+    current.createAndAppendPagerButton_(false, options, result, parentContainer,
+                                        containerRow, findNode, createADiv,
+                                        setTextContent, copyOptions, removeAllEvents,
+                                        swap, setClick, appendChild, refresh, rowClickHandler);
 
-  current.createAndAppendPagerButton_(false, options, result, parentContainer,
-                                      containerRow, findNode, createADiv,
-                                      setTextContent, copyOptions, removeAllEvents,
-                                      swap, setClick, appendChild, refresh, rowClickHandler);
+    if (didNotExist) {
+      var clearDiv = createADiv({'class': 'clearBoth'});
+      appendChild(containerRow, clearDiv);
+    }
 
-  if (didNotExist) {
-    var clearDiv = createADiv({'class': 'clearBoth'});
-    appendChild(containerRow, clearDiv);
-  }
-
-  appendChild(parentContainer, containerRow);
+    appendChild(parentContainer, containerRow);
 };
 
 /**
- @param {Array.<Object>} mapping The table mapping used to find the column headers.
+ @param {Array.<Object>} mapping The table mapping used to find the column
+ headers.
  @param {Object} parentContainer The container to add the rows too.
- @param {function} findNode The function used to find the pager buttons if the exist.
+ @param {function} findNode The function used to find the pager buttons
+ if the exist.
  @param {function} createADiv The function used to create a div.
  @param {function} setTextContent The function used to set a div's text.
- @param {function} appendChild The function used to add an element to a parent element.
+ @param {function} appendChild The function used to add an element to a
+ parent element.
  @protected
  */
-src.base.control.gridBuilder.createTheHeaderRow = function(mapping, parentContainer, findNode,
-                                                           createADiv, setTextContent, appendChild) {
+src.base.control.gridBuilder.createTheHeaderRow =
+  function(mapping, parentContainer, findNode,
+           createADiv, setTextContent, appendChild) {
 
-  var current = src.base.control.gridBuilder;
+    var current = src.base.control.gridBuilder;
 
-  var headerRow = findNode(parentContainer, function(row) { return row['className'] === current.HeaderRowClass;});
-
-  if (!headerRow) {
-    headerRow = createADiv({'class': current.HeaderRowClass});
-
-    goog.array.forEach(mapping, function(currentMap) {
-      var extraClass = currentMap['class'] ? ' ' + currentMap['class'] : '';
-
-      var header = createADiv({'class': current.HeaderClass + extraClass});
-      setTextContent(header, currentMap['headerText']);
-      appendChild(headerRow, header);
+    var headerRow = findNode(parentContainer, function(row) {
+      return row['className'] === current.HeaderRowClass;
     });
 
-    var clearBoth = createADiv({'class': 'clearBoth'});
-    appendChild(headerRow, clearBoth);
+    if (!headerRow) {
+      headerRow = createADiv({'class': current.HeaderRowClass});
 
-    appendChild(parentContainer, headerRow);
-  }
+      goog.array.forEach(mapping, function(currentMap) {
+        var extraClass = currentMap['class'] ? ' ' + currentMap['class'] : '';
+
+        var header = createADiv({'class': current.HeaderClass + extraClass});
+        setTextContent(header, currentMap['headerText']);
+        appendChild(headerRow, header);
+      });
+
+      var clearBoth = createADiv({'class': 'clearBoth'});
+      appendChild(headerRow, clearBoth);
+
+      appendChild(parentContainer, headerRow);
+    }
 };
+
+
+/* Create Rows */
+
+/**
+ @param {Object} rowContainer The container to add the message
+ to.
+ @param {function} createADiv The function used to create
+ the message container.
+ @param {function} setTextContent The function used to set
+ the message container's text.
+ @param {function} appendChild The function used to the
+ message container to the row container.
+ @private
+ */
+src.base.control.gridBuilder.createNoRowsMessageContainer_ =
+  function(rowContainer, createADiv, setTextContent, appendChild) {
+    var current = src.base.control.gridBuilder;
+
+    var messageDiv = createADiv({'class': current.MessageClass});
+    setTextContent(messageDiv, current.NoRowsText);
+    appendChild(rowContainer, messageDiv);
+  };
 
 
 /**
  @param {Object} result The result returned from the server.
  @param {Object} parentContainer The container to add the rows too.
  @param {Object} mapping The various columns represented by an object.
- @param {function} findNode The function used to find the row container if it exists.
+ @param {function} findNode The function used to find the row container
+ if it exists.
  @param {function} createADiv The function used to create a div.
- @param {function} appendChild The function used to add an element to a parent element.
+ @param {function} appendChild The function used to add an element
+ to a parent element.
  @param {function} createARow The function used to create each row.
  @param {function} setTextContent The function used to set a div's text.
- @param {?function} rowClickHandler The function to set the row onClick if it
- is not null.
+ @param {?function} rowClickHandler The function to set the row onClick
+ if it is not null.
  @param {?function} setClick The function used to set the row onClick event
  if the rowClickHandler is not null.
  @protected
  */
-src.base.control.gridBuilder.createRows = function(result, parentContainer, mapping,
-                                                   findNode, createADiv, appendChild,
-                                                   createARow, setTextContent, rowClickHandler,
-                                                   setClick) {
+src.base.control.gridBuilder.createRows =
+  function(result, parentContainer, mapping, findNode,
+           createADiv, appendChild, createARow, setTextContent,
+           rowClickHandler, setClick) {
 
-  var current = src.base.control.gridBuilder;
+    var current = src.base.control.gridBuilder;
 
-  var rowContainer = findNode(parentContainer, function(item) {
-    return item['className'] === current.RowContainerClass;
-  });
-
-
-  if (!rowContainer) {
-    rowContainer = createADiv({'class': current.RowContainerClass});
-    appendChild(parentContainer, rowContainer);
-  }
+    var rowContainer = findNode(parentContainer, function(item) {
+      return item['className'] === current.RowContainerClass;
+    });
 
 
-  goog.array.forEach(result[current.ListProperty], function(item) {
-    var currentRow = createARow(item, mapping, createADiv, setTextContent,
-                                appendChild, rowClickHandler, setClick);
+    if (!rowContainer) {
+      rowContainer = createADiv({'class': current.RowContainerClass});
+      appendChild(parentContainer, rowContainer);
+    }
+    
+    if (result[current.ListProperty].length === 0) {
+      
+      current.
+        createNoRowsMessageContainer_(
+          rowContainer, createADiv, setTextContent, appendChild);
+    }
+    else {
+      goog.array.forEach(result[current.ListProperty], function(item) {
+        var currentRow = createARow(item, mapping, createADiv,
+                                    setTextContent, appendChild,
+                                    rowClickHandler, setClick);
+        
+        appendChild(rowContainer, currentRow);
+      });
+    }
+  };
 
-    appendChild(rowContainer, currentRow);
-  });
-};
+/* End Create Rows */
 
 
 /**
  @param {Object} options The options that are used to construct the grid.
  @param {Object} parentContainer The container to add the rows too.
- @param {function} createTheHeaderRow The function used to create only the header of the grid.
- @param {function} createRows The function used to create all but the header row.
- @param {function} createARow The function used to create each non header row.
+ @param {function} createTheHeaderRow The function used to create only
+ the header of the grid.
+ @param {function} createRows The function used to create all but the
+ header row.
+ @param {function} createARow The function used to create each non
+ header row.
  @param {function} createADiv The method used to create a div element.
- @param {function} appendChild The method used to append a child to a parent element.
- @param {function} setTextContent The function used to set the text of a div.
+ @param {function} appendChild The method used to append a child to a
+ parent element.
+ @param {function} setTextContent The function used to set the text
+ of a div.
  @param {function} refresh The function used to refresh the grid.
- @param {function} removeAllEvents The function used to strip the pager buttons of
- any prior event hooks.
- @param {function} swap The function used to set or remove the disabled class.
- @param {function} setClick The function used to set the click event for the pagers.
- @param {function} findNode The function used to find the pager buttons if the exist.
- @param {function} createPagerButtons The function used to create, and add the pager buttons to the
- container.
- @param {function} copyOptions The function used to create new options with the page number changed.
+ @param {function} removeAllEvents The function used to strip the
+ pager buttons of any prior event hooks.
+ @param {function} swap The function used to set or remove the
+ disabled class.
+ @param {function} setClick The function used to set the click event
+ for the pagers.
+ @param {function} findNode The function used to find the pager buttons
+ if the exist.
+ @param {function} createPagerButtons The function used to create, and add
+ the pager buttons to the container.
+ @param {function} copyOptions The function used to create new options
+ with the page number changed.
  @param {?function} rowClickHandler The function to set the row onClick if it
  is not null.
  @return {Object} The created result handler.
  @protected
  */
-src.base.control.gridBuilder.createTheResultHandler = function(options, parentContainer, createTheHeaderRow,
-                                                               createRows, createARow, createADiv, appendChild,
-                                                               setTextContent, refresh, removeAllEvents,
-                                                               swap, setClick, findNode, createPagerButtons,
-                                                               copyOptions, rowClickHandler) {
-  var current = src.base.control.gridBuilder;
+src.base.control.gridBuilder.createTheResultHandler =
+  function(options, parentContainer, createTheHeaderRow,
+           createRows, createARow, createADiv, appendChild,
+           setTextContent, refresh, removeAllEvents,
+           swap, setClick, findNode, createPagerButtons,
+           copyOptions, rowClickHandler) {
 
-  return function(result) {
-    createTheHeaderRow(options[current.Map], parentContainer, findNode,
-                       createADiv, setTextContent, appendChild);
+    var current = src.base.control.gridBuilder;
 
-    createRows(result, parentContainer, options[current.Map],
-               findNode, createADiv, appendChild, createARow,
-               setTextContent, rowClickHandler, setClick);
+    return function(result) {
+      createTheHeaderRow(options[current.Map], parentContainer, findNode,
+                         createADiv, setTextContent, appendChild);
 
-    createPagerButtons(result, options, parentContainer, findNode,
-                       createADiv, appendChild, removeAllEvents,
-                       swap, setClick, setTextContent,
-                       copyOptions, refresh, rowClickHandler);
-  };
+      createRows(result, parentContainer, options[current.Map],
+                 findNode, createADiv, appendChild, createARow,
+                 setTextContent, rowClickHandler, setClick);
+      
+      createPagerButtons(result, options, parentContainer, findNode,
+                         createADiv, appendChild, removeAllEvents,
+                         swap, setClick, setTextContent,
+                         copyOptions, refresh, rowClickHandler);
+    };
 };
 
 
@@ -484,9 +567,10 @@ src.base.control.gridBuilder.createTheResultHandler = function(options, parentCo
  is not null.
  @param {?function} createARow The function used to create each non header row.
  @param {?function} createADiv The method used to create a div element.
- @param {?function} createResultHandler The function used to create the call back method when posting to the
- server.
- @param {?function} createTheHeaderRow The function used to create only the header of the grid.
+ @param {?function} createResultHandler The function used to create the call back
+ method when posting to the server.
+ @param {?function} createTheHeaderRow The function used to create only the header
+ of the grid.
  @param {?function} createRows The function used to create all but the header row.
  @param {?function} appendChild The method used to append a child to a parent element.
  @param {?function} setTextContent The function used to set the text of a div.
@@ -494,33 +578,36 @@ src.base.control.gridBuilder.createTheResultHandler = function(options, parentCo
  @return {Object} The created grid.
  @export
  */
-src.base.control.gridBuilder.initialize = function(options, rowClickHandler, createARow, createADiv,
-                                                   createResultHandler, createTheHeaderRow, createRows,
-                                                   appendChild, setTextContent, submitToUrl) {
+src.base.control.gridBuilder.initialize =
+  function(options, rowClickHandler, createARow, createADiv,
+           createResultHandler, createTheHeaderRow, createRows,
+           appendChild, setTextContent, submitToUrl) {
 
-  var Current = src.base.control.gridBuilder;
+    var Current = src.base.control.gridBuilder;
 
-  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-  createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
-  createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
-  createRows = createRows ? createRows : Current.createRows;
-  createARow = createARow ? createARow : Current.createARow;
-  appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
-  submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+    createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
+    createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
+    createRows = createRows ? createRows : Current.createRows;
+    createARow = createARow ? createARow : Current.createARow;
+    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
+    submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
 
+    var parentContainer = createADiv({
+      'id': options[Current.ContainerId],
+      'class': options[Current.ContainerClass]});
 
-  var parentContainer = createADiv({ 'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-  var resultHandler = createResultHandler(options, parentContainer, createTheHeaderRow,
-                                          createRows, createARow, createADiv, appendChild,
-                                          setTextContent, Current.refresh, goog.events.removeAll,
-                                          goog.dom.classes.swap, src.base.helper.events.setClick,
-                                          goog.dom.findNode, Current.createPagerButtons,
-                                          Current.copyOptions, rowClickHandler);
+    var resultHandler = createResultHandler(options, parentContainer, createTheHeaderRow,
+                                            createRows, createARow, createADiv, appendChild,
+                                            setTextContent, Current.refresh, goog.events.removeAll,
+                                            goog.dom.classes.swap, src.base.helper.events.setClick,
+                                            goog.dom.findNode, Current.createPagerButtons,
+                                            Current.copyOptions, rowClickHandler);
 
-  submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
+    submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
 
-  return parentContainer;
+    return parentContainer;
 };
 
 
@@ -542,34 +629,37 @@ src.base.control.gridBuilder.initialize = function(options, rowClickHandler, cre
  @param {?function} submitToUrl The function used to post, and receive the data.
  @export
  */
-src.base.control.gridBuilder.refresh = function(options, grid, rowClickHandler, getElementsByClass, removeNode,
-                                                createARow, createADiv, createResultHandler, createTheHeaderRow,
-                                                createRows, appendChild, setTextContent, submitToUrl) {
+src.base.control.gridBuilder.refresh =
+  function(options, grid, rowClickHandler, getElementsByClass,
+           removeNode, createARow, createADiv, createResultHandler,
+           createTheHeaderRow, createRows, appendChild, setTextContent,
+           submitToUrl) {
+    
+    var Current = src.base.control.gridBuilder;
+    
+    appendChild = appendChild ? appendChild : goog.dom.appendChild;
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+    createARow = createARow ? createARow : Current.createARow;
+    createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
+    createRows = createRows ? createRows : Current.createRows;
+    createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
+    getElementsByClass = getElementsByClass ? getElementsByClass : goog.dom.getElementsByClass;
+    removeNode = removeNode ? removeNode : goog.dom.removeNode;
+    setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
+    submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
+    
+    var children = getElementsByClass(Current.RowClass, grid);
+    goog.array.forEach(children, function(item) { removeNode(item); });
+    
+    var possibleMessageRow = getElementsByClass(Current.MessageClass, grid);
+    goog.array.forEach(possibleMessageRow, function(item) { removeNode(item); });
 
-  var Current = src.base.control.gridBuilder;
+    var resultHandler = createResultHandler(options, grid, createTheHeaderRow, createRows,
+                                            createARow, createADiv, appendChild, setTextContent,
+                                            Current.refresh, goog.events.removeAll,
+                                            goog.dom.classes.swap, src.base.helper.events.setClick,
+                                            goog.dom.findNode, Current.createPagerButtons,
+                                            Current.copyOptions, rowClickHandler);
 
-  appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-  createARow = createARow ? createARow : Current.createARow;
-  createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
-  createRows = createRows ? createRows : Current.createRows;
-  createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
-  getElementsByClass = getElementsByClass ? getElementsByClass : goog.dom.getElementsByClass;
-  removeNode = removeNode ? removeNode : goog.dom.removeNode;
-  setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
-  submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-
-  var children = getElementsByClass(Current.RowClass, grid);
-
-  goog.array.forEach(children, function(item) { removeNode(item); });
-
-
-  var resultHandler = createResultHandler(options, grid, createTheHeaderRow, createRows,
-                                          createARow, createADiv, appendChild, setTextContent,
-                                          Current.refresh, goog.events.removeAll,
-                                          goog.dom.classes.swap, src.base.helper.events.setClick,
-                                          goog.dom.findNode, Current.createPagerButtons,
-                                          Current.copyOptions, rowClickHandler);
-
-  submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
+    submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
 };

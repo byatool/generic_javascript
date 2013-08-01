@@ -95,22 +95,57 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     var secondChild = {};
 
     getElementByClass_ = function(cssClass, parent) {
-      return [firstChild, secondChild];
+      return cssClass === Current_.RowClass ?  [firstChild, secondChild] : [];
     };
-
+     
     removeNode_ = function(node) {
       methodWasCalled += node === firstChild || node === secondChild;
     };
     
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(2);
   });
-
-
+  
+  
+  it('should find an existing no rows message container.', function() {
+    var methodWasCalled = false;
+    
+    getElementByClass_ = function(name, grid){
+      methodWasCalled = methodWasCalled ||
+        (name === Current_.MessageClass && grid === grid_);
+      
+      return {};
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should remove an existing no rows message container.', function() {
+    var methodWasCalled = false;
+    var messageContainer = {};
+    
+    getElementByClass_ = function(cssClass, parent) {
+      return cssClass === Current_.MessageClass ?  [messageContainer] : [];
+    };
+    
+    removeNode_ = function(node) {
+      methodWasCalled = methodWasCalled ||
+        (node === messageContainer);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should create the result handler.', function() {
     var methodWasCalled = false;
-
+    
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
                                     createADiv, appendChild, setTextContent, refresh,
                                     removeAllEvents, swap, setClick, findNode,
