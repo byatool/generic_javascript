@@ -21,9 +21,11 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
   var findNode_;
   var firstColumn_;
   var mapping_;
+  var options_;
   var parentRow_;
   var secondColumn_;
   var setTextContent_;
+  var showHeader_;
 
   var appendChild_;
   var createADiv_;
@@ -36,6 +38,11 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
       {'headerText' : 'Name', 'propertyName': 'name', 'class': FirstHeaderClass_},
       {'headerText' : 'Profession', 'propertyName': 'profession'}
     ];
+
+    showHeader_ = true;
+    options_ = {};
+    options_[Current_.Map] = mapping_;
+    options_[Current_.ShowHeader] = showHeader_;
 
     firstColumn_ = {};
     secondColumn_ = {};
@@ -69,7 +76,7 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
 
   //Support Methods
   var callTheMethod_ = function() {
-    return src.base.control.gridBuilder.createTheHeaderRow(mapping_, parentContainer_, findNode_,
+    return src.base.control.gridBuilder.createTheHeaderRow(options_, parentContainer_, findNode_,
                                                            createADiv_, setTextContent_, appendChild_);
   };
 
@@ -209,6 +216,21 @@ src.test.control.gridBuilder.whenCreatingTheHeaderRow.describe = function() {
     expect(methodWasCalled).toBe(false);
   });
 
+
+
+  it('should not create the head row if is not to be shown', function() {
+    var methodWasCalled = false;
+
+    options_[Current_.ShowHeader] = false;
+
+    createADiv_ = function(attributes) {
+      methodWasCalled = true;
+    };
+
+    callTheMethod_();
+
+    expect(methodWasCalled).toBe(false);
+  });
 };
 
 

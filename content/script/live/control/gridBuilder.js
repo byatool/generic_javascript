@@ -181,6 +181,14 @@ src.base.control.gridBuilder.ResultTotalCountOfPages = 'TotalCountOfPages';
  @type {string}
  @export
  */
+src.base.control.gridBuilder.ShowHeader = 'showHeader';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.gridBuilder.Url = 'url';
 
 
@@ -296,7 +304,7 @@ src.base.control.gridBuilder.createAndAppendPagerButton_ =
 
     var resultKey = isPrevious ? 'PreviousPage' : 'NextPage';
     var currentOptions = copyOptions(options, result[resultKey]);
-    
+
     var currentPage = options[current.Parameters][current.ParametersPageAttribute];
 
     if (isPrevious) {
@@ -355,7 +363,7 @@ src.base.control.gridBuilder.createPagerButtons =
            createADiv, appendChild, removeAllEvents,
            swap, setClick, setTextContent, copyOptions,
            refresh, rowClickHandler) {
-    
+
     var current = src.base.control.gridBuilder;
 
     var containerRow = findNode(parentContainer, function(item) {
@@ -387,8 +395,8 @@ src.base.control.gridBuilder.createPagerButtons =
 };
 
 /**
- @param {Array.<Object>} mapping The table mapping used to find the column
- headers.
+ @param {Object} options This holds the needed column mappings, and
+ whether to show the header or not.
  @param {Object} parentContainer The container to add the rows too.
  @param {function} findNode The function used to find the pager buttons
  if the exist.
@@ -399,32 +407,36 @@ src.base.control.gridBuilder.createPagerButtons =
  @protected
  */
 src.base.control.gridBuilder.createTheHeaderRow =
-  function(mapping, parentContainer, findNode,
+  function(options, parentContainer, findNode,
            createADiv, setTextContent, appendChild) {
 
     var current = src.base.control.gridBuilder;
 
-    var headerRow = findNode(parentContainer, function(row) {
-      return row['className'] === current.HeaderRowClass;
-    });
-
-    if (!headerRow) {
-      headerRow = createADiv({'class': current.HeaderRowClass});
-
-      goog.array.forEach(mapping, function(currentMap) {
-        var extraClass = currentMap['class'] ? ' ' + currentMap['class'] : '';
-
-        var header = createADiv({'class': current.HeaderClass + extraClass});
-        setTextContent(header, currentMap['headerText']);
-        appendChild(headerRow, header);
+    if (options[current.ShowHeader]) {
+      var headerRow = findNode(parentContainer, function(row) {
+        return row['className'] === current.HeaderRowClass;
       });
 
-      var clearBoth = createADiv({'class': 'clearBoth'});
-      appendChild(headerRow, clearBoth);
+      if (!headerRow) {
+        headerRow = createADiv({'class': current.HeaderRowClass});
 
-      appendChild(parentContainer, headerRow);
+        //saffsd
+        goog.array.forEach(options[current.Map], function(currentMap) {
+          var extraClass = currentMap['class'] ? ' ' + currentMap['class'] : '';
+
+          var header = createADiv({'class': current.HeaderClass + extraClass});
+          setTextContent(header, currentMap['headerText']);
+          appendChild(headerRow, header);
+        });
+
+        var clearBoth = createADiv({'class': 'clearBoth'});
+        appendChild(headerRow, clearBoth);
+
+        appendChild(parentContainer, headerRow);
+      }
     }
-};
+
+  };
 
 
 /* Create Rows */
@@ -483,9 +495,9 @@ src.base.control.gridBuilder.createRows =
       rowContainer = createADiv({'class': current.RowContainerClass});
       appendChild(parentContainer, rowContainer);
     }
-    
+
     if (result[current.ListProperty].length === 0) {
-      
+
       current.
         createNoRowsMessageContainer_(
           rowContainer, createADiv, setTextContent, appendChild);
@@ -495,7 +507,7 @@ src.base.control.gridBuilder.createRows =
         var currentRow = createARow(item, mapping, createADiv,
                                     setTextContent, appendChild,
                                     rowClickHandler, setClick);
-        
+
         appendChild(rowContainer, currentRow);
       });
     }
@@ -546,13 +558,13 @@ src.base.control.gridBuilder.createTheResultHandler =
     var current = src.base.control.gridBuilder;
 
     return function(result) {
-      createTheHeaderRow(options[current.Map], parentContainer, findNode,
+      createTheHeaderRow(options, parentContainer, findNode,
                          createADiv, setTextContent, appendChild);
 
       createRows(result, parentContainer, options[current.Map],
                  findNode, createADiv, appendChild, createARow,
                  setTextContent, rowClickHandler, setClick);
-      
+
       createPagerButtons(result, options, parentContainer, findNode,
                          createADiv, appendChild, removeAllEvents,
                          swap, setClick, setTextContent,
@@ -634,9 +646,9 @@ src.base.control.gridBuilder.refresh =
            removeNode, createARow, createADiv, createResultHandler,
            createTheHeaderRow, createRows, appendChild, setTextContent,
            submitToUrl) {
-    
+
     var Current = src.base.control.gridBuilder;
-    
+
     appendChild = appendChild ? appendChild : goog.dom.appendChild;
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     createARow = createARow ? createARow : Current.createARow;
@@ -647,10 +659,10 @@ src.base.control.gridBuilder.refresh =
     removeNode = removeNode ? removeNode : goog.dom.removeNode;
     setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
     submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
-    
+
     var children = getElementsByClass(Current.RowClass, grid);
     goog.array.forEach(children, function(item) { removeNode(item); });
-    
+
     var possibleMessageRow = getElementsByClass(Current.MessageClass, grid);
     goog.array.forEach(possibleMessageRow, function(item) { removeNode(item); });
 
