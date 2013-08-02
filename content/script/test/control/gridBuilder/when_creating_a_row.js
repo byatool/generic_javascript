@@ -22,6 +22,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
   var createdCount_;
   var createADiv_;
   var nameColumn_;
+  var options_;
   var professionColumn_;
   var result_;
   var row_;
@@ -36,6 +37,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
     nameColumn_ = {};
     professionColumn_ = {};
     row_ = {};
+
 
     columnMapping_ = [
       {'headerText' : 'Name', 'propertyName': 'name', 'class': FirstColumnClass_},
@@ -68,16 +70,20 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
     };
 
     appendChild_ = function() {};
-
+    rowClickHandler_ = function() {};
+    setClick_ = function() {};
     setTextContent_ = function() {};
+
+    options_ = {};
+    options_[Current_.RowClickHandler] = rowClickHandler_;
+    options_[Current_.Map] = columnMapping_;
   });
 
 
   //Support Methods
   var callTheMethod_ = function() {
-    return Current_.createARow(result_, columnMapping_, createADiv_,
-                               setTextContent_, appendChild_, rowClickHandler_,
-                               setClick_);
+    return Current_.createARow(result_, options_, createADiv_,
+                               setTextContent_, appendChild_, setClick_);
   };
 
 
@@ -117,7 +123,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
 
   it('should not set the click event if the handler is null.', function() {
     var methodWasCalled = false;
-    rowClickHandler_ = null;
+    options_[Current_.RowClickHandler] = null;
 
     setClick_ = function() {
       methodWasCalled = true;
@@ -131,7 +137,7 @@ src.test.control.gridBuilder.whenCreatingARow.describe = function() {
 
   it('should not set the click event if the handler is undefined.', function() {
     var methodWasCalled = false;
-    rowClickHandler_ = undefined;
+    options_[Current_.RowClickHandler] = undefined;
 
     setClick_ = function() {
       methodWasCalled = true;

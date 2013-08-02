@@ -29,7 +29,6 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   var grid_;
   var options_;
   var removeNode_;
-  var rowClickHandler_;
   var setTextContent_;
   var submitToUrl_;
 
@@ -54,7 +53,6 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     createRows_ = function() {};
     getElementByClass_ = function() { return [];};
     removeNode_ = function() {};
-    rowClickHandler_ = function(){};
     setTextContent_ = function() {};
     submitToUrl_ = function() {};
   });
@@ -63,7 +61,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.refresh(options_, grid_, rowClickHandler_,getElementByClass_,
+    return Current_.refresh(options_, grid_, getElementByClass_,
                             removeNode_, createARow_, createADiv_, createResultHandler_,
                             createTheHeaderRow_, createRows_,
                             appendChild_, setTextContent_, submitToUrl_);
@@ -146,10 +144,11 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   it('should create the result handler.', function() {
     var methodWasCalled = false;
     
-    createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows, createARow,
-                                    createADiv, appendChild, setTextContent, refresh,
-                                    removeAllEvents, swap, setClick, findNode,
-                                    createPagerButtons, copyOptions, rowClickHandler) {
+    createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
+                                    createRows, createARow, createADiv, appendChild,
+                                    setTextContent, refresh, removeAllEvents,
+                                    swap, setClick, findNode, createPagerButtons,
+                                    copyOptions) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
@@ -164,8 +163,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         setClick === src.base.helper.events.setClick &&
         findNode === goog.dom.findNode &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
-        copyOptions === src.base.control.gridBuilder.copyOptions &&
-        rowClickHandler === rowClickHandler_;
+        copyOptions === src.base.control.gridBuilder.copyOptions;
     };
     
     callTheMethod_();

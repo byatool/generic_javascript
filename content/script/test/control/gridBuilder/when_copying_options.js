@@ -24,19 +24,21 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
   var mapping_;
   var optionToCopy_;
   var parameters_;
-  
+  var rowClickHandler_;
   
   //Test Hooks
   beforeEach(function() {
     
     parameters_ = {};
     parameters_[Current_.ParametersPageAttribute] = 1;
+    rowClickHandler_ = function(){};
     
     optionToCopy_ = {};
     optionToCopy_[Current_.ContainerClass] = ContainerClass_;
     optionToCopy_[Current_.ContainerId] = ContainerId_;
     optionToCopy_[Current_.Url] = Url_;
     optionToCopy_[Current_.Parameters] = parameters_;
+    optionToCopy_[Current_.RowClickHandler] = rowClickHandler_;
 
     mapping_ = {};
     optionToCopy_[Current_.Map] = mapping_;
@@ -78,6 +80,11 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
   it('should not change the original option page number.', function() {
     callTheMethod_();
     expect(optionToCopy_[Current_.Parameters][Current_.ParametersPageAttribute]).toBe(1);
+  });
+
+
+  it('should set the row click handler.', function() {
+    expect(callTheMethod_()[Current_.RowClickHandler]).toBe(rowClickHandler_);
   });
 };
 

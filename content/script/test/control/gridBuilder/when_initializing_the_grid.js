@@ -29,7 +29,6 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   var createTheHeaderRow_;
   var parentContainer_;
   var options_;
-  var rowClickHandler_;
   var setTextContent_;
   var submitToUrl_;
 
@@ -50,7 +49,6 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     createResultHandler_ = function() {};
     createTheHeaderRow_ = function() {};
     createRows_ = function() {};
-    rowClickHandler_ = function() {};
     setTextContent_ = function() {};
     submitToUrl_ = function() {};
   });
@@ -59,7 +57,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   //Support Methods
 
   var callTheMethod_ = function() {
-    return Current_.initialize(options_, rowClickHandler_, createARow_, createADiv_, createResultHandler_,
+    return Current_.initialize(options_, createARow_, createADiv_, createResultHandler_,
                                createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
                                submitToUrl_);
   };
@@ -90,10 +88,11 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   it('should create the result handler.', function() {
     var methodWasCalled = false;
 
-    createResultHandler_ = function(options, parentContainer, createTheHeaderRow, createRows,
-                                    createARow, createADiv, appendChild, setTextContent,
-                                    refresh, removeAllEvents, swap, setClick,
-                                    findNode, createPagerButtons, copyOptions, rowClickHandler) {
+    createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
+                                    createRows, createARow, createADiv, appendChild,
+                                    setTextContent, refresh, removeAllEvents,
+                                    swap, setClick, findNode, createPagerButtons,
+                                    copyOptions) {
 
       methodWasCalled = options === options_ &&
         parentContainer === parentContainer_ &&
@@ -109,8 +108,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
         swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
-        copyOptions === src.base.control.gridBuilder.copyOptions &&
-        rowClickHandler === rowClickHandler_;
+        copyOptions === src.base.control.gridBuilder.copyOptions;
     };
 
     callTheMethod_();

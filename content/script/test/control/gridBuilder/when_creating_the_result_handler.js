@@ -26,19 +26,19 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var refresh_;
   var removeAllEvents_;
   var result_;
-  var rowClickHandler_;
   var setClick_;
   var setTextContent_;
   var swap_;
-
-
+  
+  
   //Test Hooks
-
+  
   beforeEach(function() {
     mapping_ = {};
     options_ = {};
     options_[Current_.Map] = mapping_;
-
+    options_[Current_.RowClickHandler] = function() {};
+    
     parentContainer_ = {};
     result_ = {};
 
@@ -52,7 +52,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     findNode_ = function() {};
     refresh_ = function() {};
     removeAllEvents_ = function() {};
-    rowClickHandler_ = function() {};
+
     setClick_ = function() {};
     setTextContent_ = function() {};
     swap_ = function() {};
@@ -66,8 +66,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
                                                                            setTextContent_, refresh_,
                                                                            removeAllEvents_, swap_,
                                                                            setClick_, findNode_,
-                                                                           createPagerButtons_, copyOptions_,
-                                                                           rowClickHandler_);
+                                                                           createPagerButtons_, copyOptions_);
     methodToCall(result_);
   };
 
@@ -88,44 +87,44 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the rows.', function() {
     var methodWasCalled = false;
-
-    createRows_ = function(result, parentContainer, mapping, findNode, createADiv,
-                           appendChild, createARow,  setTextContent, rowClickHandler,
+    
+    createRows_ = function(result, parentContainer, options, findNode,
+                           createADiv, appendChild, createARow, setTextContent,
                            setClick) {
-
+      
       methodWasCalled = result === result_ &&
         parentContainer === parentContainer_ &&
-        mapping === mapping_ &&
+        options === options_ &&
         findNode === findNode_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         createARow === createARow_ &&
         setTextContent === setTextContent_ &&
-        rowClickHandler === rowClickHandler_ &&
         setClick === setClick_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
-
+  
+  
+  
   it('should create the pager buttons.', function() {
     var methodWasCalled = false;
-
-    createPagerButtons_ = function(result, options, parentContainer, findNode, createADiv, appendChild,
-                                   removeAllEvents, swap, setClick, setTextContent, copyOptions, refresh,
-                                   rowClickHandler) {
-
+    
+    createPagerButtons_ = function(result, options, parentContainer, findNode,
+                                   createADiv, appendChild, removeAllEvents,
+                                   swap, setClick, setTextContent, copyOptions,
+                                   refresh) {
+      
       methodWasCalled = result === result_ &&
         options === options_ &&
         parentContainer === parentContainer_ &&
@@ -137,19 +136,18 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
         setClick === setClick_ &&
         setTextContent === setTextContent_ &&
         copyOptions === copyOptions_ &&
-        refresh === refresh_ &&
-        rowClickHandler === rowClickHandler_;
+        refresh === refresh_ ;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 };
 
 
 describe('When creating the result handler, it', function() {
-
+  
   src.test.control.gridBuilder.whenCreatingTheResultHandler.describe();
 
 });
