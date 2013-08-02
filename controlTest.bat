@@ -13,6 +13,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
+--namespace="src.base.control.pager" ^
 --namespace="src.base.control.popupDatePicker" ^
 --namespace="src.base.control.redirectList" ^
 --namespace="src.base.control.refreshPair" ^
@@ -47,6 +48,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.messageBox.whenCreatingAResult" ^
 --namespace="src.test.control.messageBox.whenSettingTheAppearanceOfAMessageBoxBasedOnAResult" ^
 --namespace="src.test.control.messageBox.whenUpdatingMesssagesInAMessageBoxByAResult" ^
+--namespace="src.test.control.pager.whenCreatingAPagerButton" ^
+--namespace="src.test.control.pager.whenInitializingAPager" ^
+--namespace="src.test.control.pager.whenTogglingEnabledOnAButton" ^
 --namespace="src.test.control.popupDatePicker.whenCreatingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
 --namespace="src.test.control.popupDatePicker.whenFormattingTheDate" ^

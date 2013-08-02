@@ -7,15 +7,15 @@ goog.provide('src.test.control.gridBuilder.whenCopyingOptions');
 /**
  @export
  */
-src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
-  
+src.test.control.gridBuilder.whenCopyingOptions.describe = function() {
+
   //Using
   var Current_ = src.base.control.gridBuilder;
-  
-  
+
+
   //Fields
-  
-  
+
+
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
   var PageNumber_ = goog.string.getRandomString();
@@ -25,14 +25,14 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
   var optionToCopy_;
   var parameters_;
   var rowClickHandler_;
-  
+
   //Test Hooks
   beforeEach(function() {
-    
+
     parameters_ = {};
     parameters_[Current_.ParametersPageAttribute] = 1;
-    rowClickHandler_ = function(){};
-    
+    rowClickHandler_ = function() {};
+
     optionToCopy_ = {};
     optionToCopy_[Current_.ContainerClass] = ContainerClass_;
     optionToCopy_[Current_.ContainerId] = ContainerId_;
@@ -43,40 +43,40 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
     mapping_ = {};
     optionToCopy_[Current_.Map] = mapping_;
   });
-  
+
   //Support Methods
   var callTheMethod_ = function() {
     return src.base.control.gridBuilder.copyOptions(optionToCopy_, PageNumber_);
   };
-  
-  
+
+
   //Test Methods
-  
+
   it('should set the container class.', function() {
     expect(callTheMethod_()[Current_.ContainerClass]).toBe(ContainerClass_);
   });
-  
-  
+
+
   it('should set the container id.', function() {
     expect(callTheMethod_()[Current_.ContainerId]).toBe(ContainerId_);
   });
-  
-  
+
+
   it('should set the url.', function() {
     expect(callTheMethod_()[Current_.Url]).toBe(Url_);
   });
-  
-  
+
+
   it('should set the parameter page number.', function() {
     expect(callTheMethod_()[Current_.Parameters][Current_.ParametersPageAttribute]).toBe(PageNumber_);
   });
-  
-  
+
+
   it('should set the mapping.', function() {
     expect(callTheMethod_()[Current_.Map]).toBe(mapping_);
   });
-  
-  
+
+
   it('should not change the original option page number.', function() {
     callTheMethod_();
     expect(optionToCopy_[Current_.Parameters][Current_.ParametersPageAttribute]).toBe(1);
@@ -90,8 +90,8 @@ src.test.control.gridBuilder.whenCopyingOptions.describe = function () {
 
 
 describe('When copying options, it', function() {
-  
+
   src.test.control.gridBuilder.whenCopyingOptions.describe();
-  
+
 });
-  
+
