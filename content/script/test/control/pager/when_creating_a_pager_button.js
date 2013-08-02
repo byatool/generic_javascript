@@ -38,11 +38,11 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     options_ = {};
     options_[Current_.Parameters] = {};
     options_[Current_.Parameters][Current_.ParametersPage] = -12;
-    options_[Current_.Parameters][Current_.ParametersTotalCountOfPages] = -21;
+    options_[Current_.Parameters][Current_.ResultTotalCountOfPages] = -21;
     options_[Current_.CopyOptions] = function() { return {}; };
 
     result_ = {};
-
+    result_[Current_.ResultTotalCountOfPages] = 1212;
 
     appendChild_ = function() {};
     createADiv_ = function() { return button_; };
@@ -80,7 +80,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
 
     expect(methodWasCalled).toBe(true);
   });
-
+  
 
   it('should attempt to find the next pager button.', function() {
     var methodWasCalled = false;
@@ -141,7 +141,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     createADiv_ = function() {
       methodWasCalled = true;
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(methodWasCalled);
@@ -204,7 +204,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
       methodWasCalled = methodWasCalled ||
         (options === options_ && resultKey === optionValue);
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
@@ -237,7 +237,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
         (button === button_ &&
          isPrevious === isPrevious_ &&
          pageNumber === options_[Current_.Parameters][Current_.ParametersPage] &&
-         totalCountOfPages === options_[Current_.Parameters][Current_.ParametersTotalCountOfPages] &&
+         totalCountOfPages === result_[Current_.TotalCountOfPages] &&
          swap === swap_);
     };
 

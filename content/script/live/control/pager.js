@@ -62,7 +62,7 @@ src.base.control.pager.Parameters = 'parameters';
  @type {string}
  @protected
  */
-src.base.control.pager.ParametersPage = 'page';
+src.base.control.pager.ParametersPage = 'Page';
 
 
 /**
@@ -70,7 +70,7 @@ src.base.control.pager.ParametersPage = 'page';
  @type {string}
  @protected
  */
-src.base.control.pager.ParametersTotalCountOfPages = 'totalCountOfPages';
+src.base.control.pager.TotalCountOfPages = 'TotalCountOfPages';
 
 
 /**
@@ -128,7 +128,7 @@ src.base.control.pager.toggleEnabledOnAButton =
         swap(button, current.DisabledPagerClass, current.PagerClass);
       }
     }
-
+    
     if (!isPrevious) {
       if (totalCountOfPages === 0 || pageNumber === totalCountOfPages - 1) {
         swap(button, current.PagerClass, current.DisabledPagerClass);
@@ -169,33 +169,33 @@ src.base.control.pager.createAndAppendPagerButton =
            setTextContent, toggleEnabledOnAButton,
            removeAllEvents, swap, setClick,
            appendChild) {
-
+    
     var current = src.base.control.pager;
-
+    
     var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
     var button = findNode(containerRow,
                           function(item) {
                             return item['id'] === buttonId;
                           });
-
+    
     if (!button) {
       button = createADiv({'id': buttonId, 'class': current.PagerClass});
       setTextContent(button, isPrevious ? '<' : '>');
       appendChild(containerRow, button);
     }
-
+    
     var resultKey = isPrevious ?
           current.ResultPreviousPage :
           current.ResultNextPage;
-
+    
     var currentOptions = options[current.CopyOptions](options, result[resultKey]);
-
+    
     var currentPage = options[current.Parameters][current.ParametersPage];
-    var totalCountOfPages = options[current.Parameters][current.ParametersTotalCountOfPages];
+    var totalCountOfPages = result[current.TotalCountOfPages];
     toggleEnabledOnAButton(button, isPrevious, currentPage, totalCountOfPages, swap);
-
+    
     removeAllEvents(button);
-
+    
     setClick(button, function() {
       options[current.Refresh](currentOptions);
     });
@@ -206,6 +206,7 @@ src.base.control.pager.createAndAppendPagerButton =
 /**
  @param {Object} result The result returned from the server.
  @param {Object} options The options that are used to construct the grid.
+ @param {?Object} pagerControl The possibly already existing pager control.
  @param {?function} createAndAppendPagerButton The function used to create
  the next, and previous page buttons.
  @param {?function} createADiv The function used to create a div.
@@ -214,50 +215,54 @@ src.base.control.pager.createAndAppendPagerButton =
  @protected
  */
 src.base.control.pager.initialize =
-  function(result, options,
-           createAndAppendPagerButton, createADiv,
-           appendChild) {
-    //options[Current_.CopyOptions]
-
-
-    // , findNode, removeAllEvents,
-    // swap, setClick, setTextContent, copyOptions
-
+  function(result, options, pagerControl,
+           createAndAppendPagerButton, createADiv) {
+    
+    
+    createAndAppendPagerButton = createAndAppendPagerButton ?
+      createAndAppendPagerButton :
+      src.base.control.pager.createAndAppendPagerButton;
+    
+    
+    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
+    
     var Current_ = src.base.control.pager;
-
-    var container = createADiv({
-      'id': options[Current_.ContainerId],
-      'class': options[Current_.ContainerClass]
-    });
-
+    
+    var container = pagerControl ?
+          pagerControl :
+          createADiv({
+            'id': options[Current_.ContainerId],
+            'class': options[Current_.ContainerClass]
+          });
+    
     createAndAppendPagerButton(true,
                                options,
                                result,
                                container,
                                goog.dom.findNode,
-                               src.base.helper.domCreation.div,
+                               createADiv,
                                goog.dom.setTextContent,
                                src.base.control.pager.toggleEnabledOnAButton,
-                               goog.events.removeAllremoveAllEvents,
+                               goog.events.removeAll,
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick,
                                goog.dom.appendChild);
-
+    
     createAndAppendPagerButton(false,
                                options,
                                result,
                                container,
                                goog.dom.findNode,
-                               src.base.helper.domCreation.div,
+                               createADiv,
                                goog.dom.setTextContent,
                                src.base.control.pager.toggleEnabledOnAButton,
-                               goog.events.removeAllremoveAllEvents,
+                               goog.events.removeAll,
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick,
                                goog.dom.appendChild);
-
+    
     return container;
-
+    
   };
 
 //REFRESH
