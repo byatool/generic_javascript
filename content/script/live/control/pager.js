@@ -1,6 +1,7 @@
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.events');
+goog.require('goog.object');
 goog.require('src.base.helper.domCreation');
 goog.require('src.base.helper.events');
 
@@ -26,19 +27,9 @@ src.base.control.pager.ContainerClass = 'containerClass';
 /**
  @const
  @type {string}
- @export
- */
-src.base.control.pager.CopyOptions = 'copyOptions';
-
-
-/**
- @const
- @type {string}
  @protected
  */
 src.base.control.pager.NextButton = 'next';
-
-
 
 
 /**
@@ -62,7 +53,7 @@ src.base.control.pager.Parameters = 'parameters';
  @type {string}
  @protected
  */
-src.base.control.pager.ParametersPage = 'Page';
+src.base.control.pager.ParametersPage = 'page';
 
 
 /**
@@ -119,7 +110,7 @@ src.base.control.pager.ResultPreviousPage = 'PreviousPage';
 src.base.control.pager.toggleEnabledOnAButton =
   function(button, isPrevious, pageNumber, totalCountOfPages, swap) {
     var current = src.base.control.pager;
-
+    
     if (isPrevious) {
       if (pageNumber === 0) {
         swap(button, current.PagerClass, current.DisabledPagerClass);
@@ -143,7 +134,10 @@ src.base.control.pager.toggleEnabledOnAButton =
 /**
  @param {boolean} isPrevious Whether the button is used to go back a page,
  or forward.
- @param {Object} options The options that are used to construct the pager.
+ @param {Object} options The options have been passed through by the
+ parent control.
+ @param {Object} pagerOptions The options that are used to construct
+ the pager.
  @param {Object} result The result returned from the server.
  @param {Object} containerRow The row that will hold the pager buttons.
  @param {function} findNode The function used to find the pager buttons
@@ -161,14 +155,17 @@ src.base.control.pager.toggleEnabledOnAButton =
  for the pagers.
  @param {function} appendChild The method used to append a child to a
  parent element.
+ @param {function} clone The function used to clone the options so
+ that the page number can be updated.
  @protected
  */
 src.base.control.pager.createAndAppendPagerButton =
-  function(isPrevious, options, result,
-           containerRow, findNode, createADiv,
-           setTextContent, toggleEnabledOnAButton,
-           removeAllEvents, swap, setClick,
-           appendChild) {
+  function(isPrevious, options, pagerOptions,
+           result, containerRow, findNode,
+           createADiv, setTextContent,
+           toggleEnabledOnAButton, removeAllEvents,
+           swap, setClick, appendChild,
+           clone) {
     
     var current = src.base.control.pager;
     
@@ -184,20 +181,22 @@ src.base.control.pager.createAndAppendPagerButton =
       appendChild(containerRow, button);
     }
     
-    var resultKey = isPrevious ?
-          current.ResultPreviousPage :
-          current.ResultNextPage;
-    
-    var currentOptions = options[current.CopyOptions](options, result[resultKey]);
-    
     var currentPage = options[current.Parameters][current.ParametersPage];
     var totalCountOfPages = result[current.TotalCountOfPages];
     toggleEnabledOnAButton(button, isPrevious, currentPage, totalCountOfPages, swap);
     
     removeAllEvents(button);
     
+    var resultKey = isPrevious ?
+          current.ResultPreviousPage :
+          current.ResultNextPage;
+    
+    var updatedOptions = clone(options);
+    updatedOptions[current.Parameters] = {};
+    updatedOptions[current.Parameters][current.ParametersPage] = result[resultKey];
+    
     setClick(button, function() {
-      options[current.Refresh](currentOptions);
+      pagerOptions[current.Refresh](updatedOptions);
     });
   };
 
@@ -205,24 +204,26 @@ src.base.control.pager.createAndAppendPagerButton =
 
 /**
  @param {Object} result The result returned from the server.
- @param {Object} options The options that are used to construct the grid.
- @param {?Object} pagerControl The possibly already existing pager control.
- @param {?function} createAndAppendPagerButton The function used to create
- the next, and previous page buttons.
+ @param {Object} options The options that are used by the
+ parent containers.
+ @param {Object} pagerOptions The options for building
+ the pager.
+ @param {?Object} pagerControl The possibly already existing
+ pager control.
+ @param {?function} createAndAppendPagerButton The function used
+ to create the next, and previous page buttons.
  @param {?function} createADiv The function used to create a div.
- @param {?function} appendChild The method used to append a child to a
  @return {Object} The created pager.
- @protected
+ @export
  */
 src.base.control.pager.initialize =
-  function(result, options, pagerControl,
-           createAndAppendPagerButton, createADiv) {
-    
+  function(result, options, pagerOptions,
+           pagerControl, createAndAppendPagerButton,
+           createADiv) {
     
     createAndAppendPagerButton = createAndAppendPagerButton ?
       createAndAppendPagerButton :
       src.base.control.pager.createAndAppendPagerButton;
-    
     
     createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
     
@@ -231,12 +232,13 @@ src.base.control.pager.initialize =
     var container = pagerControl ?
           pagerControl :
           createADiv({
-            'id': options[Current_.ContainerId],
-            'class': options[Current_.ContainerClass]
+            'id': pagerOptions[Current_.ContainerId],
+            'class': pagerOptions[Current_.ContainerClass]
           });
     
     createAndAppendPagerButton(true,
                                options,
+                               pagerOptions,
                                result,
                                container,
                                goog.dom.findNode,
@@ -246,10 +248,12 @@ src.base.control.pager.initialize =
                                goog.events.removeAll,
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick,
-                               goog.dom.appendChild);
+                               goog.dom.appendChild,
+                               goog.object.clone);
     
     createAndAppendPagerButton(false,
                                options,
+                               pagerOptions,
                                result,
                                container,
                                goog.dom.findNode,
@@ -259,10 +263,10 @@ src.base.control.pager.initialize =
                                goog.events.removeAll,
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick,
-                               goog.dom.appendChild);
+                               goog.dom.appendChild,
+                               goog.object.clone);
     
     return container;
-    
   };
 
 //REFRESH

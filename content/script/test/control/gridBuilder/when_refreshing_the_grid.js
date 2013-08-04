@@ -146,9 +146,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
                                     createRows, createARow, createADiv, appendChild,
-                                    setTextContent, refresh, removeAllEvents,
-                                    swap, setClick, findNode, createPagerButtons,
-                                    copyOptions) {
+                                    setTextContent, removeAllEvents,
+                                    swap, setClick, findNode, createPagerButtons) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
@@ -157,13 +156,11 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         createARow === createARow_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
-        refresh === src.base.control.gridBuilder.refresh &&
         removeAllEvents === goog.events.removeAll &&
         swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
         findNode === goog.dom.findNode &&
-        createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
-        copyOptions === src.base.control.gridBuilder.copyOptions;
+        createPagerButtons === src.base.control.gridBuilder.createPagerButtons;
     };
     
     callTheMethod_();

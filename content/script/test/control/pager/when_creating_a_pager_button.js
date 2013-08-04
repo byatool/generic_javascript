@@ -6,45 +6,59 @@ goog.provide('src.test.control.pager.whenCreatingAPagerButton');
  @export
  */
 src.test.control.pager.whenCreatingAPagerButton.describe = function() {
-
+  
   //Using
   var Current_ = src.base.control.pager;
-
-  var CurrentPage_ = goog.string.getRandomString();
-
+  
+  var CurrentPage_ = 12;
+  
+  
   //Fields
-
+  
   var appendChild_;
   var button_;
+  var clone_;
+  var clonedOptions_;
   var containerRow_;
   var createADiv_;
   var findNode_;
   var isPrevious_;
   var options_;
+  var pagerOptions_;
   var removeAllEvents_;
   var result_;
   var setClick_;
   var setTextContent_;
   var swap_;
   var toggleEnabledOnAButton_;
-
-
+  
+  
   //Test Hooks
   beforeEach(function() {
     button_ = {};
     containerRow_ = {};
     isPrevious_ = true;
-
+    
     options_ = {};
     options_[Current_.Parameters] = {};
-    options_[Current_.Parameters][Current_.ParametersPage] = -12;
+    options_[Current_.Parameters][Current_.ParametersPage] = CurrentPage_;
     options_[Current_.Parameters][Current_.ResultTotalCountOfPages] = -21;
-    options_[Current_.CopyOptions] = function() { return {}; };
-
+    
+    clonedOptions_ = {};
+    clonedOptions_[Current_.Parameters] = {};
+    clonedOptions_[Current_.Parameters][Current_.ParametersPage] = CurrentPage_;
+    clonedOptions_[Current_.Parameters][Current_.ResultTotalCountOfPages] = -21;
+    
+    pagerOptions_ = {};
+    pagerOptions_[Current_.Refresh] = function() {};
+    
     result_ = {};
     result_[Current_.ResultTotalCountOfPages] = 1212;
-
+    result_[Current_.ResultNextPage] = -222;
+    result_[Current_.ResultPreviousPage] = -111;
+    
     appendChild_ = function() {};
+    clone_ = function() { return clonedOptions_; };
     createADiv_ = function() { return button_; };
     findNode_ = function() {return null; };
     removeAllEvents_ = function() {};
@@ -53,23 +67,24 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     swap_ = function() {};
     toggleEnabledOnAButton_ = function() {};
   });
-
-
+  
+  
   //Support Methods
   var callTheMethod_ = function() {
-    src.base.control.pager.createAndAppendPagerButton(isPrevious_, options_, result_,
-                                                      containerRow_, findNode_, createADiv_,
-                                                      setTextContent_, toggleEnabledOnAButton_,
+    src.base.control.pager.createAndAppendPagerButton(isPrevious_, options_, pagerOptions_,
+                                                      result_, containerRow_, findNode_,
+                                                      createADiv_, setTextContent_,
+                                                      toggleEnabledOnAButton_,
                                                       removeAllEvents_, swap_, setClick_,
-                                                      appendChild_);
+                                                      appendChild_, clone_);
   };
-
+  
 
   //Test Methods
 
   it('should attempt to find the previous pager button.', function() {
     var methodWasCalled = false;
-
+    
     findNode_ = function(containerRow, toDo) {
       methodWasCalled = methodWasCalled ||
         (containerRow === containerRow_ &&
@@ -80,13 +95,13 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
 
     expect(methodWasCalled).toBe(true);
   });
-  
 
+  
   it('should attempt to find the next pager button.', function() {
     var methodWasCalled = false;
 
     isPrevious_ = false;
-
+    
     findNode_ = function(containerRow, toDo) {
       methodWasCalled = methodWasCalled ||
         (containerRow === containerRow_ &&
@@ -109,7 +124,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 
@@ -118,7 +133,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     var methodWasCalled = false;
 
     isPrevious_ = false;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled ||
         (attributes['id'] === Current_.NextButton &&
@@ -126,14 +141,14 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 
 
   it('should not create a button if it exists.', function() {
     var methodWasCalled = false;
-
+    
     findNode_ = function() {
       return button_;
     };
@@ -171,7 +186,7 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
       methodWasCalled = methodWasCalled ||
         (element === button_ && text === '>');
     };
-
+    
 
     callTheMethod_();
 
@@ -186,45 +201,10 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
       methodWasCalled = methodWasCalled ||
         (parent === containerRow_ && child === button_);
     };
-
-
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(true);
-  });
-
-
-  it('should copy the options for the previous page.', function() {
-    var methodWasCalled = false;
-    var optionValue = {};
-
-    result_[Current_.ResultPreviousPage] = optionValue;
-
-    options_[Current_.CopyOptions] = function(options, resultKey) {
-      methodWasCalled = methodWasCalled ||
-        (options === options_ && resultKey === optionValue);
-    };
     
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(true);
-  });
-
-
-  it('should copy the options for the next page.', function() {
-    var methodWasCalled = false;
-    var optionValue = {};
-
-    isPrevious_ = false;
-    result_[Current_.ResultNextPage] = optionValue;
-
-    options_[Current_.CopyOptions] = function(options, resultKey) {
-      methodWasCalled = methodWasCalled ||
-        (options === options_ && resultKey === optionValue);
-    };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
 
@@ -236,11 +216,11 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
       methodWasCalled = methodWasCalled ||
         (button === button_ &&
          isPrevious === isPrevious_ &&
-         pageNumber === options_[Current_.Parameters][Current_.ParametersPage] &&
+         pageNumber === CurrentPage_ &&
          totalCountOfPages === result_[Current_.TotalCountOfPages] &&
          swap === swap_);
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
@@ -253,36 +233,79 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     removeAllEvents_ = function(button) {
       methodWasCalled = button === button_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
-  it('should set the click event.', function() {
+  
+  
+  it('should clone the options.', function() {
     var methodWasCalled = false;
-    var copiedOptions = {};
-
-    options_[Current_.CopyOptions] = function() {
-      return copiedOptions;
+    
+    clone_ = function(options) {
+      methodWasCalled = options === options_;
+      return clonedOptions_;
     };
-
-    options_[Current_.Refresh] = function(options) {
-      methodWasCalled = methodWasCalled &&
-        options === copiedOptions;
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the click event for the previous pager.', function() {
+    var methodWasCalled = false;
+    isPrevious_ = false;
+    var clonedOptions = {};
+    
+    clone_ = function() {
+      return clonedOptions_;
     };
-
+    
+    pagerOptions_[Current_.Refresh] = function(options) {
+      methodWasCalled = methodWasCalled ||
+        (options === clonedOptions &&
+        clonedOptions[Current_.Parameters][Current_.ParametersPage] === result_[Current_.ResultPreviousPage]);
+    };
+    
     setClick_ = function(button, toDo) {
       methodWasCalled = button === button_;
       toDo();
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
+  
+  
+  it('should set the click event for the next pager.', function() {
+    var methodWasCalled = false;
+    isPrevious_ = false;
+    var clonedOptions = {};
+    
+    clone_ = function() {
+      return clonedOptions_;
+    };
+    
+    pagerOptions_[Current_.Refresh] = function(options) {
+      methodWasCalled = methodWasCalled ||
+        options === clonedOptions &&
+        clonedOptions[Current_.Parameters][Current_.ParametersPage] === result_[Current_.ResultNextPage];
+    };
+    
+    setClick_ = function(button, toDo) {
+      methodWasCalled = button === button_;
+      toDo();
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
 };
 
 
