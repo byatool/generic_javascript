@@ -117,7 +117,7 @@ src.base.control.pager.ResultPreviousPage = 'PreviousPage';
 src.base.control.pager.toggleEnabledOnAButton =
   function(button, isPrevious, pageNumber, totalCountOfPages, swap) {
     var current = src.base.control.pager;
-
+    
     if (isPrevious) {
       if (pageNumber === 0) {
         swap(button, current.PagerClass, current.DisabledPagerClass);
@@ -126,7 +126,7 @@ src.base.control.pager.toggleEnabledOnAButton =
         swap(button, current.DisabledPagerClass, current.PagerClass);
       }
     }
-
+    
     if (!isPrevious) {
       if (totalCountOfPages === 0 || pageNumber === totalCountOfPages - 1) {
         swap(button, current.PagerClass, current.DisabledPagerClass);
@@ -173,42 +173,149 @@ src.base.control.pager.createAndAppendPagerButton =
            toggleEnabledOnAButton, removeAllEvents,
            swap, setClick, appendChild,
            clone) {
-
+    
     var current = src.base.control.pager;
     
+    //Unique
     var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
     var button = findNode(containerRow,
                           function(item) {
                             return item['id'] === buttonId;
                           });
-
+    
     if (!button) {
       button = createADiv({'id': buttonId, 'class': current.PagerClass});
+      //Unique
       setTextContent(button, isPrevious ? '<' : '>');
       appendChild(containerRow, button);
     }
-
+    
     var currentPage = options[current.Parameters][current.ParametersPage];
     var totalCountOfPages = result[current.TotalCountOfPages];
     toggleEnabledOnAButton(button, isPrevious, currentPage,
                            totalCountOfPages, swap);
-
+    
     removeAllEvents(button);
-
+    
+    //Unique
     var resultKey = isPrevious ?
           current.ResultPreviousPage :
           current.ResultNextPage;
-
+    
     var updatedOptions = clone(options);
     updatedOptions[current.Parameters] = {};
     updatedOptions[current.Parameters][current.ParametersPage] =
       result[resultKey];
-
+    
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
     });
   };
 
+
+
+/**
+ @param {integer} id The id for the pager button.
+ @param {Object} options The options have been passed through by the
+ parent control.
+ @param {Object} pagerOptions The options that are used to construct
+ the pager.
+ @param {Object} pagerContainer The parent pager.
+ @param {function} findNode The fuction used to find an
+ existing pager button by id.
+ @param {functino} removeAllEvents The function used to
+ remove all events from an existing pager button.
+ @param {function} clone The function used to create 
+ a new option object, and update the page.
+ @param {function} createADiv The function used to create 
+ the button if it didn't exist.
+ @param {function} setTextContent The function to set the 
+ text of a new pager button.
+ @param {function} setClick The function used to set the click
+ event for a button.
+ @protected
+ */
+src.base.control.pager.createAPagerNumberButton =
+  function(id, options, pagerOptions, pagerContainer,
+           findNode, removeAllEvents, clone,
+           createADiv, setTextContent, setClick) {
+    
+    var current = src.base.control.pager;
+    
+    var button = findNode(pagerContainer, function(item) {
+      return item['id'] === id;
+    });
+    
+    if(button != null && button != undefined){
+      removeAllEvents(button);
+    } else{
+      button = createADiv({'id': id, 'class': current.PagerClass});
+      setTextContent(button, id);
+    }
+    
+    var updatedOptions = clone(options);
+    updatedOptions[current.Parameters] = {};
+    updatedOptions[current.Parameters][current.ParametersPage] = id;
+    
+    
+    setClick(button, function() {
+      pagerOptions[current.Refresh](updatedOptions);
+    });
+    
+  };
+
+
+/**
+ @param {Object} result that contains the page
+ info.
+ @param {Object} pagerContainer The parent pager.
+ @param {function} findNodes The function used to find
+ existing page number buttons.
+ @param {function} every The function used to go through
+ a list of items.
+ @param {function} removeNode The function used to remove
+ existing page number buttons.
+ @protected
+ */
+src.base.control.pager.createAPageNumberContainer =
+  function(result, pagerContainer, findNodes, every,
+           removeNode){
+    
+     //goog.array.every
+    //goog.dom.findNodes
+    //goog.dom.removeNode
+    
+    //goog.dom.findNode
+    //goog.events.removeAll
+    //goog.object.clone
+    //goog.dom.setTextContent
+    //src.base.events.setClick
+    
+    var current = src.base.control.pager;
+    
+    var totalCountOfPages = result[current.TotalCountOfPages];
+    var deadNodes = findNodes(pagerContainer, function(item){
+      return Number(item['id']) > (totalCountOfPages -1);
+    });
+    
+    every(deadNodes, function(node) {
+      removeNode(node);
+    });
+    
+    /*
+     -- find the number container
+     --   remove any that are too high for the tota; count of pages
+     --    removeNode("numberButton" + number, parent)
+     -- for each number in totalCountOfPages
+     --  var title = number
+     --  find by id (numberButtton + number)
+     --   removeAllEvents
+     --   clone options
+     --   set page to number
+     --   
+     --   set click
+     */
+  };
 
 
 /**
@@ -240,6 +347,7 @@ src.base.control.pager.initialize =
            createADiv, getElementByClass,
            removeNode, createAClearDiv,
            appendChild) {
+
     
     /* Method Intialization */
     appendChild = appendChild ?

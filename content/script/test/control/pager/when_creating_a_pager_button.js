@@ -42,18 +42,18 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     options_ = {};
     options_[Current_.Parameters] = {};
     options_[Current_.Parameters][Current_.ParametersPage] = CurrentPage_;
-    options_[Current_.Parameters][Current_.ResultTotalCountOfPages] = -21;
+    options_[Current_.Parameters][Current_.TotalCountOfPages] = -21;
     
     clonedOptions_ = {};
     clonedOptions_[Current_.Parameters] = {};
     clonedOptions_[Current_.Parameters][Current_.ParametersPage] = CurrentPage_;
-    clonedOptions_[Current_.Parameters][Current_.ResultTotalCountOfPages] = -21;
+    clonedOptions_[Current_.Parameters][Current_.TotalCountOfPages] = -21;
     
     pagerOptions_ = {};
     pagerOptions_[Current_.Refresh] = function() {};
     
     result_ = {};
-    result_[Current_.ResultTotalCountOfPages] = 1212;
+    result_[Current_.TotalCountOfPages] = 1212;
     result_[Current_.ResultNextPage] = -222;
     result_[Current_.ResultPreviousPage] = -111;
     
@@ -187,28 +187,28 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
         (element === button_ && text === '>');
     };
     
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should append the button to the containerRow.', function() {
     var methodWasCalled = false;
-
+    
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === containerRow_ && child === button_);
     };
     
-
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should toggle enabled on the button.', function() {
     var methodWasCalled = false;
     toggleEnabledOnAButton_ = function(button, isPrevious, pageNumber,
