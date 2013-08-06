@@ -253,14 +253,14 @@ src.base.control.pager.createAPagerNumberButton =
     var current = src.base.control.pager;
     
     var button = findNode(pagerContainer, function(item) {
-      return item['id'] === id;
+      return Number(item['id']) === id;
     });
     
     if (button != null && button != undefined) {
       removeAllEvents(button);
     } else {
       button = createADiv({'id': id, 'class': current.PagerClass});
-      setTextContent(button, id);
+      setTextContent(button, id + 1);
       appendChild(pagerContainer, button);
     }
     
@@ -318,10 +318,10 @@ src.base.control.pager.createAPageNumberContainer =
     var current = src.base.control.pager;
     
     var buttonContainer = findNode(pagerContainer, function(item) {
-      return item['class'] === current.NumberPagerContainerClass;
+      return item['className'] === current.NumberPagerContainerClass;
     });
     
-    if(!buttonContainer){
+    if(buttonContainer === null || buttonContainer === undefined){
       buttonContainer = createADiv({'class': current.NumberPagerContainerClass});
       appendChild(pagerContainer, buttonContainer);
     }

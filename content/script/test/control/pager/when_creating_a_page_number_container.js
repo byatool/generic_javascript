@@ -73,7 +73,7 @@ src.test.control.pager.whenCreatingAPageNumberContainer.describe = function () {
     var methodWasCalled = false;
     var item  = {};
     
-    item['class'] = Current_.NumberPagerContainerClass;
+    item['className'] = Current_.NumberPagerContainerClass;
     
     findNode_ = function(parent, toDo){
       methodWasCalled = methodWasCalled ||

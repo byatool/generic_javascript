@@ -62,37 +62,37 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
   it('should find an existing button.', function() {
     var methodWasCalled = false;
     var item = {};
-    item['id'] = Id_;
-
+    item['id'] = Id_.toString();
+    
     findNode_ = function(element, toDo) {
       methodWasCalled = element === pagerContainer_ &&
         toDo(item);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should remove all events if the button exists.', function() {
     var methodWasCalled = false;
     var existingButton = {};
-
+    
     findNode_ = function() {
       return existingButton;
     };
-
+    
     removeAllEvents_ = function(item) {
       methodWasCalled = item === existingButton;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should not remove any events if the button did not exist.', function() {
     var methodWasCalled = false;
     findNode_ = function() {
@@ -141,7 +141,7 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     
     setTextContent_ = function(element, text) {
       methodWasCalled = element === div &&
-        text === Id_;
+        text === Id_ + 1;
     };
     
     
