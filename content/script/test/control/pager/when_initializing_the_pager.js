@@ -16,14 +16,15 @@ goog.provide('src.test.control.pager.whenInitializingAPager');
 src.test.control.pager.whenInitializingAPager.describe = function() {
   //Using
   var Current_ = src.base.control.pager;
-
-
+  
+  
   //Fields
   var ParentContainerId_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
-
+  
   var appendChild_;
   var createAndAppendPagerButton_;
+  var createAPagerNumberContainer_; 
   var createAClearDiv_;
   var createADiv_;
   var getElementByClass_;
@@ -52,6 +53,7 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
     
     appendChild_ = function() {};
     createAndAppendPagerButton_ = function() {};
+    createAPagerNumberContainer_ = function() {};
     createAClearDiv_ = function(){};
     getElementByClass_ = function(){ return [];};
     removeNode_ = function(){};
@@ -62,9 +64,9 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
   var callTheMethod_ = function() {
     return Current_.initialize(result_, options_, pagerOptions_,
                                parentContainer_, createAndAppendPagerButton_,
-                               createADiv_, getElementByClass_,
-                               removeNode_, createAClearDiv_,
-                               appendChild_);
+                               createAPagerNumberContainer_, createADiv_,
+                               getElementByClass_, removeNode_,
+                               createAClearDiv_, appendChild_);
   };
   
   
@@ -128,7 +130,46 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
     
     expect(methodWasCalled).toBe(2);
   });
-
+  
+  
+  it('should create the button container.', function() {
+    var methodWasCalled = false;
+    
+    createAPagerNumberContainer_ = function(
+      result,
+      options,
+      pagerOptions,
+      pagerContainer,
+      findNode,
+      createADiv,
+      appendChild,
+      findNodes,
+      every,
+      removeNode,
+      createAPagerNumberButton,
+      createAClearDiv){
+      
+      methodWasCalled = result === result_ &&
+        options === options_ &&
+        pagerOptions === pagerOptions_ &&
+        pagerContainer === parentContainer_ &&
+        findNode === goog.dom.findNode &&
+        createADiv === createADiv_ &&
+        appendChild === appendChild_ &&
+        findNodes === goog.dom.findNodes &&
+        every === goog.array.every &&
+        removeNode === removeNode_ &&
+        createAPagerNumberButton === src.base.control.pager.createAPagerNumberButton &&
+        createAClearDiv === createAClearDiv_;
+    };
+    
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
   
   it('should search for the clear div.', function() {
     var methodWasCalled = false;
