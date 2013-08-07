@@ -125,7 +125,7 @@ src.base.control.pager.ResultPreviousPage = 'PreviousPage';
 src.base.control.pager.toggleEnabledOnAButton =
   function(button, isPrevious, pageNumber, totalCountOfPages, swap) {
     var current = src.base.control.pager;
-    
+
     if (isPrevious) {
       if (pageNumber === 0) {
         swap(button, current.PagerClass, current.DisabledPagerClass);
@@ -134,7 +134,7 @@ src.base.control.pager.toggleEnabledOnAButton =
         swap(button, current.DisabledPagerClass, current.PagerClass);
       }
     }
-    
+
     if (!isPrevious) {
       if (totalCountOfPages === 0 || pageNumber === totalCountOfPages - 1) {
         swap(button, current.PagerClass, current.DisabledPagerClass);
@@ -181,37 +181,37 @@ src.base.control.pager.createAndAppendPagerButton =
            toggleEnabledOnAButton, removeAllEvents,
            swap, setClick, appendChild,
            clone) {
-    
+
     var current = src.base.control.pager;
-    
+
     var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
     var button = findNode(containerRow,
                           function(item) {
                             return item['id'] === buttonId;
                           });
-    
+
     if (!button) {
       button = createADiv({'id': buttonId, 'class': current.PagerClass});
       setTextContent(button, isPrevious ? '<' : '>');
       appendChild(containerRow, button);
     }
-    
+
     var currentPage = options[current.Parameters][current.ParametersPage];
     var totalCountOfPages = result[current.TotalCountOfPages];
     toggleEnabledOnAButton(button, isPrevious, currentPage,
                            totalCountOfPages, swap);
-    
+
     removeAllEvents(button);
-    
+
     var resultKey = isPrevious ?
           current.ResultPreviousPage :
           current.ResultNextPage;
-    
+
     var updatedOptions = clone(options);
     updatedOptions[current.Parameters] = {};
     updatedOptions[current.Parameters][current.ParametersPage] =
       result[resultKey];
-    
+
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
     });
@@ -249,13 +249,13 @@ src.base.control.pager.createAPagerNumberButton =
            pagerContainer, findNode, removeAllEvents,
            clone, createADiv, appendChild,
            setTextContent, swap, setClick) {
-    
+
     var current = src.base.control.pager;
-    
+
     var button = findNode(pagerContainer, function(item) {
       return Number(item['id']) === id;
     });
-    
+
     if (button != null && button != undefined) {
       removeAllEvents(button);
     } else {
@@ -263,18 +263,18 @@ src.base.control.pager.createAPagerNumberButton =
       setTextContent(button, id + 1);
       appendChild(pagerContainer, button);
     }
-    
+
     if (options[current.Parameters][current.ParametersPage] === id) {
       swap(button, current.PagerClass, current.DisabledPagerClass);
     }
     else {
       swap(button, current.DisabledPagerClass, current.PagerClass);
     }
-    
+
     var updatedOptions = clone(options);
     updatedOptions[current.Parameters] = {};
     updatedOptions[current.Parameters][current.ParametersPage] = id;
-    
+
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
     });
@@ -288,11 +288,11 @@ src.base.control.pager.createAPagerNumberButton =
  owner.
  @param {Object} pagerOptions The options for the pager.
  @param {Object} pagerContainer The parent pager.
- @param {function} findNode The function used to find 
+ @param {function} findNode The function used to find
  an existing number pager container.
  @param {function} createADiv The function used to create
  the number pager container if it does not exist.
- @param {function} appendChild The function used to add 
+ @param {function} appendChild The function used to add
  the container to the pager parent if it does not exist.
  @param {function} findNodes The function used to find
  existing page number buttons.
@@ -313,29 +313,29 @@ src.base.control.pager.createAPageNumberContainer =
            appendChild, findNodes, every,
            removeNode, createAPagerNumberButton,
            createAClearDiv) {
-    
-    
+
+
     var current = src.base.control.pager;
-    
+
     var buttonContainer = findNode(pagerContainer, function(item) {
       return item['className'] === current.NumberPagerContainerClass;
     });
-    
-    if(buttonContainer === null || buttonContainer === undefined){
+
+    if (buttonContainer === null || buttonContainer === undefined) {
       buttonContainer = createADiv({'class': current.NumberPagerContainerClass});
       appendChild(pagerContainer, buttonContainer);
     }
-    
+
     var totalCountOfPages = result[current.TotalCountOfPages];
     var deadNodes = findNodes(buttonContainer, function(item) {
       return Number(item['id']) > (totalCountOfPages - 1);
     });
-    
+
     every(deadNodes, function(node) {
       removeNode(node);
     });
-    
-    for(var i = 0; i < totalCountOfPages; i++){
+
+    for (var i = 0; i < totalCountOfPages; i++) {
       createAPagerNumberButton(i,
                                options,
                                pagerOptions,
@@ -349,11 +349,11 @@ src.base.control.pager.createAPageNumberContainer =
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick);
     }
-    
+
     var clearDiv = findNode(buttonContainer, function(item) {
       return item['class'] === 'clearBoth';
     });
-    
+
     removeNode(clearDiv);
     clearDiv = createAClearDiv();
     appendChild(buttonContainer, clearDiv);
@@ -391,47 +391,47 @@ src.base.control.pager.initialize =
            createAPageNumberContainer, createADiv,
            getElementByClass, removeNode, createAClearDiv,
            appendChild) {
-    
-    
+
+
     /* Method Intialization */
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-    
+
     createAClearDiv = createAClearDiv ?
       createAClearDiv :
       src.base.helper.domCreation.createAClearDiv;
-    
+
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-    
+
     createAndAppendPagerButton = createAndAppendPagerButton ?
       createAndAppendPagerButton :
       src.base.control.pager.createAndAppendPagerButton;
-    
+
     createAPageNumberContainer = createAPageNumberContainer ?
       createAPageNumberContainer :
       src.base.control.pager.createAPageNumberContainer;
-    
+
     getElementByClass = getElementByClass ?
       getElementByClass :
       goog.dom.getElementByClass;
-    
+
     removeNode = removeNode ?
       removeNode :
       goog.dom.removeNode;
-    
+
     /*  */
     var Current_ = src.base.control.pager;
-    
+
     var container = pagerControl ?
           pagerControl :
           createADiv({
             'id': pagerOptions[Current_.ContainerId],
             'class': pagerOptions[Current_.ContainerClass]
           });
-    
+
     createAndAppendPagerButton(true,
                                options,
                                pagerOptions,
@@ -446,8 +446,8 @@ src.base.control.pager.initialize =
                                src.base.helper.events.setClick,
                                appendChild,
                                goog.object.clone);
-    
-    
+
+
     createAPageNumberContainer(result,
                                options,
                                pagerOptions,
@@ -460,8 +460,8 @@ src.base.control.pager.initialize =
                                removeNode,
                                src.base.control.pager.createAPagerNumberButton,
                                createAClearDiv);
-    
-    
+
+
     createAndAppendPagerButton(false,
                                options,
                                pagerOptions,
@@ -476,13 +476,13 @@ src.base.control.pager.initialize =
                                src.base.helper.events.setClick,
                                appendChild,
                                goog.object.clone);
-    
+
     var clearDiv = getElementByClass('clearBoth', container);
     removeNode(clearDiv);
-    
+
     clearDiv = createAClearDiv();
-    
+
     appendChild(container, clearDiv);
-    
+
     return container;
   };

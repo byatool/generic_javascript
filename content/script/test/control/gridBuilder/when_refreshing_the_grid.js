@@ -61,8 +61,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.refresh(options_, grid_, getElementByClass_,
-                            removeNode_, createARow_, createADiv_, createResultHandler_,
+    return Current_.refresh(options_, grid_, createARow_, getElementByClass_,
+                            removeNode_, createADiv_, createResultHandler_,
                             createTheHeaderRow_, createRows_,
                             appendChild_, setTextContent_, submitToUrl_);
   };

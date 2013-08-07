@@ -227,25 +227,25 @@ src.base.control.gridBuilder.createARow =
 
     var current = src.base.control.gridBuilder;
     var currentRow = createADiv({'class' : current.RowClass });
-    
+
     if (options[current.RowClickHandler]) {
       setClick(currentRow, function() {
         options[current.RowClickHandler](currentRow);
       });
     }
-    
+
     goog.array.forEach(options[current.Map], function(currentMapping) {
       var extraClass = currentMapping['class'] ? ' ' + currentMapping['class'] : '';
-      
+
       var column = createADiv({'class' : current.ColumnClass + extraClass});
       setTextContent(column, currentItem[currentMapping['propertyName']]);
       appendChild(currentRow, column);
     });
-    
+
     var clearBoth = createADiv({'class': 'clearBoth'});
-    
+
     appendChild(currentRow, clearBoth);
-    
+
     return currentRow;
 };
 
@@ -272,22 +272,22 @@ src.base.control.gridBuilder.createPagerButtons =
     var containerRow = findNode(parentContainer, function(item) {
       return item['className'] === current.ButtonRowClass;
     });
-    
+
     var existed = containerRow !== null && containerRow != undefined;
     var pagerOptions = {};
     pagerOptions[Pager_.ContainerId] = current.ButtonRowId;
     pagerOptions[Pager_.ContainerClass] = current.ButtonRowClass;
-    
+
     //THIS IS UNTESTED
     //SHOULD PASS IN REFRESH AND TEST CALL IT
     //pagerOptions[Pager_.Refresh] = src.base.control.gridBuilder.refresh;
     pagerOptions[Pager_.Refresh] = function(options) {
       src.base.control.gridBuilder.refresh(options, parentContainer);
     };
-    
+
     containerRow = initializeThePager(result, gridOptions,
                                       pagerOptions, containerRow);
-    
+
     if (!existed) {
       appendChild(parentContainer, containerRow);
     }
@@ -516,9 +516,9 @@ src.base.control.gridBuilder.initialize =
 /**
  @param {Object} options The options that are used to construct the form.
  @param {Object} grid The parent grid.
+ @param {?function} createARow The function used to create each non header row.
  @param {?function} getElementsByClass The function used to find all the non header/footer rows.
  @param {?function} removeNode The function used to remove the non header/footer rows.
- @param {?function} createARow The function used to create each non header row.
  @param {?function} createADiv The method used to create a div element.
  @param {?function} createResultHandler The function used to create the call back method when posting to the
  server.
@@ -530,10 +530,10 @@ src.base.control.gridBuilder.initialize =
  @export
  */
 src.base.control.gridBuilder.refresh =
-  function(options, grid, getElementsByClass,
-           removeNode, createARow, createADiv, createResultHandler,
-           createTheHeaderRow, createRows, appendChild, setTextContent,
-           submitToUrl) {
+  function(options, grid, createARow, getElementsByClass,
+           removeNode,  createADiv, createResultHandler,
+           createTheHeaderRow, createRows, appendChild,
+           setTextContent, submitToUrl) {
 
     var Current = src.base.control.gridBuilder;
 
