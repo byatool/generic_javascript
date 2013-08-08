@@ -10,20 +10,19 @@ goog.provide('src.test.control.gridBuilder.whenInitializingTheGrid');
  @export
  */
 src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
-
+  
   //Using
-
+  
   var Current_ = src.base.control.gridBuilder;
-
-
+  
+  
   //Fields
-
+  
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
-
+  
   var appendChild_;
   var createADiv_;
-  var createARow_;
   var createResultHandler_;
   var createRows_;
   var createTheHeaderRow_;
@@ -45,7 +44,6 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
 
     appendChild_ = function() {};
     createADiv_ = function() { return parentContainer_; };
-    createARow_ = function() {};
     createResultHandler_ = function() {};
     createTheHeaderRow_ = function() {};
     createRows_ = function() {};
@@ -57,11 +55,11 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   //Support Methods
 
   var callTheMethod_ = function() {
-    return Current_.initialize(options_, createARow_, createADiv_, createResultHandler_,
+    return Current_.initialize(options_, createADiv_, createResultHandler_,
                                createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
                                submitToUrl_);
   };
-
+  
 
   //Test Methods
 
@@ -82,14 +80,14 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   it('should return the container div.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);
   });
-
-
-
+  
+  
+  
   it('should create the result handler.', function() {
     var methodWasCalled = false;
-
+    
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
-                                    createRows, createARow, createADiv, appendChild,
+                                    createRows, createADiv, appendChild,
                                     setTextContent, removeAllEvents,
                                     swap, setClick, findNode, createPagerButtons) {
       
@@ -97,7 +95,6 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
         parentContainer === parentContainer_ &&
         createTheHeaderRow === createTheHeaderRow_ &&
         createRows === createRows_ &&
-        createARow === createARow_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         setTextContent === setTextContent_ &&
@@ -107,22 +104,22 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
         findNode === goog.dom.findNode &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-
+    
     var resultHandler = {};
-
+    
     createResultHandler_ = function() {
       return resultHandler;
     };
-
+    
     submitToUrl_ = function(url, parameters, handler) {
       methodWasCalled = url === options_[Current_.Url] &&
         parameters === options_[Current_.Parameters] &&

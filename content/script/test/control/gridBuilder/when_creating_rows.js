@@ -6,13 +6,13 @@ goog.provide('src.test.control.gridBuilder.whenCreatingRows');
  @export
  */
 src.test.control.gridBuilder.whenCreatingRows.describe = function() {
-
+  
   //Using
   var Current_ = src.base.control.gridBuilder;
-
+  
   //Fields
-
-
+  
+  
   var appendChild_;
   var createADiv_;
   var createARow_;
@@ -23,20 +23,20 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   var rowContainer_;
   var setClick_;
   var setTextContent_;
-
-
+  
+  
   //Test Hooks
   beforeEach(function() {
     parentContainer_ = {};
     rowContainer_ = {};
-
+    
     options_ = {};
     options_[Current_.Map] = {};
     options_[Current_.RowClickHandler] = function() {};
-
+    
     result_ = {};
     result_[Current_.ListProperty] = [{},{}];
-
+    
     appendChild_ = function() {};
     createADiv_ = function() { return rowContainer_;};
     createARow_ = function() {};
@@ -44,21 +44,21 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
     setClick_ = function() {};
     setTextContent_ = function() {};
   });
-
-
+  
+  
   //Support Methods
   var callTheMethod_ = function() {
     Current_.createRows(result_, parentContainer_, options_,
                         findNode_, createADiv_, appendChild_,
                         createARow_, setTextContent_, setClick_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should find the row container.', function() {
     var methodWasCalled = false;
-
+    
     findNode_ = function(parent, toFind) {
       methodWasCalled = parent === parentContainer_ &&
         String(toFind) === String(function(a) {return a['className'] === Current_.RowContainerClass;});
@@ -122,7 +122,7 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
 
     createARow_ = function(item, options, createADiv,
                            setTextContent, appendChild, setClick) {
-
+      
       methodWasCalled += (item === result_[Current_.ListProperty][0] ||
                           item === result_[Current_.ListProperty][1]) &&
         createADiv === createADiv_ &&
@@ -130,12 +130,12 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
         appendChild === appendChild_ &&
         setClick === setClick_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(2);
   });
-
+  
 
   it('should add each row to the parent container.', function() {
     var methodWasCalled = 0;

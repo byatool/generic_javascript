@@ -21,7 +21,6 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   var appendChild_;
   var createADiv_;
-  var createARow_;
   var createResultHandler_;
   var createRows_;
   var createTheHeaderRow_;
@@ -47,7 +46,6 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
 
     appendChild_ = function() {};
     createADiv_ = function() {};
-    createARow_ = function() {};
     createResultHandler_ = function() {};
     createTheHeaderRow_ = function() {};
     createRows_ = function() {};
@@ -61,7 +59,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.refresh(options_, grid_, createARow_, getElementByClass_,
+    return Current_.refresh(options_, grid_, getElementByClass_,
                             removeNode_, createADiv_, createResultHandler_,
                             createTheHeaderRow_, createRows_,
                             appendChild_, setTextContent_, submitToUrl_);
@@ -145,7 +143,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     var methodWasCalled = false;
     
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
-                                    createRows, createARow, createADiv, appendChild,
+                                    createRows, createADiv, appendChild,
                                     setTextContent, removeAllEvents,
                                     swap, setClick, findNode, createPagerButtons) {
       
@@ -153,7 +151,6 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         parentContainer === grid_ &&
         createTheHeaderRow === createTheHeaderRow_ &&
         createRows === createRows_ &&
-        createARow === createARow_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         removeAllEvents === goog.events.removeAll &&

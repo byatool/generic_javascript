@@ -8,15 +8,14 @@ goog.provide('src.test.control.gridBuilder.whenCreatingTheResultHandler');
  @export
  */
 src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() {
-
+  
   //Using
   var Current_ = src.base.control.gridBuilder;
-
-
+  
+  
   //Fields
   var appendChild_;
   var createADiv_;
-  var createARow_;
   var createPagerButtons_;
   var createRows_;
   var createTheHeaderRow_;
@@ -38,32 +37,30 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     options_ = {};
     options_[Current_.Map] = mapping_;
     options_[Current_.RowClickHandler] = function() {};
-
+    
     parentContainer_ = {};
     result_ = {};
-
+    
     appendChild_ = function() {};
     createADiv_ = function() {};
-    createARow_ = function() {};
     createPagerButtons_ = function() {};
     createRows_ = function() {};
     createTheHeaderRow_ = function() {};
     findNode_ = function() {};
     removeAllEvents_ = function() {};
-
+    
     setClick_ = function() {};
     setTextContent_ = function() {};
     swap_ = function() {};
   });
-
+  
   //Support Methods
   var callTheMethod_ = function() {
     var methodToCall =
           src.base.control.gridBuilder.createTheResultHandler(options_, parentContainer_,
                                                               createTheHeaderRow_, createRows_,
-                                                              createARow_, createADiv_,
-                                                              appendChild_, setTextContent_,
-                                                              removeAllEvents_,
+                                                              createADiv_, appendChild_,
+                                                              setTextContent_, removeAllEvents_,
                                                               swap_, setClick_, findNode_,
                                                               createPagerButtons_);
     methodToCall(result_);
@@ -94,34 +91,60 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   it('should create the rows.', function() {
     var methodWasCalled = false;
 
-    createRows_ = function(result, parentContainer, options, findNode,
-                           createADiv, appendChild, createARow, setTextContent,
-                           setClick) {
-
+    createRows_ = function(result, parentContainer, options,
+                           findNode, createADiv, appendChild,
+                           createARow, setTextContent, setClick) {
+      
       methodWasCalled = result === result_ &&
         parentContainer === parentContainer_ &&
         options === options_ &&
         findNode === findNode_ &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
-        createARow === createARow_ &&
+        createARow === Current_.createARow &&
         setTextContent === setTextContent_ &&
         setClick === setClick_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
-
+  
+  
+  it('should create the rows with the optional createARow method.', function() {
+    var methodWasCalled = false;
+    options_[Current_.CreateARow] = {};
+    
+    createRows_ = function(result, parentContainer, options,
+                           findNode, createADiv, appendChild,
+                           createARow, setTextContent, setClick) {
+      
+      methodWasCalled = result === result_ &&
+        parentContainer === parentContainer_ &&
+        options === options_ &&
+        findNode === findNode_ &&
+        createADiv === createADiv_ &&
+        appendChild === appendChild_ &&
+        createARow === options_[Current_.CreateARow] &&
+        setTextContent === setTextContent_ &&
+        setClick === setClick_;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
   it('should create the pager buttons.', function() {
     var methodWasCalled = false;
-
+    
     createPagerButtons_ = function(result, gridOptions, parentContainer,
                                    findNode, initializeThePager, appendChild) {
-
+      
       methodWasCalled = result === result_ &&
         gridOptions === options_ &&
         parentContainer === parentContainer_ &&
