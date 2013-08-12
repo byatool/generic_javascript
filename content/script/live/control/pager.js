@@ -111,6 +111,30 @@ src.base.control.pager.ResultNextPage = 'NextPage';
 src.base.control.pager.ResultPreviousPage = 'PreviousPage';
 
 
+
+
+/**
+ @param {Object} options The options for the overall pager.
+ @param {integer} newPageNumber The page number for the new
+ options.
+ @param {function} clone The function used to make non
+ reference based copies.
+ @return {Object} The new options with the new page number.
+ @protected
+ */
+src.base.control.pager.cloneOptions = function(options, newPageNumber, clone) {
+
+  var current = src.base.control.pager;
+
+  var updatedOptions = {};
+  updatedOptions = clone(options);
+  updatedOptions[current.Parameters] = clone(options[current.Parameters]);
+  updatedOptions[current.Parameters][current.ParametersPage] = newPageNumber;
+
+  return updatedOptions;
+};
+
+
 /**
  @param {Object} button The button to toggle the class of.
  @param {boolean} isPrevious Whether the button represents
@@ -172,6 +196,8 @@ src.base.control.pager.toggleEnabledOnAButton =
  parent element.
  @param {function} clone The function used to clone the options so
  that the page number can be updated.
+ @param {function} cloneOptions The function used to correctly
+ clone the options, and update the page number.
  @protected
  */
 src.base.control.pager.createAndAppendPagerButton =
@@ -180,7 +206,7 @@ src.base.control.pager.createAndAppendPagerButton =
            createADiv, setTextContent,
            toggleEnabledOnAButton, removeAllEvents,
            swap, setClick, appendChild,
-           clone) {
+           clone, cloneOptions) {
     var current = src.base.control.pager;
 
     var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
@@ -206,9 +232,7 @@ src.base.control.pager.createAndAppendPagerButton =
           current.ResultPreviousPage :
           current.ResultNextPage;
 
-    var updatedOptions = clone(options);
-    updatedOptions[current.Parameters][current.ParametersPage] =
-      result[resultKey];
+    var updatedOptions = cloneOptions(options, result[resultKey], clone);
 
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
@@ -230,6 +254,8 @@ src.base.control.pager.createAndAppendPagerButton =
  remove all events from an existing pager button.
  @param {function} clone The function used to create
  a new option object, and update the page.
+ @param {function} cloneOptions The function used to correctly
+ clone the options, and update the page number.
  @param {function} createADiv The function used to create
  the button if it didn't exist.
  @param {function} appendChild The function used to add a new button
@@ -245,7 +271,7 @@ src.base.control.pager.createAndAppendPagerButton =
 src.base.control.pager.createAPagerNumberButton =
   function(id, options, pagerOptions,
            pagerContainer, findNode, removeAllEvents,
-           clone, createADiv, appendChild,
+           clone, cloneOptions, createADiv, appendChild,
            setTextContent, swap, setClick) {
 
     var current = src.base.control.pager;
@@ -269,13 +295,14 @@ src.base.control.pager.createAPagerNumberButton =
       swap(button, current.DisabledPagerClass, current.PagerClass);
     }
 
-    var updatedOptions = clone(options);
-    updatedOptions[current.Parameters][current.ParametersPage] = id;
+    var updatedOptions = cloneOptions(options, id, clone);
 
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
     });
   };
+
+
 
 
 /**
@@ -340,6 +367,7 @@ src.base.control.pager.createAPageNumberContainer =
                                findNode,
                                goog.events.removeAll,
                                goog.object.clone,
+                               src.base.control.pager.cloneOptions,
                                createADiv,
                                appendChild,
                                goog.dom.setTextContent,
@@ -442,7 +470,8 @@ src.base.control.pager.initialize =
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick,
                                appendChild,
-                               goog.object.clone);
+                               goog.object.clone,
+                               src.base.control.pager.cloneOptions);
 
 
     createAPageNumberContainer(result,
@@ -472,7 +501,8 @@ src.base.control.pager.initialize =
                                goog.dom.classes.swap,
                                src.base.helper.events.setClick,
                                appendChild,
-                               goog.object.clone);
+                               goog.object.clone,
+                               src.base.control.pager.cloneOptions);
 
     var clearDiv = getElementByClass('clearBoth', container);
     removeNode(clearDiv);

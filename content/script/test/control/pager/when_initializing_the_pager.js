@@ -109,7 +109,8 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
                                            result, containerRow, findNode,
                                            createADiv, setTextContent,
                                            toggleEnabledOnAButton, removeAllEvents,
-                                           swap, setClick, appendChild, clone) {
+                                           swap, setClick, appendChild, clone,
+                                           cloneOptions) {
       
       methodWasCalled += (isPrevious === true || isPrevious === false) &&
         options === options_ &&
@@ -123,7 +124,8 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
         swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
         appendChild === appendChild_ &&
-        clone === goog.object.clone;
+        clone === goog.object.clone &&
+        cloneOptions === Current_.cloneOptions;
     };
     
     callTheMethod_();

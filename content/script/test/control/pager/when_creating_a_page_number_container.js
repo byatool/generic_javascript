@@ -180,6 +180,7 @@ src.test.control.pager.whenCreatingAPageNumberContainer.describe = function () {
                                          findNode,
                                          removeAll,
                                          clone,
+                                         cloneOptions,
                                          createADiv,
                                          appendChild,
                                          setTextContent,
@@ -191,7 +192,8 @@ src.test.control.pager.whenCreatingAPageNumberContainer.describe = function () {
         pagerContainer === numberPagerContainer_ &&  
         findNode === findNode_ && 
         removeAll === goog.events.removeAll && 
-        clone === goog.object.clone && 
+        clone === goog.object.clone &&
+        cloneOptions === Current_.cloneOptions &&
         createADiv === createADiv_&&
         appendChild === appendChild_ &&
         setTextContent === goog.dom.setTextContent &&
