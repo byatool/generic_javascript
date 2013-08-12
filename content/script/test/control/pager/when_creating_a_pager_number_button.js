@@ -16,6 +16,7 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
   var appendChild_;
   var button_;
   var clone_;
+  var clonedOptions_;
   var createADiv_;
   var findNode_;
   var options_;
@@ -36,11 +37,13 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     pagerContainer_ = {};
     pagerOptions_ = {};
     
+    clonedOptions_ = {};
+    clonedOptions_[Current_.Parameters] = {}; 
     button_ = {};
-
+    
     appendChild_ = function() {};
     createADiv_ = function() { return button_; };
-    clone_ = function() { return {}; };
+    clone_ = function() { return clonedOptions_; };
     findNode_ = function() { return button_; };
     removeAllEvents_ = function() {};
     setClick_ = function() {};
@@ -55,10 +58,10 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
                                              clone_, createADiv_, appendChild_,
                                              setTextContent_, swap_, setClick_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should find an existing button.', function() {
     var methodWasCalled = false;
     var item = {};
@@ -98,29 +101,29 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     findNode_ = function() {
       return null;
     };
-
+    
     removeAllEvents_ = function() {
       methodWasCalled = true;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(false);
   });
-
-
+  
+  
   it('should create a button if one did not exist.', function() {
     var methodWasCalled = false;
-
+    
     findNode_ = function() {
       return null;
     };
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled = attributes['id'] === Id_ &&
         attributes['class'] === Current_.PagerClass;
     };
-
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
@@ -173,42 +176,42 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
-   
+  
   
   it('should clone the options.', function() {
     var methodWasCalled = false;
     
     clone_ = function(options) {
       methodWasCalled = options === options_;
-      return {};
+      return clonedOptions_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should disable the button that is the current page.', function() {
     var methodWasCalled = false;
-
+    
     options_[Current_.Parameters][Current_.ParametersPage] = Id_;
-
+    
     swap_ = function(button, enableClass, disableClass) {
       methodWasCalled = button === button_ &&
         enableClass === Current_.PagerClass &&
         disableClass === Current_.DisabledPagerClass;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should enable the button that is not the current page.', function() {
     var methodWasCalled = false;
-
+    
     swap_ = function(button, disableClass, enableClass) {
       methodWasCalled = button === button_ &&
         disableClass === Current_.DisabledPagerClass &&
@@ -224,20 +227,20 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
   it('should set the click event for the button.', function() {
     var methodWasCalled = false;
     var theButton = {};
-    var clonedOptions = {};
     
     findNode_ = function() {
       return theButton;
     };
     
     clone_ = function() {
-      return clonedOptions;
+      
+      return clonedOptions_;
     };
     
     pagerOptions_[Current_.Refresh] = function(options) {
       methodWasCalled = methodWasCalled ||
-        options === clonedOptions &&
-        clonedOptions[Current_.Parameters][Current_.ParametersPage] === Id_;
+        options === clonedOptions_ &&
+        clonedOptions_[Current_.Parameters][Current_.ParametersPage] === Id_;
     };
     
     setClick_ = function(button, toDo) {
@@ -245,6 +248,27 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
       toDo();
     };
     
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not lose the original parameters after cloning.', function() {
+    var methodWasCalled = false;
+    var oldParameter = {};
+    clonedOptions_[Current_.Parameters] = {};
+    clonedOptions_[Current_.Parameters]['OldParameter'] = oldParameter;
+    
+    pagerOptions_[Current_.Refresh] = function(options) {
+      methodWasCalled = options === clonedOptions_ &&
+        clonedOptions_[Current_.Parameters]['OldParameter'] === oldParameter;;
+    };
+    
+    setClick_ = function(button, toDo) {
+      methodWasCalled = button === button_;
+      toDo();
+    };
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);

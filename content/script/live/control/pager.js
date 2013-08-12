@@ -181,7 +181,6 @@ src.base.control.pager.createAndAppendPagerButton =
            toggleEnabledOnAButton, removeAllEvents,
            swap, setClick, appendChild,
            clone) {
-
     var current = src.base.control.pager;
 
     var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
@@ -206,12 +205,11 @@ src.base.control.pager.createAndAppendPagerButton =
     var resultKey = isPrevious ?
           current.ResultPreviousPage :
           current.ResultNextPage;
-    
+
     var updatedOptions = clone(options);
-    //updatedOptions[current.Parameters] = {};
     updatedOptions[current.Parameters][current.ParametersPage] =
       result[resultKey];
-    
+
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
     });
@@ -272,7 +270,6 @@ src.base.control.pager.createAPagerNumberButton =
     }
 
     var updatedOptions = clone(options);
-    updatedOptions[current.Parameters] = {};
     updatedOptions[current.Parameters][current.ParametersPage] = id;
 
     setClick(button, function() {
