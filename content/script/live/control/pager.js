@@ -206,12 +206,12 @@ src.base.control.pager.createAndAppendPagerButton =
     var resultKey = isPrevious ?
           current.ResultPreviousPage :
           current.ResultNextPage;
-
+    
     var updatedOptions = clone(options);
-    updatedOptions[current.Parameters] = {};
+    //updatedOptions[current.Parameters] = {};
     updatedOptions[current.Parameters][current.ParametersPage] =
       result[resultKey];
-
+    
     setClick(button, function() {
       pagerOptions[current.Refresh](updatedOptions);
     });
