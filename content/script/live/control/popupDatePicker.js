@@ -171,7 +171,8 @@ src.base.control.popupDatePicker.create = function(options, appendChild, createT
   
   var clickControl = Button({'class': options[Current.ButtonClass], 'type': 'button' }, options[Current.ButtonText]);
   appendChild(parentContainer, clickControl);
-  
+
+  //the method isn't even using the passed in css class
   var datePickerPair = createTheDatePicker(options[Current.DatePickerClass]);
   
   setTheDatePickerEvent(datePickerPair[1],
