@@ -15,5 +15,7 @@ Test first
 
 Built on heavy use of method injection, and functional (Wishful Thinking) design
 
+Built to be used with any web framework that supports ajax
 
-Examples are in another repository: https://github.com/byatool/testboard
+
+Examples are in another repository: https://github.com/byatool/testboard . The examples use the .Net MVC4 framework, but can be used with any framework. The goal is to make web framework agnostic JavaScript components.
