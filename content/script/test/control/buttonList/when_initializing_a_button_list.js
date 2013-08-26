@@ -3,14 +3,17 @@ goog.require('goog.dom.forms');
 goog.require('goog.string');
 
 
-goog.provide('src.test.control.buttonList.whenCreatingAButtonList');
+goog.provide('src.test.control.buttonList.whenInitializingAButtonList');
 
 /**
  @export
  */
-src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
+src.test.control.buttonList.whenInitializingAButtonList.describe = function() {
+  
+
   //Using
-  var Current = src.base.control.buttonList;
+  
+  var Current_ = src.base.control.buttonList;
 
 
   //Fields
@@ -24,12 +27,14 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
   var SecondValue_ = goog.string.getRandomString();
   var SelectedButtonClass_ = goog.string.getRandomString();
 
-  var addElement_;
+  var appendChild_;
   var createAButton_;
   var createdHidden_;
   var firstButton_;
+  var forEach_;
   var createADiv_;
   var createAHidden_;
+  var map_;
   var options_;
   var parentContainer_;
   var secondButton_;
@@ -37,20 +42,20 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
   var setValue_;
   var toggleClass_;
   var updateHidden_;
-
+  
   //Test Hooks
   beforeEach(function() {
     options_ = {};
-    options_[Current.ContainerClass] = ContainerClass_;
-    options_[Current.ElementId] = ParentContainerId_;
-    options_[Current.HiddenId] = HiddenId_;
-    options_[Current.SelectedButtonClass] = SelectedButtonClass_;
-    options_[Current.ButtonOptions] = [
+    options_[Current_.ContainerClass] = ContainerClass_;
+    options_[Current_.ElementId] = ParentContainerId_;
+    options_[Current_.HiddenId] = HiddenId_;
+    options_[Current_.SelectedButtonClass] = SelectedButtonClass_;
+    options_[Current_.ButtonOptions] = [
       {'text': FirstText_, 'value': FirstValue_},
       {'text': SecondText_, 'value': SecondValue_}
     ];
     
-    addElement_ = function() {};
+    appendChild_ = function() {};
     
     var firstTime = true;
     
@@ -62,33 +67,36 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
     };
     
     createADiv_ = function() { return parentContainer_; };
-    
     createdHidden_ = {};
     createAHidden_ = function() { return createdHidden_; };
-
+    forEach_ = function(){};
+    map_ = function(){};
     setClick_ = function() {};
     setValue_ = function() {};
     toggleClass_ = function() {};
     updateHidden_ = function() {};
   });
-
-
+  
+  
   //Support Methods
   var callTheMethod_ = function() {
-    return Current.createAButtonList(options_, createADiv_, createAHidden_, createAButton_, setClick_, setValue_, updateHidden_, toggleClass_, addElement_);
+    return Current_.createAButtonList(options_, createADiv_, createAHidden_,
+                                     map_, createAButton_, setClick_, setValue_,
+                                      updateHidden_, toggleClass_, forEach_,
+                                      appendChild_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should create the main container.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes, nonono) {
       methodWasCalled = attributes['id'] === ParentContainerId_ &&
         attributes['class'] === ContainerClass_;
     };
-
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
@@ -110,106 +118,136 @@ src.test.control.buttonList.whenCreatingAButtonList.describe = function() {
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
-
+  
+  
   it('should add the hidden element to the parent container', function() {
     var methodWasCalled = false;
-
-    addElement_ = function(parent, child) {
+    
+    appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === parentContainer_ &&
          child === createdHidden_);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
-  it('should create a button per button list item ', function() {
+  
+  
+  it('should create a button. ', function() {
     var methodWasCalled = 0;
-
+    
     createAButton_ = function(attributes, text) {
       methodWasCalled += attributes['type'] === 'button' &&
-        (text === FirstText_ || text === SecondText_);
-
+        text === FirstText_;
+      
       return {};
     };
-
-
+    
+    map_ = function(collection, toDo){
+      methodWasCalled += collection === options_[Current_.ButtonOptions];
+      toDo(options_[Current_.ButtonOptions][0]);
+    };
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(2);
   });
-
-
+  
+  
   it('should create the update method call for each item.', function() {
     var methodWasCalled = 0;
-
+    
     updateHidden_ = function(element, value, getValue, isEmptySafe, setValue, contains, remove) {
       methodWasCalled += element === createdHidden_ &&
-        (value === FirstValue_ || value === SecondValue_) &&
+        value === FirstValue_ &&
         getValue === goog.dom.forms.getValue &&
         isEmptySafe === goog.string.isEmptySafe &&
         setValue === goog.dom.forms.setValue &&
         contains === goog.string.contains &&
         remove === goog.string.removeAll;
     };
-
+    
+    map_ = function(collection, toDo){
+      methodWasCalled += collection === options_[Current_.ButtonOptions];
+      toDo(options_[Current_.ButtonOptions][0]);
+    };
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(2);
   });
-
-
-  it('should prepare the button class toggle for each button.', function() {
+  
+  
+  it('should prepare the button class toggle for the button.', function() {
     var methodWasCalled = 0;
-
+    
     toggleClass_ = function(element, className, toggle) {
-      methodWasCalled += (element === firstButton_ || element === secondButton_) &&
-        className === options_[Current.SelectedButtonClass] &&
+      methodWasCalled += element === firstButton_ &&
+        className === options_[Current_.SelectedButtonClass] &&
         toggle === goog.dom.classes.toggle;
     };
-
+    
+    map_ = function(collection, toDo){
+      methodWasCalled += collection === options_[Current_.ButtonOptions];
+      toDo(options_[Current_.ButtonOptions][0]);
+    };
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(2);
   });
-
-
+  
+  
   it('should set the button clicks.', function() {
     var methodWasCalled = 0;
-
+    
     setClick_ = function(element, method) {
-      methodWasCalled += (element === firstButton_ || element === secondButton_);
+      methodWasCalled += element === firstButton_;
     };
-
+    
+    map_ = function(collection, toDo){
+      methodWasCalled += collection === options_[Current_.ButtonOptions];
+      toDo(options_[Current_.ButtonOptions][0]);
+    };
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(2);
   });
   
   
-  it('should add each button to the main container.', function() {
+  it('should append the buttons to the parent.', function() {
     var methodWasCalled = 0;
+    var createdButton = {};
+    var buttonList = [createdButton];
     
-    addElement_ = function(parent, child) {
+    map_ = function(){
+      return buttonList;
+    };
+    
+    appendChild_ = function(parent, child){
       methodWasCalled += parent === parentContainer_ &&
-        (child === firstButton_ || child === secondButton_);
+        child === createdButton;
+    };
+    
+    forEach_ = function(buttons, toDo){
+      toDo(createdButton);
+      methodWasCalled += buttons === buttonList;
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(2);
   });
+  
 };
 
 
-describe('When creating a button list, it', function() {
-  src.test.control.buttonList.whenCreatingAButtonList.describe();
+describe('When initializing a button list, it', function() {
+  src.test.control.buttonList.whenInitializingAButtonList.describe();
 });
