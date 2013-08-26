@@ -15,6 +15,14 @@ goog.provide('src.base.control.zippyGrid');
 src.base.control.zippyGrid.ZippyContainerId = 'zippyGridContainerId';
 
 
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.zippyGrid.ZippyTitle = 'zippyGridTitle';
+
+
 // PROTECTED FIELDS
 
 /**
