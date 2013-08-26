@@ -20,6 +20,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.simpleInformationDisplay" ^
 --namespace="src.base.control.tagContainer" ^
 --namespace="src.base.control.zippyContainer" ^
+--namespace="src.base.control.zippyGrid" ^
 --namespace="src.test.control.autocomplete.whenFormattingTheAutocompleteResultText" ^
 --namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
 --namespace="src.test.control.autocomplete.whenInitializingAnAutocomplete" ^
@@ -73,6 +74,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.tagContainer.whenCreatingTags" ^
 --namespace="src.test.control.tagContainer.whenInitializingATagContainer" ^
 --namespace="src.test.control.zippyContainer.whenInitializingAZippyContainer" ^
+--namespace="src.test.control.zippyGrid.whenInitializingTheZippyGrid" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
