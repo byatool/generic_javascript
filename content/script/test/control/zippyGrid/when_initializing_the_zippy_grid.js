@@ -59,7 +59,7 @@ src.test.control.zippyGrid.whenInitializingTheZippyGrid.describe = function() {
                                createGrid_,
                                createZippyContainer_);
   };
-
+  
 
   //Test Methods
 
@@ -120,19 +120,19 @@ src.test.control.zippyGrid.whenInitializingTheZippyGrid.describe = function() {
         options[GridBuilder_.Map][0]['propertyName'] === '' &&
         options[GridBuilder_.Map][0]['class'] === '';
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should add the created grid options to the overall options.', function() {
     var methodWasCalled = false;
-
+    
     callTheMethod_();
-
-    expect(options_[Current_.ZippyContainerId + 'options']).toNotBe(undefined);
+    
+    expect(options_[Current_.ZippyContainerId + 'Options']).toNotBe(undefined);
   });
 
 

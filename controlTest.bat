@@ -75,6 +75,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.tagContainer.whenInitializingATagContainer" ^
 --namespace="src.test.control.zippyContainer.whenInitializingAZippyContainer" ^
 --namespace="src.test.control.zippyGrid.whenInitializingTheZippyGrid" ^
+--namespace="src.test.control.zippyGrid.whenRefreshingAZippyGrid" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
