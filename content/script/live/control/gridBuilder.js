@@ -232,7 +232,7 @@ src.base.control.gridBuilder.Url = 'url';
 src.base.control.gridBuilder.createARow =
   function(currentItem, options, createADiv,
            setTextContent, appendChild, setClick) {
-
+    
     var current = src.base.control.gridBuilder;
     var currentRow = createADiv({'class' : current.RowClass });
 
@@ -244,12 +244,12 @@ src.base.control.gridBuilder.createARow =
 
     goog.array.forEach(options[current.Map], function(currentMapping) {
       var extraClass = currentMapping['class'] ? ' ' + currentMapping['class'] : '';
-
+      
       var column = createADiv({'class' : current.ColumnClass + extraClass});
       setTextContent(column, currentItem[currentMapping['propertyName']]);
       appendChild(currentRow, column);
     });
-
+    
     var clearBoth = createADiv({'class': 'clearBoth'});
 
     appendChild(currentRow, clearBoth);
@@ -389,34 +389,34 @@ src.base.control.gridBuilder.createRows =
   function(result, parentContainer, options, findNode,
            createADiv, appendChild, createARow, setTextContent,
            setClick) {
-
+    
     var current = src.base.control.gridBuilder;
-
+    
     var rowContainer = findNode(parentContainer, function(item) {
       return item['className'] === current.RowContainerClass;
     });
-
-
+    
+    
     if (!rowContainer) {
       rowContainer = createADiv({'class': current.RowContainerClass});
       appendChild(parentContainer, rowContainer);
     }
-
+    
     if (result[current.ListProperty].length === 0) {
-
+      
       current.
         createNoRowsMessageContainer_(
           rowContainer, createADiv, setTextContent, appendChild);
     }
     else {
-
-
-
+      
+      
+      
       goog.array.forEach(result[current.ListProperty], function(item) {
         var currentRow = createARow(item, options, createADiv,
                                     setTextContent, appendChild,
                                     setClick);
-
+        
         appendChild(rowContainer, currentRow);
       });
     }
@@ -465,11 +465,11 @@ src.base.control.gridBuilder.createTheResultHandler =
       var createARow = options[current.CreateARow] ?
             options[current.CreateARow] :
             current.createARow;
-
+      
       createRows(result, parentContainer, options,
                  findNode, createADiv, appendChild,
                  createARow, setTextContent, setClick);
-
+      
       createPagerButtons(result, options, parentContainer,
                          findNode, src.base.control.pager.initialize,
                          appendChild);
