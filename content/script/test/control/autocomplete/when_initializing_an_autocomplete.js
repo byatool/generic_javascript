@@ -3,6 +3,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.string');
 goog.require('goog.ui.ac.Remote');
+goog.require('goog.ui.LabelInput');
 goog.require('src.base.control.autocomplete');
 
 goog.provide('src.test.control.autocomplete.whenInitializingAnAutocomplete');
@@ -14,15 +15,17 @@ goog.provide('src.test.control.autocomplete.whenInitializingAnAutocomplete');
 src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function() {
   //Using
   var Current = src.base.control.autocomplete;
-
-
+  
+  
   //Fields
-
+  
   var HiddenId_ = goog.string.getRandomString();
+  var LabelText_ = goog.string.getRandomString();
   var ParentContainerId_ = goog.string.getRandomString();
   var Url_ = goog.string.getRandomString();
-
+  
   var appendChild_;
+  var createLabelInput_;
   var autocomplete_;
   var createADiv_;
   var createAHidden_;
@@ -58,6 +61,7 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
     options_[Current.InputClass] = 'weee';
     options_[Current.ToCall] = {};
     
+    createLabelInput_ = function(){};
     createADiv_ = function() { return parentContainer_; };
     createAHidden_ = function() { return hidden_; };
     appendChild_ = function() {};
@@ -69,99 +73,130 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
     setInputHandlerSelectRow_ = function() { };
     setTheAutocompleteMethod_ = function() { };
   });
-
-
+  
+  
   //Support Methods
-
+  
   var callTheMethod_ = function() {
-    return Current.initialize(options_, setRenderRowContents_, setInputHandlerSelectRow_, createADiv_, createATextbox_, appendChild_, createAHidden_, createAnAutocomplete_, getTheRenderer_, getTheInputHandler_, setTheAutocompleteMethod_);
+    return Current.initialize(options_, setRenderRowContents_, setInputHandlerSelectRow_,
+                              createADiv_, createATextbox_, createLabelInput_, appendChild_,
+                              createAHidden_, createAnAutocomplete_, getTheRenderer_,
+                              getTheInputHandler_, setTheAutocompleteMethod_);
   };
-
+  
   //Test Methods
-
+  
   it('should create a parent container.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled ||
         attributes['id'] === options_[Current.ContainerId];
-
+      
       return parentContainer_;
     };
-
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(true);
-  });
-
-
-  it('should return the parent container.', function() {
-    expect(callTheMethod_()).toBe(parentContainer_);
-  });
-
-
-
-
-  it('should create a textbox.', function() {
-    var methodWasCalled = false;
-
-    createATextbox_ = function(attributes) {
-      methodWasCalled = attributes['id'] === Current.TextboxId &&
-        attributes['class'] === options_[Current.InputClass];
-
-      return textbox_;
-    };
-
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
+  it('should return the parent container.', function() {
+    expect(callTheMethod_()).toBe(parentContainer_);
+  });
+  
+  
+  it('should create a textbox.', function() {
+    var methodWasCalled = false;
+    
+    createATextbox_ = function(attributes) {
+      methodWasCalled = attributes['id'] === Current.TextboxId &&
+        attributes['class'] === options_[Current.InputClass];
+      
+      return textbox_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the label input if there is text.', function() {
+    var methodWasCalled = false;
+    options_[Current.LabelInput] = LabelText_;
+    
+    createLabelInput_ = function(labelText, textbox, labelInputContructor){
+      methodWasCalled = labelText === LabelText_ &&
+        labelInputContructor === goog.ui.LabelInput &&
+        textbox === textbox_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled &&
+           Current.LabelInput !== undefined).toBe(true);
+  });
+  
+  
+  it('should not create the label if there is not text.', function() {
+    var methodWasCalled = false;
+    
+    callTheMethod_();
+    
+    createLabelInput_ = function () {
+      methodWasCalled = true;
+    };
+    
+    expect(methodWasCalled).toBe(false);
+  });
+  
+  
   it('should add the textbox to the parent container.', function() {
     var methodWasCalled = false;
-
+    
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === parentContainer_ &&
          child === textbox_);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create a hidden input.', function() {
     var methodWasCalled = false;
-
+    
     createAHidden_ = function(attributes) {
       methodWasCalled = attributes['id'] === HiddenId_ &&
         attributes['name'] === HiddenId_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should add the hidden to the parent container.', function() {
     var methodWasCalled = false;
-
+    
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === parentContainer_ &&
          child === hidden_);
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create a clear both div.', function() {
     var methodWasCalled = false;
 
@@ -195,7 +230,7 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
 
   it('should create the autocomplete control.', function() {
     var methodWasCalled = false;
-
+    
     createAnAutocomplete_ = function(url, textbox, constructor) {
       methodWasCalled = url === Url_ &&
         textbox === textbox_ &&
@@ -205,23 +240,23 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should get the autocomplete renderer.', function() {
     var methodWasCalled = false;
-
+    
     getTheRenderer_ = function(autocomplete) {
       methodWasCalled = autocomplete === autocomplete_;
     };
-
+    
     callTheMethod_();
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should set the renderRowContents method on the renderer.', function() {
     var methodWasCalled = false;
 

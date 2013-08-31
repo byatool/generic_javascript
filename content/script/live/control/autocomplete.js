@@ -2,6 +2,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.forms');
 goog.require('goog.string.format');
+goog.require('goog.ui.LabelInput');
 goog.require('goog.ui.ac.Remote');
 goog.require('src.base.helper.domCreation');
 
@@ -23,6 +24,15 @@ src.base.control.autocomplete.ContainerId = 'containerId';
  @export
  */
 src.base.control.autocomplete.HiddenId = 'hiddenId';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.autocomplete.LabelInput = 'labelInputText';
+
 
 /**
  @const
@@ -115,6 +125,19 @@ src.base.control.autocomplete.createAnAutocomplete_ =
     return new autocompleteConstructor(url, textbox);
   };
 
+/**
+ @param {string} labelText The text to be applied to the
+ textbox.
+ @param {function} labelInputConstructor The contructor
+ for the label input.
+ @private
+ */
+src.base.control.autocomplete.createALabelInput_ =
+  function(labelText, textbox,  labelInputConstructor) {
+    var labelInput = new labelInputConstructor(labelText);
+    labelInput.decorate(textbox);
+  };
+
 
 /**
  @param {Object} autocomplete The autocomplete control.
@@ -180,7 +203,7 @@ src.base.control.autocomplete.setInputHandlerSelectRow =
       if (toCall) {
         goog.array.every(toCall, function(item) { item(id); });
       }
-
+      
       setTokenText(selectedItem[Current.LastName] + ', ' +
                    selectedItem[Current.FirstName]);
 
@@ -238,6 +261,8 @@ src.base.control.autocomplete.setRenderRowContents =
  the setRow method on an inputHandler.
  @param {?function} createADiv The method used to create a div element.
  @param {?function} createATextbox The method used to create a textbox.
+ @param {?function} createLabelInput The function used for adding text
+ to an textbox.
  @param {?function} appendChild The method used to append a child to
  a parent element.
  @param {?function} createAHidden The method used to create a hidden
@@ -255,7 +280,7 @@ src.base.control.autocomplete.setRenderRowContents =
  */
 src.base.control.autocomplete.initialize =
   function(options, setRenderRowContents, setInputHandlerSelectRow,
-           createADiv, createATextbox, appendChild,
+           createADiv, createATextbox, createLabelInput, appendChild,
            createAHidden, createAnAutocomplete,
            getTheRenderer, getTheInputHandler, setTheAutocompleteMethod) {
 
@@ -271,22 +296,26 @@ src.base.control.autocomplete.initialize =
       createATextbox :
       src.base.helper.domCreation.textbox;
 
+    createLabelInput = createLabelInput ?
+      createLabelInput :
+      src.base.control.autocomplete.createALabelInput_;
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     createAHidden = createAHidden ?
       createAHidden :
       src.base.helper.domCreation.hidden;
-
+    
     createAnAutocomplete = createAnAutocomplete ?
       createAnAutocomplete :
       src.base.control.autocomplete.createAnAutocomplete_;
-
+    
     getTheRenderer = getTheRenderer ?
       getTheRenderer :
       src.base.control.autocomplete.getTheRenderer_;
-
+    
     setRenderRowContents = setRenderRowContents ?
       setRenderRowContents :
       src.base.control.autocomplete.setRenderRowContents;
@@ -294,54 +323,70 @@ src.base.control.autocomplete.initialize =
     getTheInputHandler = getTheInputHandler ?
       getTheInputHandler :
       src.base.control.autocomplete.getTheInputHandler_;
-
+    
     setInputHandlerSelectRow = setInputHandlerSelectRow ?
       setInputHandlerSelectRow :
       src.base.control.autocomplete.setInputHandlerSelectRow;
-
+    
     setTheAutocompleteMethod = setTheAutocompleteMethod ?
       setTheAutocompleteMethod :
       src.base.control.autocomplete.setTheAutocompleteMethod_;
-
+    
+    
     // ACTUAL START
-
+    
     var parentContainer = createADiv({'id': options[current.ContainerId]});
-
+    
+    
+    // Auto complete textbox
+    
     var textbox = createATextbox({
       'id': current.TextboxId,
       'class': options[current.InputClass]
     });
+    
+    if (options[current.LabelInput] !== null &&
+       options[current.LabelInput] !== undefined) {
+      
+      createLabelInput(options[current.LabelInput],
+                       textbox,
+                       goog.ui.LabelInput);
+    }
+    
     appendChild(parentContainer, textbox);
-
+    
+    
+    // Hidden input for storage
+    
     var hidden = createAHidden({
       'id': options[current.HiddenId],
       'name': options[current.HiddenId]
     });
     appendChild(parentContainer, hidden);
-
+    
     var clearDiv = createADiv({
       'class': 'clearBoth'
     });
     appendChild(parentContainer, clearDiv);
-
+    
     var autocomplete = createAnAutocomplete(options[current.Url],
                                             textbox,
                                             goog.ui.ac.Remote);
-
+    
     var renderer = getTheRenderer(autocomplete);
     setRenderRowContents(renderer, createADiv, goog.dom.getOuterHtml);
-
+    
     var inputHandler = getTheInputHandler(autocomplete);
     var toCall = options[current.ToCall] ?
           options[current.ToCall] :
           [];
-
+    
     setInputHandlerSelectRow(inputHandler,
                              options[current.HiddenId],
                              toCall,
                              goog.dom.getElement,
                              goog.dom.forms.setValue);
-
+    
     setTheAutocompleteMethod(autocomplete, 'POST');
 
     return parentContainer;
