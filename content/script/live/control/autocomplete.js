@@ -128,6 +128,8 @@ src.base.control.autocomplete.createAnAutocomplete_ =
 /**
  @param {string} labelText The text to be applied to the
  textbox.
+ @param {Object} textbox The textbox to apply the label
+ to.
  @param {function} labelInputConstructor The contructor
  for the label input.
  @private
@@ -388,6 +390,49 @@ src.base.control.autocomplete.initialize =
                              goog.dom.forms.setValue);
     
     setTheAutocompleteMethod(autocomplete, 'POST');
-
+    
     return parentContainer;
 };
+
+
+/**
+ @param {Object} autocomplete The autocomplete to reset. 
+ @param {Object} options The autocomplete options.
+ @param {?function} setValue The function used to set
+ the value of the textbox, and hidden, to nothing.
+ @param {?function} findNode The function used to find
+ the hidden element.
+ @param {?function} getElementByClass The function used
+ to find the textbox.
+ @export
+ */
+src.base.control.autocomplete.clearTheAutocomplete =
+  function(autocomplete, options, setValue,
+           findNode, getElementByClass) {
+    
+    setValue = setValue ?
+      setValue : 
+      goog.dom.forms.setValue;
+    
+    findNode = findNode ?
+      findNode :
+      goog.dom.findNode;
+    
+    getElementByClass = getElementByClass ?
+      getElementByClass :
+      goog.dom.getElementByClass;
+    
+    // START
+    
+    var current = src.base.control.autocomplete;
+    
+    var hidden = findNode(autocomplete, function(node){
+      return node['id'] === options[current.HiddenId];
+    });
+    
+    setValue(hidden, '');
+
+    var textbox = getElementByClass(options[current.InputClass],
+                                    autocomplete);
+    setValue(textbox, '');
+  };

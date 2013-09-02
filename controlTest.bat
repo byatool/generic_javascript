@@ -21,8 +21,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.zippyContainer" ^
 --namespace="src.base.control.zippyGrid" ^
 --namespace="src.test.control.autocomplete.whenFormattingTheAutocompleteResultText" ^
---namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
 --namespace="src.test.control.autocomplete.whenInitializingAnAutocomplete" ^
+--namespace="src.test.control.autocomplete.whenResettingAnAutocomplete" ^
+--namespace="src.test.control.autocomplete.whenSettingTheInputHandlerSelectRow" ^
 --namespace="src.test.control.autocomplete.whenSettingTheRenderRowContentsMethod" ^
 --namespace="src.test.control.buttonList.whenInitializingAButtonList" ^
 --namespace="src.test.control.buttonList.whenTogglingAClass" ^
