@@ -47,6 +47,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.messageBox.whenClearingTheMessages" ^
 --namespace="src.test.control.messageBox.whenCreatingAMessageBox" ^
 --namespace="src.test.control.messageBox.whenCreatingAResult" ^
+--namespace="src.test.control.messageBox.whenForcingAMessageBoxToHide" ^
 --namespace="src.test.control.messageBox.whenSettingTheAppearanceOfAMessageBoxBasedOnAResult" ^
 --namespace="src.test.control.messageBox.whenUpdatingMesssagesInAMessageBoxByAResult" ^
 --namespace="src.test.control.pager.whenCloningTheOptions" ^

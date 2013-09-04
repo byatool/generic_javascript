@@ -87,14 +87,19 @@ src.base.control.formComponent.ErrorType = 0;
 
 /**
  @param {Object} container The form element.
- @param {?function} fillTheElements The method needed to set the form element values.
+ @param {?function} fillTheElements The method needed to set the form element
+ values.
  @param {?function} setValue The method used to set an element's value.
- @return {function} The method that will be called as the event handler for the data request.
+ @return {function} The method that will be called as the event handler for
+ the data request.
  @protected
  */
-src.base.control.formComponent.createTheRetrieveFormDataCallback = function(container, fillTheElements, setValue) {
-  return function(result) { return fillTheElements(container, result, setValue); };
-};
+src.base.control.formComponent.createTheRetrieveFormDataCallback =
+  function(container, fillTheElements, setValue) {
+    return function(result) {
+      return fillTheElements(container, result, setValue);
+    };
+  };
 
 
 /**
@@ -142,15 +147,15 @@ src.base.control.formComponent.handleCallback = function(result, form, messageBo
     var justMessages = filter(result[Current.MessageItems], function(item) {
       return item['Message'];
     });
-
+    
     var errorsExist = some(result[Current.MessageItems], function(item) {
       return item['MessageType'] === Current.ErrorType;
     });
-
+    
     if (!errorsExist) {
       onClick();
     }
-
+    
     if (!errorsExist && shouldResetFormOnSuccess) {
       resetTheForm(form);
     }
@@ -220,11 +225,11 @@ src.base.control.formComponent.handleSubmit = function(form, messageBox, submitB
  */
 src.base.control.formComponent.setupTheForm = function(formId, datePickerOptions, datePickerContainerAndTextboxes, messageBoxName, findElement, createAMessageBox, addElement, createADatePicker) {
   var Popup = src.base.control.popupDatePicker;
-
+  
   var ifNullThen = function(toCheck, toSet) {
     return toCheck ? toCheck : toSet;
   };
-
+  
   var form = findElement(formId);
   var messageBox = createAMessageBox(messageBoxName);
   addElement(form, messageBox);
