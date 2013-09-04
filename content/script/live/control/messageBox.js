@@ -31,7 +31,7 @@ src.base.control.messageBox.DIV_MESSAGE_CONTAINER = 'divMessgaeContainer';
  @type {string}
  @protected
  */
-src.base.control.messageBox.HideDelay = 10;
+src.base.control.messageBox.HideDelay = 5;
 
 
 /* PRIVATE FUNCTIONS */
