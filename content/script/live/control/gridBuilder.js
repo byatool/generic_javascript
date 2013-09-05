@@ -232,7 +232,7 @@ src.base.control.gridBuilder.Url = 'url';
 src.base.control.gridBuilder.createARow =
   function(currentItem, options, createADiv,
            setTextContent, appendChild, setClick) {
-    
+
     var current = src.base.control.gridBuilder;
     var currentRow = createADiv({'class' : current.RowClass });
 
@@ -244,12 +244,12 @@ src.base.control.gridBuilder.createARow =
 
     goog.array.forEach(options[current.Map], function(currentMapping) {
       var extraClass = currentMapping['class'] ? ' ' + currentMapping['class'] : '';
-      
+
       var column = createADiv({'class' : current.ColumnClass + extraClass});
       setTextContent(column, currentItem[currentMapping['propertyName']]);
       appendChild(currentRow, column);
     });
-    
+
     var clearBoth = createADiv({'class': 'clearBoth'});
 
     appendChild(currentRow, clearBoth);
@@ -369,6 +369,21 @@ src.base.control.gridBuilder.createNoRowsMessageContainer_ =
   };
 
 
+
+/**
+ @param {Object} options The grid options.
+ @param {Object} grid The grid.
+ @param {function} refreshMethod The function used to refresh the grid.
+ @return {function} The function to call to refresh the grid.
+ @protected
+ */
+src.base.control.gridBuilder.createGridRefresh = function(options, grid, refreshMethod) {
+  return function() {
+    refreshMethod(options, grid);
+  };
+};
+
+
 /**
  @param {Object} result The result returned from the server.
  @param {Object} parentContainer The container to add the rows too.
@@ -383,40 +398,39 @@ src.base.control.gridBuilder.createNoRowsMessageContainer_ =
  @param {function} setTextContent The function used to set a div's text.
  @param {?function} setClick The function used to set the row onClick event
  if the rowClickHandler in options is not null.
+ @param {function} refreshGrid The function used for refreshing the grid
+ at row level.
  @protected
  */
 src.base.control.gridBuilder.createRows =
   function(result, parentContainer, options, findNode,
            createADiv, appendChild, createARow, setTextContent,
-           setClick) {
-    
+           setClick, refreshGrid) {
+
     var current = src.base.control.gridBuilder;
-    
+
     var rowContainer = findNode(parentContainer, function(item) {
       return item['className'] === current.RowContainerClass;
     });
-    
-    
+
+
     if (!rowContainer) {
       rowContainer = createADiv({'class': current.RowContainerClass});
       appendChild(parentContainer, rowContainer);
     }
-    
+
     if (result[current.ListProperty].length === 0) {
-      
+
       current.
         createNoRowsMessageContainer_(
           rowContainer, createADiv, setTextContent, appendChild);
     }
     else {
-      
-      
-      
       goog.array.forEach(result[current.ListProperty], function(item) {
         var currentRow = createARow(item, options, createADiv,
                                     setTextContent, appendChild,
-                                    setClick);
-        
+                                    setClick, refreshGrid);
+
         appendChild(rowContainer, currentRow);
       });
     }
@@ -447,6 +461,8 @@ src.base.control.gridBuilder.createRows =
  if they exist.
  @param {function} createPagerButtons The function used to create, and add
  the pager buttons to the container.
+ @param {function} refreshGrid The function used to allow a row to refresh
+ the parent grid.
  @return {Object} The created result handler.
  @protected
  */
@@ -454,7 +470,8 @@ src.base.control.gridBuilder.createTheResultHandler =
   function(options, parentContainer, createTheHeaderRow,
            createRows, createADiv, appendChild,
            setTextContent, removeAllEvents,
-           swap, setClick, findNode, createPagerButtons) {
+           swap, setClick, findNode, createPagerButtons,
+           refreshGrid) {
 
     var current = src.base.control.gridBuilder;
 
@@ -465,11 +482,12 @@ src.base.control.gridBuilder.createTheResultHandler =
       var createARow = options[current.CreateARow] ?
             options[current.CreateARow] :
             current.createARow;
-      
+
       createRows(result, parentContainer, options,
                  findNode, createADiv, appendChild,
-                 createARow, setTextContent, setClick);
-      
+                 createARow, setTextContent, setClick,
+                 refreshGrid);
+
       createPagerButtons(result, options, parentContainer,
                          findNode, src.base.control.pager.initialize,
                          appendChild);
@@ -488,36 +506,71 @@ src.base.control.gridBuilder.createTheResultHandler =
  @param {?function} appendChild The method used to append a child to a parent element.
  @param {?function} setTextContent The function used to set the text of a div.
  @param {?function} submitToUrl The function used to post, and receive the data.
+ @param {?function} createGridRefresh The function used to create a grid refresh
+ function.
  @return {Object} The created grid.
  @export
  */
 src.base.control.gridBuilder.initialize =
   function(options,  createADiv,
            createResultHandler, createTheHeaderRow, createRows,
-           appendChild, setTextContent, submitToUrl) {
+           appendChild, setTextContent, submitToUrl,
+           createGridRefresh) {
 
-    var Current = src.base.control.gridBuilder;
+    createADiv = createADiv ?
+      createADiv :
+      src.base.helper.domCreation.div;
 
-    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-    createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
-    createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
-    createRows = createRows ? createRows : Current.createRows;
-    appendChild = appendChild ? appendChild : goog.dom.appendChild;
-    setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
-    submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
+    createResultHandler = createResultHandler ?
+      createResultHandler :
+      src.base.control.gridBuilder.createTheResultHandler;
+
+    createTheHeaderRow = createTheHeaderRow ?
+      createTheHeaderRow :
+      src.base.control.gridBuilder.createTheHeaderRow;
+
+    createRows = createRows ?
+      createRows :
+      src.base.control.gridBuilder.createRows;
+
+    appendChild = appendChild ?
+      appendChild :
+      goog.dom.appendChild;
+
+    setTextContent = setTextContent ?
+      setTextContent :
+      goog.dom.setTextContent;
+
+    submitToUrl = submitToUrl ?
+      submitToUrl :
+      src.base.helper.domHelper.submitToUrl;
+
+    createGridRefresh = createGridRefresh ?
+      createGridRefresh :
+      src.base.control.gridBuilder.createGridRefresh;
+
+
+    //START
+
+    var current = src.base.control.gridBuilder;
 
     var parentContainer = createADiv({
-      'id': options[Current.ContainerId],
-      'class': options[Current.ContainerClass]});
+      'id': options[current.ContainerId],
+      'class': options[current.ContainerClass]});
 
-    var resultHandler = createResultHandler(options, parentContainer, createTheHeaderRow,
-                                            createRows, createADiv, appendChild,
+    var gridRefresh = createGridRefresh(options, parentContainer, current.refresh);
+
+    var resultHandler = createResultHandler(options, parentContainer,
+                                            createTheHeaderRow, createRows,
+                                            createADiv, appendChild,
                                             setTextContent, goog.events.removeAll,
                                             goog.dom.classes.swap,
                                             src.base.helper.events.setClick,
-                                            goog.dom.findNode, Current.createPagerButtons);
+                                            goog.dom.findNode,
+                                            current.createPagerButtons,
+                                            gridRefresh);
 
-    submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
+    submitToUrl(options[current.Url], options[current.Parameters], resultHandler);
 
     return parentContainer;
 };
@@ -536,31 +589,67 @@ src.base.control.gridBuilder.initialize =
  @param {?function} appendChild The method used to append a child to a parent element.
  @param {?function} setTextContent The function used to set the text of a div.
  @param {?function} submitToUrl The function used to post, and receive the data.
+ @param {?function} createGridRefresh The function used to create a grid refresh
+ function.
  @export
  */
 src.base.control.gridBuilder.refresh =
   function(options, grid, getElementsByClass,
            removeNode,  createADiv, createResultHandler,
            createTheHeaderRow, createRows, appendChild,
-           setTextContent, submitToUrl) {
+           setTextContent, submitToUrl, createGridRefresh) {
 
-    var Current = src.base.control.gridBuilder;
+    appendChild = appendChild ?
+      appendChild :
+      goog.dom.appendChild;
 
-    appendChild = appendChild ? appendChild : goog.dom.appendChild;
-    createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-    createResultHandler = createResultHandler ? createResultHandler : Current.createTheResultHandler;
-    createRows = createRows ? createRows : Current.createRows;
-    createTheHeaderRow = createTheHeaderRow ? createTheHeaderRow : Current.createTheHeaderRow;
-    getElementsByClass = getElementsByClass ? getElementsByClass : goog.dom.getElementsByClass;
-    removeNode = removeNode ? removeNode : goog.dom.removeNode;
-    setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
-    submitToUrl = submitToUrl ? submitToUrl : src.base.helper.domHelper.submitToUrl;
+    createADiv = createADiv ?
+      createADiv :
+      src.base.helper.domCreation.div;
 
-    var children = getElementsByClass(Current.RowClass, grid);
+    createResultHandler = createResultHandler ?
+      createResultHandler :
+      src.base.control.gridBuilder.createTheResultHandler;
+
+    createRows = createRows ?
+      createRows :
+      src.base.control.gridBuilder.createRows;
+
+    createTheHeaderRow = createTheHeaderRow ?
+      createTheHeaderRow :
+      src.base.control.gridBuilder.createTheHeaderRow;
+
+    getElementsByClass = getElementsByClass ?
+      getElementsByClass :
+      goog.dom.getElementsByClass;
+
+    removeNode = removeNode ?
+      removeNode :
+      goog.dom.removeNode;
+
+    setTextContent = setTextContent ?
+      setTextContent :
+      goog.dom.setTextContent;
+
+    submitToUrl = submitToUrl ?
+      submitToUrl :
+      src.base.helper.domHelper.submitToUrl;
+
+    createGridRefresh = createGridRefresh ?
+      createGridRefresh :
+      src.base.control.gridBuilder.createGridRefresh;
+
+    //START
+
+    var current = src.base.control.gridBuilder;
+
+    var children = getElementsByClass(current.RowClass, grid);
     goog.array.forEach(children, function(item) { removeNode(item); });
 
-    var possibleMessageRow = getElementsByClass(Current.MessageClass, grid);
+    var possibleMessageRow = getElementsByClass(current.MessageClass, grid);
     goog.array.forEach(possibleMessageRow, function(item) { removeNode(item); });
+
+    var gridRefresh = createGridRefresh(options, grid, current.refresh);
 
     var resultHandler = createResultHandler(options, grid, createTheHeaderRow,
                                             createRows, createADiv,
@@ -568,7 +657,8 @@ src.base.control.gridBuilder.refresh =
                                             goog.events.removeAll, goog.dom.classes.swap,
                                             src.base.helper.events.setClick,
                                             goog.dom.findNode,
-                                            Current.createPagerButtons);
+                                            current.createPagerButtons,
+                                            gridRefresh);
 
-    submitToUrl(options[Current.Url], options[Current.Parameters], resultHandler);
+    submitToUrl(options[current.Url], options[current.Parameters], resultHandler);
 };

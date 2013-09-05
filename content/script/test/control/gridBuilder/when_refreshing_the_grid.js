@@ -21,6 +21,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   var appendChild_;
   var createADiv_;
+  var createGridRefresh_;
   var createResultHandler_;
   var createRows_;
   var createTheHeaderRow_;
@@ -30,10 +31,10 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   var removeNode_;
   var setTextContent_;
   var submitToUrl_;
-
-
+  
+  
   //Test Hooks
-
+  
   beforeEach(function() {
     options_ = {};
     options_[Current_.ContainerClass] = ContainerClass_;
@@ -41,11 +42,12 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     options_[Current_.Url] = 'asdfsd';
     options_[Current_.Parameters] = {};
     options_[Current_.Map] = [];
-
+    
     grid_ = {};
-
+    
     appendChild_ = function() {};
     createADiv_ = function() {};
+    createGridRefresh_ = function() {};
     createResultHandler_ = function() {};
     createTheHeaderRow_ = function() {};
     createRows_ = function() {};
@@ -62,9 +64,10 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     return Current_.refresh(options_, grid_, getElementByClass_,
                             removeNode_, createADiv_, createResultHandler_,
                             createTheHeaderRow_, createRows_,
-                            appendChild_, setTextContent_, submitToUrl_);
+                            appendChild_, setTextContent_, submitToUrl_,
+                            createGridRefresh_);
   };
-
+  
 
   //Test Methods
 
@@ -137,15 +140,36 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
+   
   
-  
-  it('should create the result handler.', function() {
+  it('should create the grid refresh.', function() {
     var methodWasCalled = false;
     
+    createGridRefresh_ = function(options, grid, refreshMethod){
+      methodWasCalled = grid === grid_ &&
+        options === options_ &&
+        refreshMethod === src.base.control.gridBuilder.refresh;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+   
+  it('should create the result handler.', function() {
+    var methodWasCalled = false;
+    var createdGridRefresh = {};
+    
+    createGridRefresh_ = function(){
+      return createdGridRefresh;
+    };
+     
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
                                     createRows, createADiv, appendChild,
                                     setTextContent, removeAllEvents,
-                                    swap, setClick, findNode, createPagerButtons) {
+                                    swap, setClick, findNode, createPagerButtons,
+                                    gridRefresh) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
@@ -157,7 +181,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
         swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
         findNode === goog.dom.findNode &&
-        createPagerButtons === src.base.control.gridBuilder.createPagerButtons;
+        createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
+        gridRefresh === createdGridRefresh;
     };
     
     callTheMethod_();
