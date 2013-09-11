@@ -147,14 +147,16 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     var methodWasCalled = false;
     
     createPagerButtons_ = function(result, gridOptions, parentContainer,
-                                   findNode, initializeThePager, appendChild) {
+                                   findNode, initializeThePager, appendChild,
+                                  refreshGrid) {
       
       methodWasCalled = result === result_ &&
         gridOptions === options_ &&
         parentContainer === parentContainer_ &&
         findNode === findNode_ &&
         appendChild === appendChild_ &&
-        initializeThePager === src.base.control.pager.initialize;
+        initializeThePager === src.base.control.pager.initialize &&
+        refreshGrid === src.base.control.gridBuilder.refresh;
     };
 
     callTheMethod_();

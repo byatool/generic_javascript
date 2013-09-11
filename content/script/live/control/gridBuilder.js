@@ -266,13 +266,16 @@ src.base.control.gridBuilder.createARow =
  pager row.
  @param {function} initializeThePager The function used to create,
  or update a pager control.
- @param {function} appendChild The method used to append the pager
+  @param {function} appendChild The method used to append the pager
  if it did not exist already.
+ @param {function} refreshTheGrid The function used to refresh the
+ grid when pager button is clicked.
  @protected
  */
 src.base.control.gridBuilder.createPagerButtons =
   function(result, gridOptions, parentContainer,
-           findNode, initializeThePager, appendChild) {
+           findNode, initializeThePager, appendChild,
+           refreshTheGrid) {
 
     var current = src.base.control.gridBuilder;
     var Pager_ = src.base.control.pager;
@@ -286,11 +289,12 @@ src.base.control.gridBuilder.createPagerButtons =
     pagerOptions[Pager_.ContainerId] = current.ButtonRowId;
     pagerOptions[Pager_.ContainerClass] = current.ButtonRowClass;
 
-    //THIS IS UNTESTED
-    //SHOULD PASS IN REFRESH AND TEST CALL IT
-    //pagerOptions[Pager_.Refresh] = src.base.control.gridBuilder.refresh;
+    //TODO make this into a method that can be injected for
+    //  more accurate testing.
     pagerOptions[Pager_.Refresh] = function(options) {
-      src.base.control.gridBuilder.refresh(options, parentContainer);
+      gridOptions[current.Parameters]['page'] =
+        options[current.Parameters]['page'];
+      refreshTheGrid(options, parentContainer);
     };
 
     containerRow = initializeThePager(result, gridOptions,
@@ -488,9 +492,10 @@ src.base.control.gridBuilder.createTheResultHandler =
                  createARow, setTextContent, setClick,
                  refreshGrid);
 
+      //src.base.control.gridBuilder.refresh
       createPagerButtons(result, options, parentContainer,
                          findNode, src.base.control.pager.initialize,
-                         appendChild);
+                         appendChild, src.base.control.gridBuilder.refresh);
     };
 };
 
