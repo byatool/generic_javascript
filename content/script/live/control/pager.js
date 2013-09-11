@@ -207,35 +207,35 @@ src.base.control.pager.createAndAppendPagerButton =
            toggleEnabledOnAButton, removeAllEvents,
            swap, setClick, appendChild,
            clone, cloneOptions) {
+    
+    //TODO Remove the injection of clone, and clone options
     var current = src.base.control.pager;
-
+    
     var buttonId = isPrevious ? current.PreviousButton : current.NextButton;
     var button = findNode(containerRow,
                           function(item) {
                             return item['id'] === buttonId;
                           });
-
+    
     if (!button) {
       button = createADiv({'id': buttonId, 'class': current.PagerClass});
       setTextContent(button, isPrevious ? '<' : '>');
       appendChild(containerRow, button);
     }
-
+    
     var currentPage = options[current.Parameters][current.ParametersPage];
     var totalCountOfPages = result[current.TotalCountOfPages];
     toggleEnabledOnAButton(button, isPrevious, currentPage,
                            totalCountOfPages, swap);
-
+    
     removeAllEvents(button);
-
+    
     var resultKey = isPrevious ?
           current.ResultPreviousPage :
           current.ResultNextPage;
-
-    var updatedOptions = cloneOptions(options, result[resultKey], clone);
-
+    
     setClick(button, function() {
-      pagerOptions[current.Refresh](updatedOptions);
+      pagerOptions[current.Refresh](result[resultKey]);
     });
   };
 
@@ -274,12 +274,14 @@ src.base.control.pager.createAPagerNumberButton =
            clone, cloneOptions, createADiv, appendChild,
            setTextContent, swap, setClick) {
 
+    //TODO Remove the injection of clone, and clone options
+    
     var current = src.base.control.pager;
-
+    
     var button = findNode(pagerContainer, function(item) {
       return Number(item['id']) === id;
     });
-
+    
     if (button != null && button != undefined) {
       removeAllEvents(button);
     } else {
@@ -287,18 +289,16 @@ src.base.control.pager.createAPagerNumberButton =
       setTextContent(button, id + 1);
       appendChild(pagerContainer, button);
     }
-
+    
     if (options[current.Parameters][current.ParametersPage] === id) {
       swap(button, current.PagerClass, current.DisabledPagerClass);
     }
     else {
       swap(button, current.DisabledPagerClass, current.PagerClass);
     }
-
-    var updatedOptions = cloneOptions(options, id, clone);
-
+    
     setClick(button, function() {
-      pagerOptions[current.Refresh](updatedOptions);
+      pagerOptions[current.Refresh](id);
     });
   };
 

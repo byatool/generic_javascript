@@ -16,6 +16,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   //Fields
   
   var ContainerId_ = goog.string.getRandomString();
+  var NewPage_ = goog.string.getRandomString();
   
   
   var appendChild_;
@@ -23,7 +24,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   var initializeThePager_;
   var gridOptions_;
   var pager_;
-  var passedInOptions_;
+  //var passedInOptions_;
   var parentContainer_;
   var refreshTheGrid_;
   var result_;
@@ -39,9 +40,9 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     gridOptions_[Current_.Parameters] = {};
     gridOptions_[Current_.Parameters]['page'] = 1;
     
-    passedInOptions_ = {};
-    passedInOptions_[Current_.Parameters] = {};
-    passedInOptions_[Current_.Parameters]['page'] = 2;
+    // passedInOptions_ = {};
+    // passedInOptions_[Current_.Parameters] = {};
+    // passedInOptions_[Current_.Parameters]['page'] = 2;
     result_ = {};
     
     findNode_ = function() { return null; };
@@ -96,8 +97,6 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
         pagerOptions[Pager_.ContainerId] === Current_.ButtonRowId &&
         pagerOptions[Pager_.ContainerClass] === Current_.ButtonRowClass &&
         containerRow === pager_;
-      
-      
     };
     
     callTheMethod_();
@@ -111,13 +110,13 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     
     
     refreshTheGrid_ = function(options, grid) {
-      methodWasCalled = options === passedInOptions_ &&
+      methodWasCalled = options === gridOptions_ &&
         grid === parentContainer_;
     };
     
     initializeThePager_ = function(result, gridOptions, pagerOptions,
                                    containerRow) {
-      pagerOptions[Pager_.Refresh](passedInOptions_);
+      pagerOptions[Pager_.Refresh](NewPage_);
     };
     
     callTheMethod_();
@@ -133,12 +132,12 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     
     initializeThePager_ = function(result, gridOptions, pagerOptions,
                                    containerRow) {
-      pagerOptions[Pager_.Refresh](passedInOptions_);
+      pagerOptions[Pager_.Refresh](NewPage_);
     };
     
     callTheMethod_();
     
-    expect(gridOptions_[Current_.Parameters]['page']).toBe(2);
+    expect(gridOptions_[Current_.Parameters]['page']).toBe(NewPage_);
   });
   
   

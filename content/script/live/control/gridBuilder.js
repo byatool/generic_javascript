@@ -235,7 +235,7 @@ src.base.control.gridBuilder.createARow =
 
     var current = src.base.control.gridBuilder;
     var currentRow = createADiv({'class' : current.RowClass });
-
+    
     if (options[current.RowClickHandler]) {
       setClick(currentRow, function() {
         options[current.RowClickHandler](currentRow);
@@ -291,12 +291,11 @@ src.base.control.gridBuilder.createPagerButtons =
 
     //TODO make this into a method that can be injected for
     //  more accurate testing.
-    pagerOptions[Pager_.Refresh] = function(options) {
-      gridOptions[current.Parameters]['page'] =
-        options[current.Parameters]['page'];
-      refreshTheGrid(options, parentContainer);
+    pagerOptions[Pager_.Refresh] = function(page) {
+      gridOptions[current.Parameters]['page'] = page;
+      refreshTheGrid(gridOptions, parentContainer);
     };
-
+    
     containerRow = initializeThePager(result, gridOptions,
                                       pagerOptions, containerRow);
 

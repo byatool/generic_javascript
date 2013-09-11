@@ -11,12 +11,11 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
   
   
   //Fields
+  
   var Id_ = -12;
   
   var appendChild_;
   var button_;
-  var clone_;
-  var cloneOptions_;
   var createADiv_;
   var findNode_;
   var options_;
@@ -42,8 +41,6 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     
     appendChild_ = function() {};
     createADiv_ = function() { return button_; };
-    clone_ = function() { };
-    cloneOptions_ = function() {};
     findNode_ = function() { return button_; };
     removeAllEvents_ = function() {};
     setClick_ = function() {};
@@ -55,7 +52,7 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
   var callTheMethod_ = function() {
     return Current_.createAPagerNumberButton(Id_, options_, pagerOptions_,
                                              pagerContainer_, findNode_, removeAllEvents_,
-                                             clone_, cloneOptions_, createADiv_, appendChild_,
+                                             {}, {}, createADiv_, appendChild_,
                                              setTextContent_, swap_, setClick_);
   };
   
@@ -208,24 +205,7 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
-  
-  
-  
-  it('should clone the options.', function() {
-    var methodWasCalled = false;
-    
-    cloneOptions_ = function(options, newPageNumber, clone) {
-      methodWasCalled = options === options_ &&
-        newPageNumber === Id_ &&
-        clone === clone_;
-      
-      return {};
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
+
   
   it('should set the click event for the button.', function() {
     var methodWasCalled = false;
@@ -235,15 +215,10 @@ src.test.control.pager.whenCreatingAPagerNumberButton.describe = function() {
     findNode_ = function() {
       return theButton;
     };
-    
-    cloneOptions_ = function() {
-      
-      return clone;
-    };
-    
-    pagerOptions_[Current_.Refresh] = function(options) {
+     
+    pagerOptions_[Current_.Refresh] = function(page) {
       methodWasCalled = methodWasCalled ||
-        options === clone;
+        page === Id_;
     };
     
     setClick_ = function(button, toDo) {
