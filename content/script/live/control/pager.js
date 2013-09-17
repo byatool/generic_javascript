@@ -320,7 +320,7 @@ src.base.control.pager.createAPagerNumberButton =
  the container to the pager parent if it does not exist.
  @param {function} findNodes The function used to find
  existing page number buttons.
- @param {function} every The function used to go through
+ @param {function} forEach The function used to go through
  a list of items.
  @param {function} removeNode The function used to remove
  existing page number buttons.
@@ -334,31 +334,31 @@ src.base.control.pager.createAPagerNumberButton =
 src.base.control.pager.createAPageNumberContainer =
   function(result, options, pagerOptions,
            pagerContainer, findNode, createADiv,
-           appendChild, findNodes, every,
+           appendChild, findNodes, forEach,
            removeNode, createAPagerNumberButton,
            createAClearDiv) {
-
-
+    
+    
     var current = src.base.control.pager;
-
+    
     var buttonContainer = findNode(pagerContainer, function(item) {
       return item['className'] === current.NumberPagerContainerClass;
     });
-
+    
     if (buttonContainer === null || buttonContainer === undefined) {
       buttonContainer = createADiv({'class': current.NumberPagerContainerClass});
       appendChild(pagerContainer, buttonContainer);
     }
-
+    
     var totalCountOfPages = result[current.TotalCountOfPages];
     var deadNodes = findNodes(buttonContainer, function(item) {
       return Number(item['id']) > (totalCountOfPages - 1);
     });
-
-    every(deadNodes, function(node) {
+    
+    forEach(deadNodes, function(node) {
       removeNode(node);
     });
-
+    
     for (var i = 0; i < totalCountOfPages; i++) {
       createAPagerNumberButton(i,
                                options,
@@ -442,21 +442,21 @@ src.base.control.pager.initialize =
     getElementByClass = getElementByClass ?
       getElementByClass :
       goog.dom.getElementByClass;
-
+    
     removeNode = removeNode ?
       removeNode :
       goog.dom.removeNode;
-
+    
     /*  */
     var Current_ = src.base.control.pager;
-
+    
     var container = pagerControl ?
           pagerControl :
           createADiv({
             'id': pagerOptions[Current_.ContainerId],
             'class': pagerOptions[Current_.ContainerClass]
           });
-
+    
     createAndAppendPagerButton(true,
                                options,
                                pagerOptions,
@@ -472,8 +472,8 @@ src.base.control.pager.initialize =
                                appendChild,
                                goog.object.clone,
                                src.base.control.pager.cloneOptions);
-
-
+    
+    
     createAPageNumberContainer(result,
                                options,
                                pagerOptions,
@@ -482,7 +482,7 @@ src.base.control.pager.initialize =
                                createADiv,
                                appendChild,
                                goog.dom.findNodes,
-                               goog.array.every,
+                               goog.array.forEach,
                                removeNode,
                                src.base.control.pager.createAPagerNumberButton,
                                createAClearDiv);

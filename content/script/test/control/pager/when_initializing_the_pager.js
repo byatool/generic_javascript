@@ -146,7 +146,7 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
       createADiv,
       appendChild,
       findNodes,
-      every,
+      forEach,
       removeNode,
       createAPagerNumberButton,
       createAClearDiv){
@@ -159,7 +159,7 @@ src.test.control.pager.whenInitializingAPager.describe = function() {
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         findNodes === goog.dom.findNodes &&
-        every === goog.array.every &&
+        forEach === goog.array.forEach &&
         removeNode === removeNode_ &&
         createAPagerNumberButton === src.base.control.pager.createAPagerNumberButton &&
         createAClearDiv === createAClearDiv_;
