@@ -10,16 +10,18 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
   //Using
   var Current_ = src.base.control.pager;
 
-  var CurrentPage_ = 12;
-
-
+  
+  
+  
+  
   //Fields
+
+  var CurrentPage_ = 12;
+  var NewPage_ = goog.string.getRandomString();
   
   var appendChild_;
   var button_;
   var clone_;
-  var cloneOptions_;
-  var clonedOptions_;
   var containerRow_;
   var createADiv_;
   var findNode_;
@@ -45,11 +47,6 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     options_[Current_.Parameters][Current_.ParametersPage] = CurrentPage_;
     options_[Current_.Parameters][Current_.TotalCountOfPages] = -21;
     
-    clonedOptions_ = {};
-    clonedOptions_[Current_.Parameters] = {};
-    clonedOptions_[Current_.Parameters][Current_.ParametersPage] = CurrentPage_;
-    clonedOptions_[Current_.Parameters][Current_.TotalCountOfPages] = -21;
-    
     pagerOptions_ = {};
     pagerOptions_[Current_.Refresh] = function() {};
     
@@ -59,8 +56,6 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
     result_[Current_.ResultPreviousPage] = -111;
     
     appendChild_ = function() {};
-    clone_ = function() { return clonedOptions_; };
-    cloneOptions_ = function() {};
     createADiv_ = function() { return button_; };
     findNode_ = function() {return null; };
     removeAllEvents_ = function() {};
@@ -78,15 +73,15 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
                                                       createADiv_, setTextContent_,
                                                       toggleEnabledOnAButton_,
                                                       removeAllEvents_, swap_, setClick_,
-                                                      appendChild_, clone_, cloneOptions_);
+                                                      appendChild_, null, null);
   };
-
-
+  
+  
   //Test Methods
   
   it('should attempt to find the previous pager button.', function() {
     var methodWasCalled = false;
-
+    
     findNode_ = function(containerRow, toDo) {
       methodWasCalled = methodWasCalled ||
         (containerRow === containerRow_ &&
@@ -242,53 +237,12 @@ src.test.control.pager.whenCreatingAPagerButton.describe = function() {
   });
   
   
-  it('should clone the options for the previous button.', function() {
-    var methodWasCalled = false;
-    isPrevious_ = true;
-    
-    cloneOptions_ = function(options, newPageNumber, clone) {
-      methodWasCalled = options === options_ &&
-        newPageNumber === result_[Current_.ResultPreviousPage] &&
-        clone === clone_;
-      
-      return clonedOptions_;
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-
-
-  it('should clone the options for the next button.', function() {
-    var methodWasCalled = false;
-    isPrevious_ = false;
-    
-    cloneOptions_ = function(options, newPageNumber, clone) {
-      methodWasCalled = options === options_ &&
-        newPageNumber === result_[Current_.ResultNextPage] &&
-        clone === clone_;
-      
-      return clonedOptions_;
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-  
   it('should set the click event for the button.', function() {
     var methodWasCalled = false;
     isPrevious_ = true;
-    var clonedOptions = {};
     
-    cloneOptions_ = function() {
-      return clonedOptions;
-    };
-    
-    pagerOptions_[Current_.Refresh] = function(options) {
-      methodWasCalled = options === clonedOptions;
-      
+    pagerOptions_[Current_.Refresh] = function(page) {
+      return methodWasCalled && page === NewPage_;
     };
     
     setClick_ = function(button, toDo) {

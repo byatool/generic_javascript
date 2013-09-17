@@ -87,14 +87,19 @@ src.base.control.formComponent.ErrorType = 0;
 
 /**
  @param {Object} container The form element.
- @param {?function} fillTheElements The method needed to set the form element values.
+ @param {?function} fillTheElements The method needed to set the form element
+ values.
  @param {?function} setValue The method used to set an element's value.
- @return {function} The method that will be called as the event handler for the data request.
+ @return {function} The method that will be called as the event handler for
+ the data request.
  @protected
  */
-src.base.control.formComponent.createTheRetrieveFormDataCallback = function(container, fillTheElements, setValue) {
-  return function(result) { return fillTheElements(container, result, setValue); };
-};
+src.base.control.formComponent.createTheRetrieveFormDataCallback =
+  function(container, fillTheElements, setValue) {
+    return function(result) {
+      return fillTheElements(container, result, setValue);
+    };
+  };
 
 
 /**
@@ -142,15 +147,15 @@ src.base.control.formComponent.handleCallback = function(result, form, messageBo
     var justMessages = filter(result[Current.MessageItems], function(item) {
       return item['Message'];
     });
-
+    
     var errorsExist = some(result[Current.MessageItems], function(item) {
       return item['MessageType'] === Current.ErrorType;
     });
-
+    
     if (!errorsExist) {
       onClick();
     }
-
+    
     if (!errorsExist && shouldResetFormOnSuccess) {
       resetTheForm(form);
     }
@@ -220,15 +225,15 @@ src.base.control.formComponent.handleSubmit = function(form, messageBox, submitB
  */
 src.base.control.formComponent.setupTheForm = function(formId, datePickerOptions, datePickerContainerAndTextboxes, messageBoxName, findElement, createAMessageBox, addElement, createADatePicker) {
   var Popup = src.base.control.popupDatePicker;
-
+  
   var ifNullThen = function(toCheck, toSet) {
     return toCheck ? toCheck : toSet;
   };
-
+  
   var form = findElement(formId);
   var messageBox = createAMessageBox(messageBoxName);
   addElement(form, messageBox);
-
+  
   //TODO this should probably use a passed in method for testing reasons
   //  src.test.control.formComponent.whenSettingUpAForm
   //   'should create a datepicker for every textbox named'
@@ -298,34 +303,86 @@ src.base.control.formComponent.initialize = function(formId, datePickerOptions, 
   var Current = src.base.control.formComponent;
   var DomHelper = src.base.helper.domHelper;
   var MessageBox = src.base.control.messageBox;
-
-  setupTheForm = setupTheForm ? setupTheForm : Current.setupTheForm;
-  getElement = getElement ? getElement : goog.dom.getElement;
-  createMessageBox = createMessageBox ? createMessageBox : MessageBox.createMessageBox;
-  appendChild = appendChild ? appendChild : goog.dom.appendChild;
-  createDatepicker = createDatepicker ? createDatepicker : src.base.control.popupDatePicker.create;
+  
+  setupTheForm = setupTheForm ?
+    setupTheForm :
+    Current.setupTheForm;
+  
+  getElement = getElement ?
+    getElement :
+    goog.dom.getElement;
+  
+  createMessageBox = createMessageBox ?
+    createMessageBox :
+    MessageBox.createMessageBox;
+  
+  appendChild = appendChild ?
+    appendChild :
+    goog.dom.appendChild;
+  
+  createDatepicker = createDatepicker ?
+    createDatepicker :
+    src.base.control.popupDatePicker.create;
+  
   //Autofill
-  setValue = setValue ? setValue : goog.dom.forms.setValue;
-  createTheRetrieveFormDataCallback = createTheRetrieveFormDataCallback ? createTheRetrieveFormDataCallback : Current.createTheRetrieveFormDataCallback;
-  fillTheRows = fillTheRows ? fillTheRows : Current.fillTheFormElements;
-  submitAutoFill = submitAutoFill ? submitAutoFill : src.base.helper.domHelper.submitToUrl;
+  setValue = setValue ?
+    setValue :
+    goog.dom.forms.setValue;
+  
+  createTheRetrieveFormDataCallback = createTheRetrieveFormDataCallback ?
+    createTheRetrieveFormDataCallback :
+    Current.createTheRetrieveFormDataCallback;
+  
+  fillTheRows = fillTheRows ?
+    fillTheRows :
+    Current.fillTheFormElements;
+  
+  submitAutoFill = submitAutoFill ?
+    submitAutoFill :
+    src.base.helper.domHelper.submitToUrl;
+  
   //Submit handling
-  handleSubmit = handleSubmit ? handleSubmit : Current.handleSubmit;
-  getFormDataMap = getFormDataMap ? getFormDataMap : goog.dom.forms.getFormDataMap;
-  validate = validate ? validate : Current.Validate;
-  createAResult = createAResult ? createAResult : MessageBox.createAResult;
-  updateMessagesByResult = updateMessagesByResult ? updateMessagesByResult : MessageBox.updateMessagesByResult;
-  showElement = showElement ? showElement : goog.style.showElement;
-  submitData = submitData ? submitData : DomHelper.submitData;
+
+  handleSubmit = handleSubmit ?
+    handleSubmit :
+    Current.handleSubmit;
+  
+  getFormDataMap = getFormDataMap ?
+    getFormDataMap :
+    goog.dom.forms.getFormDataMap;
+  
+  validate = validate ?
+    validate :
+    Current.Validate;
+  
+  createAResult = createAResult ?
+    createAResult :
+    MessageBox.createAResult;
+  
+  updateMessagesByResult = updateMessagesByResult ?
+    updateMessagesByResult :
+    MessageBox.updateMessagesByResult;
+  
+  showElement = showElement ?
+    showElement :
+    goog.style.showElement;
+  
+  submitData = submitData ?
+    submitData :
+    DomHelper.submitData;
   
   
   
   /* Actual Code */
+
+  var messageBoxName = typeof(formId) === 'string' ?
+        formId :
+        formId['id'];
   
   var setupItems = setupTheForm(formId,
                                 datePickerOptions[Current.DatepickerOptions],
                                 datePickerOptions[Current.DatepickerTextboxes],
-                                formId + Current.MessageBoxSuffix,
+                                messageBoxName + Current.MessageBoxSuffix,
                                 getElement,
                                 createMessageBox,
                                 appendChild,

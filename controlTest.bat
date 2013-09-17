@@ -37,6 +37,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.formComponent.whenSettingUpAForm" ^
 --namespace="src.test.control.formComponent.whenTheFormIsSubmitted" ^
 --namespace="src.test.control.gridBuilder.whenCreatingARow" ^
+--namespace="src.test.control.gridBuilder.whenCreatingTheGridRefresh" ^
 --namespace="src.test.control.gridBuilder.whenCreatingThePagerButtons" ^
 --namespace="src.test.control.gridBuilder.whenCreatingRows" ^
 --namespace="src.test.control.gridBuilder.whenCreatingTheHeaderRow" ^
@@ -46,6 +47,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.messageBox.whenClearingTheMessages" ^
 --namespace="src.test.control.messageBox.whenCreatingAMessageBox" ^
 --namespace="src.test.control.messageBox.whenCreatingAResult" ^
+--namespace="src.test.control.messageBox.whenForcingAMessageBoxToHide" ^
 --namespace="src.test.control.messageBox.whenSettingTheAppearanceOfAMessageBoxBasedOnAResult" ^
 --namespace="src.test.control.messageBox.whenUpdatingMesssagesInAMessageBoxByAResult" ^
 --namespace="src.test.control.pager.whenCloningTheOptions" ^

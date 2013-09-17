@@ -17,58 +17,61 @@ src.test.control.messageBox.whenCreatingAMessageBox.describe = function() {
   var createADiv_;
   var createdDiv_;
   var givenName_;
+  var isEmptySafe_;
   var showElement_;
-
+  
   //Test Hooks
   beforeEach(function() {
     createdDiv_ = {};
-
+    
     createADiv_ = function() { return createdDiv_; };
+    isEmptySafe_ = function(){ return true;  };
     showElement_ = function() {};
   });
-
-
+  
+  
   //Support Methods
-
+  
   var callTheMethod_ = function() {
-    return Current.createMessageBox(givenName_, createADiv_, showElement_);
+    return Current.createMessageBox(givenName_, isEmptySafe_, createADiv_,
+                                    showElement_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should use the given name.', function() {
     var methodWasCalled = false;
-
-    givenName_ = goog.string.getRandomString();
-
+    
+    isEmptySafe_ = function() {
+      return false;
+    };
+    
     createADiv_ = function(properties, elements) {
       methodWasCalled = methodWasCalled ||
         properties['id'] === givenName_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should use the default name if no name is given.', function() {
     var methodWasCalled = false;
-
-    givenName_ = null;
-
+    
     createADiv_ = function(properties, elements) {
       methodWasCalled = methodWasCalled ||
         properties['id'] === Current.DIV_MESSAGE_CONTAINER;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the child message box.', function() {
 
     var methodWasCalled = false;

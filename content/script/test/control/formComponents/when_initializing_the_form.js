@@ -74,7 +74,7 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     createMessageBox_ = {};
     appendChild_ = {};
     createDatepicker_ = {};
-
+    
     //Form fill options
     submitToParameters_ = {};
     autoFillParameters_ = {};
@@ -120,25 +120,66 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
   it('should set up the form.', function() {
     var methodWasCalled = false;
     
-    setupTheForm_ = function(formId, datepickerOptions, datepickerTextboxes, messageBoxName, getElement, createMessageBox, appendChild, createDatepicker, createTheRetrieveFormDataCallback_, fillTheRows_) {
+    setupTheForm_ = function(formId, datepickerOptions, datepickerTextboxes, messageBoxName,
+                             getElement, createMessageBox, appendChild, createDatepicker,
+                             createTheRetrieveFormDataCallback_, fillTheRows_) {
+      
       methodWasCalled = formId === FormId &&
         datepickerOptions === datepickerOptions_[FormComponent.DatepickerOptions] &&
         datepickerTextboxes === datepickerOptions_[FormComponent.DatepickerTextboxes] &&
-        messageBoxName === formId + FormComponent.MessageBoxSuffix &&
         getElement === getElement_ &&
         createMessageBox === createMessageBox_ &&
         appendChild === appendChild_ &&
         createDatepicker === createDatepicker_;
-
+      
       return result_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  // messageBoxName === formId + FormComponent.MessageBoxSuffix &&
+  
+  it('should create the messagebox name from the formId if it is a string.', function() {
+    var methodWasCalled = false;
+    
+    setupTheForm_ = function(formId, datepickerOptions, datepickerTextboxes, messageBoxName,
+                             getElement, createMessageBox, appendChild, createDatepicker,
+                             createTheRetrieveFormDataCallback_, fillTheRows_) {
+      
+      methodWasCalled = messageBoxName === formId + FormComponent.MessageBoxSuffix;
+      return result_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should use the form id if the form is not a string.', function() {
+    var methodWasCalled = false;
+    var id = 'dasfds';
+    FormId = {};
+    FormId['id'] = id;
+    
+    setupTheForm_ = function(formId, datepickerOptions, datepickerTextboxes, messageBoxName,
+                             getElement, createMessageBox, appendChild, createDatepicker,
+                             createTheRetrieveFormDataCallback_, fillTheRows_) {
+      
+      methodWasCalled = messageBoxName === id + Current_.MessageBoxSuffix;
+      return result_;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should create the retreive data callback.', function() {
     var methodWasCalled = false;
 

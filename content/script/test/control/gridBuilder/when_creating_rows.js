@@ -19,6 +19,7 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   var findNode_;
   var options_;
   var parentContainer_;
+  var refreshGrid_;
   var result_;
   var rowContainer_;
   var setClick_;
@@ -41,6 +42,7 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
     createADiv_ = function() { return rowContainer_;};
     createARow_ = function() {};
     findNode_ = function() { return null; };
+    refreshGrid_ = function(){};
     setClick_ = function() {};
     setTextContent_ = function() {};
   });
@@ -50,7 +52,8 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   var callTheMethod_ = function() {
     Current_.createRows(result_, parentContainer_, options_,
                         findNode_, createADiv_, appendChild_,
-                        createARow_, setTextContent_, setClick_);
+                        createARow_, setTextContent_, setClick_,
+                        refreshGrid_);
   };
   
   
@@ -91,44 +94,46 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
         parent === parentContainer_ &&
         child === rowContainer_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should not append the row container if it already existed.', function() {
     var methodWasCalled = false;
-
+    
     findNode_ = function() {
       return rowContainer_;
     };
-
+    
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         parent === parentContainer_ &&
         child === rowContainer_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(false);
   });
-
-
+  
+  
   it('should create a row for each result item.', function() {
     var methodWasCalled = 0;
-
+    
     createARow_ = function(item, options, createADiv,
-                           setTextContent, appendChild, setClick) {
+                           setTextContent, appendChild, setClick,
+                           refreshGrid) {
       
       methodWasCalled += (item === result_[Current_.ListProperty][0] ||
                           item === result_[Current_.ListProperty][1]) &&
         createADiv === createADiv_ &&
         setTextContent === setTextContent_ &&
         appendChild === appendChild_ &&
-        setClick === setClick_;
+        setClick === setClick_ &&
+        refreshGrid === refreshGrid_;
     };
     
     callTheMethod_();
@@ -136,13 +141,13 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
     expect(methodWasCalled).toBe(2);
   });
   
-
+  
   it('should add each row to the parent container.', function() {
     var methodWasCalled = 0;
     var firstRow = {};
     var secondRow = {};
     var wasCreated = false;
-
+    
     createARow_ = function() {
       if (!wasCreated) {
         wasCreated = true;
@@ -152,12 +157,12 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
         return secondRow;
       }
     };
-
+    
     appendChild_ = function(parent, child) {
       methodWasCalled += parent === rowContainer_ &&
         (child === firstRow || child === secondRow);
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(2);

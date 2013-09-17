@@ -16,6 +16,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   //Fields
   
   var ContainerId_ = goog.string.getRandomString();
+  var NewPage_ = goog.string.getRandomString();
   
   
   var appendChild_;
@@ -23,20 +24,30 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   var initializeThePager_;
   var gridOptions_;
   var pager_;
+  //var passedInOptions_;
   var parentContainer_;
+  var refreshTheGrid_;
   var result_;
   
    //Test Hooks
   
   beforeEach(function() {
     parentContainer_ = {};
+    
+    refreshTheGrid_ = function(){};
     gridOptions_ = {};
-    gridOptions_[Pager_.Refresh] = function() {};
+    gridOptions_[Pager_.Refresh] = refreshTheGrid_;
+    gridOptions_[Current_.Parameters] = {};
+    gridOptions_[Current_.Parameters]['page'] = 1;
+    
+    // passedInOptions_ = {};
+    // passedInOptions_[Current_.Parameters] = {};
+    // passedInOptions_[Current_.Parameters]['page'] = 2;
     result_ = {};
     
     findNode_ = function() { return null; };
     initializeThePager_ = function() { return pager_;};
-
+    
     appendChild_ = function() { };
     pager_ = {};
     
@@ -49,7 +60,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     src.base.control.gridBuilder.createPagerButtons(result_, gridOptions_,
                                                     parentContainer_,
                                                     findNode_, initializeThePager_,
-                                                    appendChild_);
+                                                    appendChild_, refreshTheGrid_);
   };
   
   
@@ -85,15 +96,50 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
         gridOptions === gridOptions_ &&
         pagerOptions[Pager_.ContainerId] === Current_.ButtonRowId &&
         pagerOptions[Pager_.ContainerClass] === Current_.ButtonRowClass &&
-        pagerOptions[Pager_.Refresh] === Current_.refresh &&
         containerRow === pager_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
+  
+  
+  it('should set the correct refresh function.', function() {
+    var methodWasCalled = false;
+    
+    
+    refreshTheGrid_ = function(options, grid) {
+      methodWasCalled = options === gridOptions_ &&
+        grid === parentContainer_;
+    };
+    
+    initializeThePager_ = function(result, gridOptions, pagerOptions,
+                                   containerRow) {
+      pagerOptions[Pager_.Refresh](NewPage_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
+  it('should update the page on the original options.', function() {
+    var methodWasCalled = false;
+    
+    
+    initializeThePager_ = function(result, gridOptions, pagerOptions,
+                                   containerRow) {
+      pagerOptions[Pager_.Refresh](NewPage_);
+    };
+    
+    callTheMethod_();
+    
+    expect(gridOptions_[Current_.Parameters]['page']).toBe(NewPage_);
+  });
+  
   
   it('should not add the pager if it exists already.', function() {
     var methodWasCalled = false;
@@ -121,7 +167,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
         gridOptions === gridOptions_ &&
         pagerOptions[Pager_.ContainerId] === Current_.ButtonRowId &&
         pagerOptions[Pager_.ContainerClass] === Current_.ButtonRowClass &&
-        pagerOptions[Pager_.Refresh] === Current_.refresh &&
+        pagerOptions[Pager_.Refresh] !== null &&
         containerRow === null;
     };
     
