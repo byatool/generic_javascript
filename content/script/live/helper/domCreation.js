@@ -60,7 +60,6 @@ src.base.helper.domCreation.form = function(attributes, elements) {
 };
 
 
-
 /**
  @param {Object|string} attributes This is the html attributes
  for the parent form.
@@ -70,7 +69,7 @@ src.base.helper.domCreation.form = function(attributes, elements) {
 src.base.helper.domCreation.hidden = function(attributes) {
   attributes = attributes ? attributes : {};
   attributes['type'] = 'hidden';
-
+  
   return goog.dom.createDom('input', attributes);
 };
 
@@ -98,16 +97,35 @@ src.base.helper.domCreation.label = function(attributes, text) {
  */
 src.base.helper.domCreation.select = function(attributes, data,  defaultItem) {
   var select = goog.dom.createDom('select', attributes);
-
+  
   if (defaultItem) {
     var createdOption = goog.dom.createDom('option', {text: defaultItem, value: defaultItem});
     select.add(createdOption);
     goog.dom.forms.setValue(select, defaultItem);
   }
-
+  
   src.base.helper.domCreation.fillASelect$(select, data);
-
+  
   return select;
+};
+
+
+/**
+ @param {Object} attributes This is the html attributes
+ for the texbox.
+ @param {string} value This is the value to assign to the textbox.
+ @return {Object} This is the created element tree.
+ @export
+ */
+src.base.helper.domCreation.textarea = function(attributes, value) {
+  attributes = attributes ? attributes : {};
+  attributes['rows'] = '5';
+  attributes['columns'] = '10';
+  var textarea = goog.dom.createDom('textarea', attributes);
+  
+  textarea.value = value ? value : '';
+  
+  return textarea;
 };
 
 
@@ -122,9 +140,9 @@ src.base.helper.domCreation.textbox = function(attributes, value) {
   attributes = attributes ? attributes : {};
   attributes['type'] = 'text';
   var textbox = goog.dom.createDom('input', attributes);
-
+  
   textbox.value = value ? value : '';
-
+  
   return textbox;
 };
 
@@ -138,7 +156,7 @@ src.base.helper.domCreation.textbox = function(attributes, value) {
  */
 src.base.helper.domCreation.createAClearDiv = function(createADiv) {
   createADiv = createADiv ? createADiv : src.base.helper.domCreation.div;
-
+  
   return createADiv({'class': 'clearBoth'});
 };
 

@@ -15,6 +15,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.helper.domCreation.whenCreatingACheckbox" ^
 --namespace="src.test.helper.domCreation.whenCreatingADropDownList" ^
 --namespace="src.test.helper.domCreation.whenCreatingALabel" ^
+--namespace="src.test.helper.domCreation.whenCreatingTextarea" ^
 --namespace="src.test.helper.domCreation.whenCreatingTextbox" ^
 --namespace="src.test.helper.domCreation.whenFillingASelect" ^
 --namespace="src.test.helper.domHelper.whenCreatingARedirectHandler" ^
