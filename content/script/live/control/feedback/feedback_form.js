@@ -170,19 +170,21 @@ src.base.control.feedback.form.create =
 
 
     var menuBar = createADiv({'class': constant.MenuBar});
-
+    
     appendChild(menuBar, categoryList);
     appendChild(menuBar, characterCounter);
     appendChild(menuBar, postCounterTextContainer);
     appendChild(menuBar, submitButton);
     appendChild(menuBar, cancelButton);
     appendChild(menuBar, createAClearDiv());
-
+    
     appendChild(form, textarea);
     appendChild(form, menuBar);
+
+
     // var validation = createAValidationWrapper(current.AdjustmentRules);
     // var datePickerInfo = {};
-
+    
     // datePickerInfo[FormComponent_.DatepickerOptions] = {};
     // datePickerInfo[FormComponent_.DatepickerTextboxes] = [];
 

@@ -288,7 +288,7 @@ body {
         color: #dfdfdf;
         float: left;
         font-size: 0.9em;
-        margin: 0.3em 0 0 0 !important; }
+        margin: 0.3em 0 0 0.1em !important; }
       body .feedbackEntryForm .feedbackMenuBar .submitButton {
         border-radius: 0.2em;
         border-style: solid;
