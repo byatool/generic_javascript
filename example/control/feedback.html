@@ -1,18 +1,22 @@
 <html>
+  
   <head>
-    
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+    </script>
   </head>
   <body>
-    <div class="feedbackEntryContainer">
-      <form method="post" id="feedbackEntryForm" class="feedbackEntryForm" action="">
-        <textarea name="feedbackEntryArea" id="feedbackEntryArea" rows="30" cols="10" tabindex=""></textarea>
-        <div class="feedbackEntryControlPanel">
-          <div class="feedbackEntryControlPanelButtonList">
-            
-          </div>
-        </div>
-      </form>
-    </div>
+    <div id="container" class="">
       
+    </div>
   </body>
+  <script type="text/javascript">
+    var options = {};
+    
+    var result = src.base.control.feedback.form.create('', function() {});
+    
+    document.getElementById('container').appendChild(result);
+    
+  </script>
 </html>

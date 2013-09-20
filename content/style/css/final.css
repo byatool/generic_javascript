@@ -244,10 +244,66 @@ td.goog-date-picker-selected {
     margin: 0 5em 0 5em;
     padding: 0.5em 0.5em 0.5em 0.5em;
     width: 4em; }
+  .gridBuilderContainer .gridBuilderButtonRowClass .disabled {
+    background-color: #444444; }
 
-.overallContainer {
-  border-color: #444444;
-  border-radius: 5px;
-  border-style: solid;
-  border-width: 0.1em;
-  width: 50em; }
+.zippyContainer {
+  margin: 1.4em 0 0 0; }
+  .zippyContainer .goog-zippy-expanded {
+    background-image: url("../../image/up.png"); }
+  .zippyContainer .goog-zippy-collapsed {
+    background-image: url("../../image/down.png"); }
+
+body {
+  background-color: #545454; }
+  body .feedbackEntryForm {
+    width: 23.3em; }
+    body .feedbackEntryForm .feedbackCommentArea {
+      box-sizing: border-box;
+      overflow: auto;
+      resize: none;
+      width: 99%; }
+    body .feedbackEntryForm .feedbackMenuBar {
+      width: 100%; }
+      body .feedbackEntryForm .feedbackMenuBar .feedbackCategory {
+        float: left; }
+        body .feedbackEntryForm .feedbackMenuBar .feedbackCategory button {
+          border-radius: 0.2em;
+          border-style: solid;
+          border-width: 0.1em;
+          font-size: 0.6em;
+          margin: 0.5em 0.5em 0 0 !important;
+          border-color: #009ac4;
+          background-color: #009ac4;
+          color: #cceef8; }
+        body .feedbackEntryForm .feedbackMenuBar .feedbackCategory .feedbackCategorySelected {
+          background-color: #66cde9;
+          color: #009ac4; }
+      body .feedbackEntryForm .feedbackMenuBar .feedbackCharacterCounter {
+        color: #dfdfdf;
+        float: left;
+        font-size: 0.9em;
+        margin: 0.3em 0.5 0 0.5em !important; }
+      body .feedbackEntryForm .feedbackMenuBar .feedbackCounterText {
+        color: #dfdfdf;
+        float: left;
+        font-size: 0.9em;
+        margin: 0.3em 0 0 0 !important; }
+      body .feedbackEntryForm .feedbackMenuBar .submitButton {
+        border-radius: 0.2em;
+        border-style: solid;
+        border-width: 0.1em;
+        font-size: 0.6em;
+        margin: 0.5em 0.5em 0 0 !important;
+        background-color: #8dc63f;
+        color: #e8f4d9;
+        float: right; }
+      body .feedbackEntryForm .feedbackMenuBar .feedbackCancelButton {
+        border-radius: 0.2em;
+        border-style: solid;
+        border-width: 0.1em;
+        font-size: 0.6em;
+        margin: 0.5em 0.5em 0 0 !important;
+        background-color: #984545;
+        color: white;
+        float: right; }
