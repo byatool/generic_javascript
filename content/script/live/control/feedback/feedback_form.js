@@ -7,6 +7,17 @@ goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.feedback.form');
 
+
+
+
+src.base.control.feedback.form.createALabelInput =
+  function(label, textarea) {
+    var theLabelInput = new goog.ui.LabelInput(label);
+    theLabelInput.render(textarea);
+    //theLabelInput.getElement().name = 'dynamic';
+  };
+
+
 /**
  @param {string} submitUrl The url for adding a comment.
  @param {function} refreshHistory The function used to
@@ -30,8 +41,8 @@ goog.provide('src.base.control.feedback.form');
  */
 src.base.control.feedback.form.create =
   function(submitUrl, refreshHistory, createADiv, createAForm,
-           createATextArea, createAButtonList, createAButton,
-           setClick, setValue) {
+           createATextArea, createALabelInput, createAButtonList,
+           createAButton, setClick, setValue) {
     
     createADiv = createADiv ?
       createADiv :
@@ -44,6 +55,10 @@ src.base.control.feedback.form.create =
     createATextArea = createATextArea ?
       createATextArea :
       src.base.helper.domCreation.textarea;
+    
+    createALabelInput = createALabelInput ?
+      createALabelInput :
+      src.base.control.feedback.form.createALabelInput;
     
     createAButtonList = createAButtonList ?
       createAButtonList :
@@ -65,17 +80,49 @@ src.base.control.feedback.form.create =
     
     var current = src.base.control.feedback.form;
     var constant = src.base.control.feedback.constant;
+    var ButtonList_ = src.base.control.buttonList;
     
-    var form = createAForm({'class': constant.FeedbackForm});
-  //create the form
-  // set the action
-  // create the textarea
-  // create the button list
-  // create the submit
-  //   set click with the url
-  //   set on submit through
-  // create the cancel button
-  //   fire off cancel function
-  // create the history button
-  //  show/hide history
-};
+    var form = createAForm({
+      'action': submitUrl,
+      'class': constant.FeedbackForm,
+      'method': 'post'
+    });
+    
+    var textarea = createATextArea({
+      'class': constant.CommentArea,
+      'id': constant.ParameterComment,
+      'name': constant.ParameterComment
+    });
+
+    
+    createALabelInput(constant.CommentAreaText, textarea);
+    
+    
+    var buttonListOptions = {};
+    buttonListOptions[ButtonList_.ContainerClass] = constant.CategoryListContainer;
+    buttonListOptions[ButtonList_.ElementId] = constant.CategoryListContainer;
+    buttonListOptions[ButtonList_.HiddenId] = constant.ParameterCategory;
+    buttonListOptions[ButtonList_.SelectedButtonClass] = constant.CategorySelected;
+    buttonListOptions[ButtonList_.ButtonOptions] = [
+      {'text': 'Issue', 'value': 'is'},
+      {'text': 'Information', 'value': 'in'}
+    ];
+    createAButtonList(buttonListOptions);
+    
+    
+    
+    //create the form         X
+    // set the action         X
+    // create the textarea    X
+    // create the button list X
+    //add the counter
+    // create the submit
+    //   set click with the url
+    //   set on submit through
+    // create the cancel button
+    //   fire off cancel function
+    // create the history button
+    //  show/hide history
+    
+  };
+    
