@@ -45,6 +45,22 @@ src.base.control.formComponent.constant.DatepickerOptions = 'options';
  @type {string}
  @export
  */
+src.base.control.formComponent.constant.Form = 'form';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.formComponent.constant.MessageBox = 'messageBox';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.formComponent.constant.MessageBoxSuffix = '_messageBox';
 
 
