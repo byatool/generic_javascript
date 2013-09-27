@@ -3,6 +3,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.window');
 goog.require('src.base.control.formComponent');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.popupDatePicker');
 goog.require('src.base.helper.domHelper');
 goog.require('src.base.helper.events');
@@ -13,15 +14,18 @@ goog.provide('src.test.control.formComponent.whenInitializingTheForm');
  @export
  */
 src.test.control.formComponent.whenInitializingTheForm.describe = function() {
+
+  //Using
+  
+  var Constant_ = src.base.control.formComponent.constant;
   var Current_ = src.base.control.formComponent;
-
-
+  
   //Fields
-
+  
   var FormComponent = src.base.control.formComponent;
   var FormId = goog.string.getRandomString();
   var SubmitToUrl_ = goog.string.getRandomString();
-
+  
   var appendChild_;
   var autoFillParameters_;
   var callBackFunction_;
@@ -52,8 +56,8 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
   //Test Hooks
   beforeEach(function() {
     datepickerOptions_ = {};
-    datepickerOptions_[FormComponent.DatepickerOptions] = {};
-    datepickerOptions_[FormComponent.DatepickerTextboxes] = {};
+    datepickerOptions_[Constant_.DatepickerOptions] = {};
+    datepickerOptions_[Constant_.DatepickerTextboxes] = {};
     
     findTheButton_ = function() {};
     
@@ -64,11 +68,11 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     result_ = {};
     result_['form'] = form_;
     result_['messageBox'] = {};
-
+    
     setupTheForm_ = function() {
       return result_;
     };
-
+    
     validate_ = {};
     getElement_ = {};
     createMessageBox_ = {};
@@ -78,42 +82,43 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     //Form fill options
     submitToParameters_ = {};
     autoFillParameters_ = {};
-    autoFillParameters_[Current_.AutoFillUrl] = SubmitToUrl_;
-    autoFillParameters_[Current_.AutoFillParameters] = submitToParameters_;
+    autoFillParameters_[Constant_.AutoFillUrl] = SubmitToUrl_;
+    autoFillParameters_[Constant_.AutoFillParameters] = submitToParameters_;
     callBackFunction_ = {};
     createTheRetrieveFormDataCallback_ = function() { return callBackFunction_; };
     fillTheRows_ = function() {};
     setValue_ = function() {};
     submitTheAutoFill_ = function() {};
   });
-
+  
   //Support Methods
   var callTheMethod_ = function() {
-    FormComponent.initialize(FormId,
-                             datepickerOptions_,
-                             validate_,
-                             autoFillParameters_,
-                             onClick_,
-                             setupTheForm_,
-                             handleSubmit_,
-                             findTheButton_,
-                             setClick_,
-                             getElement_,
-                             createMessageBox_,
-                             appendChild_,
-                             createDatepicker_,
-                             getFormDataMap_,
-                             createAResult_,
-                             updateMessagesByResult_,
-                             showElement_,
-                             submitData_,
-                             setValue_,
-                             createTheRetrieveFormDataCallback_,
-                             fillTheRows_,
-                             submitTheAutoFill_);
+    Current_.initialize(FormId,
+                        datepickerOptions_,
+                        validate_,
+                        autoFillParameters_,
+                        onClick_,
+                        setupTheForm_,
+                        handleSubmit_,
+                        findTheButton_,
+                        setClick_,
+                        getElement_,
+                        createMessageBox_,
+                        appendChild_,
+                        createDatepicker_,
+                        getFormDataMap_,
+                        createAResult_,
+                        updateMessagesByResult_,
+                        showElement_,
+                        submitData_,
+                        setValue_,
+                        createTheRetrieveFormDataCallback_,
+                        fillTheRows_,
+                        submitTheAutoFill_);
     
     
   };
+  
   
   //Test Methods
   
@@ -125,8 +130,8 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
                              createTheRetrieveFormDataCallback_, fillTheRows_) {
       
       methodWasCalled = formId === FormId &&
-        datepickerOptions === datepickerOptions_[FormComponent.DatepickerOptions] &&
-        datepickerTextboxes === datepickerOptions_[FormComponent.DatepickerTextboxes] &&
+        datepickerOptions === datepickerOptions_[Constant_.DatepickerOptions] &&
+        datepickerTextboxes === datepickerOptions_[Constant_.DatepickerTextboxes] &&
         getElement === getElement_ &&
         createMessageBox === createMessageBox_ &&
         appendChild === appendChild_ &&
@@ -140,7 +145,6 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
   
-  // messageBoxName === formId + FormComponent.MessageBoxSuffix &&
   
   it('should create the messagebox name from the formId if it is a string.', function() {
     var methodWasCalled = false;
@@ -149,7 +153,7 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
                              getElement, createMessageBox, appendChild, createDatepicker,
                              createTheRetrieveFormDataCallback_, fillTheRows_) {
       
-      methodWasCalled = messageBoxName === formId + FormComponent.MessageBoxSuffix;
+      methodWasCalled = messageBoxName === formId + Constant_.MessageBoxSuffix;
       return result_;
     };
     
@@ -169,7 +173,7 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
                              getElement, createMessageBox, appendChild, createDatepicker,
                              createTheRetrieveFormDataCallback_, fillTheRows_) {
       
-      methodWasCalled = messageBoxName === id + Current_.MessageBoxSuffix;
+      methodWasCalled = messageBoxName === id + Constant_.MessageBoxSuffix;
       return result_;
     };
     
@@ -201,11 +205,11 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     var methodWasCalled = false;
 
     submitTheAutoFill_ = function(url, parameter, callBackFunction) {
-      methodWasCalled = url === autoFillParameters_[Current_.AutoFillUrl] &&
-        parameter === autoFillParameters_[Current_.AutoFillParameters] &&
+      methodWasCalled = url === autoFillParameters_[Constant_.AutoFillUrl] &&
+        parameter === autoFillParameters_[Constant_.AutoFillParameters] &&
         callBackFunction === callBackFunction_;
     };
-
+    
     callTheMethod_();
 
     expect(methodWasCalled).toBe(true);
@@ -235,9 +239,9 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
     setupTheForm_ = function() {
       return {'form': form};
     };
-
+    
     findTheButton_ = function(className, theForm) {
-      methodWasCalled = className === FormComponent.ButtonClass &&
+      methodWasCalled = className === Constant_.ButtonClass &&
         theForm === form;
     };
 
@@ -268,7 +272,6 @@ src.test.control.formComponent.whenInitializingTheForm.describe = function() {
 
     callTheMethod_();
     expect('This').toBe('checking if the correct method is used on the set click');
-    //expect(methodWasCalled).toBe(true);
   });
 
 

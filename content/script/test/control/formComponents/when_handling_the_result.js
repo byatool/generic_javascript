@@ -1,6 +1,7 @@
 goog.require('goog.array');
 goog.require('goog.string');
 goog.require('src.base.control.formComponent');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.helper.constants');
 
 goog.provide('src.test.control.formComponent.whenHandlingTheResult');
@@ -9,10 +10,15 @@ goog.provide('src.test.control.formComponent.whenHandlingTheResult');
  @export
  */
 src.test.control.formComponent.whenHandlingTheResult.describe = function() {
-  //Fields
-  var Current = src.base.control.formComponent;
-  var Constants = src.base.helper.constants;
 
+  //Using
+  
+  var Constant_ = src.base.control.formComponent.constant;
+  var Current_ = src.base.control.formComponent;
+  
+  
+  //Fields
+  
   var button_;
   var createAResult_;
   var createdResult_;
@@ -30,23 +36,24 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
   var some_;
   var toBeEnabled_;
   var updateTheMessageBox_;
-
+  
+  
   //Test Hooks
+  
   beforeEach(function() {
     button_ = {};
     form_ = {};
     messageBox_ = {};
     resetTheFormOnSuccess_ = false;
-
+    
     messageItem_ = {};
     messageItem_['Message'] = goog.string.getRandomString();
     location_ = goog.string.getRandomString();
-
+    
     postResult_ = {};
-    postResult_[Current.MessageItems] = [messageItem_];
-    postResult_[Current.Success] = true;
+    postResult_[Constant_.MessageItems] = [messageItem_];
     createdResult_ = {};
-
+    
     createAResult_ = function() {};
     filter_ = function() { };
     openWindow_ = function() {};
@@ -57,37 +64,40 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     onClick_ = function() {};
     resetTheForm_ = function() {};
   });
-
-
+  
+  
   //Support Methods
-
-
+  
+  
   var callTheMethod_ = function() {
-    Current.handleCallback(postResult_, form_, messageBox_, button_, resetTheFormOnSuccess_, onClick_, filter_, some_, createAResult_, updateTheMessageBox_, showElement_, toBeEnabled_, resetTheForm_, openWindow_);
+    Current_.handleCallback(postResult_, form_, messageBox_, button_,
+                            resetTheFormOnSuccess_, onClick_, filter_, some_,
+                            createAResult_, updateTheMessageBox_, showElement_,
+                            toBeEnabled_, resetTheForm_, openWindow_);
   };
-
-
+  
+  
   //Test Methods
-
+  
   it('should create a list of messages from the items.', function() {
     var methodWasCalled = false;
-
+    
     filter_ = function(messages, lambda) {
-      methodWasCalled = messages === postResult_[Current.MessageItems];
+      methodWasCalled = messages === postResult_[Constant_.MessageItems];
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
+  
   it('should call the onClick method if the result is successful.', function() {
     var methodWasCalled = false;
-
+    
     filter_ = function(messages, lambda) {
       return true;
     };
-
+    
     some_ = function() {
       return false;
     };
@@ -172,11 +182,11 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     };
 
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should clear the form on success if told to.', function() {
     var methodWasCalled = false;
     
@@ -190,7 +200,7 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
-
+  
   
   it('should not clear the form on success if told to.', function() {
     var methodWasCalled = false;
@@ -225,11 +235,11 @@ src.test.control.formComponent.whenHandlingTheResult.describe = function() {
     var methodWasCalled = false;
 
     postResult_ = {};
-    postResult_[Current.MessageItems] = [];
-    postResult_[Current.RedirectUrl] = 'afd';
+    postResult_[Constant_.MessageItems] = [];
+    postResult_[Constant_.RedirectUrl] = 'afd';
 
     openWindow_ = function(url) {
-      methodWasCalled = url === postResult_[Current.RedirectUrl];
+      methodWasCalled = url === postResult_[Constant_.RedirectUrl];
     };
 
     callTheMethod_();
