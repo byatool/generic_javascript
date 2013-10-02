@@ -317,7 +317,7 @@ src.base.control.formComponent.initialize =
     var whenFinished = function(formResult) {
       handleCallback(formResult,
                      setupItems[Constant_.Form],
-                     setupItems[Constant_.Message],
+                     setupItems[Constant_.MessageBox],
                      button,
                      true,
                      onClick,
@@ -336,7 +336,7 @@ src.base.control.formComponent.initialize =
     //Export this out to a method that creates a method?
     var whenClicked = function() {
       handleSubmit(setupItems[Constant_.Form],
-                   setupItems[Constant_.Message],
+                   setupItems[Constant_.MessageBox],
                    button,
                    goog.dom.forms.getFormDataMap,
                    validate,

@@ -59,7 +59,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.pager.whenCreatingAPageNumberContainer" ^
 --namespace="src.test.control.pager.whenInitializingAPager" ^
 --namespace="src.test.control.pager.whenTogglingEnabledOnAButton" ^
---namespace="src.test.control.popupDatePicker.whenCreatingAPopupDatePicker" ^
+--namespace="src.test.control.popupDatePicker.whenInitializingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
 --namespace="src.test.control.popupDatePicker.whenFormattingTheDate" ^
 --namespace="src.test.control.redirectList.whenCreatingRedirectButtonOptions" ^

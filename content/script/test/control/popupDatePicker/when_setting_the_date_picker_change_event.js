@@ -4,15 +4,20 @@ goog.require('src.base.control.popupDatePicker');
 goog.provide('src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent');
 
 /**
-
+ 
  @export
  */
 src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = function() {
-  //Fields
-  var ChangeType = goog.string.getRandomString();
-  var Popup = src.base.control.popupDatePicker;
-  var TextboxName = goog.string.getRandomString();
+
+  //Using
+
+  var Current_ = src.base.control.popupDatePicker;
   
+   
+  //Fields
+  
+  var ChangeType_ = goog.string.getRandomString();
+  var TextboxName_ = goog.string.getRandomString();
   
   var datePicker_;
   var findElement_;
@@ -21,7 +26,9 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
   var setValue_;
   var textbox_;
   
+  
   //Test Hooks
+  
   beforeEach(function() {
     
     findElement_ = function() { return textbox_; };
@@ -38,18 +45,22 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
     textbox_['focus'] = function() {};
   });
   
+  
   //Support Methods
   
   var callTheMethod = function() {
-    Popup.setTheDatePickerEvent(datePicker_, TextboxName, findElement_, listen_, ChangeType, setValue_, formatTheDate_);
+    Current_.setTheDatePickerEvent(datePicker_, TextboxName_, findElement_, listen_,
+                                   ChangeType_, setValue_, formatTheDate_);
   };
   
+  
   //Test Methods
+  
   it('should find the textbox.', function() {
     var methodWasCalled = false;
     
     findElement_ = function(textboxName) {
-      methodWasCalled = textboxName === TextboxName;
+      methodWasCalled = textboxName === TextboxName_;
       return {};
     };
     
@@ -58,18 +69,20 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
     
   });
   
+  
   it('should set using the listen function.', function() {
     var methodWasCalled = false;
     
     listen_ = function(datePicker, changeType, setValue) {
       methodWasCalled = datePicker === datePicker_ &&
-        changeType === ChangeType;
+        changeType === ChangeType_;
     };
     
     callTheMethod();
     
     expect(methodWasCalled).toBe(true);
   });
+  
   
   it('should set the value.', function() {
     var eventIn = {};
@@ -81,7 +94,7 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
     };
     
     callTheMethod();
-    datePicker_[ChangeType](eventIn);
+    datePicker_[ChangeType_](eventIn);
     
     expect(methodWasCalled).toBe(true);
   });
@@ -94,7 +107,7 @@ src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent.describe = 
     };
      
     callTheMethod();
-    datePicker_[ChangeType]({});
+    datePicker_[ChangeType_]({});
     
     expect(methodWasCalled).toBe(true);
   });

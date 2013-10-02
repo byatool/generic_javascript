@@ -4,118 +4,161 @@ goog.require('goog.events');
 goog.require('goog.ui.DatePicker');
 goog.require('goog.ui.DatePicker.Events');
 goog.require('src.base.control.popupDatePicker');
+goog.require('src.base.control.controlConstant');
 
-goog.provide('src.test.control.popupDatePicker.whenCreatingAPopupDatePicker');
+goog.provide('src.test.control.popupDatePicker.whenInitializingAPopupDatePicker');
+
 
 /**
  @export
  */
-src.test.control.popupDatePicker.whenCreatingAPopupDatePicker.describe = function() {
+src.test.control.popupDatePicker.whenInitializingAPopupDatePicker.describe = function () {
+  
+   // Using
+  
+  var Constant_ = src.base.control.popupDatePicker.constant;
+  var ControlConstant_ = src.base.control.controlConstant;
+  var Current_ = src.base.control.popupDatePicker;
+  
+  
+  
   //Fields
-  var Popup = src.base.control.popupDatePicker;
-
-  var ButtonClass = goog.string.getRandomString();
-  var ButtonText = goog.string.getRandomString();
-  var ContainerClass = goog.string.getRandomString();
-  var DatePickerClass = goog.string.getRandomString();
-  var PopupClass = goog.string.getRandomString();
-  var TextboxName = goog.string.getRandomString();
-
+  
+  var ButtonClass_ = goog.string.getRandomString();
+  var ButtonText_ = goog.string.getRandomString();
+  var ContainerClass_ = goog.string.getRandomString();
+  var TextboxName_ = goog.string.getRandomString();
+  
+  //   var PopupClass = goog.string.getRandomString();
+  //   var TextboxName = goog.string.getRandomString();
+  
   var appendChild_;
+  var button_;
   var control_;
+  var createAButton_;
+  var createADiv_;
+  var createdPopup_;
   var createTheDatePicker_;
   var createThePopup_;
-  var fakeDatePicker_;
-  var fakeDatePickerDomObject_;
-  var fakePopup_;
+  var datePicker_;
+  var datePickerContainer_;
+  var popupElement_;
   var options_;
   var setTheEvent_;
   var setTheDatePickerEvent_;
   var showPopup_;
-
+  
+  
   //Test Hooks
+  
   beforeEach(function() {
     options_ = {};
-
-    options_[Popup.ButtonClass] = ButtonClass;
-    options_[Popup.ButtonText] = ButtonText;
-    options_[Popup.ContainerClass] = ContainerClass;
-    options_[Popup.DatePickerClass] = DatePickerClass;
-    options_[Popup.PopupClass] = PopupClass;
-    options_[Popup.TextboxName] = TextboxName;
-
+    options_[Constant_.ContainerClass] = ContainerClass_;
+    options_[Constant_.ButtonClass] = ButtonClass_;
+    options_[Constant_.ButtonText] = ButtonText_;
+    options_[Constant_.TextboxName] = TextboxName_;
+    
+    control_ = {};
+    createADiv_ = function(){ return control_; };
+    
+    button_ = {};
+    createAButton_ = function() { return button_; };
+    
+    datePicker_ = {};
+    datePickerContainer_ = {};
+    createTheDatePicker_ = function() { return [datePickerContainer_, datePicker_]; };
+    
+    createdPopup_ = {};
+    popupElement_ = {};
+    createdPopup_.element_ = popupElement_;
+    createThePopup_ = function() {return createdPopup_; };
+    
     appendChild_ = function() {};
-
-    fakePopup_ = {};
-    fakePopup_['element_'] = {};
-    fakeDatePicker_ = {};
-    fakeDatePickerDomObject_ = {};
-
-    createThePopup_ = function() {return fakePopup_; };
-    createTheDatePicker_ = function() { return [fakeDatePicker_, fakeDatePickerDomObject_]; };
-    setTheEvent_ = function() {};
+    
     setTheDatePickerEvent_ = function() {};
+    setTheEvent_ = function() {};
     showPopup_ = function() {};
+    
+    
+    
+    // options_[Constant_.PopupClass] = PopupClass;
+    
+    
   });
+  
   
   //Support Methods
   
-  var callTheMethod = function() {
-    control_ = Popup.create(options_, appendChild_, createThePopup_, createTheDatePicker_, setTheEvent_,
-                            setTheDatePickerEvent_, showPopup_);
+  var callTheMethod_ = function() {
+    return  Current_.create(options_, createADiv_, createAButton_,
+                            appendChild_, createThePopup_, createTheDatePicker_,
+                            setTheEvent_, setTheDatePickerEvent_,
+                            showPopup_);
   };
+  
   
   //Test Methods
   
-  it('should create the parent container.', function() {
-    callTheMethod();
-    
-    expect(control_ && goog.dom.classes.has(control_, ContainerClass) ? true : false).toBe(true);
-  });
-  
-  
-  it('should add a button.', function() {
-    var calledCount = 0;
-
-    appendChild_ = function(parent, child) {
-      if (calledCount === 0 &&
-          child.tagName === 'BUTTON' &&
-          child.type === 'button' &&
-          child.innerText === options_[Popup.ButtonText] &&
-          goog.dom.classes.has(child, ButtonClass))
-      {
-        calledCount += 1;
-      }
-    };
-
-    callTheMethod();
-    expect(calledCount).toBe(1);
-  });
-
-
-  it('should create the popup.', function() {
+  it('should create the overall container.', function() {
     var methodWasCalled = false;
-
-    createThePopup_ = function(cssClass) {
-
-      methodWasCalled = cssClass === PopupClass;
-      return fakePopup_;
+    
+    createADiv_ = function(attributes){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.ContainerClass !== undefined &&
+         attributes[ControlConstant_.Class] === Constant_.ContainerClass);
     };
-
-    callTheMethod();
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the popup button.', function() {
+    var methodWasCalled = false;
+    
+    createAButton_ = function(attributes, text){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.ButtonText !== undefined &&
+         Constant_.ButtonClass !== undefined &&
+         attributes[ControlConstant_.Type] === ControlConstant_.Button &&
+         attributes[ControlConstant_.Class] === Constant_.ButtonClass) &&
+         text === ButtonText_;
+         
+    };
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
 
-
-  it('should create the date picker', function() {
+  
+  it('should append the popup button to the container.', function() {
     var methodWasCalled = false;
-
-    createTheDatePicker_ = function(cssClass) {
-      methodWasCalled = cssClass === DatePickerClass;
-      return [fakeDatePicker_, fakeDatePickerDomObject_];
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === control_ && child === button_);
     };
     
-    callTheMethod();
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the date picker and container.', function() {
+    var methodWasCalled = false;
+    
+    createTheDatePicker_ = function(cssClass, createADiv) {
+      methodWasCalled = Constant_.DatePickerClass !== undefined &&
+        cssClass === Constant_.DatePickerClass &&
+        createADiv === createADiv_;
+      
+      return [datePickerContainer_, datePicker_];
+    };
+    
+    callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
@@ -124,94 +167,101 @@ src.test.control.popupDatePicker.whenCreatingAPopupDatePicker.describe = functio
   it('should set the change event for the date picker.', function() {
     var methodWasCalled = false;
     
-    setTheDatePickerEvent_ = function(datePicker, textboxName, getElement, listen, change, setValue, formatDate) {
-      methodWasCalled = datePicker === fakeDatePickerDomObject_ &&
-        textboxName === options_[Popup.TextboxName] &&
+    setTheDatePickerEvent_ = function(datePicker, textboxName, getElement,
+                                      listen, change, setValue, formatDate) {
+      methodWasCalled = datePicker === datePicker_ &&
+        textboxName ===  TextboxName_ &&
         getElement === goog.dom.getElement &&
         listen === goog.events.listen &&
         change === goog.ui.DatePicker.Events.CHANGE &&
         setValue === goog.dom.forms.setValue &&
-        formatDate === src.base.control.popupDatePicker.formatTheDate;
+        formatDate === Current_.formatTheDate;
     };
-
-    callTheMethod();
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
-
-  it('should set the click event to show the popup.', function() {
+  
+  
+  it('should create the popup.', function() {
     var methodWasCalled = false;
-
-    setTheEvent_ = function(element, method) {
-
-      methodWasCalled = goog.dom.classes.has(element, ButtonClass) &&
-        method ? true : false;
+    
+    createThePopup_ = function(popupClass, createADiv){
+      methodWasCalled = popupClass === Constant_.PopupClass &&
+        createADiv === createADiv_;
+      
+      return createdPopup_;
     };
-
-    callTheMethod();
-
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the click event of the popup image.', function() {
+    var methodWasCalled = 0;
+    
+    showPopup_ = function(popUp, button) {
+      methodWasCalled += popUp === createdPopup_ &&
+        button === button_;
+      
+    };
+    
+    setTheEvent_ = function(button, toShow) {
+      methodWasCalled += button === button_;
+      
+      toShow();
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(2);
+  });
+  
+  
+  it('should append the popup container to the popup.', function() {
+    var methodWasCalled = false;
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === popupElement_ && child === datePickerContainer_);
+    };
+    
+    callTheMethod_();
+    
     expect(methodWasCalled).toBe(true);
   });
 
-
-  it('should add the date picker to the popup element.', function() {
-    var calledCount = 0;
-
-    appendChild_ = function(parent, child) {
-      if (calledCount === 0 &&
-          parent === fakePopup_['element'] &&
-          child === fakeDatePicker_)
-      {
-        calledCount += 1;
-      }
+  
+  it('should append the popup element to the parent.', function() {
+    var methodWasCalled = false;
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === control_ && child === popupElement_);
     };
-
-    callTheMethod();
-
-    expect(calledCount).toBe(1);
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
   });
-
-
-  it('should add the click control to the main control.', function() {
-    var calledCount = 0;
-
-    appendChild_ = function(parent, child) {
-      if (calledCount === 0 &&
-          goog.dom.classes.has(parent, ContainerClass) &&
-          child.type &&
-          child.type === 'button')
-
-      {
-        calledCount += 1;
-      }
-    };
-
-    callTheMethod();
-
-    expect(calledCount).toBe(1);
+  
+  
+  it('should return the container', function() {
+    expect(callTheMethod_()).toBe(control_);
   });
+  
 
 
-  it('should add the popup to the main container', function() {
-    var calledCount = 0;
-
-    appendChild_ = function(parent, child) {
-      if (calledCount === 0 &&
-          parent &&
-          parent.className &&
-          goog.dom.classes.has(parent, ContainerClass) &&
-          child === fakePopup_['element'])
-      {
-        calledCount += 1;
-      }
-    };
-
-    callTheMethod();
-
-    expect(calledCount).toBe(1);
-  });
-
+  
 };
 
-describe('When creating a popup date picker, it', function() {
-  src.test.control.popupDatePicker.whenCreatingAPopupDatePicker.describe();
+
+describe('When initializing an popupDatePicker, it', function() {
+  src.test.control.popupDatePicker.whenInitializingAPopupDatePicker.describe();
 });
+
+
+
