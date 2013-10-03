@@ -62,6 +62,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.popupDatePicker.whenInitializingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
 --namespace="src.test.control.popupDatePicker.whenFormattingTheDate" ^
+--namespace="src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler" ^
+--namespace="src.test.control.prettyCodeCreator.whenFormattingTheRawTextAndUpdatingThePrettyCodeArea" ^
+--namespace="src.test.control.prettyCodeCreator.whenInitializingAPrettyCodeCreator" ^
 --namespace="src.test.control.redirectList.whenCreatingRedirectButtonOptions" ^
 --namespace="src.test.control.redirectList.whenCreatingTheClickEvent" ^
 --namespace="src.test.control.redirectList.whenInitializingARedirectList" ^

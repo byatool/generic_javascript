@@ -1,0 +1,113 @@
+goog.require('goog.events.KeyCodes');
+goog.require('goog.ui.KeyboardShortcutHandler');
+goog.require('goog.string');
+goog.require('src.base.control.prettyCodeCreator');
+
+goog.provide('src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler');
+
+/**
+ @export
+ */
+src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler.describe = function () {
+  
+  //Using
+  
+  var Constant_ = src.base.control.prettyCodeCreator.constant;
+  var Current_ = src.base.control.prettyCodeCreator;
+  var KeyCodes_ = goog.events.KeyCodes;
+  var Modifiers_ = goog.ui.KeyboardShortcutHandler.Modifiers;
+  
+  //Fields
+  
+  var createTheHandler_;
+  var handler_;
+  var listen_;
+  var registerShortcut_;
+  var theDocument_;
+  var toCall_;
+  
+  
+  //Test Hooks
+  
+  beforeEach(function() {
+    theDocument_ = {};
+    
+    handler_ = {};
+    registerShortcut_ = function() {};
+    handler_.registerShortcut = registerShortcut_;
+    
+    createTheHandler_ = function(){ return handler_; };
+    listen_ = function() {};
+    toCall_ = function() {};
+  });
+  
+  
+  //Support Methods
+  var callTheMethod_ = function() {
+    return Current_.createShortCutHandler(theDocument_, createTheHandler_, listen_,
+                                          toCall_);
+  };
+  
+  
+  //Test Methods
+  
+  
+  it('should create the handler.', function() {
+    var methodWasCalled = false;
+    
+    createTheHandler_ = function(document) {
+      methodWasCalled = document === theDocument_;
+      
+      return handler_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should register the shortcut.', function() {
+    var methodWasCalled = false;
+    
+    handler_.registerShortcut = function(prettyTheCodeName, firstKey, firstAction,
+                                         secondKey, secondAction) {
+      
+      methodWasCalled = Constant_.ShortcutPrettyTheCode !== undefined &&
+        prettyTheCodeName === Constant_.ShortcutPrettyTheCode &&
+        firstKey === KeyCodes_.X &&
+        firstAction === Modifiers_.CTRL &&
+        secondKey === KeyCodes_.B &&
+        secondAction === Modifiers_.CTRL;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
+  it('should set up the listener', function() {
+    var methodWasCalled = false;
+    
+    listen_ = function(handler, triggerEventName, toCall) {
+      methodWasCalled = handler === handler_ &&
+        triggerEventName === goog.ui.KeyboardShortcutHandler.EventType.SHORTCUT_TRIGGERED &&
+        toCall === toCall_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+};
+
+
+describe('When creating the short cut handler, it', function() {
+  src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler.describe();
+});
+
+
+//--namespace="src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler" ^
+
