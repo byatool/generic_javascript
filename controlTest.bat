@@ -34,6 +34,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.feedback.form.whenCreatingTheForm" ^
 --namespace="src.test.control.feedback.whenInitializingAFeedback" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenFormattingJavaScript" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenFormattingTheRawTextAndUpdatingTheFormatTextAreaDisplay" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay" ^
 --namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^
