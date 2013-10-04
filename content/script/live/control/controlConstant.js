@@ -22,4 +22,12 @@ src.base.control.controlConstant.Class = 'class';
  @type {string}
  @export
  */
+src.base.control.controlConstant.Id = 'id';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.controlConstant.Type = 'type';

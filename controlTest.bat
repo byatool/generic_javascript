@@ -33,6 +33,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
 --namespace="src.test.control.feedback.form.whenCreatingTheForm" ^
 --namespace="src.test.control.feedback.whenInitializingAFeedback" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenFormattingTheRawTextAndUpdatingTheFormatTextAreaDisplay" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay" ^
 --namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^
@@ -62,9 +65,6 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.popupDatePicker.whenInitializingAPopupDatePicker" ^
 --namespace="src.test.control.popupDatePicker.whenSettingTheDatePickerChangeEvent" ^
 --namespace="src.test.control.popupDatePicker.whenFormattingTheDate" ^
---namespace="src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler" ^
---namespace="src.test.control.prettyCodeCreator.whenFormattingTheRawTextAndUpdatingThePrettyCodeArea" ^
---namespace="src.test.control.prettyCodeCreator.whenInitializingAPrettyCodeCreator" ^
 --namespace="src.test.control.redirectList.whenCreatingRedirectButtonOptions" ^
 --namespace="src.test.control.redirectList.whenCreatingTheClickEvent" ^
 --namespace="src.test.control.redirectList.whenInitializingARedirectList" ^

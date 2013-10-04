@@ -1,3 +1,4 @@
+
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --jvm_flags="-d32" ^
 --root="c:/lib/closure/closure-library/" ^
@@ -12,6 +13,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.buttonList" ^
 --namespace="src.base.control.dropDownList" ^
 --namespace="src.base.control.feedback.form" ^
+--namespace="src.base.control.formatTextAreaDisplay" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^

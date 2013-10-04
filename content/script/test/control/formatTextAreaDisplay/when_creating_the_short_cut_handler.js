@@ -1,19 +1,19 @@
 goog.require('goog.events.KeyCodes');
 goog.require('goog.ui.KeyboardShortcutHandler');
 goog.require('goog.string');
-goog.require('src.base.control.prettyCodeCreator');
+goog.require('src.base.control.formatTextAreaDisplay');
 
-goog.provide('src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler');
+goog.provide('src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler');
 
 /**
  @export
  */
-src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler.describe = function () {
+src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler.describe = function () {
   
   //Using
   
-  var Constant_ = src.base.control.prettyCodeCreator.constant;
-  var Current_ = src.base.control.prettyCodeCreator;
+  var Constant_ = src.base.control.formatTextAreaDisplay.constant;
+  var Current_ = src.base.control.formatTextAreaDisplay;
   var KeyCodes_ = goog.events.KeyCodes;
   var Modifiers_ = goog.ui.KeyboardShortcutHandler.Modifiers;
   
@@ -70,11 +70,11 @@ src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler.describe = fun
   it('should register the shortcut.', function() {
     var methodWasCalled = false;
     
-    handler_.registerShortcut = function(prettyTheCodeName, firstKey, firstAction,
+    handler_.registerShortcut = function(prettyTheTextShortcutName, firstKey, firstAction,
                                          secondKey, secondAction) {
       
-      methodWasCalled = Constant_.ShortcutPrettyTheCode !== undefined &&
-        prettyTheCodeName === Constant_.ShortcutPrettyTheCode &&
+      methodWasCalled = Constant_.ShortcutPrettyTheText !== undefined &&
+        prettyTheTextShortcutName === Constant_.ShortcutPrettyTheText &&
         firstKey === KeyCodes_.X &&
         firstAction === Modifiers_.CTRL &&
         secondKey === KeyCodes_.B &&
@@ -105,9 +105,9 @@ src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler.describe = fun
 
 
 describe('When creating the short cut handler, it', function() {
-  src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler.describe();
+  src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler.describe();
 });
 
 
-//--namespace="src.test.control.prettyCodeCreator.whenCreatingTheShortCutHandler" ^
+//--namespace="src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler" ^
 
