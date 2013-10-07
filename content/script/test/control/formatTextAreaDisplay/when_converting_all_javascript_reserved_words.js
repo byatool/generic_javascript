@@ -46,13 +46,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any else with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordElse !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          text === Text_ &&
          name === Constant_.ReservedWordElse &&
          color === Constant_.ColorReservedWords,
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     
@@ -65,13 +66,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any equals with a color span.', function() {
     var methodWasCalled = false;
     
-     
-    surroundWithColor_ = function(text, name, color, replace) {
+    
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordEquals !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          name === Constant_.ReservedWordEquals &&
          color === Constant_.ColorReservedWords &&
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     
@@ -84,12 +86,13 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any for with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordFor !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          name === Constant_.ReservedWordFor &&
          color === Constant_.ColorReservedWords &&
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     
@@ -102,12 +105,13 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any function with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordFunction !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          name === Constant_.ReservedWordFunction &&
          color === Constant_.ColorReservedWords &&
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     
@@ -120,12 +124,13 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any if with a color span.', function() {
     var methodWasCalled = false;
   
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordIf !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          name === Constant_.ReservedWordIf &&
          color === Constant_.ColorReservedWords &&
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     
@@ -138,12 +143,13 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any return with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordReturn !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          name === Constant_.ReservedWordReturn &&
          color === Constant_.ColorReservedWords &&
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     
@@ -156,12 +162,13 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   it('should replace any var with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.ReservedWordVar !== undefined &&
          Constant_.ColorReservedWords !== undefined &&
          name === Constant_.ReservedWordVar &&
          color === Constant_.ColorReservedWords &&
+         toRegex === GoogleWrapper_.toRegex &&
          replace === GoogleWrapper_.replace);
     };
     

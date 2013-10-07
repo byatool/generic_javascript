@@ -38,6 +38,15 @@ src.base.control.formatTextAreaDisplay.constant.ColorReservedWords = '#e08940';
 
 
 /* Start Equality Operators */
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.EqualityOperatorAnd = ' && ';
+
+
 /**
  @const
  @type {string}
@@ -91,6 +100,14 @@ src.base.control.formatTextAreaDisplay.constant.EqualityOperatorLessThan = ' > '
  @protected
  */
 src.base.control.formatTextAreaDisplay.constant.EqualityOperatorNotEqual = ' !== ';
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.EqualityOperatorOr = ' || ';
+
 
 /**
  @const

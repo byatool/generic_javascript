@@ -20,32 +20,53 @@ src.test.control.formatTextAreaDisplay.whenSurroundingWithColor.describe = funct
   
   var Color_ = goog.string.getRandomString();
   var Word_ = goog.string.getRandomString();
-  
+
   var text_;
+  var toRegex_;
   var replace_;  
   
   //Test Hooks
   
   beforeEach(function() {
     text_ = 'asd';
+    replace_ = function() {};
+    toRegex_ = function() {};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.surroundWithColor(text_, Word_, Color_, replace_);
+    return Current_.surroundWithColor(text_, Word_, Color_, toRegex_, replace_);
   };
   
   
   //Test Methods
   
-  it('should replace the text.', function() {
+  it('should create the regex.', function() {
     var methodWasCalled = false;
     
+    toRegex_ = function(text) {
+      methodWasCalled = text === Word_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should replace the text.', function() {
+    var methodWasCalled = false;
+    var regex = new RegExp(Word_);
+    
+    toRegex_ = function() {
+      return regex;
+    };
+    
     replace_ = function(text, replaceWhat, replaceWith) {
-      methodWasCalled = text === text_ &&
-        replaceWhat === Word_ &&
+      methodWasCalled = text_ &&
+        replaceWhat === regex &&
         replaceWith === '<span style=\'color:' + Color_ +';\'>' + Word_ + '</span>';
     };
     

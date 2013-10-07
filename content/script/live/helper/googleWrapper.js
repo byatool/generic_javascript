@@ -43,6 +43,26 @@ src.base.helper.googleWrapper.createAKeyboardShortcutHandler =
 
 
 /**
+ @param {string} text The text to create a regular
+ expression with.
+ @return {string} The regular expression.
+ @protected
+ */
+src.base.helper.googleWrapper.toRegex =
+  function(text) {
+    //hasfjladlfkjas can't just look for ||...
+    // so needs a special expression to find or 
+    if(text === ' || ') {
+      return new RegExp('\(\[|]\[|])', 'g');
+    }
+    else {
+      return new RegExp(text, 'g');
+    }
+    
+  };
+
+
+/**
  @param {string} text The text to search.
  @param {string} what The text to replace.
  @param {string} toWhat The text to use as the replacement.

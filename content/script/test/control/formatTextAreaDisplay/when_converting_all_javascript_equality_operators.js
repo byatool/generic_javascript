@@ -46,14 +46,15 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any === with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorEqualsEquals !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          text === Text_ &&
          name === Constant_.EqualityOperatorEqualsEquals &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -65,13 +66,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any !== with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorNotEqual !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorNotEqual &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -83,13 +85,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any greater than with a color span.', function() {
     var methodWasCalled = false;
   
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorGreaterThan !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorGreaterThan &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -101,13 +104,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any greater or equal to with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorGreaterOrEqualTo !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorGreaterOrEqualTo &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -119,13 +123,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any less than with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorLessThan !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorLessThan &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -137,13 +142,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any less than or equal to with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorLessOrEqualTo !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorLessOrEqualTo &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -155,13 +161,14 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any false with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorFalse !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorFalse &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
@@ -173,13 +180,52 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   it('should replace any true with a color span.', function() {
     var methodWasCalled = false;
     
-    surroundWithColor_ = function(text, name, color, replace) {
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
       methodWasCalled = methodWasCalled ||
         (Constant_.EqualityOperatorTrue !== undefined &&
          Constant_.ColorEqualityOperators !== undefined &&
          name === Constant_.EqualityOperatorTrue &&
          color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace);
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+  
+  it('should replace any and with a color span.', function() {
+    var methodWasCalled = false;
+    
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
+      methodWasCalled = methodWasCalled ||
+        (Constant_.EqualityOperatorAnd !== undefined &&
+         Constant_.ColorEqualityOperators !== undefined &&
+         name === Constant_.EqualityOperatorAnd &&
+         color === Constant_.ColorEqualityOperators &&
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+   
+  
+  it('should replace any or with a color span.', function() {
+    var methodWasCalled = false;
+    
+    surroundWithColor_ = function(text, name, color, toRegex, replace) {
+      methodWasCalled = methodWasCalled ||
+        (Constant_.EqualityOperatorOr !== undefined &&
+         Constant_.ColorEqualityOperators !== undefined &&
+         name === Constant_.EqualityOperatorOr &&
+         color === Constant_.ColorEqualityOperators &&
+         replace === GoogleWrapper_.replace &&
+         toRegex === GoogleWrapper_.toRegex);
     };
     
     callTheMethod_();
