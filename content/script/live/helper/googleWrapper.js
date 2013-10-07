@@ -43,6 +43,18 @@ src.base.helper.googleWrapper.createAKeyboardShortcutHandler =
 
 
 /**
+ @param {string} text The text to search.
+ @param {string} what The text to replace.
+ @param {string} toWhat The text to use as the replacement.
+ @protected
+ */
+src.base.helper.googleWrapper.replace =
+  function(text, what, toWhat) {
+    return text.replace(what, toWhat);
+  };
+
+
+/**
  @param {Object} element The element to update.
  @param {string} text The text to update the element
  with.

@@ -33,10 +33,13 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
 --namespace="src.test.control.feedback.form.whenCreatingTheForm" ^
 --namespace="src.test.control.feedback.whenInitializingAFeedback" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperators" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenFormattingJavaScript" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenFormattingTheRawTextAndUpdatingTheFormatTextAreaDisplay" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay" ^
+--namespace="src.test.control.formatTextAreaDisplay.whenSurroundingWithColor" ^
 --namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^

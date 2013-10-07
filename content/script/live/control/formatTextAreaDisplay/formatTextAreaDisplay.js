@@ -69,10 +69,10 @@ src.base.control.formatTextAreaDisplay.createShortCutHandler =
  two areas.
  @param {function} getValue The function used to get the value from
  the raw text area.
- @param {function} formatText The function used to convert the raw
- text to pretty text.
  @param {function} setInnerHtml A facade of the setInnerHTML object
  method.
+ @return {function} The function to call when the keyboard shortcut
+ is entered.
  @protected
  */
 src.base.control.formatTextAreaDisplay.formatAndFocus =
@@ -102,14 +102,21 @@ src.base.control.formatTextAreaDisplay.formatAndFocus =
  the parent container, and the pretty code container.
  @param {?function} createATextArea The function used to
  create the raw code textarea.
+ @param {?function} formatAndFocus The function used to create the
+ keyboard shortcut handler.
  @param {?function} createShortCutHandler The function used to create
  the short cut handler object.
+ @param {?function} createPre The function used to create the pre 
+ container for the formatted code.
+ @param {?function} appendChild The function used to add various 
+ elements to the parent container.
  @return {Object} The parent container.
  @export
  */
 src.base.control.formatTextAreaDisplay.initialize =
   function(document, formatText, createADiv, createATextArea,
-           formatAndFocus, createShortCutHandler, appendChild) {
+           formatAndFocus, createShortCutHandler, createPre,
+           appendChild) {
     
     //TODO take in the language type
     
@@ -129,6 +136,10 @@ src.base.control.formatTextAreaDisplay.initialize =
       createShortCutHandler : 
       src.base.control.formatTextAreaDisplay.createShortCutHandler;
     
+    createPre = createPre ? 
+      createPre : 
+      src.base.helper.domCreation.pre;
+    
     appendChild = appendChild ? 
       appendChild : 
       goog.dom.appendChild;
@@ -144,6 +155,7 @@ src.base.control.formatTextAreaDisplay.initialize =
     var rawTextArea = Current_.createAnElement_(createATextArea, Constant_.RawTextArea);
     var prettyTextArea = Current_.createAnElement_(createADiv, Constant_.PrettyTextArea);
     
+    //Add in a pre creation to set the text of
     var toCall = formatAndFocus(container,
                                 formatText,
                                 goog.dom.getElementByClass,
@@ -155,8 +167,11 @@ src.base.control.formatTextAreaDisplay.initialize =
                           goog.events.listen,
                           toCall);
     
+    var preContainer = createPre();
+    
     appendChild(container, rawTextArea);
-    appendChild(container, prettyTextArea);
+    appendChild(preContainer, prettyTextArea);
+    appendChild(container, preContainer);
     
     return container;
   };

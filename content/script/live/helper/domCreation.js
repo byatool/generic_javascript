@@ -29,7 +29,7 @@ src.base.helper.domCreation.checkBox = function(attributes, checked) {
   attributes = attributes ? attributes : {};
   attributes['type'] = 'checkbox';
   attributes['checked'] = checked;
-
+  
   return goog.dom.createDom('input', attributes);
 };
 
@@ -87,6 +87,25 @@ src.base.helper.domCreation.label = function(attributes, text) {
   return goog.dom.createDom('label', attributes, text);
 };
 
+
+
+
+/**
+ @param {?function} createDom The function used to create the
+ span.
+ @return {Object} The pre element.
+ @export
+ */
+src.base.helper.domCreation.pre =
+  function(createDom) {
+    
+    createDom = createDom ? 
+      createDom : 
+      goog.dom.createDom;
+    
+    return createDom('pre');
+  };
+
 /**
  @param {Object} attributes The html attributes
  for the parent form.
@@ -109,6 +128,26 @@ src.base.helper.domCreation.select = function(attributes, data,  defaultItem) {
   return select;
 };
 
+
+
+/**
+ @param {Object} attributes The html attributes for the parent
+ span.
+ @param {string} text The text to add to the span.
+ @param {?function} createDom The function used to create the
+ span.
+ @return {Object} The created span.
+ @export
+ */
+src.base.helper.domCreation.span =
+  function(attributes, text, createDom) {
+    
+    createDom = createDom ? 
+      createDom : 
+      goog.dom.createDom;
+    
+    return createDom('span', attributes, text);
+  };
 
 /**
  @param {Object} attributes This is the html attributes

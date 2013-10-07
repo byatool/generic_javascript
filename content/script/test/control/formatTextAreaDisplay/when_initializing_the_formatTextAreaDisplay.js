@@ -26,12 +26,14 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   
   var appendChild_;
   var createADiv_;
+  var createAPre_;
   var createShortCutHandler_;
   var createATextArea_;
   var document_;
   var formatAndFocus_;
   var formatText_;
   var parentContainer_;
+  var pre_;
   var prettyTextArea_;
   
   //Test Hooks
@@ -40,6 +42,7 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
     document_ = {};
     parentContainer_ = {};
     prettyTextArea_ = {};
+    pre_ = {};
     
     createADiv_ = function(attributes){
       switch(attributes[ControlConstant_.Class]) {
@@ -49,12 +52,13 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
       case Constant_.PrettyTextArea:
         return prettyTextArea_;
         break;
-
+        
       default:
         return parentContainer_;                      
       }};
     
     appendChild_ = function() {};
+    createAPre_ = function() { return pre_; };
     createATextArea_ = function() {};
     createShortCutHandler_ = function(){};
     formatAndFocus_ = function() {};
@@ -66,7 +70,8 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   
   var callTheMethod_ = function() {
     return Current_.initialize(document_, formatText_, createADiv_, createATextArea_,
-                               formatAndFocus_, createShortCutHandler_, appendChild_);
+                               formatAndFocus_, createShortCutHandler_, createAPre_,
+                               appendChild_);
   };
   
   
@@ -159,12 +164,25 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
     
     expect(methodWasCalled).toBe(true);
   });
+
+  
+  it('should create a pre.', function() {
+    var methodWasCalled = false;
+
+    createAPre_ = function() {
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
   
   
-  it('should append the raw text area to the parent.', function() {
+  it('should append the raw text area to the parent container.', function() {
     var methodWasCalled = false;
     var rawTextArea = {};
-
+    
     createATextArea_ = function() {
       return rawTextArea;
     };
@@ -180,18 +198,34 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   });
   
   
-  it('should append the pretty text ares to the parent.', function() {
+  it('should append the pretty text area to the pre.', function() {
     var methodWasCalled = false;
-    
+  
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
-        (parent === parentContainer_ && child === prettyTextArea_);
+        (parent === pre_ && child === prettyTextArea_);
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
+  
+  
+  it('should append the pre container to the parent.', function() {
+    var methodWasCalled = false;
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === parentContainer_ && child === pre_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   
  
   it('should return the parent container.', function() {
