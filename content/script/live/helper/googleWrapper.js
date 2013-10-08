@@ -43,6 +43,18 @@ src.base.helper.googleWrapper.createAKeyboardShortcutHandler =
 
 
 /**
+ @param {string} text The text to find the match in.
+ @param {string} toMatch The match to find within the text.
+ @return {Array.<string>} The matched items.
+ @protected
+ */
+src.base.helper.googleWrapper.match =
+  function(text, toMatch) {
+    return text.match(toMatch);
+  };
+
+
+/**
  @param {string} text The text to create a regular
  expression with.
  @return {string} The regular expression.

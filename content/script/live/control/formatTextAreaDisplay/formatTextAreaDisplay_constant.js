@@ -24,7 +24,7 @@ src.base.control.formatTextAreaDisplay.constant.ColorReservedMethods = '#9b3429'
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ColorUserMethods = '#dab45c';
+src.base.control.formatTextAreaDisplay.constant.ColorReservedWords = '#e08940';
 
 
 /**
@@ -32,7 +32,18 @@ src.base.control.formatTextAreaDisplay.constant.ColorUserMethods = '#dab45c';
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ColorReservedWords = '#e08940';
+src.base.control.formatTextAreaDisplay.constant.ColorQuotedText = '#FF0000';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.ColorUserMethods = '#dab45c';
+
+
+
 
 /* End Colors */
 
@@ -106,7 +117,7 @@ src.base.control.formatTextAreaDisplay.constant.EqualityOperatorNotEqual = ' !==
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.EqualityOperatorOr = ' || ';
+src.base.control.formatTextAreaDisplay.constant.EqualityOperatorOr = '&#124;';
 
 
 /**
@@ -119,6 +130,30 @@ src.base.control.formatTextAreaDisplay.constant.EqualityOperatorTrue = 'true';
 
 /* End Equality  Operators */
 
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexFindBetweenQuotes = '[\'|\"](?:[^\'|^\"]|\\.)*[\'|\"]';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexFinUserDefinedItems = 'var [A-Za-z]* ';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexFindPipe ='[\|]';
 
 /* Start Reserved Words */
 
