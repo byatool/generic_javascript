@@ -40,8 +40,15 @@ src.base.control.formatTextAreaDisplay.constant.ColorQuotedText = '#FF0000';
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ColorUserMethods = '#dab45c';
+src.base.control.formatTextAreaDisplay.constant.ColorUserItems = '#6754f4';
 
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.ColorUserParameters = '#33b14e';
 
 
 
@@ -140,12 +147,21 @@ src.base.control.formatTextAreaDisplay.constant.EqualityOperatorTrue = 'true';
 src.base.control.formatTextAreaDisplay.constant.RegexFindBetweenQuotes = '[\'|\"](?:[^\'|^\"]|\\.)*[\'|\"]';
 
 
+
 /**
  @const
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.RegexFinUserDefinedItems = 'var [A-Za-z]* ';
+src.base.control.formatTextAreaDisplay.constant.RegexFindParameters = 'function\(([^\)])*\)';
+//src.base.control.formatTextAreaDisplay.constant.RegexFindParameters = 'function\(([^\)])*\)';
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexFindUserDefinedItems = 'var [A-Za-z]* ';
 
 
 /**
@@ -154,6 +170,25 @@ src.base.control.formatTextAreaDisplay.constant.RegexFinUserDefinedItems = 'var 
  @protected
  */
 src.base.control.formatTextAreaDisplay.constant.RegexFindPipe ='[\|]';
+
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexFunctionText = 'function(';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexVarText = 'var ';
+
+
 
 /* Start Reserved Words */
 

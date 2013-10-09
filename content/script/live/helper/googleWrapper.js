@@ -75,6 +75,18 @@ src.base.helper.googleWrapper.toRegex =
 
 
 /**
+ @param {string} text The text to split.
+ @param {string} by The string to split by.
+ @return {string} The string array.
+ @protected
+ */
+src.base.helper.googleWrapper.split =
+  function(text, by) {
+    return text.split(by);
+  };
+
+
+/**
  @param {string} text The text to search.
  @param {string} what The text to replace.
  @param {string} toWhat The text to use as the replacement.

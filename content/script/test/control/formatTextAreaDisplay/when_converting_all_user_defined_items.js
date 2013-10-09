@@ -14,46 +14,56 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
   
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
   var Current_ = src.base.control.formatTextAreaDisplay.javascript;
-  
+  var ControlConstant_ = src.base.control.controlConstant;
+  var GoogleWrapper_ = src.base.helper.googleWrapper;
   
   //Fields
   
-  var Text_ = goog.string.getRandomString(); 
+  var CleanUpTextRegex_ = goog.string.getRandomString();
+  var FindUserRegex_ = goog.string.getRandomString();
+  var Text_ = goog.string.getRandomString();
   
   var forEach_;
   var match_;
-  var replace_;
+  var matched_;
+  var remove_;
+  var map_;
   var surroundWithColor_;
   var toRegex_;
-  
+  var trim_;
   
   //Test Hooks
   
   beforeEach(function() {
     forEach_= function() {};
-    match_= function() {};
-    replace_= function() {};
+    map_ = function(){};
+    
+    matched_ = {};
+    match_= function() { return matched_; };
+    remove_ = function(){};
     surroundWithColor_= function() {};
-    toRegex_= function() {};
+    toRegex_ = function(toFind) { return FindUserRegex_; };
+    trim_ = function(){};
   });
   
   
-  //Support Methods
+  //Support Items
   
   var callTheMethod_ = function() {
-    return Current_.convertAllUserDefinedItems(Text_, toRegex_, match_, replace_,
-                                               forEach_, surroundWithColor_);
+    return Current_.convertAllUserDefinedItems(Text_, toRegex_, match_, remove_, trim_,
+                                               map_, forEach_, surroundWithColor_);
   };
   
   
-  //Test Methods
+  //Test Items
   
   it('should create the regular expression.', function() {
     var methodWasCalled = false;
     
     toRegex_ = function(text){
-      methodWasCalled = Constant_.RegexFinUserDefinedItems !== undefined &&
-        text === Constant_.RegexFinUserDefinedItems;
+      methodWasCalled = methodWasCalled ||
+        (Constant_.RegexFindUserDefinedItems !== undefined &&
+         text === Constant_.RegexFindUserDefinedItems);
     };
     
     
@@ -65,15 +75,11 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
   
   it('should match the created regex to get the user defined items.', function() {
     var methodWasCalled = false;
-    var createdRegex = {};
     
-    toRegex_ = function(){
-      return createdRegex;
-    };
     
     match_ = function(text, regex){
       methodWasCalled = text === Text_ &&
-        regex === createdRegex;
+        regex === FindUserRegex_;
     };
     
     callTheMethod_();
@@ -82,28 +88,26 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
   });
   
   
-  
   it('should remove var from the matched items.', function() {
     var callCount = 0;
-    var matched = {};
-    var createdRegex = 'b';
-    var matchedItem = 'a';
+    var item = 'adf';
+    var trimmedText = 'ads';
     
-    toRegex_ = function(text){
-      callCount += text === 'var ';
-      return createdRegex;
-    };
-    
-    replace_ = function(text, regex, to){
-      callCount += text === matchedItem &&
-        regex === createdRegex &&
-        to === '';
-    };
-    
-    forEach_ = function(items, toDo) {
-      callCount += items === matched && callCount === 0;
+    trim_ = function(text) {
+      callCount += text === item;
       
-      toDo(matchedItem);
+      return trimmedText;
+    };
+    
+    remove_ = function(text, what){
+      callCount += text === trimmedText &&
+        what === Constant_.RegexVarText;
+    };
+    
+    map_ = function(items, toWhat){
+      callCount += items === matched_;
+      
+      toWhat(item);
     };
     
     callTheMethod_();
@@ -114,29 +118,40 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
   
   it('should surround all matched with color.', function() {
     var callCount = 0;
-    var matched = {};
     var item = {};
+    var mapped = {};
+  
+    map_ = function(){
+      return mapped;
+    };
     
     surroundWithColor_ = function(text, word, color, toRegex, replace){
       callCount += text === Text_ &&
         word === item &&
-        color === Constant_.ColorUserMethods &&
+        color === Constant_.ColorUserItems &&
         toRegex === toRegex_ &&
-        replace === replace_;
+        replace === GoogleWrapper_.replace;
     };
     
     forEach_ = function(items, toDo){
-      callCount += items === matched && callCount === 0;
+      callCount += items === mapped;
       
       toDo(item);
     };
-    
     
     callTheMethod_();
     
     expect(callCount).toBe(2);
   });
+
+  
+  it('should return the text.', function() {
+    
+    expect(callTheMethod_()).toBe(Text_);
+    
+  });
 };
+
 
 describe('When converting all user defined items, it', function() {
   src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe();
