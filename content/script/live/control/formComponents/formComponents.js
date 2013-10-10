@@ -177,7 +177,7 @@ src.base.control.formComponent.setupTheForm =
            addElement, createADatePicker) {
     
     var Constant_ =  src.base.control.formComponent.constant;
-    var Popup = src.base.control.popupDatePicker;
+    var PopupConstant_ = src.base.control.popupDatePicker.constant;
     
     var ifNullThen = function(toCheck, toSet) {
       return toCheck ? toCheck : toSet;
@@ -192,7 +192,7 @@ src.base.control.formComponent.setupTheForm =
         return node['id'] === item[0];
       });
       
-      datePickerOptions[Popup.TextboxName] = item[1];
+      datePickerOptions[PopupConstant_.TextboxName] = item[1];
       var datePicker = createADatePicker(datePickerOptions);
       addElement(container, datePicker);
     });

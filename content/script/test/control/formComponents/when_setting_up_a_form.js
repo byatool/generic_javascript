@@ -13,7 +13,7 @@ src.test.control.formComponent.whenSettingUpAForm.describe = function() {
   
   var Constant_ = src.base.control.formComponent.constant;
   var Current_ = src.base.control.formComponent;
-  var Popup = src.base.control.popupDatePicker;
+  var PopupConstant_ = src.base.control.popupDatePicker.constant;
   
   var ContainerOne_ = goog.string.getRandomString();
   var FormId_ = goog.string.getRandomString();
@@ -42,7 +42,7 @@ src.test.control.formComponent.whenSettingUpAForm.describe = function() {
     
     createADatePicker_ = function() { return {}; };
     datePickerOptions_ = {};
-    datePickerOptions_[Popup.TextboxName] = '';
+    datePickerOptions_[PopupConstant_.TextboxName] = '';
     
     forEach_ = function(){};
     textboxes_ = [[ContainerOne_, TextboxOne_]];
@@ -139,8 +139,9 @@ src.test.control.formComponent.whenSettingUpAForm.describe = function() {
     };
     
     createADatePicker_ = function(options) {
-      methodWasCalled = options === datePickerOptions_ &&
-        options[Popup.TextboxName] === TextboxOne_;
+      methodWasCalled = PopupConstant_.TextboxName !== undefined &&
+        options === datePickerOptions_ &&
+        options[PopupConstant_.TextboxName] === TextboxOne_;
     };
     
     callTheMethod_();
@@ -177,8 +178,8 @@ src.test.control.formComponent.whenSettingUpAForm.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
-
-   
+  
+  
   it('should return the form.', function() {
     expect(Constant_.Form !== undefined &&
            callTheMethod_()[Constant_.Form] === form_).toBe(true);
