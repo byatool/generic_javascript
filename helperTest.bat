@@ -1,0 +1,37 @@
+python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
+--jvm_flags="-d32" ^
+--root="c:/lib/closure/closure-library/" ^
+--root="content/script/live/" ^
+--root="content/script/test/helper/" ^
+--namespace="src.base.helper.arrayHelper" ^
+--namespace="src.base.helper.constants" ^
+--namespace="src.base.helper.domCreation" ^
+--namespace="src.base.helper.domHelper" ^
+--namespace="src.base.helper.events" ^
+--namespace="src.test.helper.arrayHelper.whenGettingAllButTheLastItemFromTheList" ^
+--namespace="src.test.helper.arrayHelper.whenUsingCar" ^
+--namespace="src.test.helper.arrayHelper.whenUsingCdr" ^
+--namespace="src.test.helper.domCreation.whenCreatingAClearDiv" ^
+--namespace="src.test.helper.domCreation.whenCreatingACheckbox" ^
+--namespace="src.test.helper.domCreation.whenCreatingADropDownList" ^
+--namespace="src.test.helper.domCreation.whenCreatingALabel" ^
+--namespace="src.test.helper.domCreation.whenCreatingASpan" ^
+--namespace="src.test.helper.domCreation.wheCreatingAPreElement" ^
+--namespace="src.test.helper.domCreation.whenCreatingTextarea" ^
+--namespace="src.test.helper.domCreation.whenCreatingTextbox" ^
+--namespace="src.test.helper.domCreation.whenFillingASelect" ^
+--namespace="src.test.helper.domHelper.whenCreatingARedirectHandler" ^
+--namespace="src.test.helper.domHelper.whenRetrievingAChildById" ^
+--namespace="src.test.helper.domHelper.whenResettingAForm" ^
+--namespace="src.test.helper.domHelper.whenRetrievingSpecificDataFromADataMap" ^
+--namespace="src.test.helper.domHelper.whenEnablingAButton" ^
+--namespace="src.test.helper.events.whenSettingTheClickEvent" ^
+--namespace="src.test.helper.events.whenSettingTheSelectectedEvent" ^
+--output_mode=compiled ^
+--compiler_jar="c:/lib/closure/compiler.jar" ^
+--compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
+--compiler_flags="--externs=content/script/run/jasmine/jasmine.js" ^
+--compiler_flags="--externs=content/script/run/jasmine/jasmine-html.js" ^
+--compiler_flags="--warning_level=QUIET" ^
+--compiler_flags="--generate_exports" > "content/script/run/helper/helper.js"
+rem --jvm_flags="-d32" ^

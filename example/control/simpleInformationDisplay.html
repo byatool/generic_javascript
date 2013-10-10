@@ -1,0 +1,83 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+
+    function updateTheThing() {
+      var display = document.getElementById('informationContiner');
+      src.base.control.simpleInformationDisplay.refresh(display, 'http://localhost:55250/Home/RetrieveBasicInformation/', {'memberId': 2});
+    }
+    
+    </script>
+  </head>
+  
+  <body>
+    <div id="mainContainer">
+      
+    </div>
+    <input type="button" name="" value="update" onclick="updateTheThing()" />
+  </body>
+
+  <!--
+  This is used to present a list of name and value rows. Something
+  like:
+
+  First Name: Bob
+  Last  Name: MacBob
+
+  It does this by posting information to a server, and using the
+  result to update the date in the list.  The names/labels themselves are
+  set when the display is first created.  The values are updated
+  when it is first created, or with every "refresh" call as seen
+  above.
+
+  Everything is done by it.  This means that once it is supplied some
+  information (url, request string paramters, ect), it will build
+  the display, call the server, and update the display.  Refresh
+  will skip the building step, but follows the rest.
+
+
+  Example Action needed:
+  
+    [HttpPost]
+    public JsonResult RetrieveBasicInformation(int memberId)
+    {
+     return new JsonResult
+      { 
+        Data = new FakeUser { firstName = memberId == 1 ? "Bob" : "Jim", lastName = "MacBob"  }
+      };
+    }
+      
+    -->
+  
+  <script type="text/javascript">
+    var Current_ = src.base.control.simpleInformationDisplay;
+    
+    var options_ = {};
+    options_[Current_.ContainerId] = 'informationContiner';
+    options_[Current_.ContainerClass] = 'simpleInformationDisplayContainer'
+    options_[Current_.RowClass] = 'informationRow'
+    options_[Current_.ColumnClass] = 'informationColumn'
+    
+    var layoutItem_ = {};
+    layoutItem_[Current_.Label] = 'First Name:';
+    layoutItem_[Current_.PropertyName] = 'firstName';
+    
+    var layoutItemTwo_ = {};
+    layoutItemTwo_[Current_.Label] = 'Last Name:';
+    layoutItemTwo_[Current_.PropertyName] = 'lastName';
+    
+    layoutItems_ = [layoutItem_, layoutItemTwo_];
+    options_[Current_.LayoutItems] = layoutItems_;
+    
+    //The expected object signature is {'firstName': 'someName', 'lastName': 'someLastName'}
+    //The localhost port will vary... like duh!
+    var container =
+      Current_.initialize('http://localhost:55250/Home/RetrieveBasicInformation/', {'memberId': 1}, options_);
+    
+    document.getElementById('mainContainer').appendChild(container);
+    
+    
+  </Script>
+</html>

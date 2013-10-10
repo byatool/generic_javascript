@@ -1,0 +1,50 @@
+@mixin feedbackButton
+  border-radius            : .2em
+  border-style             : solid
+  border-width             : .1em
+  font-size                : .6em
+  margin                   : .5em .5em 0 0 !important
+
+body
+  background-color         : $greyFour
+  .feedbackEntryForm
+    width: 23.3em
+    .feedbackCommentArea
+      box-sizing: border-box
+      overflow: auto
+      resize: none
+      width: 99%
+      .label-input-label
+        
+    .feedbackMenuBar
+      width: 100%
+      .feedbackCategory
+        float              : left
+        button
+          @include feedbackButton
+          border-color     : $blueFour
+          background-color : $blueFour
+          color            : $blueOne
+        .feedbackCategorySelected
+          background-color : $blueTwo
+          color            : $blueFour
+      .feedbackCharacterCounter
+        color              : $greyOne
+        float              : left
+        font-size          : .9em
+        margin             : .3em .5 0 .5em !important
+      .feedbackCounterText
+        color              : $greyOne
+        float              : left
+        font-size          : .9em
+        margin             : .3em 0 0 .1em !important
+      .submitButton
+        @include feedbackButton
+        background-color   : $greenThree
+        color              : $greenOne
+        float              : right
+      .feedbackCancelButton
+        @include feedbackButton
+        background-color   : $errorRed
+        color              : $white
+        float              : right

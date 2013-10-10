@@ -1,0 +1,50 @@
+
+<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+  </head>
+  
+  <body>
+    <div class="" id="messageBoxContainer" name="messageBoxContainer">
+      
+    </div>
+    
+    <input type="button" name="exampleButton" id="exampleButton" value="exampleButton"  />
+  </body>
+  <!--
+      This is used to create an message container that can be updated
+      by passing in a result.  The result structure demands a specific
+      format:
+  
+      Messages ->  An array of strings
+      Success  ->  Boolean flag that tells the message box if the messages
+        are errors.  This will toggle the message box style between
+        two css clases: 'error' and 'info'
+
+      The message box will remove past messages when refreshed.
+  -->
+  
+  
+  <script type="text/javascript">
+    var MessageBoxNamespace = src.base.control.messageBox;
+    
+    var overallContainer = 'messageBoxContainer';
+    var messageBoxParent = 'someMessageBox';
+    
+    var parentContainer = document.getElementById(overallContainer);
+    var messageBox = MessageBoxNamespace.createMessageBox(messageBoxParent);
+    parentContainer.appendChild(messageBox);
+    
+    window.showTheBox = function() {
+      var messages = ['hi there']
+      var successful = true;
+      var newResult = MessageBoxNamespace.createAResult(messages, succesful);
+      MessageBoxNamespace.updateMessagesByResult(messageBox, newResult);
+    };
+    
+    var button = document.getElementById('exampleButton');
+    button.addEventListener('click', showTheBox, false);
+    
+  </script>
+</html>

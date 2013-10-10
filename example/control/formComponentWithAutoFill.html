@@ -1,0 +1,56 @@
+
+<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+  </head>
+
+  <body>
+
+    <form id="currentForm" name="currentForm" action="" class="formClass">
+
+      <div class="inputContainerClass">
+        <label for="firstName">User name:</label>
+        <input type="text" id="firstName" name="firstName" class="inputClass"/>
+        <div class="clearBoth"></div>
+      </div>
+      
+      <div class="inputContainerClass">
+        <label for="lastName">Date Of Birth:</label>
+        <input type="text" id="lastName" name="lastName" class="inputClass"/>
+        <div class="clearBoth"></div>
+      </div>
+      
+      <div class="inputContainerClass">
+        <label for=""></label>
+        <button type="button" class="inputClass submitButton" id="Submit">Submit</button>
+        <div class="clearBoth"></div>
+      </div>
+      
+    </form>
+  </body>
+  
+  <script type="text/javascript">
+    
+  </script>
+  
+  <script type="text/javascript">
+    var datePickerInformation = {};
+    var DatePickerNamespace = src.base.control.popupDatePicker;
+    var formComponentNamespace = src.base.control.formComponent;
+    
+    
+    var datePickerOptions = {};
+    datePickerInformation[formComponentNamespace.DatepickerOptions] = datePickerOptions;
+    var datePickerControls = [];
+    datePickerInformation[formComponentNamespace.DatepickerTextboxes] = datePickerControls;
+    
+    var autofillParameters = {};
+    autofillParameters[formComponentNamespace.AutoFillUrl] = "http://localhost:55250/Home/RetrieveBasicInformation/";
+    autofillParameters[formComponentNamespace.AutoFillParameters] = {'memberId': 1};
+    
+    var validationMethod = src.site.validation.validationInterpreter.createAValidationWrapper([]);
+    
+    formComponentNamespace.initialize('currentForm', datePickerInformation, validationMethod, autofillParameters, null);
+  </script>
+</html>

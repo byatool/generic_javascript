@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+  </head>
+  
+  <body>
+
+    <form id="currentForm" name="currentForm" action="" class="formClass">
+      
+      <div class="inputContainerClass">
+        <label for="Username">User name:</label>
+        <input type="text" id="Username" name="Username" class="inputClass"/>
+        <div class="clearBoth"></div>
+      </div>
+      
+      <div class="inputContainerClass">
+        <label for="DateOfBirth">Date Of Birth:</label>
+        <input type="text" id="DateOfBirth" name="DateOfBirth" class="inputClass"/>
+        <div  id="dateOfBirthContainer" ></div>
+        <div class="clearBoth"></div>
+      </div>
+      
+      <div class="inputContainerClass">
+        <label for=""></label>
+        <button type="button" class="inputClass submitButton" id="Submit">Submit</button>
+        <div class="clearBoth"></div>
+      </div>
+      
+    </form>
+  </body>
+  
+  <script type="text/javascript">
+    
+    var retrieveTheActualValue = function(toCheck, itemName) {
+    return toCheck.get(itemName) ? toCheck.get(itemName)[0] : null;
+    };
+    
+    var validateTheForm = function(values) {
+    
+    var toCheck = retrieveTheActualValue(values, 'Username');
+    var messages = [];
+    
+    if(!toCheck || toCheck.length === 0)
+    messages.push('Username is empty.');
+    
+    toCheck = retrieveTheActualValue(values, 'DateOfBirth');
+    
+    if(!toCheck || toCheck.length === 0)
+    messages.push('Date of birth is empty.');
+    
+    return messages;
+    }
+    
+  </script>
+  
+  <script type="text/javascript">
+    var datePickerInformation = {};
+    var DatePickerNamespace = src.base.control.popupDatePicker;
+    var formComponentNamespace = src.base.control.formComponent;
+    
+    var datePickerOptions = {};
+    datePickerOptions[DatePickerNamespace.ButtonClass] = 'showButton';
+    datePickerOptions[DatePickerNamespace.ButtonText] = '';
+    datePickerOptions[DatePickerNamespace.ContainerClass] = '';
+    datePickerOptions[DatePickerNamespace.DatePickerClass] = '';
+    datePickerOptions[DatePickerNamespace.PopupClass] = 'popup';
+    
+    datePickerInformation[formComponentNamespace.DatepickerOptions] = datePickerOptions;
+    
+    var datePickerControls = [['dateOfBirthContainer', 'DateOfBirth']];
+    
+    datePickerInformation[formComponentNamespace.DatepickerTextboxes] = datePickerControls;
+    
+    //Last parameter is unused at this time.
+    formComponentNamespace.initialize('currentForm', datePickerInformation, validateTheForm, null);
+  </script>
+</html>

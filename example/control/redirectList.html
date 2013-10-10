@@ -1,0 +1,73 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+      
+    </script>
+  </head>
+  
+  <body>
+    <div id="mainContainer" >
+      <input type="hidden" id="firstHiddenA" name="firstHiddenA" value="1a">
+      <input type="hidden" id="firstHiddenB" value="1b">
+      <input type="hidden" id="secondHiddenA" value="2a">
+      <input type="hidden" id="secondHiddenB" value="2b">
+    </div>
+  </body>
+
+  <!--
+      This is used to create a list of buttons, each of which will
+      redirect to the url specified.  Each button can be "attached" to
+      any number of elements on the page to derive request
+      parameters.  This means that when the button is clicked, it will
+      not only redirect to the specified url, but will also append n
+      number of values from n elements.
+
+      Explanation of the button options:
+  
+        This is the id of the button that will be created:
+          button[src.base.control.redirectList.ButtonId] = id;
+    
+        This is the text that the button will have:
+          button[src.base.control.redirectList.ButtonText] = text;
+    
+        These are the element ids that the button will use to derive the
+        request parameters:
+          button[src.base.control.redirectList.For] = controlIds;
+    
+        This is the url to post to:
+          button[src.base.control.redirectList.Goto] = url;
+  
+    -->
+  
+  <script type="text/javascript">
+    
+    var createButtonOptions = function(id, text, controlIds, url) {
+      var button = {};
+      button[src.base.control.redirectList.ButtonId] = id;
+      button[src.base.control.redirectList.ButtonText] = text;
+      button[src.base.control.redirectList.For] = controlIds;
+      button[src.base.control.redirectList.Goto] = url;
+    
+      return button;
+    };
+    
+    var options = {};
+    options[src.base.control.redirectList.ContainerClass] = 'container';
+    options[src.base.control.redirectList.ContainerId] = 'container';
+    
+    var firstButton = createButtonOptions('firstButton', 'first button',  ['firstHiddenA', 'firstHiddenB'], 'redirectList.html');
+    var secondButton = createButtonOptions('secondButton', 'second button',  ['secondHiddenA', 'secondHiddenB'], 'redirectList.html');
+    buttonList_ = [firstButton, secondButton];
+
+    options[src.base.control.redirectList.ButtonList] = buttonList_;
+
+    var result = src.base.control.redirectList.initialize(options);
+
+    var container = document.getElementById('mainContainer');
+    container.appendChild(result);
+
+  </script>
+</html>
+

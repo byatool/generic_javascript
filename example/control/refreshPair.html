@@ -1,0 +1,55 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+      
+    </script>
+  </head>
+  
+  <body>
+    <div style="width: 400px; float: left;">
+      <h2 id="header2">Zippy 2</h2>
+      <p id="content2">
+        Nunc et eros. Aliquam felis lectus, sagittis ac, sagittis eu, accumsan
+        vitae, leo. Maecenas suscipit, arcu eget elementum tincidunt, erat ligula
+        porttitor dui, quis ornare nisi turpis at ipsum. Vivamus magna tortor,
+        porttitor eu, cursus ut, vulputate in, nulla. Quisque nonummy feugiat
+        turpis. Cras lobortis lobortis elit. Aliquam congue, pede suscipit
+        condimentum convallis, diam purus dictum lacus, eu scelerisque mi est
+        molestie libero. Duis luctus dapibus nibh. Sed condimentum iaculis metus.
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+        ac turpis egestas. In pharetra dolor porta eros facilisis pellentesque.
+        Proin quam mi, sodales vel, tincidunt sit amet, convallis vel, eros.
+        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
+        cubilia Curae; Phasellus velit augue, rutrum sit amet, posuere nec, euismod
+        ac, elit. Etiam nisi.
+      </p>
+    </div>
+  </body>
+  
+  <!--
+  This is used to update a element value based on the change of
+  another.  In this example: when the toWatch element change event fires,
+  there is a call to the server (ajax) to get a new value for the
+  toUpdate element.  It then updates the toUpdate element with the
+  returned value from the server.
+  
+  Example action to handle the call:
+  
+  [AllowCrossSiteJson]
+  [HttpPost]
+  public JsonResult RetrieveReverse(string toWatch)
+  {
+    return new JsonResult {Data = toWatch.Reverse()};
+  }
+  
+  Noice that the input paramter is the same as the id on the element
+  being watched.
+  -->
+  
+  <script type="text/javascript">
+    src.base.control.refreshPair.initialize('toWatch', 'toUpdate', 'http://localhost:55250/Home/RetrieveReverse/');
+  </script>
+</html>
+

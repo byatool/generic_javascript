@@ -1,0 +1,45 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    
+  </head>
+  
+  <body>
+    <div id="mainContainer" ></div>
+  </body>
+  
+  <script type="text/javascript">
+    
+      var rules = [
+      ['SocialSecurityNumber',
+      ['is a valid social security number', 'Invalid social security number.']
+      ],
+      ['Name',
+      ['is not empty', 'Name is required.']
+      ],
+      ['Username',
+      ['is not empty', 'Username is required']
+      ],
+      ['Password',
+      ['is not empty or the default', 'default', 'Password is not acceptable.']]];
+      
+      var validationMethod = src.site.validation.validationInterpreter.createAValidationWrapper(rules);
+      
+      var toCheck = {};
+      toCheck['SocialSecurityNumber'] = 'dffds';
+      toCheck['Name'] = '';
+      toCheck['Password'] = 'default';
+      toCheck['Username'] = 'hihi'
+      
+      var errors = validationMethod(toCheck);
+      
+      var blah = '';
+      
+      var container = document.getElementById('mainContainer');
+      
+      for(var i = 0; i < errors.length; i++) {blah += " " + errors[i]; }
+                         container.innerHTML = blah;
+                         
+  </script>
+</html>

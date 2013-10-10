@@ -1,0 +1,81 @@
+﻿<html>
+  <head>
+    <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+      
+    </script>
+  </head>
+  
+  <body>
+    <div id="mainContainer" >
+
+    </div>
+    
+    
+  </body>
+
+
+  <!--
+  This uses the remote autocomplete control from the closure
+  library. (http://closure-library.googlecode.com/svn/docs/class_goog_ui_ac_Remote.html).
+  This will create the autocomplete control, the textbox that is
+  assigned to it, and a hidden element.  The hidden element is used to
+  hold a value after a person has selected an option from the
+  autocomplete list.  This was done so that the text that appears in
+  the textbox can be completely different from what the selected value
+  is.  For example:
+  
+  Smith, Joe - shows up in the textbox
+  1234       - is in the hidden field
+
+  The 1234 would be the id that is actually needed by the form when
+  posting its data.  Where as Smith, Joe is merely the format that is
+  user friendly.
+
+  By default, this expects a list of item:
+
+  {'Name': 'Joey', 'FirstName' : 'Joe', 'LastName' : 'Smith', 'Id': 1234}
+
+  'Name' shows up in the autocomplete item list
+  'LastName', 'FirstName' shows up in the textbox when an item is selected
+  1234 is in the hidden field when an item is selected
+  
+  This can be over written by sending in replacements method for :
+    src.base.control.autocomplete.setRenderRowContents
+    src.base.control.autocomplete.setInputHandlerSelectRow
+  As the second, and third paramters when calling the
+    src.base.control.autocomplete.initialize method.  By default these
+    parameters are null when calling the method, then
+    set within the initialize method.
+  
+  Example action to handle the call:
+  
+  [AllowCrossSiteJson]
+  [HttpPost]
+  public JsonResult AutocompleteWithObjectArray(string token)
+  {
+    return new JsonResult
+      {
+        Data = Enumerable.Range(0, 5).Select(x => new { Id = x, FirstName = "Firstname_" + x, LastName = "Lastname_" + x, Name = "Name_" + x }).ToList()
+      };
+  }
+
+  There is a sample sass file to show the theme options.
+    ~/generic_javascript/content/style/sass/autocomplete.sass
+  -->
+  
+  <script type="text/javascript">
+    
+    
+    var options = {};
+    
+    options[src.base.control.autocomplete.ContainerId] = 'parentContainer';
+    options[src.base.control.autocomplete.Url] = 'http://localhost:55250/Home/AutocompleteWithObjectArray';
+    options[src.base.control.autocomplete.HiddenId] = 'userId';
+    var result = src.base.control.autocomplete.initialize(options);
+    var container = document.getElementById('mainContainer');
+    
+    container.appendChild(result);
+  </script>
+</html>

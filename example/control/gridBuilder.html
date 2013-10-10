@@ -1,0 +1,34 @@
+<html>
+  
+  <head>
+     <link rel="stylesheet" href="../../content/style/css/final.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../content/script/live/final.js"></script>
+    <script type="text/javascript">
+    </script>
+  </head>
+  <body>
+    <div id="container" class="">
+      
+    </div>
+  </body>
+  <script type="text/javascript">
+    var options = {};
+    
+    options[src.base.control.gridBuilder.ContainerClass] = 'gridBuilderContainer';
+    options[src.base.control.gridBuilder.ContainerId] = 'gridBuilderContainer';
+    options[src.base.control.gridBuilder.Url] = 'http://localhost:55250/Home/RetrieveEmployeeList/';
+    options[src.base.control.gridBuilder.Parameters] = {'page':'0'};
+    
+    options[src.base.control.gridBuilder.Map] = [
+    {'headerText':'Last Name', 'propertyName':'LastName' },
+    {'headerText':'First Name' , 'propertyName':'FirstName' },
+    {'headerText':'Home Town' , 'propertyName':'City' },
+    {'headerText':'Social Security Number' , 'propertyName':'Ssn' }
+    ];
+    
+    var result = src.base.control.gridBuilder.initialize(options);
+    
+    document.getElementById('container').appendChild(result);
+    
+  </script>
+</html>
