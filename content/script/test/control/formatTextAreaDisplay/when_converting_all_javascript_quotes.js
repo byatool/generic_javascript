@@ -92,22 +92,10 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
     var item = 'ada';
     var createdRegex = 'dsaffsda';
     var matched = {};
-  
+    
     match_ = function(){
       return matched;
     };
-    
-    // toRegex_ = function(toFind){
-    //   stepsPassed += toFind === item;
-    
-    //   return createdRegex;
-    // };
-    
-    // replace_ = function(text, regex, replacement){
-    //   stepsPassed += text === Text_ &&
-    //     regex === createdRegex &&
-    //     replacement === '<span style=\'color:' + Color_ + ';\'>' + item + '</span>';
-    // };
     
     surroundWithColor_ = function(text, word, color, toRegex, replace) {
       stepsPassed += text === Text_ &&
@@ -119,14 +107,31 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
     
     forEach_ = function(matches, replacement){
       stepsPassed += matches === matched ;
-       
+      
       replacement(item);
     };
-    
     
     callTheMethod_();
     
     expect(stepsPassed).toBe(2);
+  });
+  
+   
+  it('should not find all matches if there are none.', function() {
+    var methodWasCalled = false;
+    var matched = null;
+    
+    match_ = function(){
+      return matched;
+    };
+    
+    forEach_ = function() {
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
   });
   
   

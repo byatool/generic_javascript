@@ -107,17 +107,18 @@ src.base.control.formatTextAreaDisplay.javascript.cleanUpText =
 src.base.control.formatTextAreaDisplay.javascript.convertAllQuotedText =
   function(text, color, toRegex, replace,
            match, forEach, surroundWithColor) {
-
+    
     var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-
+    
     var findMatch = toRegex(Constant_.RegexFindBetweenQuotes);
     var matched = match(text, findMatch);
-
-
-    forEach(matched, function(item) {
-      text = surroundWithColor(text, item, color, toRegex, replace);
-    });
-
+    
+    if(matched !== null) {
+      forEach(matched, function(item) {
+        text = surroundWithColor(text, item, color, toRegex, replace);
+      });
+    }
+     
     return text;
   };
 
