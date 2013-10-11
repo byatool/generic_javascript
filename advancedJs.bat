@@ -15,6 +15,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.feedback.form" ^
 --namespace="src.base.control.formatTextAreaDisplay" ^
 --namespace="src.base.control.formatTextAreaDisplay.javascript" ^
+--namespace="src.base.control.formatTextAreaDisplay.html" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
