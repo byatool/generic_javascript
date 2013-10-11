@@ -14,176 +14,86 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptReservedWords.
   
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
   var Current_ = src.base.control.formatTextAreaDisplay.javascript;
-  var DomCreation_ = src.base.helper.domCreation;
-  var GoogleWrapper_ = src.base.helper.googleWrapper;
-
+  
   
   //Fields
   
-  var Text_ = goog.string.getRandomString();;
-  
-  var surroundWithColor_;
-  
   
   //Test Hooks
+  //src.base.control.formatTextAreaDisplay.javascript.reservedWords
   
   beforeEach(function() {
-    
-    
-    surroundWithColor_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.convertAllReservedWords(Text_, surroundWithColor_);
   };
   
   
   //Test Methods
-  
-  it('should replace any else with a color span.', function() {
-    var methodWasCalled = false;
+  it('should search for else.', function() {
+    var exists = Constant_.ReservedWordElse !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordElse);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordElse !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         text === Text_ &&
-         name === Constant_.ReservedWordElse &&
-         color === Constant_.ColorReservedWords,
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
+    expect(exists).toBe(true);
+  });
+
+
+  it('should search for =.', function() {
+    var exists = Constant_.ReservedWordEquals !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordEquals);
     
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any equals with a color span.', function() {
-    var methodWasCalled = false;
+  it('should search for for.', function() {
+    var exists = Constant_.ReservedWordFor !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordFor);
     
-    
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordEquals !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         name === Constant_.ReservedWordEquals &&
-         color === Constant_.ColorReservedWords &&
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any for with a color span.', function() {
-    var methodWasCalled = false;
+  it('should search for function.', function() {
+    var exists = Constant_.ReservedWordFunction !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordFunction);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordFor !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         name === Constant_.ReservedWordFor &&
-         color === Constant_.ColorReservedWords &&
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any function with a color span.', function() {
-    var methodWasCalled = false;
+  it('should search for if.', function() {
+    var exists = Constant_.ReservedWordIf !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordIf);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordFunction !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         name === Constant_.ReservedWordFunction &&
-         color === Constant_.ColorReservedWords &&
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any if with a color span.', function() {
-    var methodWasCalled = false;
-  
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordIf !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         name === Constant_.ReservedWordIf &&
-         color === Constant_.ColorReservedWords &&
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
+  it('should search for return.', function() {
+    var exists = Constant_.ReservedWordReturn !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordReturn);
     
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any return with a color span.', function() {
-    var methodWasCalled = false;
+  it('should search for var.', function() {
+    var exists = Constant_.ReservedWordVar !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordVar);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordReturn !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         name === Constant_.ReservedWordReturn &&
-         color === Constant_.ColorReservedWords &&
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
-  
-  
-  it('should replace any var with a color span.', function() {
-    var methodWasCalled = false;
+
+
+  it('should search for null.', function() {
+    var exists = Constant_.ReservedWordNull !== undefined &&
+          goog.array.contains(Current_.reservedWords, Constant_.ReservedWordNull);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.ReservedWordVar !== undefined &&
-         Constant_.ColorReservedWords !== undefined &&
-         name === Constant_.ReservedWordVar &&
-         color === Constant_.ColorReservedWords &&
-         toRegex === GoogleWrapper_.toRegex &&
-         replace === GoogleWrapper_.replace);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-  
-  
-  it('should return the finished text.', function() {
-    var endText = 'dsadsaf';
-    surroundWithColor_ = function() { return endText; };
-    
-    
-    expect(callTheMethod_()).toBe(endText);
+    expect(exists).toBe(true);
   });
   
 };

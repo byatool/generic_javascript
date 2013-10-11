@@ -1,5 +1,5 @@
 goog.require('goog.string');
-goog.require('src.base.control.formatTextAreaDisplay.javascript');
+goog.require('src.base.control.formatTextAreaDisplay.utility');
 goog.require('src.base.control.formatTextAreaDisplay.constant');
 goog.require('src.base.helper.googleWrapper');
 
@@ -13,22 +13,27 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
   //Using
   
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-  var Current_ = src.base.control.formatTextAreaDisplay.javascript;
+  var Current_ = src.base.control.formatTextAreaDisplay.utility;
   var GoogleWrapper_ = src.base.helper.googleWrapper;
   
   //Fields
   
   var CleanUpTextRegex_ = goog.string.getRandomString();
+  var Color_ = goog.string.getRandomString();
   var FindParametersRegexResult_ = goog.string.getRandomString();
+  var FunctionSearch_ = goog.string.getRandomString();
   var Matched_ = goog.string.getRandomString();
+  var ParameterSearch_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
-
+  
   var buildString_;
   var forEach_;
   var map_;
   var match_;
   var remove_;
+  var reverse_;
   var split_;
+  var sort_;
   var surroundWithColor_;
   var toRegex_;
   var trim_;
@@ -47,7 +52,9 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
     map_ = function(){};
     match_= function() { return Matched_; };
     remove_= function() {};
+    reverse_ = function(){};
     split_ = function(){};
+    sort_ = function(){};
     surroundWithColor_= function() {};
   });
   
@@ -55,8 +62,9 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.convertAllParameters(Text_, toRegex_, match_, buildString_, split_, remove_,
-                                         trim_, map_, forEach_, surroundWithColor_);
+    return Current_.convertAllParameters(Text_, ParameterSearch_, FunctionSearch_, Color_,
+                                         toRegex_, match_, buildString_, split_, remove_,
+                                         sort_, reverse_, trim_, map_, forEach_, surroundWithColor_);
   };
   
   
@@ -67,8 +75,7 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
     
     toRegex_ = function(text){
       methodWasCalled = methodWasCalled ||
-        (Constant_.RegexFindParameters !== undefined &&
-         text === Constant_.RegexFindParameters);
+        (text === ParameterSearch_);
     };
     
     callTheMethod_();
@@ -91,13 +98,29 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
   });
   
   
+  it('should not continue if there are no  matched items.', function() {
+    var methodWasCalled = false;
+    var item = 'adf';
+    
+    match_ = function(){ return null; };
+    
+    map_ = function(){
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
+  
+  
   it('should remove function( from the matched items.', function() {
     var callCount = 0;
     var item = 'adf';
     
     remove_ = function(text, what){
       callCount += text === item &&
-        what === Constant_.RegexFunctionText;
+        what === FunctionSearch_;
     };
     
     map_ = function(items, toWhat){
@@ -128,8 +151,7 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
     
     expect(methodWasCalled).toBe(true);
   });
-  
-
+   
   
   it('should split the newly created string by comma.', function() {
     var methodWasCalled = false;
@@ -138,7 +160,7 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
     buildString_ = function(){
       return newString;
     };
-
+    
     split_ = function(text, by){
       methodWasCalled = text === newString &&
         by === ',';
@@ -152,21 +174,63 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
 
 
   
-  it('should surround the found parameters with a color span.', function() {
+  it('should sort the split list.', function() {
+    var methodWasCalled = false;
     var allInOne = 'da';
-    var callCount = 0;
-    var item = 'afa';
-    
     
     split_ = function(){
       return allInOne;
     };
     
+    sort_ = function(theList){
+      methodWasCalled = theList === allInOne;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
+  it('should reverse the sorted list.', function() {
+    var methodWasCalled = false;
+    var sortedList = {};
+    
+    sort_ = function(){
+      return sortedList;
+    };
+    
+    reverse_ = function(theList){
+      methodWasCalled = theList === sortedList;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should surround trim and surround the found parameters with a color span.', function() {
+    var allInOne = 'da';
+    var callCount = 0;
+    var item = 'afa';
+    var trimmed = 'a';
+    
+    reverse_ = function(theList){
+      return allInOne;
+    };
+    
+    trim_ = function(toTrim){
+      callCount += toTrim === item;
+      return trimmed;
+    };
+    
     surroundWithColor_ = function(text, word, color, toRegex, replace){
-      callCount += Constant_.ColorUserParameters !== undefined &&
-        text === Text_ &&
-        word === item &&
-        color === Constant_.ColorUserParameters &&
+      callCount += text === Text_ &&
+        word === trimmed &&
+        color === Color_ &&
         toRegex === toRegex_ &&
         replace === GoogleWrapper_.replace;
     };
@@ -179,10 +243,10 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllParameters.describe = fu
     
     callTheMethod_();
     
-    expect(callCount).toBe(2);
+    expect(callCount).toBe(3);
   });
-
-
+  
+   
   it('should return the text.', function() {
     
     expect(callTheMethod_()).toBe(Text_);

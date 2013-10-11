@@ -1,6 +1,5 @@
-
 goog.require('goog.string');
-goog.require('src.base.control.formatTextAreaDisplay.javascript');
+goog.require('src.base.control.formatTextAreaDisplay.utility');
 goog.require('src.base.control.formatTextAreaDisplay.constant');
 
 goog.provide('src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems');
@@ -13,14 +12,19 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
   //Using
   
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-  var Current_ = src.base.control.formatTextAreaDisplay.javascript;
+  var Current_ = src.base.control.formatTextAreaDisplay.utility;
   var ControlConstant_ = src.base.control.controlConstant;
   var GoogleWrapper_ = src.base.helper.googleWrapper;
   
   //Fields
   
-  var CleanUpTextRegex_ = goog.string.getRandomString();
+  var CleanUpTextRegex_ = goog.string.getRandomString();  
+  var Color_ = goog.string.getRandomString();
   var FindUserRegex_ = goog.string.getRandomString();
+  var DeclarationText_ = goog.string.getRandomString();
+  var RegexFindUserDefinedItems_ = goog.string.getRandomString();
+  
+  
   var Text_ = goog.string.getRandomString();
   
   var forEach_;
@@ -50,7 +54,8 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
   //Support Items
   
   var callTheMethod_ = function() {
-    return Current_.convertAllUserDefinedItems(Text_, toRegex_, match_, remove_, trim_,
+    return Current_.convertAllUserDefinedItems(Text_, RegexFindUserDefinedItems_, DeclarationText_,
+                                               Color_, toRegex_, match_, remove_, trim_,
                                                map_, forEach_, surroundWithColor_);
   };
   
@@ -62,8 +67,7 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
     
     toRegex_ = function(text){
       methodWasCalled = methodWasCalled ||
-        (Constant_.RegexFindUserDefinedItems !== undefined &&
-         text === Constant_.RegexFindUserDefinedItems);
+        (text === RegexFindUserDefinedItems_);
     };
     
     
@@ -86,6 +90,23 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
     
     expect(methodWasCalled).toBe(true);
   });
+
+
+  it('should not surround all matched with color if there are none.', function() {
+    var methodWasCalled = false;
+    
+    match_ = function(){
+      return null;
+    };
+    
+    map_ = function(){
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
   
   
   it('should remove var from the matched items.', function() {
@@ -101,7 +122,7 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
     
     remove_ = function(text, what){
       callCount += text === trimmedText &&
-        what === Constant_.RegexVarText;
+        what === DeclarationText_;
     };
     
     map_ = function(items, toWhat){
@@ -120,7 +141,7 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
     var callCount = 0;
     var item = {};
     var mapped = {};
-  
+    
     map_ = function(){
       return mapped;
     };
@@ -128,7 +149,7 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
     surroundWithColor_ = function(text, word, color, toRegex, replace){
       callCount += text === Text_ &&
         word === item &&
-        color === Constant_.ColorUserItems &&
+        color === Color_ &&
         toRegex === toRegex_ &&
         replace === GoogleWrapper_.replace;
     };
@@ -143,13 +164,17 @@ src.test.control.formatTextAreaDisplay.whenCovertingAllUserDefinedItems.describe
     
     expect(callCount).toBe(2);
   });
-
+  
+  
+  
+  
   
   it('should return the text.', function() {
     
     expect(callTheMethod_()).toBe(Text_);
     
   });
+  
 };
 
 

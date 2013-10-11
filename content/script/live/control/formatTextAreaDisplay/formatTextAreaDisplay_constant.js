@@ -24,7 +24,7 @@ src.base.control.formatTextAreaDisplay.constant.ColorReservedMethods = '#9b3429'
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ColorReservedWords = '#e08940';
+src.base.control.formatTextAreaDisplay.constant.ColorReservedWords = '#cf0909';
 
 
 /**
@@ -40,7 +40,7 @@ src.base.control.formatTextAreaDisplay.constant.ColorQuotedText = '#FF0000';
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ColorUserItems = '#6754f4';
+src.base.control.formatTextAreaDisplay.constant.ColorUserItems = '#4590d5';
 
 
 /**
@@ -48,7 +48,7 @@ src.base.control.formatTextAreaDisplay.constant.ColorUserItems = '#6754f4';
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ColorUserParameters = '#33b14e';
+src.base.control.formatTextAreaDisplay.constant.ColorUserParameters = '#549454';
 
 
 
@@ -154,7 +154,7 @@ src.base.control.formatTextAreaDisplay.constant.RegexFindBetweenQuotes = '[\'|\"
  @protected
  */
 src.base.control.formatTextAreaDisplay.constant.RegexFindParameters = 'function\(([^\)])*\)';
-//src.base.control.formatTextAreaDisplay.constant.RegexFindParameters = 'function\(([^\)])*\)';
+
 
 /**
  @const
@@ -227,6 +227,15 @@ src.base.control.formatTextAreaDisplay.constant.ReservedWordFunction = 'function
  @protected
  */
 src.base.control.formatTextAreaDisplay.constant.ReservedWordIf = 'if ';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.ReservedWordNull = 'null';
+
 
 /**
  @const

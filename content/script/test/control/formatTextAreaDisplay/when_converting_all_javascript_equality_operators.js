@@ -1,3 +1,4 @@
+goog.require('goog.array');
 goog.require('goog.string');
 goog.require('src.base.control.formatTextAreaDisplay.javascript');
 goog.require('src.base.control.formatTextAreaDisplay.constant');
@@ -14,233 +15,106 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllJavascriptEqualityOperat
   
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
   var Current_ = src.base.control.formatTextAreaDisplay.javascript;
-  var DomCreation_ = src.base.helper.domCreation;
-  var GoogleWrapper_ = src.base.helper.googleWrapper;
   
   
   //Fields
-  
-  var Text_ = goog.string.getRandomString();;
-  
-  var surroundWithColor_;
-  
   
   //Test Hooks
   
   beforeEach(function() {
     
-    
-    surroundWithColor_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.convertAllEqualityOperators(Text_, surroundWithColor_);
   };
   
   
   //Test Methods
   
-  it('should replace any === with a color span.', function() {
-    var methodWasCalled = false;
+  
+  it('should search for ===', function() {
+    var exists = Constant_.EqualityOperatorEqualsEquals !== undefined &&
+      goog.array.contains(Current_.operators, Constant_.EqualityOperatorEqualsEquals);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorEqualsEquals !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         text === Text_ &&
-         name === Constant_.EqualityOperatorEqualsEquals &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any !== with a color span.', function() {
-    var methodWasCalled = false;
+  it ('should search for !==', function() {
+    var exists = Constant_.EqualityOperatorNotEqual !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorNotEqual);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorNotEqual !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorNotEqual &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any greater than with a color span.', function() {
-    var methodWasCalled = false;
-  
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorGreaterThan !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorGreaterThan &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
+  it ('should search for >', function() {
+    var exists = Constant_.EqualityOperatorGreaterThan !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorGreaterThan);
     
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any greater or equal to with a color span.', function() {
-    var methodWasCalled = false;
-    
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorGreaterOrEqualTo !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorGreaterOrEqualTo &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+  it ('should search for >=', function() {
+    var exists = Constant_.EqualityOperatorGreaterOrEqualTo !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorGreaterOrEqualTo);
+     
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any less than with a color span.', function() {
-    var methodWasCalled = false;
+  it ('should search for <', function() {
+    var exists = Constant_.EqualityOperatorLessThan !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorLessThan);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorLessThan !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorLessThan &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any less than or equal to with a color span.', function() {
-    var methodWasCalled = false;
+  it ('should search for <=', function() {
+    var exists = Constant_.EqualityOperatorLessOrEqualTo !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorLessOrEqualTo);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorLessOrEqualTo !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorLessOrEqualTo &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any false with a color span.', function() {
-    var methodWasCalled = false;
+  it ('should search for false', function() {
+    var exists = Constant_.EqualityOperatorFalse !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorFalse);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorFalse !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorFalse &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should replace any true with a color span.', function() {
-    var methodWasCalled = false;
+  it ('should search for true', function() {
+    var exists = Constant_.EqualityOperatorTrue !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorTrue);
     
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorTrue !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorTrue &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-
-  
-  it('should replace any and with a color span.', function() {
-    var methodWasCalled = false;
-    
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorAnd !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorAnd &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-   
-  
-  it('should replace any or with a color span.', function() {
-    var methodWasCalled = false;
-    
-    surroundWithColor_ = function(text, name, color, toRegex, replace) {
-      methodWasCalled = methodWasCalled ||
-        (Constant_.EqualityOperatorOr !== undefined &&
-         Constant_.ColorEqualityOperators !== undefined &&
-         name === Constant_.EqualityOperatorOr &&
-         color === Constant_.ColorEqualityOperators &&
-         replace === GoogleWrapper_.replace &&
-         toRegex === GoogleWrapper_.toRegex);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
+    expect(exists).toBe(true);
   });
   
   
-  it('should return the finished text.', function() {
-    var endText = 'dsadsaf';
-    surroundWithColor_ = function() { return endText; };
+  it ('should search for and', function() {
+    var exists = Constant_.EqualityOperatorAnd !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorAnd);
     
-    
-    expect(callTheMethod_()).toBe(endText);
+    expect(exists).toBe(true);
   });
+  
+  
+  it ('should search for and', function() {
+    var exists = Constant_.EqualityOperatorOr !== undefined &&
+          goog.array.contains(Current_.operators, Constant_.EqualityOperatorOr);
+    
+    expect(exists).toBe(true);
+  });
+  
+  
   
 };
 describe('When converting all javascript equality operators, it', function() {

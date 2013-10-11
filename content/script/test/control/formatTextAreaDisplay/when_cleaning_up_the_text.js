@@ -1,6 +1,6 @@
 
 goog.require('goog.string');
-goog.require('src.base.control.formatTextAreaDisplay.javascript');
+goog.require('src.base.control.formatTextAreaDisplay.utility');
 goog.require('src.base.control.formatTextAreaDisplay.constant');
 
 goog.provide('src.test.control.formatTextAreaDisplay.whenCleaningUpTheText');
@@ -13,7 +13,7 @@ src.test.control.formatTextAreaDisplay.whenCleaningUpTheText.describe = function
   //Using
   
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-  var Current_ = src.base.control.formatTextAreaDisplay.javascript;
+  var Current_ = src.base.control.formatTextAreaDisplay.utility;
   
   
   //Fields
