@@ -89,6 +89,8 @@ src.base.control.formatTextAreaDisplay.formatAndFocus =
       var prettyText = formatText(rawText);
       var prettyTextArea = getElementByClass(Constant_.PrettyTextArea,
                                              container);
+
+      //Change to innerText
       setInnerHtml(prettyTextArea, prettyText);
     };
   };
@@ -117,7 +119,7 @@ src.base.control.formatTextAreaDisplay.initialize =
   function(document, formatText, createADiv, createATextArea,
            formatAndFocus, createShortCutHandler, createPre,
            appendChild) {
-
+    
     //TODO take in the language type
 
     createADiv = createADiv ?

@@ -16,7 +16,6 @@ goog.provide('src.base.control.formatTextAreaDisplay.html');
  */
 src.base.control.formatTextAreaDisplay.html.operators =
   [
-    '=',
     '&gt;',
     '&lt;'
   ];
@@ -29,18 +28,16 @@ src.base.control.formatTextAreaDisplay.html.operators =
  */
 src.base.control.formatTextAreaDisplay.html.reservedWords =
   [
-    'class',
-    'id',
-    'type',
-    'name',
-    'style',
-    'div'
+    'span',
+    'div',
+    'head',
+    'body',
+    'class&#61;',
+    'id&#61;',
+    'type&#61;',
+    'name&#61;',
+    'style&#61;'
   ];
-
-
-
-
-
 
 
 /**
@@ -97,17 +94,35 @@ src.base.control.formatTextAreaDisplay.html.format =
     var GoogleWrapper_ = src.base.helper.googleWrapper;
     
     
-    text = cleanUpText(text);
+    //    text = cleanUpText(text);
     
-    text = convertAllQuotedText(text,
-                                Constant_.ColorQuotedText);
+    text = String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/=/g, '&#61;')
+      .replace(/"/g, '_!')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
     
     text = convertAllListedWords(text,
                                  Current_.reservedWords,
                                  Constant_.ColorReservedWords);
+
+    //Send this into convert all text or make a new method with just it
+    //var findMatch = toRegex('[_!].(?:[^_!"]|\\.)*[_!].');
+    text = convertAllQuotedText(text,
+                                 Constant_.ColorQuotedText);
+    
+    
     
     text = convertAllListedWords(text,
                                  Current_.operators,
                                  Constant_.ColorEqualityOperators);
+    
+    
+    
+    
+    text = String(text).replace(/_!/g, '&quot;');
+    
     return text;
   };

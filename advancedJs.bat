@@ -1,6 +1,4 @@
-
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
---jvm_flags="-d32" ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/" ^
 --namespace="src.base.helper.arrayHelper" ^
@@ -36,3 +34,4 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
 --compiler_flags="--generate_exports" > "content/script/live/final.js"
+REM --jvm_flags="-d32" ^
