@@ -14,20 +14,20 @@ goog.provide('src.base.control.formatTextAreaDisplay.utility');
  */
 src.base.control.formatTextAreaDisplay.utility.cleanUpText =
   function(text, toRegex, replace) {
-    
+
     toRegex = toRegex ?
       toRegex :
       src.base.helper.googleWrapper.toRegex;
-    
+
     replace = replace ?
       replace :
       src.base.helper.googleWrapper.replace;
-    
+
     /* Start */
-    
+
     var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-    
-    
+
+
     return replace(text,
                    toRegex(Constant_.RegexFindPipe),
                    Constant_.EqualityOperatorOr);
@@ -47,19 +47,19 @@ src.base.control.formatTextAreaDisplay.utility.cleanUpText =
   */
 src.base.control.formatTextAreaDisplay.utility.convertAllListedWords =
   function(text, wordList, color, forEach, surroundWithColor) {
-    
+
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-    
+
     surroundWithColor = surroundWithColor ?
       surroundWithColor :
       src.base.control.formatTextAreaDisplay.utility.surroundWithColor;
-    
+
     /* Start */
-    
+
     var GoogleWrapper_ = src.base.helper.googleWrapper;
-    
+
     forEach(wordList, function(item) {
       text = surroundWithColor(text,
                                item,
@@ -106,70 +106,70 @@ src.base.control.formatTextAreaDisplay.utility.convertAllParameters =
   function(text, parameterSearch, functionSearch, color,
            toRegex, match, buildString, split, remove, sort, reverse,
            trim, map, forEach, surroundWithColor) {
-    
+
     toRegex = toRegex ?
       toRegex :
       src.base.helper.googleWrapper.toRegex;
-    
+
     match = match ?
       match :
       src.base.helper.googleWrapper.match;
-    
+
     buildString = buildString ?
       buildString :
       goog.string.buildString;
-    
+
     split = split ?
       split :
       src.base.helper.googleWrapper.split;
-    
+
     remove = remove ?
       remove :
       goog.string.remove;
-    
-    sort = sort ? 
-      sort : 
+
+    sort = sort ?
+      sort :
       src.base.helper.googleWrapper.sort;
-    
-    reverse = reverse ? 
-      reverse : 
+
+    reverse = reverse ?
+      reverse :
       src.base.helper.googleWrapper.reverse;
-    
+
     trim = trim ?
       trim :
       goog.string.trim;
-    
+
     map = map ?
       map :
       goog.array.map;
-    
+
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-    
+
     surroundWithColor = surroundWithColor ?
       surroundWithColor :
       src.base.control.formatTextAreaDisplay.utility.surroundWithColor;
-    
+
     /* start */
-    
+
     var GoogleWrapper_ = src.base.helper.googleWrapper;
-    
+
     var userDefinedParamtersRegex = toRegex(parameterSearch);
     var userItems = match(text, userDefinedParamtersRegex);
-    
+
     if (userItems !== null) {
-      
+
       userItems = map(userItems, function(item) {
         return remove(item, functionSearch);
       });
-      
+
       userItems = buildString(userItems);
-      
+
       var allInOne = split(userItems, ',');
       allInOne = sort(allInOne);
       allInOne = reverse(allInOne);
-      
+
       forEach(allInOne, function(item) {
         text = surroundWithColor(text,
                                  trim(item),
@@ -178,7 +178,7 @@ src.base.control.formatTextAreaDisplay.utility.convertAllParameters =
                                  GoogleWrapper_.replace);
       });
     }
-    
+
     return text;
   };
 
@@ -186,10 +186,13 @@ src.base.control.formatTextAreaDisplay.utility.convertAllParameters =
 /**
  @param {string} text The text to check for quoted text.
  @param {string} color The color to use withing the color span.
+ @param {?string} quoteRegex The optional regex to find quotes.
+ @param {?function} isEmptySafe The function used to check if there is
+ a value to the quoteRegex parameter.
  @param {?function} toRegex The funcion used to find the quotes  in
  the text.
  @param {?function} replace The function used to replace the word.
-  @param {?function} match The function used to find the quoted text.
+ @param {?function} match The function used to find the quoted text.
  @param {?function} forEach The function used to take the matches
  and update the text.
  @param {?function} surroundWithColor The function used to surround the
@@ -198,43 +201,54 @@ src.base.control.formatTextAreaDisplay.utility.convertAllParameters =
  @protected
  */
 src.base.control.formatTextAreaDisplay.utility.convertAllQuotedText =
-  function(text, color, toRegex, replace,
-           match, forEach, surroundWithColor) {
-    
-    toRegex = toRegex ? 
-      toRegex : 
+  function(text, color, quoteRegex, isEmptySafe,
+           toRegex, replace, match, forEach,
+           surroundWithColor) {
+
+
+    isEmptySafe = isEmptySafe ?
+      isEmptySafe :
+      goog.string.isEmptySafe;
+
+    toRegex = toRegex ?
+      toRegex :
       src.base.helper.googleWrapper.toRegex;
-    
+
     replace = replace ?
       replace :
       src.base.helper.googleWrapper.replace;
-    
+
     match = match ?
       match :
       src.base.helper.googleWrapper.match;
-    
+
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-    
+
     surroundWithColor = surroundWithColor ?
       surroundWithColor :
       src.base.control.formatTextAreaDisplay.utility.surroundWithColor;
-    
+
     /* Start */
-    
+
     var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-    
-    var findMatch = toRegex(Constant_.RegexFindBetweenQuotes);
+
+    quoteRegex = isEmptySafe(quoteRegex) ?
+      Constant_.RegexFindBetweenQuotes :
+      quoteRegex;
+
+    var findMatch = toRegex(quoteRegex);
+
     var matched = match(text, findMatch);
-    
+
     if (matched !== null) {
-      
+
       forEach(matched, function(item) {
         text = surroundWithColor(text, item, color, toRegex, replace);
       });
     }
-    
+
     return text;
   };
 
@@ -265,47 +279,47 @@ src.base.control.formatTextAreaDisplay.utility.convertAllUserDefinedItems =
   function(text, regexFindUserDefinedItems, declarationText,
            color, toRegex, match, remove, trim, map,
            forEach, surroundWithColor) {
-    
+
     toRegex = toRegex ?
       toRegex :
       src.base.helper.googleWrapper.toRegex;
-    
+
     match = match ?
       match :
       src.base.helper.googleWrapper.match;
-    
+
     remove = remove ?
       remove :
       goog.string.remove;
-    
+
     trim = trim ?
       trim :
       goog.string.trim;
-    
+
     map = map ?
       map :
       goog.array.map;
-    
+
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-    
+
     surroundWithColor = surroundWithColor ?
       surroundWithColor :
       src.base.control.formatTextAreaDisplay.utility.surroundWithColor;
-    
-    
+
+
     var GoogleWrapper_ = src.base.helper.googleWrapper;
-    
+
     var userDefinedItemsSearchRegex = toRegex(regexFindUserDefinedItems);
     var userItems = match(text, userDefinedItemsSearchRegex);
-    
+
     if (userItems !== null) {
       userItems = map(userItems, function(item) {
         return remove(trim(item), declarationText);
       });
-      
-      
+
+
       forEach(userItems, function(item) {
         text = surroundWithColor(text,
                                  item,
@@ -314,7 +328,7 @@ src.base.control.formatTextAreaDisplay.utility.convertAllUserDefinedItems =
                                  GoogleWrapper_.replace);
       });
     }
-    
+
     return text;
   };
 
@@ -330,11 +344,11 @@ src.base.control.formatTextAreaDisplay.utility.convertAllUserDefinedItems =
  */
 src.base.control.formatTextAreaDisplay.utility.surroundWithColor =
   function(text, word, color, toRegex, replace) {
-    
+
     toRegex = toRegex ?
       toRegex :
       src.base.helper.googleWrapper.toRegex;
-    
+
     replace = replace ?
       replace :
       src.base.helper.googleWrapper.replace;

@@ -24,8 +24,10 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
   var ToReplaceRegex_ = goog.string.getRandomString();
   
   var forEach_;
+  var isEmptySafe_;
   var match_;
   var replace_;
+  var quoteRegex_;
   var surroundWithColor_;
   var toRegex_;
   
@@ -33,9 +35,13 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
   //Test Hooks
   
   beforeEach(function() {
+    quoteRegex_ = Constant_.RegexFindBetweenQuotes;
+    
+    isEmptySafe_ = function(){ return false; };
     match_= function() {};
     replace_= function() {};
     forEach_ = function(){};
+    
     surroundWithColor_ = function(){};
     
     toRegex_= function(toFind) {
@@ -50,16 +56,34 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.convertAllQuotedText(Text_, Color_, toRegex_, replace_,
-                                         match_, forEach_, surroundWithColor_);
+    return Current_.convertAllQuotedText(Text_, Color_, quoteRegex_, isEmptySafe_,
+                                         toRegex_, replace_, match_, forEach_,
+                                         surroundWithColor_);
   };
   
+   //Test Methods
   
-  //Test Methods
   
-  
-  it('should create the regular expression to find quoted text.', function() {
+  it('should check if the quote regex is empty.', function() {
     var methodWasCalled = false;
+    
+    isEmptySafe_ = function(text){
+      methodWasCalled = text === quoteRegex_;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the default find regular expression when the parameter is null.', function() {
+    var methodWasCalled = false;
+    
+    isEmptySafe_ = function(){
+      return true;
+    };
     
     toRegex_ = function(regex) {
       methodWasCalled = regex === Constant_.RegexFindBetweenQuotes;
@@ -71,6 +95,19 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
   });
   
   
+  it('should create the given find regular expression when it is given.', function() {
+    var methodWasCalled = false;
+    quoteRegex_ = 'adf';
+     
+    toRegex_ = function(regex) {
+      methodWasCalled = regex === quoteRegex_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
   
   it('should find the instances within the text.', function() {
     var methodWasCalled = false;
@@ -80,12 +117,11 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
         theMatch === ToMatchRegex_;
     };
     
-    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
+  
   
   it('should surround all matches with a span.', function() {
     var stepsPassed = 0;
@@ -116,7 +152,7 @@ src.test.control.formatTextAreaDisplay.whenConvertingAllQuotedText.describe = fu
     expect(stepsPassed).toBe(2);
   });
   
-   
+  
   it('should not find all matches if there are none.', function() {
     var methodWasCalled = false;
     var matched = null;

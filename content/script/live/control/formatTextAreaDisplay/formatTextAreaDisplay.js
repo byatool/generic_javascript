@@ -32,6 +32,9 @@ src.base.control.formatTextAreaDisplay.createAnElement_ =
 
 /**
  @param {Object} theDocument The dom document object.
+ @param {string} name The name for the created handler shortcut.
+ @param {string} firstKey The key for the first part of the shortcut.
+ @param {string} secondKey The key for the second part of the shortcu.
  @param {function} createTheHandler The function used to create the keyboard
  shortcut handler.
  @param {function} listen The function used to add the event handler to the
@@ -40,19 +43,19 @@ src.base.control.formatTextAreaDisplay.createAnElement_ =
  @protected
  */
 src.base.control.formatTextAreaDisplay.createShortCutHandler =
-  function(theDocument, createTheHandler, listen, toCall) {
+  function(theDocument, name, firstKey, secondKey,
+           createTheHandler, listen, toCall) {
 
     var Constant_ = src.base.control.formatTextAreaDisplay.constant;
-    var KeyCodes_ = goog.events.KeyCodes;
     var EventType_ = goog.ui.KeyboardShortcutHandler.EventType;
     var Modifiers_ = goog.ui.KeyboardShortcutHandler.Modifiers;
 
     var handler = createTheHandler(theDocument);
 
 
-    handler.registerShortcut(Constant_.ShortcutPrettyTheText,
-                             KeyCodes_.X, Modifiers_.CTRL,
-                             KeyCodes_.B, Modifiers_.CTRL);
+    handler.registerShortcut(name,
+                             firstKey, Modifiers_.CTRL,
+                             secondKey, Modifiers_.CTRL);
 
     listen(
       handler,
@@ -69,7 +72,7 @@ src.base.control.formatTextAreaDisplay.createShortCutHandler =
  two areas.
  @param {function} getValue The function used to get the value from
  the raw text area.
- @param {function} setInnerHtml A facade of the setInnerHTML object
+ @param {function} setInnerText A facade of the innerText object
  method.
  @return {function} The function to call when the keyboard shortcut
  is entered.
@@ -77,7 +80,7 @@ src.base.control.formatTextAreaDisplay.createShortCutHandler =
  */
 src.base.control.formatTextAreaDisplay.formatAndFocus =
   function(container, formatText, getElementByClass,
-           getValue, setInnerHtml) {
+           getValue, setInnerText) {
 
     return function(event) {
       var Constant_ = src.base.control.formatTextAreaDisplay.constant;
@@ -90,16 +93,13 @@ src.base.control.formatTextAreaDisplay.formatAndFocus =
       var prettyTextArea = getElementByClass(Constant_.PrettyTextArea,
                                              container);
 
-      //Change to innerText
-      setInnerHtml(prettyTextArea, prettyText);
+      setInnerText(prettyTextArea, prettyText);
     };
   };
 
 
 /**
  @param {Object} document The dom document object.
- @param {function} formatText The function passed in to prove the
- raw to pretty text conversion.
  @param {?function} createADiv The function used to create
  the parent container, and the pretty code container.
  @param {?function} createATextArea The function used to
@@ -116,10 +116,10 @@ src.base.control.formatTextAreaDisplay.formatAndFocus =
  @export
  */
 src.base.control.formatTextAreaDisplay.initialize =
-  function(document, formatText, createADiv, createATextArea,
+  function(document, createADiv, createATextArea,
            formatAndFocus, createShortCutHandler, createPre,
            appendChild) {
-    
+
     //TODO take in the language type
 
     createADiv = createADiv ?
@@ -153,23 +153,42 @@ src.base.control.formatTextAreaDisplay.initialize =
     var Constant_ = src.base.control.formatTextAreaDisplay.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var GoogleWrapper_ = src.base.helper.googleWrapper;
-
+    var KeyCodes_ = goog.events.KeyCodes;
 
     var container = Current_.createAnElement_(createADiv, Constant_.ContainerId);
     var rawTextArea = Current_.createAnElement_(createATextArea, Constant_.RawTextArea);
     var prettyTextArea = Current_.createAnElement_(createADiv, Constant_.PrettyTextArea);
 
-    //Add in a pre creation to set the text of
-    var toCall = formatAndFocus(container,
-                                formatText,
-                                goog.dom.getElementByClass,
-                                goog.dom.forms.getValue,
-                                GoogleWrapper_.setInnerHtml);
+
+    var javascriptFormat = formatAndFocus(container,
+                                          Current_.javascript.format,
+                                          goog.dom.getElementByClass,
+                                          goog.dom.forms.getValue,
+                                          GoogleWrapper_.setInnerText);
 
     createShortCutHandler(document,
+                          Constant_.ShortcutJavascript,
+                          KeyCodes_.X,
+                          KeyCodes_.J,
                           GoogleWrapper_.createAKeyboardShortcutHandler,
                           goog.events.listen,
-                          toCall);
+                          javascriptFormat);
+
+
+    var htmlFormat = formatAndFocus(container,
+                                    Current_.html.format,
+                                    goog.dom.getElementByClass,
+                                    goog.dom.forms.getValue,
+                                    GoogleWrapper_.setInnerText);
+
+    createShortCutHandler(document,
+                          Constant_.ShortcutHtml,
+                          KeyCodes_.X,
+                          KeyCodes_.H,
+                          GoogleWrapper_.createAKeyboardShortcutHandler,
+                          goog.events.listen,
+                          htmlFormat);
+
 
     var preContainer = createPre();
 

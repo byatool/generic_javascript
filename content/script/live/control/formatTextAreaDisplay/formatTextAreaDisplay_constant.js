@@ -138,6 +138,13 @@ src.base.control.formatTextAreaDisplay.constant.EqualityOperatorTrue = 'true';
 /* End Equality  Operators */
 
 
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.RegexFindBetweenReplacementQuote = '[_!].(?:[^_!"]|\\.)*[_!].';
+
 
 /**
  @const
@@ -288,9 +295,19 @@ src.base.control.formatTextAreaDisplay.constant.PrettyTextArea = 'formatTextArea
 src.base.control.formatTextAreaDisplay.constant.RawTextArea = 'formatTextAreaDisplayRawCode';
 
 
+/* SHORTCUTS */
+
 /**
  @const
  @type {string}
  @protected
  */
-src.base.control.formatTextAreaDisplay.constant.ShortcutPrettyTheText = 'CTRL_X CTRL_B';
+src.base.control.formatTextAreaDisplay.constant.ShortcutHtml = 'CTRL_X CTRL_H';
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formatTextAreaDisplay.constant.ShortcutJavascript = 'CTRL_X CTRL_J';
+

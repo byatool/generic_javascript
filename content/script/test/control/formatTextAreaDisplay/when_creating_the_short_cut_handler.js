@@ -19,6 +19,10 @@ src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler.describe =
   
   //Fields
   
+  var FirstKey_ = goog.string.getRandomString();
+  var Name_ = goog.string.getRandomString();
+  var SecondKey_ = goog.string.getRandomString();
+  
   var createTheHandler_;
   var handler_;
   var listen_;
@@ -44,8 +48,8 @@ src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler.describe =
   
   //Support Methods
   var callTheMethod_ = function() {
-    return Current_.createShortCutHandler(theDocument_, createTheHandler_, listen_,
-                                          toCall_);
+    return Current_.createShortCutHandler(theDocument_, Name_, FirstKey_, SecondKey_,
+                                          createTheHandler_, listen_, toCall_);
   };
   
   
@@ -73,11 +77,10 @@ src.test.control.formatTextAreaDisplay.whenCreatingTheShortCutHandler.describe =
     handler_.registerShortcut = function(prettyTheTextShortcutName, firstKey, firstAction,
                                          secondKey, secondAction) {
       
-      methodWasCalled = Constant_.ShortcutPrettyTheText !== undefined &&
-        prettyTheTextShortcutName === Constant_.ShortcutPrettyTheText &&
-        firstKey === KeyCodes_.X &&
+      methodWasCalled = prettyTheTextShortcutName === Name_ &&
+        firstKey === FirstKey_ &&
         firstAction === Modifiers_.CTRL &&
-        secondKey === KeyCodes_.B &&
+        secondKey === SecondKey_ &&
         secondAction === Modifiers_.CTRL;
     };
     

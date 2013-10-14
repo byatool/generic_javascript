@@ -1,4 +1,5 @@
 goog.require('goog.events');
+goog.require('goog.events.KeyCodes');
 goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formatTextAreaDisplay');
@@ -17,7 +18,8 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   var Current_ = src.base.control.formatTextAreaDisplay;
   var Constant_ = src.base.control.formatTextAreaDisplay.constant;
   var ControlConstant_ = src.base.control.controlConstant;
-  
+  var GoogleWrapper_ = src.base.helper.googleWrapper;
+  var KeyCodes_ = goog.events.KeyCodes;
   
   //Fields
   
@@ -31,7 +33,6 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   var createATextArea_;
   var document_;
   var formatAndFocus_;
-  var formatText_;
   var parentContainer_;
   var pre_;
   var prettyTextArea_;
@@ -61,15 +62,13 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
     createAPre_ = function() { return pre_; };
     createATextArea_ = function() {};
     createShortCutHandler_ = function(){};
-    formatAndFocus_ = function() {};
-    formatText_ = function() {};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(document_, formatText_, createADiv_, createATextArea_,
+    return Current_.initialize(document_, createADiv_, createATextArea_,
                                formatAndFocus_, createShortCutHandler_, createAPre_,
                                appendChild_);
   };
@@ -127,17 +126,17 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   });
   
   
-  
-  it('should create the prettify short cut handler.', function() {
+  it('should create the javascript format  handler.', function() {
     var methodWasCalled = false;
     
     formatAndFocus_ = function(container, formatText, getElementByClass,
-                               getValue, setInnerHtml) {
-      methodWasCalled = container === parentContainer_ &&
-        formatText === formatText_ &&
+                               getValue, setInnerText) {
+      methodWasCalled = methodWasCalled ||
+        (container === parentContainer_ &&
+        formatText === Current_.javascript.format &&
         getElementByClass === goog.dom.getElementByClass &&
         getValue === goog.dom.forms.getValue &&
-        setInnerHtml === src.base.helper.googleWrapper.setInnerHtml;
+        setInnerText === GoogleWrapper_.setInnerText);
     };
     
     callTheMethod_();
@@ -145,7 +144,8 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
     expect(methodWasCalled).toBe(true);
   });
   
-  it('should create the shorcut handler.', function() {
+  
+  it('should create the javascript shorcut handler.', function() {
     var methodWasCalled = false;
     var formatAndFocusResult = {};
     
@@ -153,22 +153,76 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
       return formatAndFocusResult;
     };
     
-    createShortCutHandler_ = function(theDocument, createTheHandler, listen, toCall){
-      methodWasCalled = theDocument === document_ &&
-        createTheHandler === src.base.helper.googleWrapper.createAKeyboardShortcutHandler &&
+    createShortCutHandler_ = function(theDocument, name, firstKey, secondKey,
+                                      createTheHandler, listen, toCall){
+      methodWasCalled = methodWasCalled ||
+        (GoogleWrapper_.createAKeyboardShortcutHandler !== undefined &&
+        theDocument === document_ &&
+        name === Constant_.ShortcutJavascript &&
+        firstKey === KeyCodes_.X &&
+        secondKey === KeyCodes_.J &&
+        createTheHandler === GoogleWrapper_.createAKeyboardShortcutHandler &&
         listen ===  goog.events.listen &&
-        toCall === formatAndFocusResult;
+        toCall === formatAndFocusResult);
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
+  
+  
+  it('should create the html format handler.', function() {
+    var methodWasCalled = false;
+    
+    formatAndFocus_ = function(container, formatText, getElementByClass,
+                               getValue, setInnerText) {
+      methodWasCalled = methodWasCalled ||
+        (container === parentContainer_ &&
+        formatText === Current_.html.format &&
+        getElementByClass === goog.dom.getElementByClass &&
+        getValue === goog.dom.forms.getValue &&
+        setInnerText === GoogleWrapper_.setInnerText);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should create the html shorcut handler.', function() {
+    var methodWasCalled = false;
+    var formatAndFocusResult = {};
+    
+    formatAndFocus_ = function(container, format) {
+      return format === Current_.html.format ?
+        formatAndFocusResult :
+        {};
+    };
+    
+    createShortCutHandler_ = function(theDocument, name, firstKey, secondKey,
+                                      createTheHandler, listen, toCall) {
+      methodWasCalled = methodWasCalled ||
+        (GoogleWrapper_.createAKeyboardShortcutHandler !== undefined &&
+         theDocument === document_ &&
+         name === Constant_.ShortcutHtml &&
+         firstKey === KeyCodes_.X &&
+         secondKey === KeyCodes_.H &&
+         createTheHandler === GoogleWrapper_.createAKeyboardShortcutHandler &&
+         listen ===  goog.events.listen &&
+         toCall === formatAndFocusResult);
+    };
+     
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
   
   it('should create a pre.', function() {
     var methodWasCalled = false;
-
+    
     createAPre_ = function() {
       methodWasCalled = true;
     };
@@ -200,7 +254,7 @@ src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay.de
   
   it('should append the pretty text area to the pre.', function() {
     var methodWasCalled = false;
-  
+    
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
         (parent === pre_ && child === prettyTextArea_);

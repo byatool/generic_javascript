@@ -75,31 +75,6 @@ src.base.helper.googleWrapper.toRegex =
   };
 
 
-/**
- @param {Array.<Object>} list The list to sort.
- @return {Array.<Object>} The sorted list. 
- @protected
- */
-src.base.helper.googleWrapper.sort =
-  function(theList) {
-    goog.array.sort(theList);
-    
-    return theList;
-  };
-
-
-
-/**
- @param {string} text The text to split.
- @param {string} by The string to split by.
- @return {string} The string array.
- @protected
- */
-src.base.helper.googleWrapper.split =
-  function(text, by) {
-    return text.split(by);
-  };
-
 
 /**
  @param {string} text The text to search.
@@ -134,4 +109,43 @@ src.base.helper.googleWrapper.reverse =
 src.base.helper.googleWrapper.setInnerHtml =
   function(element, text) {
     element.innerHTML = text;
-  }; 
+  };
+
+
+/**
+ @param {Object} element The element to update.
+ @param {string} text The text to update the element
+ with.
+ @protected
+ */
+src.base.helper.googleWrapper.setInnerText =
+  function(element, text) {
+    element.innerText = text;
+  };
+
+
+/**
+ @param {Array.<Object>} list The list to sort.
+ @return {Array.<Object>} The sorted list. 
+ @protected
+ */
+src.base.helper.googleWrapper.sort =
+  function(theList) {
+    goog.array.sort(theList);
+    
+    return theList;
+  };
+
+
+/**
+ @param {string} text The text to split.
+ @param {string} by The string to split by.
+ @return {string} The string array.
+ @protected
+ */
+src.base.helper.googleWrapper.split =
+  function(text, by) {
+    return text.split(by);
+  };
+
+

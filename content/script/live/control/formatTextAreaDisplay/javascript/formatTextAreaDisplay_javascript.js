@@ -68,11 +68,11 @@ src.base.control.formatTextAreaDisplay.javascript.format =
   function(text, cleanUpText, convertAllListedWords,
            convertAllReservedMethods, convertAllUserDefinedItems,
            convertAllQuotedText, convertAllParameters) {
-    
+
     cleanUpText = cleanUpText ?
       cleanUpText :
       src.base.control.formatTextAreaDisplay.utility.cleanUpText;
-    
+
     convertAllListedWords = convertAllListedWords ?
       convertAllListedWords :
       src.base.control.formatTextAreaDisplay.utility.convertAllListedWords;
@@ -88,7 +88,7 @@ src.base.control.formatTextAreaDisplay.javascript.format =
     convertAllQuotedText = convertAllQuotedText ?
       convertAllQuotedText :
       src.base.control.formatTextAreaDisplay.utility.convertAllQuotedText;
-    
+
     convertAllParameters = convertAllParameters ?
       convertAllParameters :
       src.base.control.formatTextAreaDisplay.utility.convertAllParameters;
@@ -99,28 +99,28 @@ src.base.control.formatTextAreaDisplay.javascript.format =
     var Current_ = src.base.control.formatTextAreaDisplay.javascript;
     var Utility_ = src.base.control.formatTextAreaDisplay.utility;
     var GoogleWrapper_ = src.base.helper.googleWrapper;
-    
-    
+
+
     text = cleanUpText(text);
-    
+
     text = convertAllQuotedText(text,
                                 Constant_.ColorQuotedText);
-    
-    
+
+
     text = convertAllUserDefinedItems(text,
                                       Constant_.RegexFindUserDefinedItems,
                                       Constant_.RegexVarText,
                                       Constant_.ColorUserItems);
-    
+
     text = convertAllParameters(text,
                                 Constant_.RegexFindParameters,
                                 Constant_.RegexFunctionText,
                                 Constant_.ColorUserParameters);
-    
+
     text = convertAllListedWords(text,
                                  Current_.reservedWords,
                                  Constant_.ColorReservedWords);
-    
+
     text = convertAllListedWords(text,
                                  Current_.operators,
                                  Constant_.ColorEqualityOperators);
