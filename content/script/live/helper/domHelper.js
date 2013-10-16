@@ -138,6 +138,27 @@ src.base.helper.domHelper.submitData = function(dataMap, successMethod) {
 };
 
 
+
+/**
+ @param {string} url The url to submit to.
+ @param {Array} parameters The parameters needed for the request.
+ @param {function} successMethod The method to call on server result.
+ @export
+ */
+src.base.helper.domHelper.submitToUrl =
+  function(url, parameters, successMethod) {
+    var request = new goog.net.XhrIo();
+    
+    goog.events.listen(request, 'complete', function(result) {
+      successMethod(result.target.getResponseJson());
+    });
+    
+    var data = goog.Uri.QueryData.createFromMap(parameters);
+    
+    request.send(url, 'POST', data.toString());
+  };
+
+
 /**
  @param {string} url The url to submit to.
  @param {function} successMethod The function to be called on 
