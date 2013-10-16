@@ -7,6 +7,7 @@ goog.require('goog.dom.forms');
 goog.require('goog.json');
 goog.require('goog.net.XhrIo');
 goog.require('goog.structs');
+goog.require('src.base.helper.googleWrapper');
 
 goog.provide('src.base.helper.domHelper');
 //return function() { window.location = url;};
@@ -124,33 +125,50 @@ src.base.helper.domHelper.retrieveFormDataMap = function(mapToCheck, keyName) {
  @export
  */
 src.base.helper.domHelper.submitData = function(dataMap, successMethod) {
-
+  
   var request = new goog.net.XhrIo();
-
+  
   goog.events.listen(request, 'complete', function(result) {
     successMethod(result.target.getResponseJson());
   });
-
+  
   var data = goog.Uri.QueryData.createFromMap(dataMap);
-
+  
   request.send(dataMap.action, 'POST', data.toString());
 };
 
+
 /**
  @param {string} url The url to submit to.
- @param {Array} parameters The parameters needed for the request.
- @param {function} successMethod The method to call on server result.
+ @param {function} successMethod The function to be called on 
+ successful return.
+ @param {function} createRequest The function used to create a 
+ xhrio request.
+ @param {function} listen The event setter.
  @export
  */
-src.base.helper.domHelper.submitToUrl =
-  function(url, parameters, successMethod) {
-    var request = new goog.net.XhrIo();
+src.base.helper.domHelper.submitToGetUrl =
+  function(url, successMethod, createRequest,
+           listen) {
     
-    goog.events.listen(request, 'complete', function(result) {
+    createRequest = createRequest ? 
+      createRequest : 
+      src.base.helper.googleWrapper.createRequest;
+    
+    listen = listen ? 
+      listen : 
+      goog.events.listen;
+    
+    
+    /* Start */
+    
+    var request = createRequest();
+    
+    listen(request, 'complete', function(result) {
       successMethod(result.target.getResponseJson());
     });
     
-    var data = goog.Uri.QueryData.createFromMap(parameters);
-    
-    request.send(url, 'POST', data.toString());
-};
+    request.send(url, 'GET');
+  };
+
+

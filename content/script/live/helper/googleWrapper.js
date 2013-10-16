@@ -1,6 +1,7 @@
 goog.require('goog.array');
-goog.require('goog.ui.LabelInput');
+goog.require('goog.net.XhrIo');
 goog.require('goog.ui.CharCounter');
+goog.require('goog.ui.LabelInput');
 
 goog.provide('src.base.helper.googleWrapper');
 
@@ -40,6 +41,16 @@ src.base.helper.googleWrapper.createALabelInput =
 src.base.helper.googleWrapper.createAKeyboardShortcutHandler =
   function(domDocument) {
     return new goog.ui.KeyboardShortcutHandler(domDocument);
+  };
+
+
+/**
+ @return {Object} The created request
+ @protected
+ */
+src.base.helper.googleWrapper.createRequest =
+  function (){
+    return new goog.net.XhrIo();
   };
 
 
