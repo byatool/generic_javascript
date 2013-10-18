@@ -29,29 +29,33 @@ src.site.validation.validationInterpreter.methodLookup = [
  @param {string} propertyName description.
  @param {Array.<function>} methods description.
  @param {Object} innerRule description.
- @param {?function(Array) : Object} find The method used find a method from the methods.
- @param {?function(Array) : Object} car The method used to get the first of a list.
- @param {?function(Array) : Array} cdr The method used to get all but the first item
+ @param {?function} find The method used find a method from the methods.
+ @param {?function} car The method used to get the first of a list.
+ @param {?function} cdr The method used to get all but the first item
  in a list.
- @param {?function(Array) : Object} peek The method used to get the last item in a list.
- @param {?function(Array) : Array} sink The method used to return all but the last item in
+ @param {?function} peek The method used to get the last item in a list.
+ @param {?function} sink The method used to return all but the last item in
  a list.
- @return {function(Object) : string} The validation anonymous method.
+ @return {function} The validation anonymous method.
  @export
  */
-src.site.validation.validationInterpreter.createAValidationCall = function(propertyName, methods, innerRule, find, car, cdr, peek, sink) {
-  
-  var methodPair = find(methods, function(method) {
-    return car(method) === car(innerRule);
-  });
-  
-  var methodToUse = peek(methodPair);
-  
-  return function(obj) {
-    var error = peek(innerRule);
-    var values = sink(cdr(innerRule));
-    return methodToUse(obj, propertyName, error, values);
-  };
+src.site.validation.validationInterpreter.createAValidationCall =
+  function(propertyName, methods, innerRule, find,
+           car, cdr, peek, sink) {
+    
+    var methodPair = find(methods, function(method) {
+      return car(method) === car(innerRule);
+    });
+    
+    var methodToUse = peek(methodPair);
+    
+    return function(obj) {
+      
+      var error = peek(innerRule);
+      var values = sink(cdr(innerRule));
+      
+      return methodToUse(obj, propertyName, error, values);
+    };
 };
 
 
@@ -112,40 +116,63 @@ src.site.validation.validationInterpreter.createAValidationWrapper =
     };
 };
 
+
 /**
  @param {Array.<Array>} rules description.
  @param {Array.<function>} methods description.
  @param {?function} createAValidationCall The method used to create a validation caller
  for every rule.
- @param {?function(Array) : Object} car The method used to get the first of a list.
- @param {?function(Array) : Array} cdr The method used to get all but the first item
+ @param {?function} car The method used to get the first of a list.
+ @param {?function} cdr The method used to get all but the first item
  in a list.
- @param {?function(Array) : Array} flatten The method that will compress all method calls
+ @param {?function} flatten The method that will compress all method calls
  into one method.
  @return {Array.<function>} This is the list of validation methods that were
  created.
  @export
  */
 src.site.validation.validationInterpreter.interpret =
-  function(rules, methods, createAValidationCall, car, cdr, flatten) {
+  function(rules, methods, createAValidationCall, map,
+           car, cdr, flatten) {
     
-    var current = src.site.validation.validationInterpreter;
+    createAValidationCall = createAValidationCall ?
+      createAValidationCall :
+      src.site.validation.validationInterpreter.createAValidationCall;
+
+    map = map ? 
+      map : 
+      goog.array.map;
     
-    createAValidationCall = createAValidationCall ? createAValidationCall : current.createAValidationCall;
-    car = car ? car : src.base.helper.arrayHelper.car;
-    cdr = cdr ? cdr : src.base.helper.arrayHelper.cdr;
-    flatten = flatten ? flatten : goog.array.flatten;
+    car = car ?
+      car :
+      src.base.helper.arrayHelper.car;
     
-    var find = goog.array.find;
-    var peek = goog.array.peek;
-    var sink = src.base.helper.arrayHelper.sink;
+    cdr = cdr ?
+      cdr :
+      src.base.helper.arrayHelper.cdr;
     
-    var methodGroups = goog.array.map(rules, function(currentRule) {
-      var propertyName = car(currentRule);
-      var toCheck = cdr(currentRule);
+    flatten = flatten ?
+      flatten :
+      goog.array.flatten;
+    
+    
+    /* START */
+    
+    var Current_ = src.site.validation.validationInterpreter;
+    
+    var methodGroups = map(rules, function(Current_Rule) {
+      var propertyName = car(Current_Rule);
+      var toCheck = cdr(Current_Rule);
       
-      var toCall = goog.array.map(toCheck, function(innerRule) {
-        return createAValidationCall(propertyName, methods, innerRule, find, car, cdr, peek, sink);
+      var toCall = map(toCheck, function(innerRule) {
+        return createAValidationCall(propertyName,
+                                     methods,
+                                     innerRule,
+                                     goog.array.find,
+                                     car,
+                                     cdr,
+                                     goog.array.peek,
+                                     src.base.helper.arrayHelper.sink);
       });
       
       return toCall;
