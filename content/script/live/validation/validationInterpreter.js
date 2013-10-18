@@ -58,29 +58,58 @@ src.site.validation.validationInterpreter.createAValidationCall = function(prope
 /**
  @param {Array} rules The supplied rules to interpret.
  @param {?Array} methods The method lookup table.
- @param {?function(Array, Array) : Array.<function>} interpret The method used to create the
+ @param {?function} interpret The method used to create the
  validation group.
- @return {function(Object) : Array.<string>} The created method used to call all the
+ @param {function} map The function used to create the errors
+ from calling the validation methods.
+ @param {function} filter The function used to remove any
+ non errors.
+ @param {function} isEmptySafe The function used to check if an
+ error is empty.
+ @return {function} The created method used to call all the
  validation methods supplied by interpret.
  @export
  */
-src.site.validation.validationInterpreter.createAValidationWrapper = function(rules, methods, interpret) {
-  var Current = src.site.validation.validationInterpreter;
-  
-  methods = methods ? methods : src.site.validation.validationInterpreter.methodLookup;
-  interpret = interpret ? interpret : Current.interpret;
-  
-  var methodGroup = interpret(rules, methods);
-  
-  return function(value) {
-    var errors = goog.array.map(methodGroup, function(method) {
-      return method(value);
-    });
+src.site.validation.validationInterpreter.createAValidationWrapper =
+  function(rules, methods, interpret, map,
+          filter, isEmptySafe) {
     
-    return goog.array.filter(errors, function(error) {
-      return !goog.string.isEmptySafe(error);
-    });
-  };
+    methods = methods ?
+      methods :
+      src.site.validation.validationInterpreter.methodLookup;
+    
+    interpret = interpret ?
+      interpret :
+      src.site.validation.validationInterpreter;
+    
+    map = map ? 
+      map : 
+      goog.array.map;
+    
+    filter = filter ? 
+      filter : 
+      goog.array.filter;
+    
+    isEmptySafe = isEmptySafe ? 
+      isEmptySafe : 
+      goog.string.isEmptySafe;
+    
+    
+    /* START */
+    
+    var Current = src.site.validation.validationInterpreter;
+    
+    var methodGroup = interpret(rules, methods);
+    
+    return function(value) {
+      var errors = map(methodGroup, function(method) {
+        return method(value);
+      });
+      
+      return filter(errors, function(error) {
+        return !isEmptySafe(error);
+      });
+    };
 };
 
 /**
