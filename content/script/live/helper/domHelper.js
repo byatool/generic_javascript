@@ -4,6 +4,7 @@ goog.require('goog.debug');
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.forms');
+goog.require('goog.events');
 goog.require('goog.json');
 goog.require('goog.net.XhrIo');
 goog.require('goog.structs');

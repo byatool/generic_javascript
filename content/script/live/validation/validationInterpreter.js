@@ -3,7 +3,7 @@ goog.require('src.base.helper.arrayHelper');
 goog.require('src.site.validation.validateDate');
 goog.require('src.site.validation.validateSocialSecurityNumber');
 goog.require('src.site.validation.validateText');
-
+goog.require('src.site.validation.validationInterpreter.constant');
 
 goog.provide('src.site.validation.validationInterpreter');
 
@@ -11,19 +11,24 @@ goog.provide('src.site.validation.validationInterpreter');
  @protected
  */
 src.site.validation.validationInterpreter.methodLookup = [
-  ['is a valid social security number', function(toCheck, propertyName, error, rest) {
-    return src.site.validation.validateSocialSecurityNumber.isValid(toCheck.get(propertyName)) ? null : error;
-  }],
-  ['is not empty', function(toCheck, propertyName, error, rest) {
-    return !src.site.validation.validateText.isEmpty(toCheck.get(propertyName)) ? null : error;
-  }],
-  ['is not empty or the default', function(toCheck, propertyName, error, rest) {
-    return !src.site.validation.validateText.isEmptyOrIsDefault(toCheck.get(propertyName), rest[0]) ? null : error;
-  }],
-  ['is a valid date', function(toCheck, propertyName, error, rest) {
-    return src.site.validation.validateDate.isValid(toCheck.get(propertyName).toString()) ? null : error;
-  }]
+  [src.site.validation.validationInterpreter.constant.IsAValidSocialSecurityNumber,
+   function(toCheck, propertyName, error, rest) {
+     return src.site.validation.validateSocialSecurityNumber.isValid(toCheck.get(propertyName)[0]) ? null : error;
+   }],
+  [src.site.validation.validationInterpreter.constant.IsNotEmpty,
+   function(toCheck, propertyName, error, rest) {
+     return !src.site.validation.validateText.isEmpty(toCheck.get(propertyName)) ? null : error;
+   }],
+  [src.site.validation.validationInterpreter.constant.IsNotEmptyOrTheDefault,
+   function(toCheck, propertyName, error, rest) {
+     return !src.site.validation.validateText.isEmptyOrIsDefault(toCheck.get(propertyName), rest[0]) ? null : error;
+   }],
+  [src.site.validation.validationInterpreter.constant.IsAValidDate,
+   function(toCheck, propertyName, error, rest) {
+     return src.site.validation.validateDate.isValid(toCheck.get(propertyName)[0].toString()) ? null : error;
+   }]
 ];
+
 
 /**
  @param {string} propertyName description.
@@ -84,7 +89,7 @@ src.site.validation.validationInterpreter.createAValidationWrapper =
     
     interpret = interpret ?
       interpret :
-      src.site.validation.validationInterpreter;
+      src.site.validation.validationInterpreter.interpret;
     
     map = map ? 
       map : 
@@ -120,15 +125,17 @@ src.site.validation.validationInterpreter.createAValidationWrapper =
 /**
  @param {Array.<Array>} rules description.
  @param {Array.<function>} methods description.
- @param {?function} createAValidationCall The method used to create a validation caller
- for every rule.
+ @param {?function} createAValidationCall The method used to create a
+ validation caller for every rule.
+ @param {?function} map The function used to create function calls using
+ the rules, and methods
  @param {?function} car The method used to get the first of a list.
  @param {?function} cdr The method used to get all but the first item
  in a list.
- @param {?function} flatten The method that will compress all method calls
- into one method.
- @return {Array.<function>} This is the list of validation methods that were
- created.
+ @param {?function} flatten The method that will compress all method
+ calls into one method.
+ @return {Array.<function>} This is the list of validation methods that
+ were created.
  @export
  */
 src.site.validation.validationInterpreter.interpret =
@@ -138,7 +145,7 @@ src.site.validation.validationInterpreter.interpret =
     createAValidationCall = createAValidationCall ?
       createAValidationCall :
       src.site.validation.validationInterpreter.createAValidationCall;
-
+    
     map = map ? 
       map : 
       goog.array.map;
