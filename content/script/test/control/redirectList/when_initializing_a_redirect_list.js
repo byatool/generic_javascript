@@ -1,3 +1,4 @@
+goog.require('goog.array');
 goog.require('goog.string');
 goog.require('src.base.control.redirectList');
 
@@ -7,7 +8,9 @@ goog.provide('src.test.control.redirectList.whenInitializingARedirectList');
  @export
  */
 src.test.control.redirectList.whenInitializingARedirectList.describe = function() {
+
   //Using
+  var Constant_ = src.base.control.redirectList.constant;
   var Current = src.base.control.redirectList;
   
   
@@ -44,19 +47,19 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
   beforeEach(function() {
     var createFakeButtonAttributes = function(id, text, controlIds, url, disabled) {
       var button = {};
-      button[Current.ButtonId] = id;
-      button[Current.ButtonText] = text;
-      button[Current.Disabled] = disabled;
-      button[Current.For] = controlIds;
-      button[Current.Goto] = url;
+      button[Constant_.ButtonId] = id;
+      button[Constant_.ButtonText] = text;
+      button[Constant_.Disabled] = disabled;
+      button[Constant_.For] = controlIds;
+      button[Constant_.Goto] = url;
       
       return button;
     };
     
     parentContainer_ = {};
     options_ = {};
-    options_[Current.ContainerClass] = ContainerClass_;
-    options_[Current.ContainerId] = ParentContainerId_;
+    options_[Constant_.ContainerClass] = ContainerClass_;
+    options_[Constant_.ContainerId] = ParentContainerId_;
     
     var firstButton = createFakeButtonAttributes(FirstButtonId_, FirstButtonText_,
                                                  [FirstFor_, SecondFor_], FirstGoto_, true);
@@ -65,7 +68,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
                                                   [FirstFor_, SecondFor_], SecondGoto_, false);
     
     buttonList_ = [firstButton, secondButton];
-    options_[Current.ButtonList] = buttonList_;
+    options_[Constant_.ButtonList] = buttonList_;
     
     var wasCalled = false;
     firstButton_ = {};
@@ -89,7 +92,9 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
   
   //Support Methods
   var callTheMethod_ = function() {
-    return Current.initialize(options_, createADiv_, createAButton_, createTheClickEvent_, getValue_, getElement_, redirect_, setClickEvent_, appendChild_);
+    return Current.initialize(options_, createADiv_, createAButton_,
+                              createTheClickEvent_, getValue_, getElement_,
+                              redirect_, setClickEvent_, appendChild_);
   };
   
   
@@ -99,8 +104,8 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
     var methodWasCalled = false;
     
     createADiv_ = function(attributes) {
-      methodWasCalled = attributes['id'] === options_[Current.ContainerId] &&
-        attributes['class'] === options_[Current.ContainerClass];
+      methodWasCalled = attributes['id'] === options_[Constant_.ContainerId] &&
+        attributes['class'] === options_[Constant_.ContainerClass];
       
       return parentContainer_;
     };
@@ -120,7 +125,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
     
     createAButton_ = function(attributes, text) {
       methodWasCalled +=  attributes['type'] === 'button' &&
-    
+        
       ((attributes['id'] === FirstButtonId_ &&
         text === FirstButtonText_ &&
         attributes['disabled'] === 'disabled' &&
@@ -129,7 +134,7 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
         text === SecondButtonText_ &&
         attributes['disabled'] === undefined &&
         attributes['class'] === undefined));
-
+      
       return {};
     };
     
@@ -142,13 +147,18 @@ src.test.control.redirectList.whenInitializingARedirectList.describe = function(
   it('should create the click event for all buttons.', function() {
     var methodWasCalled = 0;
     
-    createTheClickEvent_ = function(elementIds, url, getValue, getElement, redirect) {
+    createTheClickEvent_ = function(elementIds, url, map, getValue,
+                                    getElement, reduce, removeAt, redirect) {
       
       methodWasCalled += goog.array.equals(elementIds, [FirstFor_, SecondFor_]) &&
+        (url === FirstGoto_ || url === SecondGoto_) &&
+        map === goog.array.map &&
         redirect === redirect_ &&
         getValue === getValue_ &&
         getElement === getElement_ &&
-        (url === FirstGoto_ || url === SecondGoto_);
+        reduce === goog.array.reduce &&
+        removeAt === goog.string.removeAt &&
+        redirect === redirect_;
     };
     
     callTheMethod_();
