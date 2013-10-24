@@ -31,6 +31,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.buttonList.whenUpdatingTheHiddenValue" ^
 --namespace="src.test.control.dropDownList.whenCreatingAFillListHandler" ^
 --namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
+--namespace="src.test.control.editableDiv.whenInitializingAnEditableDiv" ^
 --namespace="src.test.control.feedback.form.whenCreatingTheForm" ^
 --namespace="src.test.control.feedback.whenInitializingAFeedback" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenCleaningUpTheText" ^
