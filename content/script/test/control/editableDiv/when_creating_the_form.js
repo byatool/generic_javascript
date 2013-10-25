@@ -118,6 +118,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   
   it('should create the Submit button.', function() {
     var methodWasCalled = false;
+
     createAButton_ = function(attributes, text){
       methodWasCalled = methodWasCalled ||
         (Constant_.ButtonSubmit !== undefined &&  
@@ -131,9 +132,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-  
-  
-  
+   
   
   it('should append the submit button to the form.', function() {
     var methodWasCalled = false;
