@@ -30,6 +30,14 @@ src.base.control.editableDiv.constant.EditTextArea = 'editTextArea';
  @type {string}
  @protected
  */
+src.base.control.editableDiv.constant.ErrorEmptyText = 'Please enter some text.';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.editableDiv.constant.FormId = 'textUpdateForm';
 
 

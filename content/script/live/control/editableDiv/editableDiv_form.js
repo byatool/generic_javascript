@@ -1,10 +1,11 @@
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.editableDiv.constant');
+goog.require('src.site.validation.validationInterpreter');
 
 goog.provide('src.base.control.editableDiv.form');
 
 
-
+/* PRIVATE FUNCTIONS */
 
 /**
  
@@ -32,6 +33,7 @@ src.base.control.editableDiv.form.createAndAppendButton_ =
     appendChild(form, submitButton);
     
   };
+
 
 /**
  @param {Object} form The parent form to append the text area
@@ -76,6 +78,28 @@ src.base.control.editableDiv.form.createTheForm_ =
     return createAForm(formAttributes);
   }; 
 
+
+
+/* PROTECTED FUNCTIONS */
+
+/**
+ @return {Object} The keyword/value dictionary with the rules.
+ @protected
+ */
+src.base.control.editableDiv.form.createTheValidationRules =
+  function() {
+    
+    var Constant_ = src.base.control.editableDiv.constant;
+    var ValidationInterpreterConstant_ = src.site.validation.validationInterpreter.constant;
+    
+    return [
+      [Constant_.EditTextArea,
+       [ValidationInterpreterConstant_.IsNotEmpty, Constant_.ErrorEmptyText]]];
+  };
+
+
+/* EXPORTED FUNCTIONS */
+
 /**
  @param {string} formId The id of the created form.
  @param {string} postTo The url to post the form values
@@ -101,11 +125,11 @@ src.base.control.editableDiv.form.createTheForm =
     var Current_ = src.base.control.editableDiv.form;
     
     var form = Current_.createTheForm_(postTo, createAForm);
-     
+    
     Current_.createAndAppendEditTextArea_(form,
                                           createATextArea,
                                           appendChild);
-     
+    
     Current_.createAndAppendButton_(form,
                                     Constant_.ButtonSubmit,
                                     Constant_.ButtonSubmitText,
@@ -126,4 +150,5 @@ src.base.control.editableDiv.form.createTheForm =
     
     return result;
   };
+
 
