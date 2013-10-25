@@ -35,6 +35,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.editableDiv.whenInitializingAnEditableDiv" ^
 --namespace="src.test.control.editableDiv.form.whenCreatingTheForm" ^
 --namespace="src.test.control.editableDiv.form.whenCreatingTheValidationRules" ^
+--namespace="src.test.control.editableDiv.form.whenSettingTheCancelHandler" ^
 --namespace="src.test.control.feedback.form.whenCreatingTheForm" ^
 --namespace="src.test.control.feedback.whenInitializingAFeedback" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenCleaningUpTheText" ^

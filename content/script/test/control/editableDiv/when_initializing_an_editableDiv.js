@@ -27,6 +27,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   
   var appendChild_;
   var createADiv_;
+  var createFormResult_;
   var createTheForm_;
   var createTheTextContainerClick_;
   var theForm_;
@@ -42,6 +43,8 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   
   beforeEach(function() {
     theForm_ = {};
+    createFormResult_ = {};
+    createFormResult_[ControlConstant_.CreatedControl] = theForm_;
     
     parentContainer_ = {};
     textContainer_ = {};
@@ -62,7 +65,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
         return parentContainer_;                      
       }};
     
-    createTheForm_ = function(){ return theForm_; };
+    createTheForm_ = function(){ return createFormResult_; };
     createTheTextContainerClick_ = function(){};
     
     showElement_ = function(){};
@@ -129,8 +132,8 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should append the text container to the parent.', function() {
     var methodWasCalled = false;
     
@@ -148,25 +151,23 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   it('should create the form.', function() {
     var methodWasCalled = false;
     
-    //NOTE: In this situation, I am checking to see if the correct methods are being
-    // injected like before.  The difference is that I am checking for the actuall functions,
-    // and not something that was injected into the initalize method.  This is done to still
-    // have the level of tesing in lower methods, and not having to inject methods into the
-    // parent function.
-    createTheForm_ = function(id, postTo, createAForm, createATextArea, createAButton) {
+    createTheForm_ = function(id, postTo, createAForm, createATextArea, createAButton, appendChild) {
       methodWasCalled = Constant_.FormId !== undefined && 
         id === Constant_.FormId &&
         postTo === PersistUrl_ &&
         createAForm === src.base.helper.domCreation.form &&
         createATextArea === src.base.helper.domCreation.textarea &&
-        createAButton === src.base.helper.domCreation.button;
+        createAButton === src.base.helper.domCreation.button &&
+        appendChild === appendChild_;
+      
+      return createFormResult_;
+      
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
   
   
   it('should set the form visibilty.', function() {
@@ -182,7 +183,22 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     
     expect(methodWasCalled).toBe(true);
   });
+
   
+  it('should append the form to the parent container.', function() {
+    var methodWasCalled = false;
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === parentContainer_ && child === theForm_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+
   
   
   

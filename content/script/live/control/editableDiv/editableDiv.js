@@ -18,8 +18,10 @@
  */
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
+goog.require('goog.style');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.editableDiv.constant');
+goog.require('src.base.control.editableDiv.form');
 goog.require('src.base.helper.domCreation');
 
 
@@ -122,6 +124,14 @@ src.base.control.editableDiv.initialize =
       createTheForm :
       src.base.control.editableDiv.form.createTheForm;
 
+    showElement = showElement ?
+      showElement :
+      goog.style.showElement;
+
+    appendChild = appendChild ?
+      appendChild :
+      goog.dom.appendChild;
+
     createTheTextContainerClick = createTheTextContainerClick ?
       createTheTextContainerClick :
       src.base.control.editableDiv.createTheTextContainerClick;
@@ -147,27 +157,44 @@ src.base.control.editableDiv.initialize =
     setTextContent(textContainer, text);
     appendChild(container, textContainer);
 
-    var form = createTheForm(Constant_.FormId,
-                             persistUrl,
-                             src.base.helper.domCreation.form,
-                             src.base.helper.domCreation.textarea,
-                             src.base.helper.domCreation.button);
-    showElement(form, false);
+    var formResult = createTheForm(Constant_.FormId,
+                                   persistUrl,
+                                   src.base.helper.domCreation.form,
+                                   src.base.helper.domCreation.textarea,
+                                   src.base.helper.domCreation.button,
+                                   appendChild);
 
+    showElement(formResult[ControlConstant_.CreatedControl],
+                false);
 
+    appendChild(container, formResult[ControlConstant_.CreatedControl]);
+
+    
+    //NEed to create a cancel click handler that will hide the form,
+    //  and show the div
+    //  Will need to have the form revert changes...
+    //src.base.control.editableDiv.form.setCancelHandler
+    //goog.dom.getElementByClass
+    //src.base.helper.events.setClick
+    //setCancelHandler(form, toCall);
+    
+    
+    
+    
+    
     //initializeForm(form[Constant.CreatedControl])
     //setOnCancelClick(form[Constant.CreatedControl], hideFormAndShowTextDiv())
-
+    
      //Text Container End
-
+    
     // var editTextArea = Current_.createElement_(null,
     //                                            Constant_.EditTextArea,
     //                                            createTheForm);
     // setValue(editTextArea, text);
-
-
+    
+    
     // //showElement(editTextArea, false);
-
+    
     // var textContainerClickHandler = createTheTextContainerClick(textContainer,
     //                                                             editTextArea,
     //                                                             showElement);
