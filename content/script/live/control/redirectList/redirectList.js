@@ -125,8 +125,8 @@ src.base.control.redirectList.initialize =
     getValue = getValue ?
       getValue :
       goog.dom.forms.getValue;
-    
-     //TODO Probably should create a utility method that wraps window.location
+
+    //TODO Probably should create a utility method that wraps window.location
     //  instead of doing it inline.
     redirect = redirect ?
       redirect :

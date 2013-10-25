@@ -1,5 +1,23 @@
 goog.provide('src.base.control.controlConstant');
 
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.controlConstant.CreatedControl = 'createdControl';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.controlConstant.CreatedOptions = 'createdOptions';
+
+
+
 /**
  @const
  @type {string}
@@ -22,6 +40,7 @@ src.base.control.controlConstant.Button = 'button';
  @export
  */
 src.base.control.controlConstant.Class = 'class';
+
 
 
 /**
