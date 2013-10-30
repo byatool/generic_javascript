@@ -42,7 +42,6 @@ src.base.control.controlConstant.Button = 'button';
 src.base.control.controlConstant.Class = 'class';
 
 
-
 /**
  @const
  @type {string}
@@ -57,6 +56,14 @@ src.base.control.controlConstant.Id = 'id';
  @export
  */
 src.base.control.controlConstant.Method = 'method';
+
+
+/**
+ @const
+ @type {string}
+ @exported
+ */
+src.base.control.controlConstant.Name = 'name';
 
 
 /**

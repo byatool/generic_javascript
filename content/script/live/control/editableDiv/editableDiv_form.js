@@ -1,5 +1,6 @@
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.editableDiv.constant');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.site.validation.validationInterpreter');
 
 goog.provide('src.base.control.editableDiv.form');
@@ -8,7 +9,7 @@ goog.provide('src.base.control.editableDiv.form');
 /* PRIVATE FUNCTIONS */
 
 /**
-
+ 
  @param {string} form The form to append the button to.
  @param {string} id The button id, and css class.
  @param {string} text The button text.
@@ -22,16 +23,16 @@ src.base.control.editableDiv.form.createAndAppendButton_ =
   function(form, id, text, createAButton, appendChild) {
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var buttonAttributes = {};
-    buttonAttributes[ControlConstant_.ButtonType] = ControlConstant_.Button;
+    buttonAttributes[ControlConstant_.Type] = ControlConstant_.Button;
     buttonAttributes[ControlConstant_.Id] = id;
     buttonAttributes[ControlConstant_.Class] = id;
-
+    
     var submitButton = createAButton(buttonAttributes, text);
-
+    
     appendChild(form, submitButton);
-
+    
   };
 
 
@@ -48,11 +49,13 @@ src.base.control.editableDiv.form.createAndAppendEditTextArea_ =
   function(form, createATextArea, appendChild) {
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var editTextAreaAttributes = {};
     editTextAreaAttributes[ControlConstant_.Class] = Constant_.EditTextArea;
+    editTextAreaAttributes[ControlConstant_.Name] = Constant_.EditTextAreaId;
+    editTextAreaAttributes[ControlConstant_.Id] = Constant_.EditTextAreaId;
     var editTextArea = createATextArea(editTextAreaAttributes);
-
+    
     appendChild(form, editTextArea);
   };
 
@@ -69,13 +72,13 @@ src.base.control.editableDiv.form.createTheForm_ =
   function(postTo, createAForm) {
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var formAttributes = {};
     formAttributes[ControlConstant_.Action] = postTo;
     formAttributes[ControlConstant_.Class] = Constant_.FormId;
     formAttributes[ControlConstant_.Method] = ControlConstant_.Post;
     formAttributes[ControlConstant_.Id] = Constant_.FormId;
-
+    
     return createAForm(formAttributes);
   };
 
@@ -92,9 +95,9 @@ src.base.control.editableDiv.form.createTheValidationRules =
     
     var Constant_ = src.base.control.editableDiv.constant;
     var ValidationInterpreterConstant_ = src.site.validation.validationInterpreter.constant;
-
+    
     return [
-      [Constant_.EditTextArea,
+      [Constant_.EditTextAreaId,
        [ValidationInterpreterConstant_.IsNotEmpty, Constant_.ErrorEmptyText]]];
   };
 
@@ -109,11 +112,14 @@ src.base.control.editableDiv.form.createTheValidationRules =
  @protected
  */
 src.base.control.editableDiv.form.setCancelHandler =
-  function(form, toCall, getElementByClass, setClick) {
+  function(form, toCall, getElementByClass, showElement,
+           setClick) {
     var Constant_ = src.base.control.editableDiv.constant;
     
-     
+    
     var button = getElementByClass(Constant_.ButtonCancel, form);
+    
+    
     setClick(button, toCall);
   };
 
@@ -142,41 +148,33 @@ src.base.control.editableDiv.form.createTheForm =
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.editableDiv.form;
-
+    var FormComponentConstant_ = src.base.control.formComponent.constant;
+    
+    
     var form = Current_.createTheForm_(postTo, createAForm);
     
     Current_.createAndAppendEditTextArea_(form,
                                           createATextArea,
                                           appendChild);
-
+    
     Current_.createAndAppendButton_(form,
-                                    Constant_.ButtonSubmit,
+                                    FormComponentConstant_.ButtonClass,
                                     Constant_.ButtonSubmitText,
                                     createAButton,
                                     appendChild);
-
+    
     Current_.createAndAppendButton_(form,
                                     Constant_.ButtonCancel,
                                     Constant_.ButtonCancelText,
                                     createAButton,
                                     appendChild);
-
+    
     var result = {};
     result[ControlConstant_.CreatedControl] = form;
     result[ControlConstant_.CreatedOptions] = {};
     result[ControlConstant_.CreatedOptions][ControlConstant_.Action] = postTo;
-
+    
     return result;
   };
-
-
-
-// initializeFormComponent(addEmployeeForm,
-//                         datePickerInfo,
-//                         validationMethod,
-//                         null);
-// initializeFormComponent = initializeFormComponent ?
-//   initializeFormComponent :
-//   src.base.control.formComponent.initialize;
 
 

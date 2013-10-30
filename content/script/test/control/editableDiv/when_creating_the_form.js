@@ -2,6 +2,7 @@ goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.editableDiv.constant');
 goog.require('src.base.control.editableDiv.form');
+goog.require('src.base.control.formComponent.constant');
 
 
 goog.provide('src.test.control.editableDiv.form.whenCreatingTheForm');
@@ -16,6 +17,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   var Constant_ = src.base.control.editableDiv.constant;
   var ControlConstant_ = src.base.control.controlConstant;
   var Current_ = src.base.control.editableDiv.form;
+  var FormComponentConstant_ = src.base.control.formComponent.constant;
   
   
   //Fields
@@ -94,7 +96,10 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     createATextArea_ = function(attributes){
       methodWasCalled = methodWasCalled ||
         (Constant_.EditTextArea !== undefined &&
-         attributes[ControlConstant_.Class] === Constant_.EditTextArea);
+         Constant_.EditTextAreaId !== undefined &&
+         attributes[ControlConstant_.Class] === Constant_.EditTextArea &&
+         attributes[ControlConstant_.Id] === Constant_.EditTextAreaId &&
+         attributes[ControlConstant_.Name] === Constant_.EditTextAreaId);
     };
     
     callTheMethod_();
@@ -118,13 +123,13 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   
   it('should create the Submit button.', function() {
     var methodWasCalled = false;
-
+    
     createAButton_ = function(attributes, text){
       methodWasCalled = methodWasCalled ||
         (Constant_.ButtonSubmit !== undefined &&  
-         attributes[ControlConstant_.ButtonType] === ControlConstant_.Button &&
-         attributes[ControlConstant_.Id] === Constant_.ButtonSubmit &&
-         attributes[ControlConstant_.Class] === Constant_.ButtonSubmit) &&
+         attributes[ControlConstant_.Type] === ControlConstant_.Button &&
+         attributes[ControlConstant_.Id] === FormComponentConstant_.ButtonClass &&
+         attributes[ControlConstant_.Class] === FormComponentConstant_.ButtonClass) &&
         text === Constant_.ButtonSubmitText;
     };
     
@@ -132,7 +137,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-   
+  
   
   it('should append the submit button to the form.', function() {
     var methodWasCalled = false;
@@ -146,14 +151,14 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-
+  
   
   it('should create the Cancel button.', function() {
     var methodWasCalled = false;
     createAButton_ = function(attributes, text){
       methodWasCalled = methodWasCalled ||
         (Constant_.ButtonCancel !== undefined &&  
-         attributes[ControlConstant_.ButtonType] === ControlConstant_.Button &&
+         attributes[ControlConstant_.Type] === ControlConstant_.Button &&
          attributes[ControlConstant_.Id] === Constant_.ButtonCancel &&
          attributes[ControlConstant_.Class] === Constant_.ButtonCancel) &&
         text === Constant_.ButtonCancelText;

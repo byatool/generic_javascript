@@ -31,12 +31,12 @@ src.test.control.editableDiv.form.whenCreatingTheValidationRules.describe = func
   var callTheMethod_ = function() {
     return Current_.createTheValidationRules();
   };
-
+  
   
   //Test Methods
   
   it('should contain a rule section for the edit text area.', function() {
-    expect(callTheMethod_()[0][0]).toBe(Constant_.EditTextArea);
+    expect(callTheMethod_()[0][0]).toBe(Constant_.EditTextAreaId);
   });
   
   it('should contain a not empty rule for the edit text area.', function() {

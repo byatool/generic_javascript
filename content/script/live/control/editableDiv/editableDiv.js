@@ -5,7 +5,7 @@
  --   One with a text area populated with the text
  --    Will need a submit button
  --    Will need a cancel button
-
+ 
  --  set option[editMode]
  --    set onClick for the text container
  --  set option[submitToUrl]
@@ -22,6 +22,7 @@ goog.require('goog.style');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.editableDiv.constant');
 goog.require('src.base.control.editableDiv.form');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.helper.domCreation');
 
 
@@ -39,19 +40,18 @@ goog.provide('src.base.control.editableDiv');
 src.base.control.editableDiv.createElement_ =
   function(id, cssClass, create) {
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var containerAttributes = {};
-
+    
     if (id) {
       containerAttributes[ControlConstant_.Id] = id;
     }
-
+    
     containerAttributes[ControlConstant_.Class] = cssClass;
-
+    
     return create(containerAttributes);
-
+    
     /*
-
      var container = Current_.createElement_(containerId,
      containerId,
      createADiv);
@@ -103,6 +103,14 @@ src.base.control.editableDiv.createTheTextContainerClick =
  to create the onclick handler for the text container.
  @param {?function} setClick The function used to handle the
  text container click.
+ @param {?function} setCancelHandler The function for setting the
+ click handler for the form cancel button.
+ @param {?function} createTheValidationRules The function used to 
+ create the validation rules for the form.
+ @param {?function} createAValidationWrapper The function used to
+ create the validation handler function.
+ @param {?function} initializeTheForm The function used to attach
+ the form components functionality to a form.
  @return {Object} The created control.
  @export
  */
@@ -110,99 +118,111 @@ src.base.control.editableDiv.initialize =
   function(containerId, text, persistUrl, createADiv,
            setTextContent, createTheForm, showElement,
            appendChild, createTheTextContainerClick,
-           setClick) {
-
+           setClick, setCancelHandler, createTheValidationRules,
+           createAValidationWrapper, initializeTheForm) {
+    
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-
+    
     setTextContent = setTextContent ?
       setTextContent :
       goog.dom.setTextContent;
-
+    
     createTheForm = createTheForm ?
       createTheForm :
       src.base.control.editableDiv.form.createTheForm;
-
+    
     showElement = showElement ?
       showElement :
       goog.style.showElement;
-
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     createTheTextContainerClick = createTheTextContainerClick ?
       createTheTextContainerClick :
       src.base.control.editableDiv.createTheTextContainerClick;
-
+    
     setClick = setClick ?
       setClick :
       src.base.helper.events.setClick;
+    
+    setCancelHandler = setCancelHandler ? 
+      setCancelHandler : 
+      src.base.control.editableDiv.form.setCancelHandler;
+    
+    createTheValidationRules = createTheValidationRules ? 
+      createTheValidationRules : 
+      src.base.control.editableDiv.form.createTheValidationRules;
 
+    createAValidationWrapper = createAValidationWrapper ? 
+      createAValidationWrapper : 
+      src.site.validation.validationInterpreter.createAValidationWrapper;
+    
+    initializeTheForm = initializeTheForm ? 
+      initializeTheForm : 
+      src.base.control.formComponent.initialize;
+    
+    
     /* START */
-
+    
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.editableDiv;
-
+    var FormConstant_ = src.base.control.formComponent.constant;
+    
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-
+    
     var textContainerAttributes = {};
     textContainerAttributes[ControlConstant_.Class] = Constant_.TextContainer;
     var textContainer = createADiv(textContainerAttributes);
     setTextContent(textContainer, text);
     appendChild(container, textContainer);
-
+    
     var formResult = createTheForm(Constant_.FormId,
                                    persistUrl,
                                    src.base.helper.domCreation.form,
                                    src.base.helper.domCreation.textarea,
                                    src.base.helper.domCreation.button,
                                    appendChild);
-
+    
     showElement(formResult[ControlConstant_.CreatedControl],
                 false);
-
+    
     appendChild(container, formResult[ControlConstant_.CreatedControl]);
-
     
-    //NEed to create a cancel click handler that will hide the form,
-    //  and show the div
-    //  Will need to have the form revert changes...
-    //src.base.control.editableDiv.form.setCancelHandler
-    //goog.dom.getElementByClass
-    //src.base.helper.events.setClick
-    //setCancelHandler(form, toCall);
+    var textContainerClick = createTheTextContainerClick(textContainer,
+                                                         formResult[ControlConstant_.CreatedControl],
+                                                         showElement);
     
+    setClick(textContainer, textContainerClick);
     
+    setCancelHandler(formResult[ControlConstant_.CreatedControl],
+                     function() { //This will eventually expand to call any functions passed into
+                       //  the initialize
+                       showElement(formResult[ControlConstant_.CreatedControl], false);
+                       showElement(textContainer, true);
+                     },
+                     goog.dom.getElementByClass,
+                     showElement,
+                     setClick);
     
+    var datePickerInformation = {};
+    datePickerInformation[FormConstant_.DatepickerOptions] = {};
+    datePickerInformation[FormConstant_.DatepickerTextboxes] = [];
     
+    var validationMethod = createAValidationWrapper(createTheValidationRules());
     
-    //initializeForm(form[Constant.CreatedControl])
-    //setOnCancelClick(form[Constant.CreatedControl], hideFormAndShowTextDiv())
-    
-     //Text Container End
-    
-    // var editTextArea = Current_.createElement_(null,
-    //                                            Constant_.EditTextArea,
-    //                                            createTheForm);
-    // setValue(editTextArea, text);
-    
-    
-    // //showElement(editTextArea, false);
-    
-    // var textContainerClickHandler = createTheTextContainerClick(textContainer,
-    //                                                             editTextArea,
-    //                                                             showElement);
-    // setClick(textContainer, textContainerClickHandler);
-
-
-
-
+    initializeTheForm(formResult[ControlConstant_.CreatedControl],
+                      datePickerInformation,
+                      validationMethod,
+                      null,
+                      function() {});
 
     return container;
   };

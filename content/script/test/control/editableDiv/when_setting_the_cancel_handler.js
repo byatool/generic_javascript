@@ -24,14 +24,16 @@ src.test.control.editableDiv.form.whenSettingTheCancelHandler.describe = functio
   var toCall_;
   var getElementByClass_;
   var setClick_;
+  var showElement_;
   
   //Test Hooks
   
   beforeEach(function() {
     cancelButton_ = {};
     form_ = {};
-     
+    
     getElementByClass_ = function() { return cancelButton_; };
+    showElement_ = function(){};
     setClick_ = function(){};
     toCall_ = function() {};
   });
@@ -40,7 +42,7 @@ src.test.control.editableDiv.form.whenSettingTheCancelHandler.describe = functio
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.setCancelHandler(form_, toCall_, getElementByClass_, setClick_);
+    return Current_.setCancelHandler(form_, toCall_, getElementByClass_, showElement_, setClick_);
   };
   
   
