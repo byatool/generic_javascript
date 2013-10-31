@@ -27,9 +27,9 @@ goog.provide('src.base.control.editableDiv');
 src.base.control.editableDiv.createElement_ =
   function(id, cssClass, create) {
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var containerAttributes = {};
-
+    
     if (id) {
       containerAttributes[ControlConstant_.Id] = id;
     }
@@ -106,15 +106,42 @@ src.base.control.editableDiv.createTheTextContainer_ =
 src.base.control.editableDiv.applyTheEdittedText =
   function(parentForm, textContainer, getElementByClass,
            getValue, setTextContent) {
-
+    
     var Constant_ = src.base.control.editableDiv.constant;
-
+    
     var editTextArea = getElementByClass(Constant_.EditTextArea,
                                          parentForm);
     var text = getValue(editTextArea);
     setTextContent(textContainer, text);
   };
 
+
+/**
+ @param {Object} form The parent form.
+ @param {Object} textContainer The element that displays
+ the uneditable text.
+ @param {function} showElement The function used to hide the
+ form, and show the textContainer.
+ @param {function} revertText The function used to set the
+ form text back to the text container text.
+ @return {function} The cancel handler function. 
+ @protected
+ */
+src.base.control.editableDiv.createTheCancelHandler =
+  function(form, textContainer, showElement,
+           revertText) {
+    return function() {
+      showElement(form, false);
+      
+      revertText(form,
+                 textContainer,
+                 goog.dom.getTextContent,
+                 goog.dom.getElementByClass,
+                 goog.dom.forms.setValue);
+      
+      showElement(textContainer, true);
+    };
+  };
 
 
 /**
@@ -185,6 +212,8 @@ src.base.control.editableDiv.revertText =
  in the edit textarea to that of the text container.
  @param {?function} setCancelHandler The function for setting the
  click handler for the form cancel button.
+ @param {?function} createTheCancelHandler The function used create
+ the on click handler for the cancel button on the form.
  @param {?function} createTheValidationRules The function used to
  create the validation rules for the form.
  @param {?function} createAValidationWrapper The function used to
@@ -201,8 +230,9 @@ src.base.control.editableDiv.initialize =
            setTextContent, createTheForm, showElement,
            appendChild, createTheTextContainerClick,
            setClick, revertText, setCancelHandler,
-           createTheValidationRules, createAValidationWrapper,
-           initializeTheForm, applyTheEdittedText) {
+           createTheCancelHandler, createTheValidationRules,
+           createAValidationWrapper, initializeTheForm,
+           applyTheEdittedText) {
     
     createADiv = createADiv ?
       createADiv :
@@ -231,7 +261,8 @@ src.base.control.editableDiv.initialize =
     setClick = setClick ?
       setClick :
       src.base.helper.events.setClick;
-    
+
+    //DEAD
     revertText = revertText ?
       revertText :
       src.base.control.editableDiv.revertText;
@@ -239,6 +270,10 @@ src.base.control.editableDiv.initialize =
     setCancelHandler = setCancelHandler ?
       setCancelHandler :
       src.base.control.editableDiv.form.setCancelHandler;
+
+    createTheCancelHandler = createTheCancelHandler ? 
+      createTheCancelHandler :
+      src.base.control.editableDiv.createTheCancelHandler;
     
     createTheValidationRules = createTheValidationRules ?
       createTheValidationRules :
@@ -251,21 +286,21 @@ src.base.control.editableDiv.initialize =
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.formComponent.initialize;
-     
+    
     applyTheEdittedText = applyTheEdittedText ?
       applyTheEdittedText :
       src.base.control.editableDiv.applyTheEdittedText;
-
-
+    
+    
     /* START */
-
+    
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.editableDiv;
     var FormConstant_ = src.base.control.formComponent.constant;
-
+    
     var container = Current_.createTheContainer_(containerId, createADiv);
-
+    
     var textContainer = Current_.createTheTextContainer_(text,
                                                          createADiv,
                                                          setTextContent);
@@ -292,21 +327,17 @@ src.base.control.editableDiv.initialize =
                                                          showElement);
     setClick(textContainer, textContainerClick);
     
+    var onCancelClick = createTheCancelHandler(formResult[ControlConstant_.CreatedControl],
+                                               textContainer,
+                                               showElement,
+                                               src.base.control.editableDiv.revertText);
+    
     setCancelHandler(formResult[ControlConstant_.CreatedControl],
-                     function() {
-                       
-                       showElement(formResult[ControlConstant_.CreatedControl], false);
-                       revertText(formResult[ControlConstant_.CreatedControl],
-                                  textContainer,
-                                  goog.dom.getTextContent,
-                                  goog.dom.getElementByClass,
-                                  goog.dom.forms.setValue);
-                       
-                       showElement(textContainer, true);
-                     },
+                     onCancelClick,
                      goog.dom.getElementByClass,
                      showElement,
                      setClick);
+
     
     var datePickerInformation = {};
     datePickerInformation[FormConstant_.DatepickerOptions] = {};
