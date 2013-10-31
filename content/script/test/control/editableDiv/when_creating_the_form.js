@@ -24,14 +24,16 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   
   var FormId_ = goog.string.getRandomString();
   var PostTo_ = goog.string.getRandomString();
+  var Text_ = goog.string.getRandomString();
   
   var appendChild_;
   var cancelButton_;
   var createAButton_;
   var createAForm_;
   var createATextArea_;
-  var editTextArea_;
+  var editTextArea_; 
   var form_;
+  var setValue_;
   var submitButton_;
   
   
@@ -47,7 +49,6 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     createAForm_ = function() { return form_; };
     createATextArea_ = function() { return editTextArea_;};
     
-    
     createAButton_ = function(attributes){
       switch(attributes[ControlConstant_.Class]) {
       case Constant_.ButtonSubmit:
@@ -62,14 +63,15 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
         return submitButton_;                      
       }};
     
+    setValue_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createTheForm(FormId_, PostTo_, createAForm_, createATextArea_,
-                                  createAButton_, appendChild_);
+    return Current_.createTheForm(FormId_, Text_, PostTo_, createAForm_, createATextArea_,
+                                  createAButton_, setValue_, appendChild_);
   };
   
   //Test Methods
@@ -108,6 +110,20 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   });
   
   
+  it('should set the value of the text area.', function() {
+    var methodWasCalled = false;
+    
+    setValue_ = function(textarea, text){
+      methodWasCalled = textarea === editTextArea_ &&
+        text === Text_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should append the edit text area to the form.', function() {
     var methodWasCalled = false;
     
@@ -120,6 +136,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
+  
   
   it('should create the Submit button.', function() {
     var methodWasCalled = false;

@@ -1,3 +1,4 @@
+goog.require('goog.dom.forms');
 goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.editableDiv');
@@ -26,7 +27,8 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var ParentContainerClass_ = goog.string.getRandomString();
   var PersistUrl_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
-  
+
+  var applyTheEdittedText_;
   var appendChild_;
   var createADiv_;
   var createFormResult_;
@@ -37,6 +39,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var theForm_;
   var initializeTheForm_;
   var parentContainer_;
+  var revertText_;
   var setCancelHandler_;
   var setClick_;
   var setTextContent_;
@@ -56,6 +59,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     textContainer_ = {};
     
     appendChild_ = function(){};
+    applyTheEdittedText_ = function() {};
     
     createADiv_ = function(attributes){
       switch(attributes[ControlConstant_.Class]) {
@@ -76,6 +80,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     createTheValidationRules_ = function(){};
     createAValidationWrapper_ = function(){};
     initializeTheForm_ = function(){};
+    revertText_ = function() {};
     setCancelHandler_ = function(){};
     setClick_ = function(){};
     showElement_ = function(){};
@@ -89,8 +94,8 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var callTheMethod_ = function() {
     return Current_.initialize(ParentContainerId_, Text_, PersistUrl_, createADiv_, setTextContent_,
                                createTheForm_, showElement_, appendChild_, createTheTextContainerClick_,
-                               setClick_, setCancelHandler_, createTheValidationRules_,
-                               createAValidationWrapper_, initializeTheForm_);
+                               setClick_, revertText_, setCancelHandler_, createTheValidationRules_,
+                               createAValidationWrapper_, initializeTheForm_, applyTheEdittedText_);
   };
   
   
@@ -161,13 +166,17 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   it('should create the form.', function() {
     var methodWasCalled = false;
     
-    createTheForm_ = function(id, postTo, createAForm, createATextArea, createAButton, appendChild) {
+    createTheForm_ = function(id, text, postTo, createAForm, createATextArea,
+                              createAButton, setValue, appendChild) {
+      
       methodWasCalled = Constant_.FormId !== undefined && 
         id === Constant_.FormId &&
+        text === Text_ &&
         postTo === PersistUrl_ &&
         createAForm === src.base.helper.domCreation.form &&
         createATextArea === src.base.helper.domCreation.textarea &&
         createAButton === src.base.helper.domCreation.button &&
+        setValue === goog.dom.forms.setValue &&
         appendChild === appendChild_;
       
       return createFormResult_;
@@ -251,6 +260,16 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
         (element === textContainer_ && showIt === true);
     };
     
+    revertText_ = function(parentForm, textContainer, getTextContent,
+                           getElementByClass, setValue){
+      methodWasCalled += parentForm === theForm_ &&
+        textContainer === textContainer_ &&
+        getTextContent === goog.dom.getTextContent &&
+        getElementByClass === goog.dom.getElementByClass &&
+        setValue === goog.dom.forms.setValue;
+    };
+    
+    
     setCancelHandler_ = function(form, toCall, getElementByClass, showElement,
                                  setClick){
       methodWasCalled += form === theForm_ &&
@@ -266,7 +285,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     //BAD Current there is not enough abstraction to only have the show element
     //  be called in the toCall function. There is a prior call to show element
     //  to hide the edit container.
-    expect(methodWasCalled).toBe(4);
+    expect(methodWasCalled).toBe(5);
   });
 
   
@@ -290,25 +309,36 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   
   
   it('should initialize the form.', function() {
-    var methodWasCalled = false;
+    var methodWasCalled = 0;
     var validation = {};
-
+    
     createAValidationWrapper_ = function(){
       return validation;
     };
-     
+    
+    applyTheEdittedText_ = function(parentForm, textContainer, getElementByClass,
+                                    getValue, setTextContent){
+      methodWasCalled += parentForm === theForm_ &&
+        textContainer === textContainer_ &&
+        getElementByClass === goog.dom.getElementByClass &&
+        getValue === goog.dom.forms.getValue &&
+        setTextContent === goog.dom.setTextContent;
+    };
+    
+    
     initializeTheForm_ = function(formId, datePickerInformation, validate, autoFillParameters, onClick){
-      methodWasCalled = formId === theForm_ &&
+      methodWasCalled += formId === theForm_ &&
         datePickerInformation[FormConstant_.DatepickerOptions] !== null &&
         datePickerInformation[FormConstant_.DatepickerTextboxes].length === 0 &&
         validate === validation &&
-        autoFillParameters === null &&
-        onClick !== null;
+        autoFillParameters === null;
+      
+        onClick();
     };
     
     callTheMethod_();
     
-    expect(methodWasCalled).toBe(true);
+    expect(methodWasCalled).toBe(2);
   });
   
   it('should return the parent container.', function() {

@@ -62,7 +62,71 @@ src.base.control.editableDiv.createElement_ =
      */
   };
 
+/**
+ @param {string} containerId The id of the parent container.
+ @param {function} createADiv The function used to create
+ the parent container.
+ @return {Object} The created parent container.
+ @private
+ */
+src.base.control.editableDiv.createTheContainer_ =
+  function(containerId, createADiv) {
+    var ControlConstant_ = src.base.control.controlConstant;
+    
+    var containerAttributes = {};
+    containerAttributes[ControlConstant_.Id] = containerId;
+    containerAttributes[ControlConstant_.Class] = containerId;
+    return createADiv(containerAttributes);
+  };
 
+/**
+ @param {string} text The text to fill the text container with.
+ @param {function} createADiv The function used to create the
+ text container.
+ @param {function} setTextContent The function used to set the
+ inner text of the text container.
+ @return {Object} The created text container.
+ @private
+ */
+src.base.control.editableDiv.createTheTextContainer_  =
+  function(text, createADiv, setTextContent) {
+    var ControlConstant_ = src.base.control.controlConstant;
+    var Constant_ = src.base.control.editableDiv.constant;
+    
+    var textContainerAttributes = {};
+    textContainerAttributes[ControlConstant_.Class] = Constant_.TextContainer;
+    var textContainer = createADiv(textContainerAttributes);
+    setTextContent(textContainer, text);
+    
+    return textContainer;
+  };
+
+
+/* PROTECTED FUNCTIONS */
+
+/**
+ @param {Object} parentForm The form that containes the
+ edit textarea.
+ @param {Object} textContainer The text only container.
+ @param {function} getElementByClass The function used to
+ find the edit text area.
+ @param {function} getValue The function used to get the
+ value of the edit textarea.
+ @param {function} setTextContent The function used to
+ update the inner text of the text container.
+ @protected
+ */
+src.base.control.editableDiv.applyTheEdittedText =
+  function(parentForm, textContainer, getElementByClass,
+           getValue, setTextContent) {
+    
+    var Constant_ = src.base.control.editableDiv.constant;
+    
+    var editTextArea = getElementByClass(Constant_.EditTextArea,
+                                         parentForm);
+    var text = getValue(editTextArea);
+    setTextContent(textContainer, text);
+  };
 
 
 
@@ -86,6 +150,32 @@ src.base.control.editableDiv.createTheTextContainerClick =
 
 
 /**
+ @param {Object} parentForm The form that containes the
+ edit textarea.
+ @param {Object} textContainer The text only container.
+ @param {function} getTextContent The function used to get the.
+ @param {function} getElementByClass The function used to find
+ the edit text area.
+ @param {function} setValue The function used to set the text
+ entry element value.
+ @protected
+ */
+src.base.control.editableDiv.revertText =
+  function(parentForm, textContainer, getTextContent,
+           getElementByClass, setValue) {
+    
+    var Constant_ = src.base.control.editableDiv.constant;
+    
+    var text = getTextContent(textContainer);
+    var editTextArea = getElementByClass(Constant_.EditTextArea,
+                                         parentForm);
+    setValue(editTextArea, text);
+  };
+
+
+/* EXPORTED FUNCTIONS */
+
+/**
  @param {string} containerId The id for the overall container.
  @param {string} text The story text.
  @param {string} persistUrl The url to post the edit to.
@@ -103,6 +193,8 @@ src.base.control.editableDiv.createTheTextContainerClick =
  to create the onclick handler for the text container.
  @param {?function} setClick The function used to handle the
  text container click.
+ @param {?function} revertText The function used to revert the text
+ in the edit textarea to that of the text container.
  @param {?function} setCancelHandler The function for setting the
  click handler for the form cancel button.
  @param {?function} createTheValidationRules The function used to 
@@ -111,6 +203,8 @@ src.base.control.editableDiv.createTheTextContainerClick =
  create the validation handler function.
  @param {?function} initializeTheForm The function used to attach
  the form components functionality to a form.
+ @param {?function} applyTheEdittedText The function used to
+ update the text container with the saved edit textarea value.
  @return {Object} The created control.
  @export
  */
@@ -118,8 +212,9 @@ src.base.control.editableDiv.initialize =
   function(containerId, text, persistUrl, createADiv,
            setTextContent, createTheForm, showElement,
            appendChild, createTheTextContainerClick,
-           setClick, setCancelHandler, createTheValidationRules,
-           createAValidationWrapper, initializeTheForm) {
+           setClick, revertText, setCancelHandler,
+           createTheValidationRules, createAValidationWrapper,
+           initializeTheForm, applyTheEdittedText) {
     
     createADiv = createADiv ?
       createADiv :
@@ -148,6 +243,10 @@ src.base.control.editableDiv.initialize =
     setClick = setClick ?
       setClick :
       src.base.helper.events.setClick;
+
+    revertText = revertText ? 
+      revertText : 
+      src.base.control.editableDiv.revertText;
     
     setCancelHandler = setCancelHandler ? 
       setCancelHandler : 
@@ -156,7 +255,7 @@ src.base.control.editableDiv.initialize =
     createTheValidationRules = createTheValidationRules ? 
       createTheValidationRules : 
       src.base.control.editableDiv.form.createTheValidationRules;
-
+    
     createAValidationWrapper = createAValidationWrapper ? 
       createAValidationWrapper : 
       src.site.validation.validationInterpreter.createAValidationWrapper;
@@ -164,6 +263,10 @@ src.base.control.editableDiv.initialize =
     initializeTheForm = initializeTheForm ? 
       initializeTheForm : 
       src.base.control.formComponent.initialize;
+     
+    applyTheEdittedText = applyTheEdittedText ? 
+      applyTheEdittedText : 
+      src.base.control.editableDiv.applyTheEdittedText;
     
     
     /* START */
@@ -173,22 +276,20 @@ src.base.control.editableDiv.initialize =
     var Current_ = src.base.control.editableDiv;
     var FormConstant_ = src.base.control.formComponent.constant;
     
-    var containerAttributes = {};
-    containerAttributes[ControlConstant_.Id] = containerId;
-    containerAttributes[ControlConstant_.Class] = containerId;
-    var container = createADiv(containerAttributes);
+    var container = Current_.createTheContainer_(containerId, createADiv);
     
-    var textContainerAttributes = {};
-    textContainerAttributes[ControlConstant_.Class] = Constant_.TextContainer;
-    var textContainer = createADiv(textContainerAttributes);
-    setTextContent(textContainer, text);
+    var textContainer = Current_.createTheTextContainer_(text,
+                                                         createADiv,
+                                                         setTextContent);
     appendChild(container, textContainer);
     
     var formResult = createTheForm(Constant_.FormId,
+                                   text,
                                    persistUrl,
                                    src.base.helper.domCreation.form,
                                    src.base.helper.domCreation.textarea,
                                    src.base.helper.domCreation.button,
+                                   goog.dom.forms.setValue,
                                    appendChild);
     
     showElement(formResult[ControlConstant_.CreatedControl],
@@ -199,13 +300,18 @@ src.base.control.editableDiv.initialize =
     var textContainerClick = createTheTextContainerClick(textContainer,
                                                          formResult[ControlConstant_.CreatedControl],
                                                          showElement);
-    
     setClick(textContainer, textContainerClick);
     
     setCancelHandler(formResult[ControlConstant_.CreatedControl],
-                     function() { //This will eventually expand to call any functions passed into
-                       //  the initialize
+                     function() {
+                       
                        showElement(formResult[ControlConstant_.CreatedControl], false);
+                       revertText(formResult[ControlConstant_.CreatedControl],
+                                  textContainer,
+                                  goog.dom.getTextContent,
+                                  goog.dom.getElementByClass,
+                                  goog.dom.forms.setValue);
+                       
                        showElement(textContainer, true);
                      },
                      goog.dom.getElementByClass,
@@ -222,7 +328,13 @@ src.base.control.editableDiv.initialize =
                       datePickerInformation,
                       validationMethod,
                       null,
-                      function() {});
+                      function() {
+                        applyTheEdittedText(formResult[ControlConstant_.CreatedControl],
+                                            textContainer,
+                                            goog.dom.getElementByClass,
+                                            goog.dom.forms.getValue,
+                                            goog.dom.setTextContent);
+                      });
 
     return container;
   };

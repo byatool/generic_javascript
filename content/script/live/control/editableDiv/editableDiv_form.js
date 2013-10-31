@@ -39,14 +39,17 @@ src.base.control.editableDiv.form.createAndAppendButton_ =
 /**
  @param {Object} form The parent form to append the text area
  to.
+ @param {string} text The default text for the textarea.
  @param {function} createATextArea The function used to create the
  edit text area.
+ @param {?function} setValue The function used to set
+ the value of the textarea to the passed in text.
  @param {function} appendChild The function used to append the text
  area to the form.
  @private
  */
 src.base.control.editableDiv.form.createAndAppendEditTextArea_ =
-  function(form, createATextArea, appendChild) {
+  function(form, text, createATextArea, setValue, appendChild) {
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     
@@ -55,6 +58,7 @@ src.base.control.editableDiv.form.createAndAppendEditTextArea_ =
     editTextAreaAttributes[ControlConstant_.Name] = Constant_.EditTextAreaId;
     editTextAreaAttributes[ControlConstant_.Id] = Constant_.EditTextAreaId;
     var editTextArea = createATextArea(editTextAreaAttributes);
+    setValue(editTextArea, text);
     
     appendChild(form, editTextArea);
   };
@@ -108,7 +112,9 @@ src.base.control.editableDiv.form.createTheValidationRules =
  clicked.
  @param {function} getElementByClass The function used to find the cancel
  button.
- @param {function} setClick The .
+ @param {?function} showElement The function used to hide the form on cancel.
+ @param {function} setClick The function used to apply the click hander to
+ the cancel button..
  @protected
  */
 src.base.control.editableDiv.form.setCancelHandler =
@@ -127,6 +133,7 @@ src.base.control.editableDiv.form.setCancelHandler =
 
 /**
  @param {string} formId The id of the created form.
+ @param {string} text The default text for the textarea.
  @param {string} postTo The url to post the form values
  to.
  @param {function} createAForm The function used to
@@ -135,6 +142,8 @@ src.base.control.editableDiv.form.setCancelHandler =
  create the edit text area.
  @param {function} createAButton The function used to
  create the update button.
+ @param {?function} setValue The function used to set
+ the value of the textarea to the passed in text.
  @param {function} appendChild The function used to
  add the child elements to the created form.
  createAButton
@@ -142,8 +151,8 @@ src.base.control.editableDiv.form.setCancelHandler =
  @protected
  */
 src.base.control.editableDiv.form.createTheForm =
-  function(formId, postTo, createAForm, createATextArea,
-           createAButton, appendChild) {
+  function(formId, text, postTo, createAForm, createATextArea,
+           createAButton, setValue, appendChild) {
     
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
@@ -154,7 +163,9 @@ src.base.control.editableDiv.form.createTheForm =
     var form = Current_.createTheForm_(postTo, createAForm);
     
     Current_.createAndAppendEditTextArea_(form,
+                                          text,
                                           createATextArea,
+                                          setValue,
                                           appendChild);
     
     Current_.createAndAppendButton_(form,
