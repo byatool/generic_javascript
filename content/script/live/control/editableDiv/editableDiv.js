@@ -40,17 +40,17 @@ goog.provide('src.base.control.editableDiv');
 src.base.control.editableDiv.createElement_ =
   function(id, cssClass, create) {
     var ControlConstant_ = src.base.control.controlConstant;
-    
+
     var containerAttributes = {};
-    
+
     if (id) {
       containerAttributes[ControlConstant_.Id] = id;
     }
-    
+
     containerAttributes[ControlConstant_.Class] = cssClass;
-    
+
     return create(containerAttributes);
-    
+
     /*
      var container = Current_.createElement_(containerId,
      containerId,
@@ -72,7 +72,7 @@ src.base.control.editableDiv.createElement_ =
 src.base.control.editableDiv.createTheContainer_ =
   function(containerId, createADiv) {
     var ControlConstant_ = src.base.control.controlConstant;
-    
+
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
@@ -88,16 +88,16 @@ src.base.control.editableDiv.createTheContainer_ =
  @return {Object} The created text container.
  @private
  */
-src.base.control.editableDiv.createTheTextContainer_  =
+src.base.control.editableDiv.createTheTextContainer_ =
   function(text, createADiv, setTextContent) {
     var ControlConstant_ = src.base.control.controlConstant;
     var Constant_ = src.base.control.editableDiv.constant;
-    
+
     var textContainerAttributes = {};
     textContainerAttributes[ControlConstant_.Class] = Constant_.TextContainer;
     var textContainer = createADiv(textContainerAttributes);
     setTextContent(textContainer, text);
-    
+
     return textContainer;
   };
 
@@ -119,9 +119,9 @@ src.base.control.editableDiv.createTheTextContainer_  =
 src.base.control.editableDiv.applyTheEdittedText =
   function(parentForm, textContainer, getElementByClass,
            getValue, setTextContent) {
-    
+
     var Constant_ = src.base.control.editableDiv.constant;
-    
+
     var editTextArea = getElementByClass(Constant_.EditTextArea,
                                          parentForm);
     var text = getValue(editTextArea);
@@ -163,9 +163,9 @@ src.base.control.editableDiv.createTheTextContainerClick =
 src.base.control.editableDiv.revertText =
   function(parentForm, textContainer, getTextContent,
            getElementByClass, setValue) {
-    
+
     var Constant_ = src.base.control.editableDiv.constant;
-    
+
     var text = getTextContent(textContainer);
     var editTextArea = getElementByClass(Constant_.EditTextArea,
                                          parentForm);
@@ -177,7 +177,8 @@ src.base.control.editableDiv.revertText =
 
 /**
  @param {string} containerId The id for the overall container.
- @param {string} text The story text.
+ @param {string} text The text to view, or edit.
+ @param {string} id The id to be posted with the text.
  @param {string} persistUrl The url to post the edit to.
  @param {?function} createADiv The method used  to create a
  div element.
@@ -197,7 +198,7 @@ src.base.control.editableDiv.revertText =
  in the edit textarea to that of the text container.
  @param {?function} setCancelHandler The function for setting the
  click handler for the form cancel button.
- @param {?function} createTheValidationRules The function used to 
+ @param {?function} createTheValidationRules The function used to
  create the validation rules for the form.
  @param {?function} createAValidationWrapper The function used to
  create the validation handler function.
@@ -209,7 +210,7 @@ src.base.control.editableDiv.revertText =
  @export
  */
 src.base.control.editableDiv.initialize =
-  function(containerId, text, persistUrl, createADiv,
+  function(containerId, text, id, persistUrl, createADiv,
            setTextContent, createTheForm, showElement,
            appendChild, createTheTextContainerClick,
            setClick, revertText, setCancelHandler,
@@ -243,41 +244,41 @@ src.base.control.editableDiv.initialize =
     setClick = setClick ?
       setClick :
       src.base.helper.events.setClick;
-
-    revertText = revertText ? 
-      revertText : 
+    
+    revertText = revertText ?
+      revertText :
       src.base.control.editableDiv.revertText;
     
-    setCancelHandler = setCancelHandler ? 
-      setCancelHandler : 
+    setCancelHandler = setCancelHandler ?
+      setCancelHandler :
       src.base.control.editableDiv.form.setCancelHandler;
     
-    createTheValidationRules = createTheValidationRules ? 
-      createTheValidationRules : 
+    createTheValidationRules = createTheValidationRules ?
+      createTheValidationRules :
       src.base.control.editableDiv.form.createTheValidationRules;
     
-    createAValidationWrapper = createAValidationWrapper ? 
-      createAValidationWrapper : 
+    createAValidationWrapper = createAValidationWrapper ?
+      createAValidationWrapper :
       src.site.validation.validationInterpreter.createAValidationWrapper;
     
-    initializeTheForm = initializeTheForm ? 
-      initializeTheForm : 
+    initializeTheForm = initializeTheForm ?
+      initializeTheForm :
       src.base.control.formComponent.initialize;
      
-    applyTheEdittedText = applyTheEdittedText ? 
-      applyTheEdittedText : 
+    applyTheEdittedText = applyTheEdittedText ?
+      applyTheEdittedText :
       src.base.control.editableDiv.applyTheEdittedText;
-    
-    
+
+
     /* START */
-    
+
     var Constant_ = src.base.control.editableDiv.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.editableDiv;
     var FormConstant_ = src.base.control.formComponent.constant;
-    
+
     var container = Current_.createTheContainer_(containerId, createADiv);
-    
+
     var textContainer = Current_.createTheTextContainer_(text,
                                                          createADiv,
                                                          setTextContent);
@@ -285,9 +286,11 @@ src.base.control.editableDiv.initialize =
     
     var formResult = createTheForm(Constant_.FormId,
                                    text,
+                                   id,
                                    persistUrl,
                                    src.base.helper.domCreation.form,
                                    src.base.helper.domCreation.textarea,
+                                   src.base.helper.domCreation.hidden,
                                    src.base.helper.domCreation.button,
                                    goog.dom.forms.setValue,
                                    appendChild);

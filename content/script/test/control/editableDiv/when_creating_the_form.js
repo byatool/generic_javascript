@@ -23,6 +23,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   //Fields
   
   var FormId_ = goog.string.getRandomString();
+  var Id_ = goog.string.getRandomString();
   var PostTo_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
   
@@ -30,6 +31,7 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   var cancelButton_;
   var createAButton_;
   var createAForm_;
+  var createAHidden_;
   var createATextArea_;
   var editTextArea_; 
   var form_;
@@ -62,7 +64,8 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
       default:
         return submitButton_;                      
       }};
-    
+
+    createAHidden_ = function(){};
     setValue_ = function(){};
   });
   
@@ -70,8 +73,8 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createTheForm(FormId_, Text_, PostTo_, createAForm_, createATextArea_,
-                                  createAButton_, setValue_, appendChild_);
+    return Current_.createTheForm(FormId_, Text_, Id_, PostTo_, createAForm_, createATextArea_,
+                                  createAHidden_, createAButton_, setValue_, appendChild_);
   };
   
   //Test Methods
@@ -114,8 +117,9 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     var methodWasCalled = false;
     
     setValue_ = function(textarea, text){
-      methodWasCalled = textarea === editTextArea_ &&
-        text === Text_;
+      methodWasCalled = methodWasCalled ||
+        (textarea === editTextArea_ &&
+         text === Text_);
     };
     
     callTheMethod_();
@@ -136,6 +140,62 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
+  
+  
+  it('should create the id holder.', function() {
+    var methodWasCalled = false;
+    
+    createAHidden_ = function(attributes){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.HiddenId !== undefined &&
+         attributes[ControlConstant_.Id] === Constant_.HiddenId &&
+         attributes[ControlConstant_.Name] === Constant_.HiddenId);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the hidden id value.', function() {
+    var methodWasCalled = false;
+    var hidden = {};
+    
+    createAHidden_ = function(){
+      return hidden;
+    };
+    
+    setValue_ = function(element, value){
+      methodWasCalled = methodWasCalled ||
+        (element === hidden &&
+         value === Id_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+   
+  it('should append the hidden id to the form.', function() {
+    var methodWasCalled = false;
+    var hidden = {};
+    
+    createAHidden_ = function(){
+      return hidden;
+    };
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === form_ && child === hidden);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
   
   
   it('should create the Submit button.', function() {

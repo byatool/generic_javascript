@@ -22,7 +22,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   
   //Fields
   
-  
+  var Id_ = goog.string.getRandomString();
   var ParentContainerId_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
   var PersistUrl_ = goog.string.getRandomString();
@@ -31,6 +31,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var applyTheEdittedText_;
   var appendChild_;
   var createADiv_;
+  
   var createFormResult_;
   var createTheForm_;
   var createTheTextContainerClick_;
@@ -75,6 +76,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
         return parentContainer_;                      
       }};
     
+     
     createTheForm_ = function(){ return createFormResult_; };
     createTheTextContainerClick_ = function(){ };
     createTheValidationRules_ = function(){};
@@ -92,10 +94,11 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, Text_, PersistUrl_, createADiv_, setTextContent_,
+    return Current_.initialize(ParentContainerId_, Text_, Id_, PersistUrl_, createADiv_, setTextContent_,
                                createTheForm_, showElement_, appendChild_, createTheTextContainerClick_,
                                setClick_, revertText_, setCancelHandler_, createTheValidationRules_,
-                               createAValidationWrapper_, initializeTheForm_, applyTheEdittedText_);
+                               createAValidationWrapper_, initializeTheForm_,  
+                               applyTheEdittedText_);
   };
   
   
@@ -166,18 +169,20 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   it('should create the form.', function() {
     var methodWasCalled = false;
     
-    createTheForm_ = function(id, text, postTo, createAForm, createATextArea,
-                              createAButton, setValue, appendChild) {
+    createTheForm_ = function(formId, text, id, postTo, createAForm, createATextArea,
+                              createAHidden, createAButton, setValue, appendChild) {
       
       methodWasCalled = Constant_.FormId !== undefined && 
-        id === Constant_.FormId &&
+        formId === Constant_.FormId &&
         text === Text_ &&
+        id === Id_ &&
         postTo === PersistUrl_ &&
         createAForm === src.base.helper.domCreation.form &&
         createATextArea === src.base.helper.domCreation.textarea &&
         createAButton === src.base.helper.domCreation.button &&
         setValue === goog.dom.forms.setValue &&
-        appendChild === appendChild_;
+        appendChild === appendChild_ &&
+        createAHidden === src.base.helper.domCreation.hidden;
       
       return createFormResult_;
       

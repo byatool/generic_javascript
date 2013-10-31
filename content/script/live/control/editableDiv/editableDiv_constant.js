@@ -46,6 +46,14 @@ src.base.control.editableDiv.constant.ErrorEmptyText = 'Please enter some text.'
  @type {string}
  @protected
  */
+src.base.control.editableDiv.constant.HiddenId = 'itemId';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.editableDiv.constant.FormId = 'textUpdateForm';
 
 
