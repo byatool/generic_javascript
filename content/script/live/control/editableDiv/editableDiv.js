@@ -208,8 +208,6 @@ src.base.control.editableDiv.revertText =
  to create the onclick handler for the text container.
  @param {?function} setClick The function used to handle the
  text container click.
- @param {?function} revertText The function used to revert the text
- in the edit textarea to that of the text container.
  @param {?function} setCancelHandler The function for setting the
  click handler for the form cancel button.
  @param {?function} createTheCancelHandler The function used create
@@ -229,7 +227,7 @@ src.base.control.editableDiv.initialize =
   function(containerId, text, id, persistUrl, createADiv,
            setTextContent, createTheForm, showElement,
            appendChild, createTheTextContainerClick,
-           setClick, revertText, setCancelHandler,
+           setClick, setCancelHandler,
            createTheCancelHandler, createTheValidationRules,
            createAValidationWrapper, initializeTheForm,
            applyTheEdittedText) {
@@ -261,16 +259,11 @@ src.base.control.editableDiv.initialize =
     setClick = setClick ?
       setClick :
       src.base.helper.events.setClick;
-
-    //DEAD
-    revertText = revertText ?
-      revertText :
-      src.base.control.editableDiv.revertText;
     
     setCancelHandler = setCancelHandler ?
       setCancelHandler :
       src.base.control.editableDiv.form.setCancelHandler;
-
+    
     createTheCancelHandler = createTheCancelHandler ? 
       createTheCancelHandler :
       src.base.control.editableDiv.createTheCancelHandler;
@@ -337,7 +330,7 @@ src.base.control.editableDiv.initialize =
                      goog.dom.getElementByClass,
                      showElement,
                      setClick);
-
+    
     
     var datePickerInformation = {};
     datePickerInformation[FormConstant_.DatepickerOptions] = {};

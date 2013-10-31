@@ -42,7 +42,6 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var theForm_;
   var initializeTheForm_;
   var parentContainer_;
-  var revertText_;
   var setCancelHandler_;
   var setClick_;
   var setTextContent_;
@@ -84,7 +83,6 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     createTheValidationRules_ = function(){};
     createAValidationWrapper_ = function(){};
     initializeTheForm_ = function(){};
-    revertText_ = function() {};
     setCancelHandler_ = function(){};
     setClick_ = function(){};
     showElement_ = function(){};
@@ -98,7 +96,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var callTheMethod_ = function() {
     return Current_.initialize(ParentContainerId_, Text_, Id_, PersistUrl_, createADiv_, setTextContent_,
                                createTheForm_, showElement_, appendChild_, createTheTextContainerClick_,
-                               setClick_, revertText_, setCancelHandler_, createTheCancelHandler_,
+                               setClick_, setCancelHandler_, createTheCancelHandler_,
                                createTheValidationRules_, createAValidationWrapper_, initializeTheForm_,  
                                applyTheEdittedText_);
   };
