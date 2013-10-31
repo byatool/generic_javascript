@@ -6,88 +6,110 @@ goog.provide('src.base.helper.domCreation');
 //Creation Methods
 
 /**
- @param {Object|string} attributes This is the html attributes
+ @param {Object} attributes This is the html attributes
  for the parent element.
- @param {Array.<Object>|null} elements These are the child elements to add.
- @return {!Object} This is the created element tree.
+ @param {Array.<Object>} elements These are the child elements to add.
+ @return {Object} This is the created element tree.
  @export
  */
-src.base.helper.domCreation.button = function(attributes, elements) {
-  attributes = attributes ? attributes : {};
-  return goog.dom.createDom('button', attributes, elements);
-};
+src.base.helper.domCreation.button =
+  function(attributes, elements) {
+    attributes = attributes ? attributes : {};
+    return goog.dom.createDom('button', attributes, elements);
+  };
 
 
 /**
- @param {Object|string} attributes This is the html attributes.
+ @param {Object} attributes This is the html attributes.
  @param {boolean} checked Whether the checkbox is in a checked
  state.
  @return {Object} The checkbox input element.
  @export
  */
-src.base.helper.domCreation.checkBox = function(attributes, checked) {
-  attributes = attributes ? attributes : {};
-  attributes['type'] = 'checkbox';
-  attributes['checked'] = checked;
-  
-  return goog.dom.createDom('input', attributes);
-};
+src.base.helper.domCreation.checkBox =
+  function(attributes, checked) {
+    attributes = attributes ?
+      attributes :
+      {};
+    
+    attributes['type'] = 'checkbox';
+    attributes['checked'] = checked;
+    
+    return goog.dom.createDom('input', attributes);
+  };
 
 
 /**
- @param {Object|string} attributes This is the html attributes
+ @param {Object} attributes This is the html attributes
  for the parent element.
- @param {Array.<Object>|null} elements These are the child elements to add.
- @return {!Object} This is the created element tree.
+ @param {Array.<Object>} elements These are the child elements to add.
+ @return {Object} This is the created element tree.
  @export
  */
-src.base.helper.domCreation.div = function(attributes, elements) {
-  attributes = attributes ? attributes : {};
-  return goog.dom.createDom('div', attributes, elements);
+src.base.helper.domCreation.div =
+  function(attributes, elements) {
+    attributes = attributes ?
+      attributes :
+      {};
+    
+    return goog.dom.createDom('div', attributes, elements);
+  };
+
+
+/**
+ @param {Object} attributes This is the html attributes
+ for the parent form.
+ @param {Array.<Object>} elements These are the child elements to add.
+ @return {Object} This is the created element tree.
+ @export
+ */
+src.base.helper.domCreation.form =
+  function(attributes, elements) {
+    attributes = attributes ?
+      attributes :
+      {};
+    
+    return goog.dom.createDom('form', attributes, elements);
 };
 
 
 /**
- @param {Object|string} attributes This is the html attributes
+ @param {Object} attributes This is the html attributes
  for the parent form.
- @param {Array.<Object>|null} elements These are the child elements to add.
- @return {!Object} This is the created element tree.
+ @return {Object} This is the created element tree.
  @export
  */
-src.base.helper.domCreation.form = function(attributes, elements) {
-  attributes = attributes ? attributes : {};
-  return goog.dom.createDom('form', attributes, elements);
+src.base.helper.domCreation.hidden =
+  function(attributes) {
+    attributes = attributes ?
+      attributes :
+      {};
+    
+    attributes['type'] = 'hidden';
+    
+    return goog.dom.createDom('input', attributes);
 };
 
 
 /**
- @param {Object|string} attributes This is the html attributes
+ @param {Object} attributes This is the html attributes
  for the parent form.
- @return {!Object} This is the created element tree.
+ @param {string} text The label text.
+ @return {Object} This is the created element tree.
  @export
  */
-src.base.helper.domCreation.hidden = function(attributes) {
-  attributes = attributes ? attributes : {};
-  attributes['type'] = 'hidden';
-  
-  return goog.dom.createDom('input', attributes);
-};
-
-
-/**
- @param {Object|string} attributes This is the html attributes
- for the parent form.
- @param {string=} text The label text.
- @return {!Object} This is the created element tree.
- @export
- */
-src.base.helper.domCreation.label = function(attributes, text) {
-  attributes = attributes ? attributes : {};
-  var text = text ? text : '';
-  return goog.dom.createDom('label', attributes, text);
-};
-
-
+src.base.helper.domCreation.label =
+  function(attributes, text) {
+    attributes = attributes ?
+      attributes :
+      {};
+    
+    var finalText = text ?
+          text :
+          '';
+    
+    return goog.dom.createDom('label', attributes, finalText);
+  };
 
 
 /**
@@ -106,6 +128,7 @@ src.base.helper.domCreation.pre =
     return createDom('pre');
   };
 
+
 /**
  @param {Object} attributes The html attributes
  for the parent form.
@@ -114,20 +137,20 @@ src.base.helper.domCreation.pre =
  @return {!Object} This is the created element tree.
  @export
  */
-src.base.helper.domCreation.select = function(attributes, data,  defaultItem) {
-  var select = goog.dom.createDom('select', attributes);
-  
-  if (defaultItem) {
-    var createdOption = goog.dom.createDom('option', {text: defaultItem, value: defaultItem});
-    select.add(createdOption);
-    goog.dom.forms.setValue(select, defaultItem);
-  }
-  
-  src.base.helper.domCreation.fillASelect$(select, data);
-  
-  return select;
-};
-
+src.base.helper.domCreation.select =
+  function(attributes, data,  defaultItem) {
+    var select = goog.dom.createDom('select', attributes);
+    
+    if (defaultItem) {
+      var createdOption = goog.dom.createDom('option', {text: defaultItem, value: defaultItem});
+      select.add(createdOption);
+      goog.dom.forms.setValue(select, defaultItem);
+    }
+    
+    src.base.helper.domCreation.fillASelect$(select, data);
+    
+    return select;
+  };
 
 
 /**
@@ -148,6 +171,7 @@ src.base.helper.domCreation.span =
     
     return createDom('span', attributes, text);
   };
+
 
 /**
  @param {Object} attributes This is the html attributes

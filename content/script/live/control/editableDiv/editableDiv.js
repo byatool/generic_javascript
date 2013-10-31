@@ -1,20 +1,7 @@
 /*
- -- init :id :text :editMode :submitToUrl :callsAfterSubmit :createADiv :createATextArea :onClick
- --  Create Two divs
- --   One with only the text
- --   One with a text area populated with the text
- --    Will need a submit button
- --    Will need a cancel button
- 
- --  set option[editMode]
- --    set onClick for the text container
- --  set option[submitToUrl]
- --  Create submit
- --   Send to :submitToUrl with :id :text
- --     Create a method that takes in a result, and call all :callsAfterSubmit
- --     Create a method that will update the text of the div
- --
- --  Return container and options
+ goog.ui.LabelInput
+ var li2 = new goog.ui.LabelInput('Search, add, or invite 2');
+ var el = li2.render($('d'));
  */
 goog.require('goog.dom');
 goog.require('goog.dom.forms');

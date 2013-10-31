@@ -65,6 +65,36 @@ src.base.control.editableDiv.form.createAndAppendEditTextArea_ =
 
 
 /**
+ 
+ @param {Object} form The parent form.
+ @param {string} value The value to apply to the hidden
+ div.
+ @param {function} createAHidden The function used to 
+ create the hidden element.
+ @param {function} setValue The function used to update
+ the hidden element's value.
+ @param {function} appendChild The function used add the
+ hidden element to the form .
+ @private
+ */
+src.base.control.editableDiv.form.createAndAppendTheHidden_ =
+  function(form, value, createAHidden,
+           setValue, appendChild) {
+    
+    var Constant_ = src.base.control.editableDiv.constant;
+    var ControlConstant_ = src.base.control.controlConstant;
+    
+    var hiddenIdAttributes = {};
+    hiddenIdAttributes[ControlConstant_.Id] = Constant_.HiddenId;
+    hiddenIdAttributes[ControlConstant_.Name] = Constant_.HiddenId;
+    
+    var hiddenId = createAHidden(hiddenIdAttributes);
+    setValue(hiddenId, value);
+    appendChild(form, hiddenId);
+  };
+
+
+/**
  @param {string} postTo The url to post the data to on
  submit.
  @param {function} createAForm The function used to
@@ -85,7 +115,6 @@ src.base.control.editableDiv.form.createTheForm_ =
     
     return createAForm(formAttributes);
   };
-
 
 
 /* PROTECTED FUNCTIONS */
@@ -182,12 +211,12 @@ src.base.control.editableDiv.form.createTheForm =
                                     createAButton,
                                     appendChild);
     
-    var hiddenIdAttributes = {};
-    hiddenIdAttributes[ControlConstant_.Id] = Constant_.HiddenId;
-    hiddenIdAttributes[ControlConstant_.Name] = Constant_.HiddenId;
-    var hiddenId = createAHidden(hiddenIdAttributes);
-    setValue(hiddenId, id);
-    appendChild(form, hiddenId);
+    
+    Current_.createAndAppendTheHidden_(form,
+                                       id,
+                                       createAHidden,
+                                       setValue,
+                                       appendChild);
     
     var result = {};
     result[ControlConstant_.CreatedControl] = form;

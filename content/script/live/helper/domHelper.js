@@ -125,19 +125,19 @@ src.base.helper.domHelper.retrieveFormDataMap = function(mapToCheck, keyName) {
  @param {function} successMethod Method to be called after submittal.
  @export
  */
-src.base.helper.domHelper.submitData = function(dataMap, successMethod) {
-  
-  var request = new goog.net.XhrIo();
-  
-  goog.events.listen(request, 'complete', function(result) {
-    successMethod(result.target.getResponseJson());
-  });
-  
-  var data = goog.Uri.QueryData.createFromMap(dataMap);
-  
-  request.send(dataMap.action, 'POST', data.toString());
-};
-
+src.base.helper.domHelper.submitData =
+  function(dataMap, successMethod) {
+    
+    var request = new goog.net.XhrIo();
+    
+    goog.events.listen(request, 'complete', function(result) {
+      successMethod(result.target.getResponseJson());
+    });
+    
+    var data = goog.Uri.QueryData.createFromMap(dataMap);
+    
+    request.send(dataMap.action, 'POST', data.toString());
+  };
 
 
 /**
