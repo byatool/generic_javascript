@@ -27,15 +27,13 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   var ParentContainerClass_ = goog.string.getRandomString();
   var PersistUrl_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
-
-  var applyTheEdittedText_;
+  
   var appendChild_;
   var createADiv_;
-
-  
   var createFormResult_;
   var createTheForm_;
   var createTheCancelHandler_;
+  var createTheSubmitResultHandler_;
   var createTheTextContainerClick_;
   var createTheValidationRules_;
   var createAValidationWrapper_;
@@ -61,7 +59,6 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     textContainer_ = {};
     
     appendChild_ = function(){};
-    applyTheEdittedText_ = function() {};
     
     createADiv_ = function(attributes){
       switch(attributes[ControlConstant_.Class]) {
@@ -79,6 +76,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     
     createTheCancelHandler_ = function(){};
     createTheForm_ = function(){ return createFormResult_; };
+    createTheSubmitResultHandler_ = function(){};
     createTheTextContainerClick_ = function(){ };
     createTheValidationRules_ = function(){};
     createAValidationWrapper_ = function(){};
@@ -97,8 +95,8 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     return Current_.initialize(ParentContainerId_, Text_, Id_, PersistUrl_, createADiv_, setTextContent_,
                                createTheForm_, showElement_, appendChild_, createTheTextContainerClick_,
                                setClick_, setCancelHandler_, createTheCancelHandler_,
-                               createTheValidationRules_, createAValidationWrapper_, initializeTheForm_,  
-                               applyTheEdittedText_);
+                               createTheSubmitResultHandler_, createTheValidationRules_,
+                               createAValidationWrapper_, initializeTheForm_);
   };
   
   
@@ -315,37 +313,48 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   });
   
   
+  it('should create the submit click handler.', function() {
+    var methodWasCalled = false;
+    
+    createTheSubmitResultHandler_ = function(form, textContainer, applyTheEdittedText){
+      methodWasCalled = form === theForm_ &&
+        textContainer === textContainer_ &&
+        applyTheEdittedText === src.base.control.editableDiv.applyTheEdittedText;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should initialize the form.', function() {
-    var methodWasCalled = 0;
+    var methodWasCalled = false;
+    var submitHandler = {};
     var validation = {};
     
     createAValidationWrapper_ = function(){
       return validation;
     };
     
-    applyTheEdittedText_ = function(parentForm, textContainer, getElementByClass,
-                                    getValue, setTextContent){
-      methodWasCalled += parentForm === theForm_ &&
-        textContainer === textContainer_ &&
-        getElementByClass === goog.dom.getElementByClass &&
-        getValue === goog.dom.forms.getValue &&
-        setTextContent === goog.dom.setTextContent;
+    createTheSubmitResultHandler_ = function(){
+      return submitHandler;
     };
-     
+    
     initializeTheForm_ = function(formId, datePickerInformation, validate, autoFillParameters, onClick){
-      methodWasCalled += formId === theForm_ &&
+      methodWasCalled = formId === theForm_ &&
         datePickerInformation[FormConstant_.DatepickerOptions] !== null &&
         datePickerInformation[FormConstant_.DatepickerTextboxes].length === 0 &&
         validate === validation &&
-        autoFillParameters === null;
-      
-        onClick();
+        autoFillParameters === null &&
+        onClick === submitHandler;
     };
     
     callTheMethod_();
     
-    expect(methodWasCalled).toBe(2);
+    expect(methodWasCalled).toBe(true);
   });
+  
   
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);

@@ -33,6 +33,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.dropDownList.whenInitializingADropDownList" ^
 --namespace="src.test.control.editableDiv.whenApplyingTheEdittedText" ^
 --namespace="src.test.control.editableDiv.whenCreatingTheCancelHandler" ^
+--namespace="src.test.control.editableDiv.whenCreatingTheSubmitResultHandler" ^
 --namespace="src.test.control.editableDiv.whenCreatingTheTextContainerClick" ^
 --namespace="src.test.control.editableDiv.whenInitializingAnEditableDiv" ^
 --namespace="src.test.control.editableDiv.whenRevertingText" ^
