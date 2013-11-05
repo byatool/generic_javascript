@@ -8,6 +8,26 @@ goog.require('src.base.helper.domCreation');
 goog.provide('src.base.control.gridBuilder');
 
 
+/* PROTECTED FIELDS */
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.gridBuilder.HeaderText = 'headerText';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.gridBuilder.PropertyName = 'propertyName';
+
+
+/* EXPORTED FIELDS */
+
 /**
  @const
  @type {string}

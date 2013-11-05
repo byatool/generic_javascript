@@ -61,6 +61,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.formComponent.whenSettingTheSubmitButton" ^
 --namespace="src.test.control.formComponent.whenSettingUpAForm" ^
 --namespace="src.test.control.formComponent.whenTheFormIsSubmitted" ^
+--namespace="src.test.control.grid.whenInitializingAGrid" ^
+--namespace="src.test.control.grid.header.whenCreatingTheHeaderColumn" ^
+--namespace="src.test.control.grid.header.whenCreatingTheHeaderRow" ^
 --namespace="src.test.control.gridBuilder.whenCreatingARow" ^
 --namespace="src.test.control.gridBuilder.whenCreatingTheGridRefresh" ^
 --namespace="src.test.control.gridBuilder.whenCreatingThePagerButtons" ^
