@@ -5,6 +5,15 @@ goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.grid');
 
+
+/**
+ @protected
+ */
+src.base.control.grid.createThePagerButtons =
+  function() {
+  };
+
+
 /**
  @param {string} containerId The id for the overall container.
  @param {string} url The url used to retrieve the list items.
