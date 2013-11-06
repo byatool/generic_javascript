@@ -7,10 +7,45 @@ goog.provide('src.base.control.grid');
 
 
 /**
+ @param {Object} result The result from the data retrival.
+ @param {Object} gridOptions The options for the overal grid.
+ @param {Object} parentContainer The overall grid container.
+ @param {function} getElementByClass The function used to find
+ the pager container if it exists.
+ @param {function} initializeThePager The function used to 
+ create the pager.
  @protected
  */
 src.base.control.grid.createThePagerButtons =
-  function() {
+  function(result, gridOptions, parentContainer, getElementByClass, parameters,
+           initializeThePager) {
+    
+    var Constant_ = src.base.control.grid.constant;
+    //var Current_ = src.base.control.grid;
+    var Pager_ = src.base.control.pager;
+    
+    var containerRow = getElementByClass(Constant_.ButtonRowClass,
+                                         parentContainer);
+    
+    
+    // var existed = containerRow !== null && containerRow != undefined;
+    // var pagerOptions = {};
+    // pagerOptions[Pager_.ContainerId] = Current_.ButtonRowId;
+    // pagerOptions[Pager_.ContainerClass] = Current_.ButtonRowClass;
+    
+    // //TODO make this into a method that can be injected for
+    // //  more accurate testing.
+    // pagerOptions[Pager_.Refresh] = function(page) {
+    //   gridOptions[Current_.Parameters]['page'] = page;
+    //   refreshTheGrid(gridOptions, parentContainer);
+    // };
+    
+    containerRow = initializeThePager(result, gridOptions,
+                                      null, containerRow);
+    
+    // if (!existed) {
+    //   appendChild(parentContainer, containerRow);
+    // }
   };
 
 
@@ -56,8 +91,12 @@ src.base.control.grid.initialize =
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
     
-    
-    
+    //create options
+    //  options[Constant_.ContainerId] = containerId;
+    //  options[Constant_.Parameters] = parameters;
+    //  options[Constant_.CreateARow] = createARow;
+    //  options[Constant_.ShowHeader] = showHeader;
+    //  options[Constant_.Map] = columnMap;
     
     return container;
   };

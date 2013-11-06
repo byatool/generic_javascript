@@ -6,6 +6,14 @@ goog.provide('src.base.control.grid.constant');
  @type {string}
  @protected
  */
+src.base.control.grid.constant.ButtonRowClass = 'buttonRow';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.grid.constant.HeaderClass = 'header';
 
 

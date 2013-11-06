@@ -40,6 +40,7 @@ src.base.control.grid.header.createHeaderColumn =
  overall grid.
  @param {Object} columnInformation The array that holds the
  column information.
+ @param {Object} showHeader Whether to create the header.
  @param {function} getElementByClass The function used to find
  the header.
  @param {?function} forEach The function used to traverse through
@@ -55,9 +56,9 @@ src.base.control.grid.header.createHeaderColumn =
  @protected
  */
 src.base.control.grid.header.createTheHeaderRow =
-  function(parentContainer, columnInformation, getElementByClass,
-           forEach, createADiv, createHeaderColumn, appendChild,
-           createAClearDiv) {
+  function(parentContainer, columnInformation, showHeader,
+           getElementByClass, forEach, createADiv, createHeaderColumn,
+           appendChild, createAClearDiv) {
     
     getElementByClass = getElementByClass ? 
       getElementByClass : 
@@ -85,28 +86,30 @@ src.base.control.grid.header.createTheHeaderRow =
     
     
     /* START */
-    
-    var Constant_ = src.base.control.grid.constant;
-    var ControlConstant_ = src.base.control.controlConstant;
-    
-    var headerRow = getElementByClass(parentContainer,
-                                      Constant_.HeaderRowClass);
-    
-    if(!headerRow) {
-      var headerRowAttributes = {};
-      headerRowAttributes[ControlConstant_.Class] = Constant_.HeaderRowClass;
-      headerRow = createADiv(headerRowAttributes);
+
+    if(showHeader){
       
-      forEach(columnInformation, function(item) {
-        var columnHeader = createHeaderColumn(item,
-                                              createADiv,
-                                              goog.dom.setTextContent);
-        appendChild(headerRow, columnHeader);
-      });
+      var Constant_ = src.base.control.grid.constant;
+      var ControlConstant_ = src.base.control.controlConstant;
       
-      appendChild(headerRow, createAClearDiv());
+      var headerRow = getElementByClass(Constant_.HeaderRowClass,
+                                        parentContainer);
       
-      appendChild(parentContainer, headerRow);
+      if(!headerRow) {
+        var headerRowAttributes = {};
+        headerRowAttributes[ControlConstant_.Class] = Constant_.HeaderRowClass;
+        headerRow = createADiv(headerRowAttributes);
+        
+        forEach(columnInformation, function(item) {
+          var columnHeader = createHeaderColumn(item,
+                                                createADiv,
+                                                goog.dom.setTextContent);
+          appendChild(headerRow, columnHeader);
+        });
+        
+        appendChild(headerRow, createAClearDiv());
+        
+        appendChild(parentContainer, headerRow);
+      }
     }
-    
   };

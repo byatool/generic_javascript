@@ -71,11 +71,11 @@ src.test.control.grid.whenInitializingAGrid.describe = function () {
 
   
   // gridBuilderOptions[GridBuilder_.Parameters] = {'page': 0};
-
+  
   
   // gridBuilderOptions[GridBuilder_.Map] = transactionHistoryGridDefinition;
   //  header
-
+  
   
   // gridBuilderOptions[GridBuilder_.ShowHeader] = true;
   //  header

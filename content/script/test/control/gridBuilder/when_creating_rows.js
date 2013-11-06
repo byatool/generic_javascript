@@ -1,22 +1,29 @@
-goog.require('src.base.control.gridBuilder');
+goog.require('src.base.control.controlConstant');
+goog.require('src.base.control.gridBuilder.constant');
+goog.require('src.base.control.gridBuilder.row');
 
-goog.provide('src.test.control.gridBuilder.whenCreatingRows');
+
+goog.provide('src.test.control.gridBuilder.row.whenCreatingRows');
 
 /**
  @export
  */
-src.test.control.gridBuilder.whenCreatingRows.describe = function() {
+src.test.control.gridBuilder.row.whenCreatingRows.describe = function() {
   
   //Using
-  var Current_ = src.base.control.gridBuilder;
+  
+  var Constant_ = src.base.control.gridBuilder.constant;
+  var Current_ = src.base.control.gridBuilder.row;
+  var ControlConstant_ = src.base.control.gridBuilder.constant;
+  
   
   //Fields
-  
   
   var appendChild_;
   var createADiv_;
   var createARow_;
-  var findNode_;
+  var forEach_;
+  var getElementByClass_;
   var options_;
   var parentContainer_;
   var refreshGrid_;
@@ -32,16 +39,17 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
     rowContainer_ = {};
     
     options_ = {};
-    options_[Current_.Map] = {};
-    options_[Current_.RowClickHandler] = function() {};
+    options_[Constant_.Map] = {};
+    options_[Constant_.RowClickHandler] = function() {};
     
     result_ = {};
-    result_[Current_.ListProperty] = [{},{}];
+    result_[Constant_.ListProperty] = [{}];
     
     appendChild_ = function() {};
     createADiv_ = function() { return rowContainer_;};
     createARow_ = function() {};
-    findNode_ = function() { return null; };
+    forEach_ = function(){};
+    getElementByClass_ = function() { return null; };
     refreshGrid_ = function(){};
     setClick_ = function() {};
     setTextContent_ = function() {};
@@ -51,60 +59,64 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   //Support Methods
   var callTheMethod_ = function() {
     Current_.createRows(result_, parentContainer_, options_,
-                        findNode_, createADiv_, appendChild_,
-                        createARow_, setTextContent_, setClick_,
-                        refreshGrid_);
+                        createARow_, refreshGrid_, getElementByClass_,
+                        createADiv_, appendChild_, forEach_, setTextContent_,
+                        setClick_ );
   };
   
   
   //Test Methods
   
   it('should find the row container.', function() {
+    
     var methodWasCalled = false;
     
-    findNode_ = function(parent, toFind) {
-      methodWasCalled = parent === parentContainer_ &&
-        String(toFind) === String(function(a) {return a['className'] === Current_.RowContainerClass;});
+    getElementByClass_ = function(cssClass, parent) {
+      methodWasCalled = Constant_.RowContainerClass !== undefined &&
+        cssClass === Constant_.RowContainerClass &&
+        parent === parentContainer_;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the row container if it does not exist.', function() {
     var methodWasCalled = false;
-
+    
     createADiv_ = function(attributes) {
-      methodWasCalled = methodWasCalled || attributes['class'] === Current_.RowContainerClass;
+      methodWasCalled = methodWasCalled ||
+        (Constant_.RowContainerClass !== undefined &&
+         attributes[ControlConstant_.Class] === Constant_.RowContainerClass);
     };
-
+  
     callTheMethod_();
-
+  
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should append the row container if it did not exist.', function() {
     var methodWasCalled = false;
-
+  
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
-        parent === parentContainer_ &&
-        child === rowContainer_;
+        (parent === parentContainer_ &&
+         child === rowContainer_);
     };
-    
+  
     callTheMethod_();
-    
+  
     expect(methodWasCalled).toBe(true);
   });
   
   
   it('should not append the row container if it already existed.', function() {
     var methodWasCalled = false;
-    
-    findNode_ = function() {
+  
+    getElementByClass_ = function() {
       return rowContainer_;
     };
     
@@ -122,106 +134,85 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
   
   it('should create a row for each result item.', function() {
     var methodWasCalled = 0;
+    var currentItem = {};
+    
     
     createARow_ = function(item, options, createADiv,
                            setTextContent, appendChild, setClick,
                            refreshGrid) {
       
-      methodWasCalled += (item === result_[Current_.ListProperty][0] ||
-                          item === result_[Current_.ListProperty][1]) &&
-        createADiv === createADiv_ &&
-        setTextContent === setTextContent_ &&
-        appendChild === appendChild_ &&
-        setClick === setClick_ &&
+      methodWasCalled += item === currentItem &&
+        options === options_ &&
         refreshGrid === refreshGrid_;
     };
     
+    forEach_ = function(theList, toDo){
+      methodWasCalled += theList === result_[Constant_.ListProperty];
+      
+      toDo(currentItem);
+    };
+    
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(2);
   });
   
   
-  it('should add each row to the parent container.', function() {
-    var methodWasCalled = 0;
-    var firstRow = {};
-    var secondRow = {};
-    var wasCreated = false;
-    
-    createARow_ = function() {
-      if (!wasCreated) {
-        wasCreated = true;
-        return firstRow;
-      }
-      else {
-        return secondRow;
-      }
-    };
-    
-    appendChild_ = function(parent, child) {
-      methodWasCalled += parent === rowContainer_ &&
-        (child === firstRow || child === secondRow);
-    };
-    
-    callTheMethod_();
-
-    expect(methodWasCalled).toBe(2);
-  });
-
-
   it('should create a empty message if there are no rows to create.', function() {
     var methodWasCalled = false;
-
-    result_[Current_.ListProperty] = [];
-
+    
+    result_[Constant_.ListProperty] = [];
+    
     createADiv_ = function(attributes) {
       methodWasCalled = methodWasCalled ||
-        attributes['class'] === Current_.MessageClass;
-
+        (Constant_.MessageClass !== undefined &&
+         attributes[ControlConstant_.Class] === Constant_.MessageClass);
+      
       return {};
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should set the text of the message container if there are no rows.', function() {
     var methodWasCalled = false;
     var messageContainer = {};
-
-    result_[Current_.ListProperty] = [];
-
+  
+    result_[Constant_.ListProperty] = [];
+  
     createADiv_ = function(attributes) {
-      return attributes['class'] === Current_.MessageClass ?
+      return attributes[ControlConstant_.Class] === Constant_.MessageClass ?
         messageContainer :
         {};
     };
-
+    
     setTextContent_ = function(element, text) {
-      methodWasCalled = element === messageContainer &&
-        text === Current_.NoRowsText;
+      methodWasCalled = Constant_.NoRowsText !== undefined &&
+        element === messageContainer &&
+        text === Constant_.NoRowsText;
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should set the add message container if there are no rows.', function() {
     var methodWasCalled = false;
     var messageContainer = {};
-
-    result_[Current_.ListProperty] = [];
-
+    
+    result_[Constant_.ListProperty] = [];
+    
     createADiv_ = function(attributes) {
-      return attributes['class'] === Current_.MessageClass ?
+      return attributes[ControlConstant_.Class] === Constant_.MessageClass ?
         messageContainer :
-        attributes['class'] === Current_.RowContainerClass ?
+        attributes[ControlConstant_.Class] === Constant_.RowContainerClass ?
         rowContainer_ : {};
-
     };
 
     appendChild_ = function(parent, child) {
@@ -231,12 +222,12 @@ src.test.control.gridBuilder.whenCreatingRows.describe = function() {
 
 
     callTheMethod_();
-
+  
     expect(methodWasCalled).toBe(true);
   });
 };
 
 
 describe('When creating rows, it', function() {
-  src.test.control.gridBuilder.whenCreatingRows.describe();
+  src.test.control.gridBuilder.row.whenCreatingRows.describe();
 });

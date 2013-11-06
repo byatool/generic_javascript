@@ -28,11 +28,13 @@ src.test.control.grid.header.whenCreatingTheHeaderRow.describe = function () {
   var getElementByClass_;
   var headerRow_;
   var parentContainer_;
+  var showHeader_;
   
   
   //Test Hooks
   
   beforeEach(function() {
+    showHeader_ = true;
     columnInformation_ = {};
     headerRow_ = {};
     parentContainer_ = {};
@@ -49,9 +51,9 @@ src.test.control.grid.header.whenCreatingTheHeaderRow.describe = function () {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createTheHeaderRow(parentContainer_, columnInformation_, getElementByClass_,
-                                       forEach_, createADiv_, createHeaderColumn_, appendChild_,
-                                       createAClearDiv_);
+    return Current_.createTheHeaderRow(parentContainer_, columnInformation_, showHeader_,
+                                       getElementByClass_, forEach_, createADiv_, createHeaderColumn_,
+                                       appendChild_, createAClearDiv_);
   };
   
   
@@ -60,7 +62,7 @@ src.test.control.grid.header.whenCreatingTheHeaderRow.describe = function () {
   it('should find the header.', function() {
     var methodWasCalled = false;
     
-    getElementByClass_ = function(parent, cssClass) {
+    getElementByClass_ = function(cssClass, parent) {
       methodWasCalled = methodWasCalled ||
         (Constant_.HeaderRowClass !== undefined &&
          parent === parentContainer_ &&
@@ -150,7 +152,7 @@ src.test.control.grid.header.whenCreatingTheHeaderRow.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
 
-   
+  
   it('should append the headerRow to the parentContainer.', function() {
     var methodWasCalled = false;
     
@@ -167,12 +169,26 @@ src.test.control.grid.header.whenCreatingTheHeaderRow.describe = function () {
   
   it('should do nothing if the header row exists.', function() {
     var methodWasCalled = false;
-
+    
     getElementByClass_ = function() {
       return {};
     };
     
     createADiv_ = function(){
+      methodWasCalled = true;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
+  
+  
+  it('should do nothing if show header is false.', function() {
+    var methodWasCalled = false;
+    showHeader_ = false;
+    
+    getElementByClass_ = function() {
       methodWasCalled = true;
     };
     

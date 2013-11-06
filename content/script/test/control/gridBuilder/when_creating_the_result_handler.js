@@ -10,6 +10,8 @@ goog.provide('src.test.control.gridBuilder.whenCreatingTheResultHandler');
 src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() {
   
   //Using
+
+  var Constant_ = src.base.control.gridBuilder.constant;
   var Current_ = src.base.control.gridBuilder;
   
   
@@ -74,14 +76,9 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   it('should create the header row.', function() {
     var methodWasCalled = false;
     
-    createTheHeaderRow_ = function(options, parentContainer, findNode,
-                                   createADiv, setTextContent, appendChild) {
+    createTheHeaderRow_ = function(options, parentContainer) {
       methodWasCalled = options === options_ &&
-        parentContainer === parentContainer_ &&
-        findNode === findNode_ &&
-        createADiv === createADiv_ &&
-        setTextContent === setTextContent_ &&
-        appendChild === appendChild_;
+        parentContainer === parentContainer_;
     };
     
     callTheMethod_();
@@ -93,20 +90,13 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   it('should create the rows.', function() {
     var methodWasCalled = false;
     
-    createRows_ = function(result, parentContainer, options,
-                           findNode, createADiv, appendChild,
-                           createARow, setTextContent, setClick,
+    createRows_ = function(result, parentContainer, options, createARow,
                            refreshGrid) {
       
       methodWasCalled = result === result_ &&
         parentContainer === parentContainer_ &&
         options === options_ &&
-        findNode === findNode_ &&
-        createADiv === createADiv_ &&
-        appendChild === appendChild_ &&
-        createARow === Current_.createARow &&
-        setTextContent === setTextContent_ &&
-        setClick === setClick_ &&
+        createARow === Current_.row.createARow &&
         refreshGrid === refreshGrid_;
     };
     
@@ -118,23 +108,18 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   
   it('should create the rows with the optional createARow method.', function() {
     var methodWasCalled = false;
-    options_[Current_.CreateARow] = {};
+    options_[Constant_.CreateARow] = {};
     
-    createRows_ = function(result, parentContainer, options,
-                           findNode, createADiv, appendChild,
-                           createARow, setTextContent, setClick) {
+    createRows_ = function(result, parentContainer, options, createARow,
+                           refreshGrid) {
       
-      methodWasCalled = result === result_ &&
+      methodWasCalled = Constant_.CreateARow !== undefined &&
+        result === result_ &&
         parentContainer === parentContainer_ &&
         options === options_ &&
-        findNode === findNode_ &&
-        createADiv === createADiv_ &&
-        appendChild === appendChild_ &&
-        createARow === options_[Current_.CreateARow] &&
-        setTextContent === setTextContent_ &&
-        setClick === setClick_;
+        createARow === options_[Constant_.CreateARow] &&
+        refreshGrid === refreshGrid_;
     };
-    
     
     callTheMethod_();
     
