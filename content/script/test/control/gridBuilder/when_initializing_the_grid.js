@@ -2,6 +2,8 @@ goog.require('goog.dom.classes');
 goog.require('goog.events');
 goog.require('goog.string');
 goog.require('src.base.control.buttonList');
+goog.require('src.base.control.controlConstant');
+goog.require('src.base.control.gridBuilder.constant');
 
 goog.provide('src.test.control.gridBuilder.whenInitializingTheGrid');
 
@@ -13,6 +15,8 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   
   //Using
   
+  var Constant_ = src.base.control.gridBuilder.constant;
+  var ControlConstant_ = src.base.control.controlConstant;
   var Current_ = src.base.control.gridBuilder;
   
   
@@ -37,11 +41,11 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   
   beforeEach(function() {
     options_ = {};
-    options_[Current_.ContainerClass] = ContainerClass_;
-    options_[Current_.ContainerId] = ContainerId_;
-    options_[Current_.Url] = 'asdfsd';
-    options_[Current_.Parameters] = {};
-    options_[Current_.Map] = [];
+    options_[Constant_.ContainerClass] = ContainerClass_;
+    options_[Constant_.ContainerId] = ContainerId_;
+    options_[Constant_.Parameters] = {};
+    options_[Constant_.Url] = 'asdfsd';
+     //options_[Current_.Map] = [];
     
     appendChild_ = function() {};
     createADiv_ = function() { return parentContainer_; };
@@ -69,8 +73,10 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     var methodWasCalled = false;
     
     createADiv_ = function(attributes) {
-      methodWasCalled = attributes['id'] === ContainerId_ &&
-        attributes['class'] === ContainerClass_;
+      methodWasCalled = Constant_.ContainerId !== undefined &&
+        Constant_.ContainerClass !== undefined &&
+        attributes[ControlConstant_.Id] === ContainerId_ &&
+        attributes[ControlConstant_.Class] === ContainerClass_;
     };
     
     callTheMethod_();
@@ -145,8 +151,10 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     };
     
     submitToUrl_ = function(url, parameters, handler) {
-      methodWasCalled = url === options_[Current_.Url] &&
-        parameters === options_[Current_.Parameters] &&
+      methodWasCalled =  Constant_.Url !== undefined &&
+        Constant_.Parameters !== undefined &&
+        url === options_[Constant_.Url] &&
+        parameters === options_[Constant_.Parameters] &&
         handler === resultHandler;
     };
     

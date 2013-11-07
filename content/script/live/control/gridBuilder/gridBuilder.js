@@ -4,6 +4,7 @@ goog.require('goog.dom.classes');
 goog.require('goog.events');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder.constant');
+goog.require('src.base.control.gridBuilder.header');
 goog.require('src.base.control.gridBuilder.row');
 goog.require('src.base.control.pager');
 goog.require('src.base.helper.domCreation');
@@ -12,9 +13,6 @@ goog.provide('src.base.control.gridBuilder');
 
 
 /* PROTECTED FIELDS */
-
-
-
 
 /**
  @param {Object} result The result returned from the server.
@@ -34,29 +32,29 @@ src.base.control.gridBuilder.createPagerButtons =
   function(result, gridOptions, parentContainer,
            findNode, initializeThePager, appendChild,
            refreshTheGrid) {
-    
-    var current = src.base.control.gridBuilder;
+
+    var Constant = src.base.control.gridBuilder.constant;
     var Pager_ = src.base.control.pager;
-    
+
     var containerRow = findNode(parentContainer, function(item) {
-      return item['className'] === current.ButtonRowClass;
+      return item['className'] === Constant.ButtonRowClass;
     });
-    
+
     var existed = containerRow !== null && containerRow != undefined;
     var pagerOptions = {};
-    pagerOptions[Pager_.ContainerId] = current.ButtonRowId;
-    pagerOptions[Pager_.ContainerClass] = current.ButtonRowClass;
-    
+    pagerOptions[Pager_.ContainerId] = Constant.ButtonRowId;
+    pagerOptions[Pager_.ContainerClass] = Constant.ButtonRowClass;
+
     //TODO make this into a method that can be injected for
     //  more accurate testing.
     pagerOptions[Pager_.Refresh] = function(page) {
-      gridOptions[current.Parameters]['page'] = page;
+      gridOptions[Constant.Parameters]['page'] = page;
       refreshTheGrid(gridOptions, parentContainer);
     };
-    
+
     containerRow = initializeThePager(result, gridOptions,
                                       pagerOptions, containerRow);
-    
+
     if (!existed) {
       appendChild(parentContainer, containerRow);
     }
@@ -119,17 +117,17 @@ src.base.control.gridBuilder.createTheResultHandler =
 
     var Constant_ = src.base.control.gridBuilder.constant;
     var Current_ = src.base.control.gridBuilder;
-    
+
     return function(result) {
       createTheHeaderRow(options, parentContainer);
-      
+
       var createARow = options[Constant_.CreateARow] ?
             options[Constant_.CreateARow] :
             Current_.row.createARow;
-      
+
       createRows(result, parentContainer, options,
                  createARow, refreshGrid);
-      
+
       //src.base.control.gridBuilder.refresh
       createPagerButtons(result, options, parentContainer,
                          findNode, src.base.control.pager.initialize,
@@ -145,7 +143,7 @@ src.base.control.gridBuilder.createTheResultHandler =
  method when posting to the server.
  @param {?function} createTheHeaderRow The function used to create only the header
  of the grid.
- @param {?function} createRows The function used to create all but the header row.
+ @param {!!!function} createRows The function used to create all but the header row.
  @param {?function} appendChild The method used to append a child to a parent element.
  @param {?function} setTextContent The function used to set the text of a div.
  @param {?function} submitToUrl The function used to post, and receive the data.
@@ -170,40 +168,46 @@ src.base.control.gridBuilder.initialize =
 
     createTheHeaderRow = createTheHeaderRow ?
       createTheHeaderRow :
-      src.base.control.gridBuilder.createTheHeaderRow;
+      src.base.control.gridBuilder.header.createTheHeaderRow;
 
     createRows = createRows ?
       createRows :
-      src.base.control.gridBuilder.createRows;
-    
+      src.base.control.gridBuilder.row.createRows;
+
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-    
+
     setTextContent = setTextContent ?
       setTextContent :
       goog.dom.setTextContent;
-    
+
     submitToUrl = submitToUrl ?
       submitToUrl :
       src.base.helper.domHelper.submitToUrl;
-    
+
     createGridRefresh = createGridRefresh ?
       createGridRefresh :
       src.base.control.gridBuilder.createGridRefresh;
-    
-    
+
+
     //START
-    
-    var current = src.base.control.gridBuilder;
-    
-    
-    var parentContainer = createADiv({
-      'id': options[current.ContainerId],
-      'class': options[current.ContainerClass]});
-    
-    var gridRefresh = createGridRefresh(options, parentContainer, current.refresh);
-    
+
+    var Constant_ = src.base.control.gridBuilder.constant;
+    var ControlConstant_ = src.base.control.controlConstant;
+    var Current_ = src.base.control.gridBuilder;
+
+
+    var parentContainerAttributes = {};
+    parentContainerAttributes[ControlConstant_.Id] = options[Constant_.ContainerId];
+    parentContainerAttributes[ControlConstant_.Class] = options[Constant_.ContainerClass];
+    var parentContainer = createADiv(parentContainerAttributes);
+
+
+    var gridRefresh = createGridRefresh(options,
+                                        parentContainer,
+                                        Current_.refresh);
+
     var resultHandler = createTheResultHandler(options,
                                                parentContainer,
                                                createTheHeaderRow,
@@ -215,10 +219,12 @@ src.base.control.gridBuilder.initialize =
                                                goog.dom.classes.swap,
                                                src.base.helper.events.setClick,
                                                goog.dom.findNode,
-                                               current.createPagerButtons,
+                                               Current_.createPagerButtons,
                                                gridRefresh);
-    
-    submitToUrl(options[current.Url], options[current.Parameters], resultHandler);
+
+    submitToUrl(options[Constant_.Url],
+                options[Constant_.Parameters],
+                resultHandler);
 
     return parentContainer;
   };
@@ -231,7 +237,7 @@ src.base.control.gridBuilder.initialize =
  @param {?function} getElementsByClass The function used to find all the non header/footer rows.
  @param {?function} removeNode The function used to remove the non header/footer rows.
  @param {?function} createADiv The method used to create a div element.
- @param {?function} createResultHandler The function used to create the call back method when posting to the
+ @param {?function} createTheResultHandler The function used to create the call back method when posting to the
  server.
  @param {?function} createTheHeaderRow The function used to create only the header of the grid.
  @param {?function} createRows The function used to create all but the header row.
@@ -251,55 +257,67 @@ src.base.control.gridBuilder.refresh =
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-    
+
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-    
+
     createTheResultHandler = createTheResultHandler ?
       createTheResultHandler :
       src.base.control.gridBuilder.createTheResultHandler;
-    
+
     createRows = createRows ?
       createRows :
-      src.base.control.gridBuilder.createRows;
-    
+      src.base.control.gridBuilder.row.createRows;
+
     createTheHeaderRow = createTheHeaderRow ?
       createTheHeaderRow :
-      src.base.control.gridBuilder.createTheHeaderRow;
-    
+      src.base.control.gridBuilder.header.createTheHeaderRow;
+
     getElementsByClass = getElementsByClass ?
       getElementsByClass :
       goog.dom.getElementsByClass;
-    
+
     removeNode = removeNode ?
       removeNode :
       goog.dom.removeNode;
-    
+
     setTextContent = setTextContent ?
       setTextContent :
       goog.dom.setTextContent;
-    
+
     submitToUrl = submitToUrl ?
       submitToUrl :
-      src.base.helper.domHelper.submitToUrl;
-    
+       src.base.helper.domHelper.submitToUrl;
+
     createGridRefresh = createGridRefresh ?
       createGridRefresh :
       src.base.control.gridBuilder.createGridRefresh;
-    
+
+
     //START
-    
-    var current = src.base.control.gridBuilder;
-    
-    var children = getElementsByClass(current.RowClass, grid);
-    goog.array.forEach(children, function(item) { removeNode(item); });
-    
-    var possibleMessageRow = getElementsByClass(current.MessageClass, grid);
-    goog.array.forEach(possibleMessageRow, function(item) { removeNode(item); });
-    
-    var gridRefresh = createGridRefresh(options, grid, current.refresh);
-    
+
+    var Constant_ = src.base.control.gridBuilder.constant;
+    var Current_ = src.base.control.gridBuilder;
+
+    var children = getElementsByClass(Constant_.RowClass,
+                                      grid);
+
+    goog.array.forEach(children, function(item) {
+      removeNode(item);
+    });
+
+    var possibleMessageRow = getElementsByClass(Constant_.MessageClass,
+                                                grid);
+
+    goog.array.forEach(possibleMessageRow, function(item) {
+      removeNode(item);
+    });
+
+    var gridRefresh = createGridRefresh(options,
+                                        grid,
+                                        Current_.refresh);
+
     var resultHandler = createTheResultHandler(options,
                                                grid,
                                                createTheHeaderRow,
@@ -311,8 +329,10 @@ src.base.control.gridBuilder.refresh =
                                                goog.dom.classes.swap,
                                                src.base.helper.events.setClick,
                                                goog.dom.findNode,
-                                               current.createPagerButtons,
+                                               Current_.createPagerButtons,
                                                gridRefresh);
-    
-    submitToUrl(options[current.Url], options[current.Parameters], resultHandler);
+
+    submitToUrl(options[Constant_.Url],
+                options[Constant_.Parameters],
+                resultHandler);
 };

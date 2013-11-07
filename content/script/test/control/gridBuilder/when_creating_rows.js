@@ -14,7 +14,7 @@ src.test.control.gridBuilder.row.whenCreatingRows.describe = function() {
   
   var Constant_ = src.base.control.gridBuilder.constant;
   var Current_ = src.base.control.gridBuilder.row;
-  var ControlConstant_ = src.base.control.gridBuilder.constant;
+  var ControlConstant_ = src.base.control.controlConstant;
   
   
   //Fields
@@ -91,31 +91,31 @@ src.test.control.gridBuilder.row.whenCreatingRows.describe = function() {
         (Constant_.RowContainerClass !== undefined &&
          attributes[ControlConstant_.Class] === Constant_.RowContainerClass);
     };
-  
+    
     callTheMethod_();
-  
+    
     expect(methodWasCalled).toBe(true);
   });
   
   
   it('should append the row container if it did not exist.', function() {
     var methodWasCalled = false;
-  
+    
     appendChild_ = function(parent, child) {
       methodWasCalled = methodWasCalled ||
         (parent === parentContainer_ &&
          child === rowContainer_);
     };
-  
+    
     callTheMethod_();
-  
+    
     expect(methodWasCalled).toBe(true);
   });
   
   
   it('should not append the row container if it already existed.', function() {
     var methodWasCalled = false;
-  
+    
     getElementByClass_ = function() {
       return rowContainer_;
     };
@@ -137,17 +137,25 @@ src.test.control.gridBuilder.row.whenCreatingRows.describe = function() {
     var currentItem = {};
     
     
-    createARow_ = function(item, options, createADiv,
-                           setTextContent, appendChild, setClick,
-                           refreshGrid) {
+    createARow_ = function(item, options, refreshGrid,
+                           createADiv, setClick, forEach,
+                           createColumnFromRowMap, createAClearDiv,
+                           appendChild) {
       
       methodWasCalled += item === currentItem &&
         options === options_ &&
-        refreshGrid === refreshGrid_;
+        refreshGrid === refreshGrid_ &&
+        createADiv === undefined &&
+        setClick === undefined &&
+        forEach === undefined &&
+        createColumnFromRowMap === undefined &&
+        createAClearDiv === undefined &&
+        appendChild === undefined;
     };
     
     forEach_ = function(theList, toDo){
-      methodWasCalled += theList === result_[Constant_.ListProperty];
+      methodWasCalled += Constant_.ListProperty !== undefined &&
+        theList === result_[Constant_.ListProperty];
       
       toDo(currentItem);
     };

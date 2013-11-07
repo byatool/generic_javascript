@@ -14,7 +14,15 @@ src.base.control.gridBuilder.constant.ButtonRowClass = 'gridBuilderButtonRowClas
 /**
  @const
  @type {string}
- @export
+ @protected
+ */
+src.base.control.gridBuilder.constant.ButtonRowId = 'gridBuilderButtonRowId';
+
+
+/**
+ @const
+ @type {string}
+ @protected
  */
 src.base.control.gridBuilder.constant.ColumnClass = 'gridBuilderColumnClass';
 
@@ -22,23 +30,7 @@ src.base.control.gridBuilder.constant.ColumnClass = 'gridBuilderColumnClass';
 /**
  @const
  @type {string}
- @export
- */
-src.base.control.gridBuilder.constant.ContainerClass = 'containerClass';
-
-
-/**
- @const
- @type {string}
- @export
- */
-src.base.control.gridBuilder.constant.ContainerId = 'containerId';
-
-
-/**
- @const
- @type {string}
- @export
+ @protected
  */
 src.base.control.gridBuilder.constant.CreateARow = 'createARow';
 
@@ -46,25 +38,17 @@ src.base.control.gridBuilder.constant.CreateARow = 'createARow';
 /**
  @const
  @type {string}
- @export
- */
+ @protected
+*/
 src.base.control.gridBuilder.constant.HeaderClass = 'gridBuilderHeaderClass';
 
 
 /**
  @const
  @type {string}
- @export
+ @protected
  */
 src.base.control.gridBuilder.constant.HeaderRowClass = 'gridBuilderHeaderRowClass';
-
-
-/**
- @const
- @type {string}
- @export
- */
-src.base.control.gridBuilder.constant.HeaderRowClass = 'gridBuilderHeaderText';
 
 
 /**
@@ -80,7 +64,7 @@ src.base.control.gridBuilder.constant.HeaderText = 'headerText';
  @type {string}
  @protected
  */
-src.base.control.gridBuilder.constant.Map = 'mapping';
+src.base.control.gridBuilder.constant.ListProperty = 'List';
 
 
 /**
@@ -123,10 +107,47 @@ src.base.control.gridBuilder.constant.RowClass = 'gridBuilderRowClass';
 src.base.control.gridBuilder.constant.RowContainerClass = 'gridBuilderRowContainer';
 
 
+
+
+
+/* EXPORTED FIELDS */
+
 /**
  @const
  @type {string}
- @protected
+ @export
+ */
+src.base.control.gridBuilder.constant.ContainerClass = 'containerClass';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.gridBuilder.constant.ContainerId = 'containerId';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.gridBuilder.constant.Map = 'mapping';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.gridBuilder.constant.Parameters = 'parameters';
+
+
+/**
+ @const
+ @type {string}
+ @export
  */
 src.base.control.gridBuilder.constant.RowClickHandler = 'rowClickHandler';
 
@@ -134,27 +155,20 @@ src.base.control.gridBuilder.constant.RowClickHandler = 'rowClickHandler';
 /**
  @const
  @type {string}
- @protected
+ @export
  */
 src.base.control.gridBuilder.constant.ShowHeader = 'showHeader';
 
 
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.gridBuilder.constant.Url = 'url';
 
 
 
-
-
-// /* EXPORTED FIELDS */
-
-
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.ButtonRowId = 'gridBuilderButtonRowId';
 
 
 
@@ -190,12 +204,6 @@ src.base.control.gridBuilder.constant.ShowHeader = 'showHeader';
 
 
 
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.ListProperty = 'List';
 
 
 

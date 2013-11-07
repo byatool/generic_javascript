@@ -2,6 +2,9 @@ goog.require('goog.dom.classes');
 goog.require('goog.events');
 goog.require('goog.string');
 goog.require('src.base.control.buttonList');
+goog.require('src.base.control.gridBuilder');
+goog.require('src.base.control.gridBuilder.constant');
+
 
 goog.provide('src.test.control.gridBuilder.whenRefreshingTheGrid');
 
@@ -9,8 +12,10 @@ goog.provide('src.test.control.gridBuilder.whenRefreshingTheGrid');
  @export
  */
 src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
+
   //Using
   
+  var Constant_ = src.base.control.gridBuilder.constant;
   var Current_ = src.base.control.gridBuilder;
   
   
@@ -37,11 +42,11 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   beforeEach(function() {
     options_ = {};
-    options_[Current_.ContainerClass] = ContainerClass_;
-    options_[Current_.ContainerId] = ContainerId_;
-    options_[Current_.Url] = 'asdfsd';
-    options_[Current_.Parameters] = {};
-    options_[Current_.Map] = [];
+    options_[Constant_.ContainerClass] = ContainerClass_;
+    options_[Constant_.ContainerId] = ContainerId_;
+    options_[Constant_.Url] = 'asdfsd';
+    options_[Constant_.Parameters] = {};
+    options_[Constant_.Map] = [];
     
     grid_ = {};
     
@@ -68,33 +73,35 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
                             createGridRefresh_);
   };
   
-
+  
   //Test Methods
-
-
+  
+  
   it('should find the information rows', function() {
     var methodWasCalled = false;
-
+    
     getElementByClass_ = function(cssClass, parent) {
       methodWasCalled = methodWasCalled ||
-        (parent === grid_ && cssClass === Current_.RowClass);
-
+        (Constant_.RowClass !== undefined &&
+         parent === grid_ &&
+         cssClass === Constant_.RowClass);
+      
       return [];
     };
-
+    
     callTheMethod_();
-
+    
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should remove all the information rows.', function() {
     var methodWasCalled = 0;
     var firstChild = {};
     var secondChild = {};
-
+    
     getElementByClass_ = function(cssClass, parent) {
-      return cssClass === Current_.RowClass ?  [firstChild, secondChild] : [];
+      return cssClass === Constant_.RowClass ?  [firstChild, secondChild] : [];
     };
      
     removeNode_ = function(node) {
@@ -112,7 +119,9 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     
     getElementByClass_ = function(name, grid){
       methodWasCalled = methodWasCalled ||
-        (name === Current_.MessageClass && grid === grid_);
+        (Constant_.MessageClass !== undefined &&
+         name === Constant_.MessageClass && 
+         grid === grid_);
       
       return {};
     };
@@ -128,7 +137,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     var messageContainer = {};
     
     getElementByClass_ = function(cssClass, parent) {
-      return cssClass === Current_.MessageClass ?  [messageContainer] : [];
+      return cssClass === Constant_.MessageClass ?  [messageContainer] : [];
     };
     
     removeNode_ = function(node) {
@@ -140,7 +149,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
-   
+  
   
   it('should create the grid refresh.', function() {
     var methodWasCalled = false;
@@ -201,8 +210,8 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     };
     
     submitToUrl_ = function(url, parameters, handler) {
-      methodWasCalled = url === options_[Current_.Url] &&
-        parameters === options_[Current_.Parameters] &&
+      methodWasCalled = url === options_[Constant_.Url] &&
+        parameters === options_[Constant_.Parameters] &&
         handler === resultHandler;
     };
     

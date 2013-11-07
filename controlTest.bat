@@ -64,6 +64,8 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.gridBuilder.whenCreatingTheGridRefresh" ^
 --namespace="src.test.control.gridBuilder.whenCreatingThePagerButtons" ^
 --namespace="src.test.control.gridBuilder.whenCreatingTheResultHandler" ^
+--namespace="src.test.control.gridBuilder.whenInitializingTheGrid" ^
+--namespace="src.test.control.gridBuilder.whenRefreshingTheGrid" ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingAHeaderColumn" ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingTheHeaderRow" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingAColumnFromRowMap" ^

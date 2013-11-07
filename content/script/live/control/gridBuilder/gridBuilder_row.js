@@ -22,14 +22,14 @@ goog.provide('src.base.control.gridBuilder.row');
  */
 src.base.control.gridBuilder.row.createNoRowsMessageContainer_ =
   function(rowContainer, createADiv, setTextContent, appendChild) {
-
+    
     var Constant_ = src.base.control.gridBuilder.constant;
-    var ControlConstant_ = src.base.control.gridBuilder.constant;
-
+    var ControlConstant_ = src.base.control.controlConstant;
+    
     var messageDivAttributes = {};
     messageDivAttributes[ControlConstant_.Class] = Constant_.MessageClass;
     var messageDiv = createADiv(messageDivAttributes);
-
+    
     setTextContent(messageDiv, Constant_.NoRowsText);
     appendChild(rowContainer, messageDiv);
   };
@@ -51,11 +51,11 @@ src.base.control.gridBuilder.row.createNoRowsMessageContainer_ =
 src.base.control.gridBuilder.row.createColumnFromRowMap =
   function(currentRowInformation, currentMapping, createADiv,
            setTextContent) {
-
+    
     var Constant_ = src.base.control.gridBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
-
+    
+    
     var extraClass = currentMapping[ControlConstant_.Class] ?
           ' ' + currentMapping[ControlConstant_.Class] :
           '';
@@ -64,7 +64,7 @@ src.base.control.gridBuilder.row.createColumnFromRowMap =
     var columnParameters = {};
     columnParameters[ControlConstant_.Class] = Constant_.ColumnClass + extraClass;
     var column = createADiv(columnParameters);
-
+    
     setTextContent(column,
                    currentRowInformation[currentMapping[Constant_.PropertyName]]);
 
@@ -203,7 +203,7 @@ src.base.control.gridBuilder.row.createRows =
     /* START */
     
     var Constant_ = src.base.control.gridBuilder.constant;
-    var ControlConstant_ = src.base.control.gridBuilder.constant;
+    var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.gridBuilder.row;
     
     
@@ -214,10 +214,10 @@ src.base.control.gridBuilder.row.createRows =
       var rowContainerParameters = {};
       rowContainerParameters[ControlConstant_.Class] = Constant_.RowContainerClass;
       rowContainer = createADiv(rowContainerParameters);
-
+      
       appendChild(parentContainer, rowContainer);
     }
-
+    
     if (result[Constant_.ListProperty].length === 0) {
       Current_.
         createNoRowsMessageContainer_(
@@ -225,10 +225,8 @@ src.base.control.gridBuilder.row.createRows =
     }
     else {
       forEach(result[Constant_.ListProperty], function(item) {
-        var currentRow = createARow(item, options, createADiv,
-                                    setTextContent, appendChild,
-                                    setClick, refreshGrid);
-
+        var currentRow = createARow(item, options, refreshGrid);
+        
         appendChild(rowContainer, currentRow);
       });
     }
