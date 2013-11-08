@@ -1,11 +1,64 @@
 goog.require('goog.dom');
+goog.require('goog.dom.forms');
 goog.require('src.base.control.controlConstant');
+goog.require('src.base.control.formComponent');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.wall.constant');
+goog.require('src.site.validation.validationInterpreter');
+goog.require('src.site.validation.validationInterpreter.constant');
 
 goog.provide('src.base.control.wall.form');
 
-
 ///  setOnSubmit
+
+/**
+ @protected
+ */
+src.base.control.wall.form.createEmptyDatePickerOptions =
+  function() {
+    
+    var FormConstant_ = src.base.control.formComponent.constant;
+    
+    var datePickerInformation = {};
+    datePickerInformation[FormConstant_.DatepickerOptions] = {};
+    datePickerInformation[FormConstant_.DatepickerTextboxes] = [];
+    return datePickerInformation;
+  };
+
+
+/**
+ @param {Object} form The form that holds the submit button.
+ @param {Object} textContainer The read only text container.
+ @param {function} onSubmit The function to call when the 
+ submit is handled.
+ @param {function} setValue The function used to remove
+ the entered text.
+ @return {function} The create result submit handler.
+ @protected
+ */
+src.base.control.wall.form.createTheSubmitResultHandler =
+  function(form, textContainer, onSubmit, setValue) {
+    return function(result) {
+      setValue(textContainer, '');
+    };
+  };
+
+
+/**
+ @return {Object} The keyword/value dictionary with the rules.
+ @protected
+ */
+src.base.control.wall.form.createTheValidationRules =
+  function() {
+    
+    var Constant_ = src.base.control.wall.constant;
+    var ValidationInterpreterConstant_ = src.site.validation.validationInterpreter.constant;
+    
+    return [
+      [Constant_.EntryTextbox,
+       [ValidationInterpreterConstant_.IsNotEmpty, Constant_.ErrorEmptyText]]];
+  };
+
 
 /**
  @param {string} postTo The url to post the form data to.
@@ -17,6 +70,7 @@ goog.provide('src.base.control.wall.form');
  the submit button.
  @param {?function} appendChild The function used to add the
  elements to the form.
+ @return {Object} The created form.
  @protected
  */
 src.base.control.wall.form.create =
@@ -34,7 +88,7 @@ src.base.control.wall.form.create =
     createAButton = createAButton ? 
       createAButton : 
       src.base.helper.domCreation.button;
-     
+    
     appendChild = appendChild ? 
       appendChild : 
       goog.dom.appendChild;
@@ -71,7 +125,61 @@ src.base.control.wall.form.create =
     
     appendChild(entryForm,
                 submitEntry);
-
+    
     return entryForm;
     
   };
+
+
+/**
+ @param {function} onSubmit The function to call after a successful
+ submital of the form.
+ @param {?function} createEmptyDatePickerOptions The function used to
+ create an empty set of date picker options for the form initialization.
+ @param {?function} createAValidationWrapper The function used to create
+ the validation handler.
+ @param {?function} createTheValidationRules The function used to create
+ the validation rules for the form intialization.
+ @param {?function} initializeTheForm The function used to create
+ the needed functionality for the form.
+ @protected
+ */
+src.base.control.wall.form.initialize =
+  function(onSubmit, createEmptyDatePickerOptions,
+           createAValidationWrapper, createTheValidationRules,
+           initializeTheForm) {
+    
+    createEmptyDatePickerOptions = createEmptyDatePickerOptions ? 
+      createEmptyDatePickerOptions : 
+      src.base.control.wall.form.createEmptyDatePickerOptions;
+    
+    
+    createAValidationWrapper = createAValidationWrapper ? 
+      createAValidationWrapper : 
+      src.site.validation.validationInterpreter.createAValidationWrapper;
+    
+    createTheValidationRules = createTheValidationRules ? 
+      createTheValidationRules : 
+      src.base.control.wall.form.createTheValidationRules;
+    
+    initializeTheForm = initializeTheForm ? 
+      initializeTheForm : 
+      src.base.control.formComponent.initialize;
+    
+    /* START */
+    var validationRules = createTheValidationRules();
+    var validationWrapper = createAValidationWrapper(validationRules);
+  };
+
+
+
+// var submitResultHandler = createTheSubmitResultHandler(form,
+//                                                        textContainer,
+//                                                        src.base.control.editableDiv.applyTheEdittedText);
+
+// initializeTheForm(form,
+//                   datePickerInformation,
+//                   validationMethod,
+//                   null,
+//                   submitResultHandler);
+

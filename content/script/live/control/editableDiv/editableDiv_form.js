@@ -158,6 +158,9 @@ src.base.control.editableDiv.form.setCancelHandler =
     setClick(button, toCall);
   };
 
+
+
+
 /* EXPORTED FUNCTIONS */
 
 /**
@@ -217,6 +220,9 @@ src.base.control.editableDiv.form.createTheForm =
                                        createAHidden,
                                        setValue,
                                        appendChild);
+    
+    
+    
     
     var result = {};
     result[ControlConstant_.CreatedControl] = form;

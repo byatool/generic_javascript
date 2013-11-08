@@ -16,27 +16,33 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   var Constant_ = src.base.control.wall.constant;
   var ControlConstant_ = src.base.control.controlConstant;
   
+
   //Fields
   
   var ParentContainerId_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
+  var PostTo_ = goog.string.getRandomString();
   
   var createADiv_;
+  var createTheForm_;
   var parentContainer_;
   
   
-  //Test Hooks
+   //Test Hooks
   
   beforeEach(function() {
     parentContainer_ = {};
+    
+    createADiv_ = function(){ return parentContainer_; };
+    createTheForm_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, createADiv_);
-  };
+    return Current_.initialize(ParentContainerId_, PostTo_, createADiv_, createTheForm_);
+  }; 
   
   
   //Test Methods
@@ -51,6 +57,20 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
       
       return parentContainer_;
     };
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
+  it('should create the form.', function() {
+    var methodWasCalled = false;
+    
+    createTheForm_ = function(postTo){
+      methodWasCalled = postTo === PostTo_;
+    };
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);

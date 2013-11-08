@@ -14,10 +14,16 @@ goog.provide('src.base.control.wall');
  @export
  */
 src.base.control.wall.initialize = 
-  function(containerId, createADiv) {
+  function(containerId, postTo, createADiv,
+           createTheForm) {
+    
     createADiv = createADiv ? 
       createADiv : 
       src.base.helper.domCreation.div;
+    
+    createTheForm = createTheForm ? 
+      createTheForm : 
+      src.base.control.wall.form.create;
     
     /* START */
     
@@ -30,14 +36,12 @@ src.base.control.wall.initialize =
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-    
+
+
+    var entryForm = createTheForm(postTo);
     
     return container;
   };
-
-
-
-
 
 
 //form
