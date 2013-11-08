@@ -1,5 +1,5 @@
 goog.require('goog.string');
-goog.require('src.base.control.gridBuilder');
+goog.require('src.base.control.gridBuilder.constant');
 goog.require('src.base.control.zippyGrid');
 
 goog.provide('src.test.control.zippyGrid.whenRefreshingAZippyGrid');
@@ -13,7 +13,7 @@ src.test.control.zippyGrid.whenRefreshingAZippyGrid.describe = function () {
   //Using
   
   var Current_ = src.base.control.zippyGrid;
-  var GridBuilder_ = src.base.control.gridBuilder;
+  var GridBuilder_ = src.base.control.gridBuilder.constant;
   
   
   //Fields
@@ -21,7 +21,7 @@ src.test.control.zippyGrid.whenRefreshingAZippyGrid.describe = function () {
   var ContainerId_ = goog.string.getRandomString();
   var NewWorkId_ = goog.string.getRandomString();
   var OldWorkId_ = goog.string.getRandomString();
-
+  
   var gridBuilderOptions_;
   var findNode_;
   var handleParameters_;

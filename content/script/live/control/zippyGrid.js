@@ -1,12 +1,11 @@
 goog.require('goog.dom');
-goog.require('src.base.control.gridBuilder');
+goog.require('src.base.control.gridBuilder.constant');
 goog.require('src.base.control.zippyContainer');
 
 goog.provide('src.base.control.zippyGrid');
 
 
 // EXPORTED FIELDS
-
 
 /**
  @const
@@ -73,19 +72,19 @@ src.base.control.zippyGrid.initialize =
   function(options, url, handleParameters,
            createARow, onRowClick,
            createGrid, createZippyContainer) {
-
+    
     createGrid = createGrid ?
       createGrid :
       src.base.control.gridBuilder.initialize;
-
+    
     createZippyContainer = createZippyContainer ?
       createZippyContainer :
       src.base.control.zippyContainer.initialize;
-
+    
     var current = src.base.control.zippyGrid;
-    var GridBuilder_ = src.base.control.gridBuilder;
+    var GridBuilder_ = src.base.control.gridBuilder.constant;
     var Zippy_ = src.base.control.zippyContainer;
-
+    
     var contentOptions = {};
     contentOptions[GridBuilder_.ContainerClass] = current.ContentContainerClass;
     contentOptions[GridBuilder_.ContainerId] = current.ContentContainerClass;
@@ -135,7 +134,7 @@ src.base.control.zippyGrid.refresh =
       src.base.control.gridBuilder.refresh;
     
     var current = src.base.control.zippyGrid;
-    var GridBuilder_ = src.base.control.gridBuilder;
+    var GridBuilder_ = src.base.control.gridBuilder.constant;
     
     var gridParameters = options[current.ZippyContainerId + 'Options'][GridBuilder_.Parameters];
     handleParameters(options, gridParameters);

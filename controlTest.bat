@@ -102,6 +102,10 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.tagContainer.whenCreatingATag" ^
 --namespace="src.test.control.tagContainer.whenCreatingTags" ^
 --namespace="src.test.control.tagContainer.whenInitializingATagContainer" ^
+--namespace="src.test.control.wall.whenInitializingAWall" ^
+--namespace="src.test.control.wall.form.whenCreatingTheEntryForm" ^
+--namespace="src.test.control.zippyContainer.whenInitializingAZippyContainer" ^
+--namespace="src.test.control.zippyGrid.whenInitializingTheZippyGrid" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^
