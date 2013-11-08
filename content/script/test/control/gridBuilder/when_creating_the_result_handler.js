@@ -10,7 +10,7 @@ goog.provide('src.test.control.gridBuilder.whenCreatingTheResultHandler');
 src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() {
   
   //Using
-
+  
   var Constant_ = src.base.control.gridBuilder.constant;
   var Current_ = src.base.control.gridBuilder;
   
@@ -21,20 +21,19 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var createPagerButtons_;
   var createRows_;
   var createTheHeaderRow_;
-  var findNode_;
+  var getElementByClass_;
   var mapping_;
   var options_;
   var parentContainer_;
   var refreshGrid_;
-  var removeAllEvents_;
   var result_;
   var setClick_;
   var setTextContent_;
   var swap_;
-
-
+  
+  
   //Test Hooks
-
+  
   beforeEach(function() {
     mapping_ = {};
     options_ = {};
@@ -49,9 +48,8 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     createPagerButtons_ = function() {};
     createRows_ = function() {};
     createTheHeaderRow_ = function() {};
-    findNode_ = function() {};
+    getElementByClass_ = function() {};
     refreshGrid_ = function(){};
-    removeAllEvents_ = function() {};
     
     setClick_ = function() {};
     setTextContent_ = function() {};
@@ -64,9 +62,9 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
           src.base.control.gridBuilder.createTheResultHandler(options_, parentContainer_,
                                                               createTheHeaderRow_, createRows_,
                                                               createADiv_, appendChild_,
-                                                              setTextContent_, removeAllEvents_,
-                                                              swap_, setClick_, findNode_,
-                                                              createPagerButtons_, refreshGrid_);
+                                                              setTextContent_, swap_, setClick_,
+                                                              getElementByClass_, createPagerButtons_,
+                                                              refreshGrid_);
     methodToCall(result_);
   };
   
@@ -132,13 +130,13 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     var methodWasCalled = false;
     
     createPagerButtons_ = function(result, gridOptions, parentContainer,
-                                   findNode, initializeThePager, appendChild,
+                                   getElementByClass, initializeThePager, appendChild,
                                   refreshGrid) {
       
       methodWasCalled = result === result_ &&
         gridOptions === options_ &&
         parentContainer === parentContainer_ &&
-        findNode === findNode_ &&
+        getElementByClass === getElementByClass_ &&
         appendChild === appendChild_ &&
         initializeThePager === src.base.control.pager.initialize &&
         refreshGrid === src.base.control.gridBuilder.refresh;

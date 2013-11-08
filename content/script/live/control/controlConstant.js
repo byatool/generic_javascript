@@ -69,6 +69,14 @@ src.base.control.controlConstant.Name = 'name';
 /**
  @const
  @type {string}
+ @exported
+ */
+src.base.control.controlConstant.Page = 'page';
+
+
+/**
+ @const
+ @type {string}
  @export
  */
 src.base.control.controlConstant.Post = 'post';

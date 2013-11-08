@@ -4,6 +4,7 @@ goog.require('goog.string');
 goog.require('src.base.control.buttonList');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder.constant');
+goog.require('src.base.control.gridBuilder.header');
 
 goog.provide('src.test.control.gridBuilder.whenInitializingTheGrid');
 
@@ -29,8 +30,6 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   var createADiv_;
   var createGridRefresh_;
   var createResultHandler_;
-  var createRows_;
-  var createTheHeaderRow_;
   var parentContainer_;
   var options_;
   var setTextContent_;
@@ -45,14 +44,11 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     options_[Constant_.ContainerId] = ContainerId_;
     options_[Constant_.Parameters] = {};
     options_[Constant_.Url] = 'asdfsd';
-     //options_[Current_.Map] = [];
     
     appendChild_ = function() {};
     createADiv_ = function() { return parentContainer_; };
     createGridRefresh_ = function(){};
     createResultHandler_ = function() {};
-    createTheHeaderRow_ = function() {};
-    createRows_ = function() {};
     setTextContent_ = function() {};
     submitToUrl_ = function() {};
   });
@@ -62,8 +58,8 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   
   var callTheMethod_ = function() {
     return Current_.initialize(options_, createADiv_, createResultHandler_,
-                               createTheHeaderRow_, createRows_, appendChild_, setTextContent_,
-                               submitToUrl_, createGridRefresh_);
+                               appendChild_, setTextContent_, submitToUrl_,
+                               createGridRefresh_);
   };
   
   
@@ -115,22 +111,20 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     };
     
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
-                                    createRows, createADiv, appendChild,
-                                    setTextContent, removeAllEvents,
-                                    swap, setClick, findNode, createPagerButtons,
+                                    createRows, createADiv, appendChild, setTextContent,
+                                    swap, setClick, getElementByClass, createPagerButtons,
                                     gridRefresh) {
       
       methodWasCalled = options === options_ &&
         parentContainer === parentContainer_ &&
-        createTheHeaderRow === createTheHeaderRow_ &&
-        createRows === createRows_ &&
+        createTheHeaderRow === src.base.control.gridBuilder.header.createTheHeaderRow &&
+        createRows === src.base.control.gridBuilder.row.createRows &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
         setTextContent === setTextContent_ &&
-        removeAllEvents === goog.events.removeAll && //Unneeded?
         swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
-        findNode === goog.dom.findNode &&
+        getElementByClass === goog.dom.getElementByClass &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
         gridRefresh === createdGridRefresh;
     };

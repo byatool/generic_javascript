@@ -1,7 +1,6 @@
 goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder.constant');
-goog.require('src.base.control.gridBuilder.constant');
 goog.require('src.base.control.gridBuilder.header');
 
 

@@ -12,7 +12,7 @@ goog.provide('src.test.control.gridBuilder.whenRefreshingTheGrid');
  @export
  */
 src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
-
+  
   //Using
   
   var Constant_ = src.base.control.gridBuilder.constant;
@@ -28,8 +28,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   var createADiv_;
   var createGridRefresh_;
   var createResultHandler_;
-  var createRows_;
-  var createTheHeaderRow_;
+  var forEach_;
   var getElementByClass_;
   var grid_;
   var options_;
@@ -54,8 +53,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     createADiv_ = function() {};
     createGridRefresh_ = function() {};
     createResultHandler_ = function() {};
-    createTheHeaderRow_ = function() {};
-    createRows_ = function() {};
+    forEach_ = function(){};
     getElementByClass_ = function() { return [];};
     removeNode_ = function() {};
     setTextContent_ = function() {};
@@ -67,8 +65,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   var callTheMethod_ = function() {
     return Current_.refresh(options_, grid_, getElementByClass_,
-                            removeNode_, createADiv_, createResultHandler_,
-                            createTheHeaderRow_, createRows_,
+                            forEach_, removeNode_, createADiv_, createResultHandler_,
                             appendChild_, setTextContent_, submitToUrl_,
                             createGridRefresh_);
   };
@@ -97,15 +94,22 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   it('should remove all the information rows.', function() {
     var methodWasCalled = 0;
-    var firstChild = {};
-    var secondChild = {};
+    var children = {};
+    var item = {};
     
     getElementByClass_ = function(cssClass, parent) {
-      return cssClass === Constant_.RowClass ?  [firstChild, secondChild] : [];
+      return cssClass === Constant_.RowClass ?  children : [];
     };
-     
+    
     removeNode_ = function(node) {
-      methodWasCalled += node === firstChild || node === secondChild;
+      methodWasCalled += node === item;
+    };
+    
+    forEach_ = function(list, toDo){
+      if(methodWasCalled === 0){
+        methodWasCalled += list === children;
+        toDo(item);
+      }
     };
     
     callTheMethod_();
@@ -133,21 +137,29 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   
   it('should remove an existing no rows message container.', function() {
-    var methodWasCalled = false;
+    var methodWasCalled = 0;
     var messageContainer = {};
+    var item = {};
     
     getElementByClass_ = function(cssClass, parent) {
-      return cssClass === Constant_.MessageClass ?  [messageContainer] : [];
+      return cssClass === Constant_.MessageClass ?  messageContainer : {};
+    };
+    
+    forEach_ = function(list, toDo){
+      methodWasCalled += list === messageContainer;
+      
+      if(methodWasCalled !== 0){
+        toDo(item);
+      }
     };
     
     removeNode_ = function(node) {
-      methodWasCalled = methodWasCalled ||
-        (node === messageContainer);
+      methodWasCalled += node === item;
     };
     
     callTheMethod_();
     
-    expect(methodWasCalled).toBe(true);
+    expect(methodWasCalled).toBe(2);
   });
   
   
@@ -165,7 +177,7 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
   
-   
+  
   it('should create the result handler.', function() {
     var methodWasCalled = false;
     var createdGridRefresh = {};
@@ -173,23 +185,22 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
     createGridRefresh_ = function(){
       return createdGridRefresh;
     };
-     
+    
     createResultHandler_ = function(options, parentContainer, createTheHeaderRow,
                                     createRows, createADiv, appendChild,
-                                    setTextContent, removeAllEvents,
-                                    swap, setClick, findNode, createPagerButtons,
+                                    setTextContent, swap, setClick, getElementByClass,
+                                    createPagerButtons,
                                     gridRefresh) {
       
       methodWasCalled = options === options_ &&
         parentContainer === grid_ &&
-        createTheHeaderRow === createTheHeaderRow_ &&
-        createRows === createRows_ &&
+        createTheHeaderRow === src.base.control.gridBuilder.header.createTheHeaderRow &&
+        createRows === src.base.control.gridBuilder.row.createRows &&
         createADiv === createADiv_ &&
         appendChild === appendChild_ &&
-        removeAllEvents === goog.events.removeAll &&
         swap === goog.dom.classes.swap &&
         setClick === src.base.helper.events.setClick &&
-        findNode === goog.dom.findNode &&
+        getElementByClass === goog.dom.getElementByClass &&
         createPagerButtons === src.base.control.gridBuilder.createPagerButtons &&
         gridRefresh === createdGridRefresh;
     };

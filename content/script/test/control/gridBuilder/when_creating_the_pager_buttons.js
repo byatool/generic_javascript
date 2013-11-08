@@ -1,4 +1,5 @@
 goog.require('goog.string');
+goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder');
 
 goog.provide('src.test.control.gridBuilder.whenCreatingThePagerButtons');
@@ -10,6 +11,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   
   //Using
   
+  var ControlConstant_ = src.base.control.controlConstant;
   var Constant_ = src.base.control.gridBuilder.constant;
   var Current_ = src.base.control.gridBuilder;
   var Pager_ = src.base.control.pager;
@@ -21,11 +23,10 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   
   
   var appendChild_;
-  var findNode_;
+  var getElementByClass_;
   var initializeThePager_;
   var gridOptions_;
   var pager_;
-  //var passedInOptions_;
   var parentContainer_;
   var refreshTheGrid_;
   var result_;
@@ -39,14 +40,12 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     gridOptions_ = {};
     gridOptions_[Pager_.Refresh] = refreshTheGrid_;
     gridOptions_[Constant_.Parameters] = {};
-    gridOptions_[Constant_.Parameters]['page'] = 1;
+    gridOptions_[Constant_.Parameters][ControlConstant_.Page] = 1;
     
-    // passedInOptions_ = {};
-    // passedInOptions_[Current_.Parameters] = {};
-    // passedInOptions_[Current_.Parameters]['page'] = 2;
+    
     result_ = {};
     
-    findNode_ = function() { return null; };
+    getElementByClass_ = function() { return null; };
     initializeThePager_ = function() { return pager_;};
     
     appendChild_ = function() { };
@@ -60,7 +59,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   var callTheMethod_ = function() {
     src.base.control.gridBuilder.createPagerButtons(result_, gridOptions_,
                                                     parentContainer_,
-                                                    findNode_, initializeThePager_,
+                                                    getElementByClass_, initializeThePager_,
                                                     appendChild_, refreshTheGrid_);
   };
   
@@ -70,13 +69,10 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   it('should attempt to find the pager control.', function() {
     var methodWasCalled = false;
     
-    var item = {};
-    item['className'] = Constant_.ButtonRowClass;
-    
-    findNode_ = function(parentContainer, toDo) {
+    getElementByClass_ = function(cssClass, parentContainer) {
       methodWasCalled = Constant_.ButtonRowClass !== undefined &&
-        parentContainer === parentContainer_ &&
-        toDo(item);
+        cssClass === Constant_.ButtonRowClass &&
+        parentContainer === parentContainer_; 
     };
     
     callTheMethod_();
@@ -89,7 +85,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     var methodWasCalled = false;
     
     
-    findNode_ = function() {
+    getElementByClass_ = function() {
       return pager_;
     };
     
@@ -142,14 +138,14 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     
     callTheMethod_();
     
-    expect(gridOptions_[Constant_.Parameters]['page']).toBe(NewPage_);
+    expect(gridOptions_[Constant_.Parameters][ControlConstant_.Page]).toBe(NewPage_);
   });
   
   
   it('should not add the pager if it exists already.', function() {
     var methodWasCalled = false;
     
-    findNode_ = function() {
+    getElementByClass_ = function() {
       return pager_;
     };
     
