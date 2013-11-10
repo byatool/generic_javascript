@@ -65,10 +65,14 @@ src.base.control.wall.form.createTheValidationRules =
 
 /**
  @param {string} postTo The url to post the form data to.
+ @param {string} subjectId The id of the parent subject the
+ text entry will belong to.
  @param {?function} createAForm The function used to create the
  container form.
  @param {?function} createATextbox The function used to add the
  comment textbox.
+ @param {?function} createAHidden The function used to create 
+ the subjectId holder.
  @param {?function} createAButton The function used to create
  the submit button.
  @param {?function} appendChild The function used to add the
@@ -77,25 +81,29 @@ src.base.control.wall.form.createTheValidationRules =
  @protected
  */
 src.base.control.wall.form.create =
-  function(postTo, createAForm, createATextbox,
-           createAButton, appendChild) {
-
+  function(postTo, subjectId, createAForm, createATextbox,
+           createAHidden, createAButton, appendChild) {
+    
     createAForm = createAForm ?
       createAForm :
       src.base.helper.domCreation.form;
-
+    
     createAButton = createAButton ?
       createAButton :
       src.base.helper.domCreation.textbox;
-
+    
+    createAHidden = createAHidden ? 
+      createAHidden : 
+      src.base.helper.domCreation.hidden;
+    
     createAButton = createAButton ?
       createAButton :
       src.base.helper.domCreation.button;
-
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     /* START */
 
 
@@ -108,7 +116,7 @@ src.base.control.wall.form.create =
     entryFormAttributes[ControlConstant_.Method] = ControlConstant_.Post;
     entryFormAttributes[ControlConstant_.Action] = postTo;
     var entryForm = createAForm(entryFormAttributes);
-
+    
     var entryTextBoxAttributes = {};
     entryTextBoxAttributes[ControlConstant_.Class] = Constant_.EntryTextbox;
     entryTextBoxAttributes[ControlConstant_.Id] = Constant_.EntryTextbox;
@@ -116,21 +124,31 @@ src.base.control.wall.form.create =
     var textEntry = createATextbox(entryTextBoxAttributes);
 
 
+    var hiddenIdAttributes = {};
+    hiddenIdAttributes[ControlConstant_.Id] = Constant_.EntryHiddenId;
+    hiddenIdAttributes[ControlConstant_.Name] = Constant_.EntryHiddenId;
+    var hiddenId = createAHidden(hiddenIdAttributes);
+    
     var entrySubmitAttributes = {};
     entrySubmitAttributes[ControlConstant_.Class] = Constant_.EntrySubmit;
     entrySubmitAttributes[ControlConstant_.Id] = Constant_.EntrySubmit;
     entrySubmitAttributes[ControlConstant_.Type] = ControlConstant_.Button;
     var submitEntry = createAButton(entrySubmitAttributes,
                                     Constant_.EntrySubmitText);
-
+    
+    
+    
     appendChild(entryForm,
                 textEntry);
-
+    
+    appendChild(entryForm,
+                hiddenId);
+                
     appendChild(entryForm,
                 submitEntry);
-
+    
     return entryForm;
-
+    
   };
 
 

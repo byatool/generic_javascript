@@ -13,12 +13,14 @@ goog.provide('src.base.control.wall');
  div element.
  @param {?function} createTheForm The function used to create
  the inner form.
+ @param {?function} initializeTheForm The fuction used to set up
+ the created form.
  @return {Object} The created control.
  @export
  */
 src.base.control.wall.initialize = 
-  function(containerId, postTo, createADiv,
-           createTheForm) {
+  function(containerId, postTo, subjectId, createADiv,
+           createTheForm, initializeTheForm) {
     
     createADiv = createADiv ? 
       createADiv : 
@@ -27,6 +29,11 @@ src.base.control.wall.initialize =
     createTheForm = createTheForm ? 
       createTheForm : 
       src.base.control.wall.form.create;
+    
+    initializeTheForm = initializeTheForm ? 
+      initializeTheForm : 
+      src.base.control.wall.form.initialize;
+    
     
     /* START */
     
@@ -39,9 +46,12 @@ src.base.control.wall.initialize =
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-
-
-    var entryForm = createTheForm(postTo);
+    
+    
+    var entryForm = createTheForm(postTo,
+                                  subjectId);
+    // initializeTheForm(entryForm,
+    //                   onSubmit);
     
     return container;
   };

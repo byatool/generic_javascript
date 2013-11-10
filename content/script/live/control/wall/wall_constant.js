@@ -1,13 +1,20 @@
 goog.provide('src.base.control.wall.constant');
 
 
-
 /**
  @const
  @type {string}
  @protected
  */
 src.base.control.wall.constant.EntryForm = 'entryForm';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.EntryHiddenId = 'entryId';
 
 
 /**

@@ -16,15 +16,17 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   var Constant_ = src.base.control.wall.constant;
   var ControlConstant_ = src.base.control.controlConstant;
   
-
+  
   //Fields
   
   var ParentContainerId_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
   var PostTo_ = goog.string.getRandomString();
+  var SubjectId_ = goog.string.getRandomString();
   
   var createADiv_;
   var createTheForm_;
+  var initializeTheForm_;
   var parentContainer_;
   
   
@@ -35,13 +37,15 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     
     createADiv_ = function(){ return parentContainer_; };
     createTheForm_ = function(){};
+    initializeTheForm_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, PostTo_, createADiv_, createTheForm_);
+    return Current_.initialize(ParentContainerId_, PostTo_, SubjectId_, createADiv_,
+                               createTheForm_, initializeTheForm_);
   }; 
   
   
@@ -63,18 +67,38 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   });
   
   
-  
   it('should create the form.', function() {
     var methodWasCalled = false;
     
-    createTheForm_ = function(postTo){
-      methodWasCalled = postTo === PostTo_;
+    createTheForm_ = function(postTo, subjectId){
+      methodWasCalled = postTo === PostTo_ &&
+        subjectId === SubjectId_;
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
+  
+  
+  // it('should initialize the form.', function() {
+  //   var methodWasCalled = false;
+  //   var createdForm = {};
+    
+  //   createTheForm_ = function(){
+  //     return createdForm;
+  //   };
+    
+    
+  //   initializeTheForm_ = function(form, onSubmit){
+  //     methodWasCalled = form === createdForm &&
+  //       onSubmit === onSubmit_;
+  //   };
+    
+  //   callTheMethod_();
+    
+  //   expect(methodWasCalled).toBe(true);
+  // });
   
   
   it('should return the parent container.', function() {

@@ -17,12 +17,14 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   
   
   //Fields
-   
+  
   var PostTo_ = goog.string.getRandomString();
-
+  var SubjectId_ = goog.string.getRandomString();
+  
   var appendChild_;
   var createAButton_;
   var createAForm_;
+  var createAHidden_;
   var createATextbox_;
   var form_;
   
@@ -31,20 +33,20 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   
   beforeEach(function() {
     form_ = {};
-
+    
     appendChild_ = function(){};
     createAButton_ = function() {};
     createAForm_ = function() { return form_; };
+    createAHidden_ = function(){};
     createATextbox_ = function() {};
-    
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.create(PostTo_, createAForm_, createATextbox_, createAButton_,
-                           appendChild_);
+    return Current_.create(PostTo_, SubjectId_, createAForm_, createATextbox_, createAHidden_,
+                           createAButton_, appendChild_);
   };
   
   
@@ -83,6 +85,23 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
 
+
+  it('should create the id holder.', function() {
+    var methodWasCalled = false;
+    
+    createAHidden_ = function(attributes){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.EntryHiddenId !== undefined &&
+         attributes[ControlConstant_.Id] === Constant_.EntryHiddenId &&
+         attributes[ControlConstant_.Name] === Constant_.EntryHiddenId);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should create the submit button.', function() {
     var methodWasCalled = false;
     createAButton_ = function(attributes, text){
@@ -99,16 +118,15 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-
   
-  it('should append the text enrty to the form.', function() {
+  
+  it('should append the text entry to the form.', function() {
     var methodWasCalled = false;
     var textEntry = {};
     
     createATextbox_ = function(){
       return textEntry;
     };
-    
     
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
@@ -119,8 +137,29 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
+  
 
+  
+  it('should append the id holder to the form.', function() {
+    var methodWasCalled = false;
+    var idHolder = {};
 
+    createAHidden_ = function(){
+      return idHolder;
+    };
+     
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === form_ && child === idHolder);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  
   
   it('should append the submit button to the form.', function() {
     var methodWasCalled = false;
