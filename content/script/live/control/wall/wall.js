@@ -8,8 +8,11 @@ goog.provide('src.base.control.wall');
 
 /**
  @param {string} containerId The id for the overall container.
+ @param {string} postTo The url the form will post to.
  @param {?function} createADiv The method used  to create a 
  div element.
+ @param {?function} createTheForm The function used to create
+ the inner form.
  @return {Object} The created control.
  @export
  */

@@ -17,7 +17,6 @@ src.test.control.wall.form.whenCreatingTheSubmitResultHandler.describe = functio
   
   //Fields
   
-  var form_;
   var onSubmit_;
   var result_;
   var setValue_;
@@ -28,9 +27,9 @@ src.test.control.wall.form.whenCreatingTheSubmitResultHandler.describe = functio
   
   beforeEach(function() {
     result_ = {};
-    
-    form_ = {};
     textEntry_ = {};
+    
+    onSubmit_ = function() {};
     setValue_ = function() {};
   });
   
@@ -38,7 +37,7 @@ src.test.control.wall.form.whenCreatingTheSubmitResultHandler.describe = functio
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createTheSubmitResultHandler(form_, textEntry_, onSubmit_, setValue_)(result_);
+    return Current_.createTheSubmitResultHandler(textEntry_, onSubmit_, setValue_)(result_);
   };
   
   
@@ -56,6 +55,30 @@ src.test.control.wall.form.whenCreatingTheSubmitResultHandler.describe = functio
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
+  });
+   
+  
+  it('should call the on submit function with the result.', function() {
+    var methodWasCalled = false;
+    
+    onSubmit_ = function(result){
+      methodWasCalled = result === result_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not call a null on submit funtion.', function() {
+    var noError = true;
+    
+    onSubmit_ = null;
+    
+    callTheMethod_();
+    
+    expect(noError).toBe(true);
   });
   
 };
