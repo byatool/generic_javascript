@@ -59,6 +59,18 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
   });
   
   
+  
+  it('should update the sort parameter to ascending if the property is alread set.', function() {
+    var methodWasCalled = false;
+    
+    options_[Constant_.Parameters][Constant_.SortColumn] = PropertyName_;
+    options_[Constant_.Parameters][Constant_.Descending] = true;
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should refresh the grid.', function() {
     var methodWasCalled = false;
     
