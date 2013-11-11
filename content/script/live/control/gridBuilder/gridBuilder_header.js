@@ -5,6 +5,28 @@ goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.gridBuilder.header');
 
+/**
+
+ @param {Object} options The parent grid options.
+ @param {Object} grid The parent grid.
+ @param {string} propertyName The name of the property to sort
+ by when the header is clicked.
+ @param {function} refresh The function to refresh the grid.
+ @protected
+ */
+src.base.control.gridBuilder.header.createHeaderSortHandler =
+  function(options, grid, propertyName, refresh) {
+    return function() {
+      var Constant_ = src.base.control.gridBuilder.constant;
+      
+      options[Constant_.Parameters][Constant_.SortColumn] = propertyName;
+      options[Constant_.Parameters][Constant_.Descending] = true;
+      
+      refresh(options,
+              grid);
+    };
+  };
+
 
 /**
  @param {Object} currentMapping The column information map.
@@ -47,6 +69,10 @@ src.base.control.gridBuilder.header.createHeaderColumn =
  columns.
  @param {function} createHeaderColumn The function used to create each
  header column.
+ @param {?function} createHeaderSortHandler The function used to handle
+ a header column click.
+ @param {?function} setClick The function used to set the click handler
+ for a header column click.
  @param {?function} createAClearDiv The function used to create the end
  clear div.
  @param {?function} appendChild The function used to add an element to a
@@ -56,6 +82,7 @@ src.base.control.gridBuilder.header.createHeaderColumn =
 src.base.control.gridBuilder.header.createTheHeaderRow =
   function(options, parentContainer, getElementByClass,
            createADiv, forEach, createHeaderColumn,
+           createHeaderSortHandler, setClick,
            createAClearDiv, appendChild) {
     
     getElementByClass = getElementByClass ? 
@@ -73,6 +100,14 @@ src.base.control.gridBuilder.header.createTheHeaderRow =
     createHeaderColumn = createHeaderColumn ? 
       createHeaderColumn : 
       src.base.control.gridBuilder.header.createHeaderColumn;
+    
+    createHeaderSortHandler = createHeaderSortHandler ? 
+      createHeaderSortHandler : 
+      src.base.control.gridBuilder.header.createHeaderSortHandler;
+    
+    setClick = setClick ? 
+      setClick : 
+      src.base.helper.events.setClick;
     
     createAClearDiv = createAClearDiv ?
       createAClearDiv :
@@ -102,6 +137,14 @@ src.base.control.gridBuilder.header.createTheHeaderRow =
           var headerColumn = createHeaderColumn(currentMapping,
                                                 createADiv,
                                                 goog.dom.setTextContent);
+          
+          var sortHandler = createHeaderSortHandler(options,
+                                                    parentContainer,
+                                                    currentMapping[Constant_.PropertyName],
+                                                    src.base.control.gridBuilder.refresh);
+          
+          setClick(headerColumn, sortHandler);
+          
           
           appendChild(headerRow,
                       headerColumn);

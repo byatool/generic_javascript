@@ -39,6 +39,14 @@ src.base.control.gridBuilder.constant.CreateARow = 'createARow';
  @const
  @type {string}
  @protected
+ */
+src.base.control.gridBuilder.constant.Descending = 'descending';
+
+
+/**
+ @const
+ @type {string}
+ @protected
 */
 src.base.control.gridBuilder.constant.HeaderClass = 'gridBuilderHeaderClass';
 
@@ -107,6 +115,12 @@ src.base.control.gridBuilder.constant.RowClass = 'gridBuilderRowClass';
 src.base.control.gridBuilder.constant.RowContainerClass = 'gridBuilderRowContainer';
 
 
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.gridBuilder.constant.SortColumn = 'sortBy';
 
 
 
@@ -166,127 +180,3 @@ src.base.control.gridBuilder.constant.ShowHeader = 'showHeader';
  @export
  */
 src.base.control.gridBuilder.constant.Url = 'url';
-
-
-
-
-
-
-
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.CreateARow = 'createARow';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.DisabledPagerClass = 'gridBuilderDisabledPagerClass';
-
-
-
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.HeaderClass = 'gridBuilderHeaderClass';
-
-
-
-
-
-
-
-
-
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.PagerClass = 'gridBuilderPagerClass';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.NextButton = 'next';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.Parameters = 'parameters';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.ParametersPageAttribute = 'page';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.PreviousButton = 'previous';
-
-
-
-
-
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.ResultNextPage = 'NextPage';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.ResultPreviousPage = 'PreviousPage';
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.ResultTotalCountOfPages = 'TotalCountOfPages';
-
-
-
-
-// /**
-//  @const
-//  @type {string}
-//  @export
-//  */
-// src.base.control.gridBuilder.Url = 'url';
-
-

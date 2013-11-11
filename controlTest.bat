@@ -1,4 +1,5 @@
 python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
+--jvm_flags="-d32" ^
 --root="c:/lib/closure/closure-library/" ^
 --root="content/script/live/" ^
 --root="content/script/test/control/" ^
@@ -67,6 +68,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.gridBuilder.whenRefreshingTheGrid" ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingAHeaderColumn" ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingTheHeaderRow" ^
+--namespace="src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingAColumnFromRowMap" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingARow" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingRows" ^
