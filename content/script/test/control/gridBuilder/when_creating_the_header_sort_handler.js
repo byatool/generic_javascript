@@ -53,19 +53,37 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
       Constant_.SortColumn !== undefined &&
       Constant_.Descending !== undefined &&
       options_[Constant_.Parameters][Constant_.SortColumn] === PropertyName_ &&
+      options_[Constant_.Parameters][Constant_.Descending] === false;
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should update toggle to ascending if the property is alread set.', function() {
+    var methodWasCalled = false;
+    
+    options_[Constant_.Parameters][Constant_.SortColumn] = PropertyName_;
+    options_[Constant_.Parameters][Constant_.Descending] = false;
+    
+    callTheMethod_();
+    
+    methodWasCalled = options_[Constant_.Parameters][Constant_.SortColumn] === PropertyName_ &&
       options_[Constant_.Parameters][Constant_.Descending] === true;
     
     expect(methodWasCalled).toBe(true);
   });
   
   
-  
-  it('should update the sort parameter to ascending if the property is alread set.', function() {
+  it('should update toggle to descending if the property is alread set.', function() {
     var methodWasCalled = false;
     
     options_[Constant_.Parameters][Constant_.SortColumn] = PropertyName_;
     options_[Constant_.Parameters][Constant_.Descending] = true;
+    
     callTheMethod_();
+    
+    methodWasCalled = options_[Constant_.Parameters][Constant_.SortColumn] === PropertyName_ &&
+      options_[Constant_.Parameters][Constant_.Descending] === false;
     
     expect(methodWasCalled).toBe(true);
   });
@@ -78,7 +96,6 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
       methodWasCalled = options === options_ &&
         grid === grid_;
     };
-
      
     callTheMethod_();
     

@@ -18,9 +18,17 @@ src.base.control.gridBuilder.header.createHeaderSortHandler =
   function(options, grid, propertyName, refresh) {
     return function() {
       var Constant_ = src.base.control.gridBuilder.constant;
-      
-      options[Constant_.Parameters][Constant_.SortColumn] = propertyName;
-      options[Constant_.Parameters][Constant_.Descending] = true;
+
+      if(options[Constant_.Parameters][Constant_.SortColumn] === propertyName){
+        
+        options[Constant_.Parameters][Constant_.Descending] =
+          !options[Constant_.Parameters][Constant_.Descending];
+        
+      } else {
+        
+        options[Constant_.Parameters][Constant_.SortColumn] = propertyName;
+        options[Constant_.Parameters][Constant_.Descending] = false;
+      }
       
       refresh(options,
               grid);
