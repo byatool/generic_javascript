@@ -20,7 +20,8 @@ src.test.control.gridBuilder.header.whenCreatingAHeaderColumn.describe = functio
   
   //Fields
   
-  var ExtraClass_ = goog.string.getRandomString(); 
+  var ExtraClass_ = goog.string.getRandomString();
+  var PropertyName_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
   
   var  createADiv_;
@@ -33,6 +34,7 @@ src.test.control.gridBuilder.header.whenCreatingAHeaderColumn.describe = functio
     currentMapping_ = {};
     currentMapping_[ControlConstant_.Class] = ExtraClass_;
     currentMapping_[Constant_.HeaderText] = Text_;
+    currentMapping_[Constant_.PropertyName] = PropertyName_;
     
     createADiv_ = function(){};
     setTextContent_ = function(){};
@@ -53,9 +55,10 @@ src.test.control.gridBuilder.header.whenCreatingAHeaderColumn.describe = functio
     createADiv_ = function(attributes){
       methodWasCalled = methodWasCalled ||
         (Constant_.ColumnClass !== undefined &&
-         attributes[ControlConstant_.Class] === Constant_.HeaderClass + ' ' + ExtraClass_);
+         attributes[ControlConstant_.Class] === Constant_.HeaderClass + ' ' + ExtraClass_ &&
+         attributes[ControlConstant_.Id] === currentMapping_[Constant_.PropertyName]);
     };
-    
+      
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);

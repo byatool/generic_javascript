@@ -20,10 +20,10 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderRow.describe = function
   
   
   //Fields
-
+  
   var HeaderParameter = goog.string.getRandomString();
   var PropertyName_ = goog.string.getRandomString();
-   
+  
   var appendChild_;
   var createAClearDiv_;
   var createADiv_;
@@ -175,12 +175,21 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderRow.describe = function
   
   it('should create the sort handler for the row.', function() {
     var methodWasCalled = false;
+    var headerColumn = {};
     
-    createHeaderSortHandler_ = function(options, grid, propertyName, refresh){
+    createHeaderColumn_ = function(){
+      return headerColumn;
+    };
+    
+    createHeaderSortHandler_ = function(options, grid, column, propertyName,
+                                        refresh, updateSortClass){
+      
       methodWasCalled = options === options_ &&
         grid === parentContainer_ &&
+        column === headerColumn &&
         propertyName === PropertyName_ &&
-        refresh === src.base.control.gridBuilder.refresh;
+        refresh === src.base.control.gridBuilder.refresh &&
+        updateSortClass === src.base.control.gridBuilder.header.updateSortClass;
     };
     
     forEach_ = function(theList, toDo){
@@ -191,7 +200,7 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderRow.describe = function
     
     expect(methodWasCalled).toBe(true);
   });
-
+  
   
   it('should set the click handler for the column.', function() {
     var methodWasCalled = false;
@@ -202,7 +211,7 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderRow.describe = function
       return headerColumn;
     };
     
-    createHeaderSortHandler_ = function(options, grid, propertyName, refresh){
+    createHeaderSortHandler_ = function(){
       return sortHandler;
     };
     

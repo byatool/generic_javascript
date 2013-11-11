@@ -69,6 +69,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingAHeaderColumn" ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingTheHeaderRow" ^
 --namespace="src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler" ^
+--namespace="src.test.control.gridBuilder.header.whenUpdatingAColumnHeaderSortClass" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingAColumnFromRowMap" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingARow" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingRows" ^

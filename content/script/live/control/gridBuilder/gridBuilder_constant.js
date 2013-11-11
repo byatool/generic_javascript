@@ -8,6 +8,14 @@ goog.provide('src.base.control.gridBuilder.constant');
  @type {string}
  @protected
  */
+src.base.control.gridBuilder.constant.Ascending = 'ascending';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.gridBuilder.constant.ButtonRowClass = 'gridBuilderButtonRowClass';
 
 

@@ -1,6 +1,8 @@
+goog.require('goog.array');
+goog.require('goog.dom.classes');
 goog.require('goog.string');
-goog.require('src.base.control.gridBuilder.header');
 goog.require('src.base.control.gridBuilder.constant');
+goog.require('src.base.control.gridBuilder.header');
 
 goog.provide('src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler');
 
@@ -18,19 +20,24 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
   //Fields
   
   var PropertyName_ = goog.string.getRandomString();
-
+  
+  var column_;
   var grid_;
   var options_;
   var refresh_;
+  var updateSortClass_;
   
   
   //Test Hooks
   
   beforeEach(function() {
+    column_ = {};
     grid_ = {};
     
     options_ = {};
     options_[Constant_.Parameters] = {};
+    
+    updateSortClass_ = function() {};
     refresh_ = function(){};
   });
   
@@ -38,7 +45,8 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createHeaderSortHandler(options_, grid_, PropertyName_, refresh_)();
+    return Current_.createHeaderSortHandler(options_, grid_, column_, PropertyName_, refresh_,
+                                            updateSortClass_)();
   };
   
   
@@ -89,6 +97,27 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
   });
   
   
+  it('should update the sort class of the column.', function() {
+    var methodWasCalled = false;
+    
+    updateSortClass_ = function(column, grid, has, swap, add,
+                                findNodes, forEach,remove){
+      methodWasCalled = column === column_ &&
+        grid === grid_ &&
+        has === goog.dom.classes.has &&
+        swap == goog.dom.classes.swap &&
+        add === goog.dom.classes.add &&
+        findNodes === goog.dom.findNodes &&
+        forEach === goog.array.forEach &&
+        remove === goog.dom.classes.remove;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should refresh the grid.', function() {
     var methodWasCalled = false;
     
@@ -96,7 +125,7 @@ src.test.control.gridBuilder.header.whenCreatingTheHeaderSortHandler.describe = 
       methodWasCalled = options === options_ &&
         grid === grid_;
     };
-     
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
