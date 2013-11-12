@@ -119,7 +119,7 @@ src.test.control.gridBuilder.header.whenUpdatingAColumnHeaderSortClass.describe 
   it('should find all other header columns.', function() {
     var methodWasCalled = 0;
     var otherColumn = {};
-    // otherColumn[ControlConstant_.Id] = column_[ControlConstant_.Id] + 'da';
+    
     otherColumn[ControlConstant_.Class] = Constant_.HeaderClass;
     
     has_ = function(element, cssClass){

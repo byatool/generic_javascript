@@ -8,10 +8,32 @@ goog.require('goog.events');
 goog.require('goog.json');
 goog.require('goog.net.XhrIo');
 goog.require('goog.structs');
+goog.require('src.base.control.controlConstant');
 goog.require('src.base.helper.googleWrapper');
 
 goog.provide('src.base.helper.domHelper');
-//return function() { window.location = url;};
+
+
+/**
+ @param {Object} element The created element.
+ @param {Object} options The created element options.
+ @return {Object} The control and options in the general
+ container form.
+ @protected
+ */
+src.base.helper.domHelper.createControlResult =
+  function(element, options) {
+    
+    var ControlConstant_ = src.base.control.controlConstant;
+    
+    var result = {};
+    
+    result[ControlConstant_.CreatedControl] = element;
+    result[ControlConstant_.CreatedOptions] = options;
+    
+    return result;
+  };
+
 
 /**
  @param {Object} button The button to update.

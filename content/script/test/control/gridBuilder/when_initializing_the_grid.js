@@ -28,6 +28,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   
   var appendChild_;
   var createADiv_;
+  var createControlResult_;
   var createGridRefresh_;
   var createResultHandler_;
   var parentContainer_;
@@ -47,6 +48,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     
     appendChild_ = function() {};
     createADiv_ = function() { return parentContainer_; };
+    createControlResult_ = function(){};
     createGridRefresh_ = function(){};
     createResultHandler_ = function() {};
     setTextContent_ = function() {};
@@ -59,7 +61,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   var callTheMethod_ = function() {
     return Current_.initialize(options_, createADiv_, createResultHandler_,
                                appendChild_, setTextContent_, submitToUrl_,
-                               createGridRefresh_);
+                               createGridRefresh_, createControlResult_);
   };
   
   
@@ -79,13 +81,7 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     
     expect(methodWasCalled).toBe(true);
   });
-  
-  
-  it('should return the container div.', function() {
-    expect(callTheMethod_()).toBe(parentContainer_);
-  });
-  
-  
+
   
   it('should create the grid refresh.', function() {
     var methodWasCalled = false;
@@ -155,6 +151,31 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
+  });
+  
+   
+  it('should create the control result.', function() {
+    var methodWasCalled = false;
+    
+    createControlResult_ = function(element, options){
+      methodWasCalled = element === parentContainer_ &&
+        options === options_;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+  
+  it('should return the result.', function() {
+    var result = {};
+    
+    createControlResult_ = function(){
+      return result;
+    };
+    
+    expect(callTheMethod_()).toBe(result);
   });
 };
 
