@@ -18,7 +18,7 @@ src.test.control.wall.whenCreatingARow.describe = function () {
   
   
   //Fields
-
+  
   var createADiv_;
   var currentItem_;
   var options_;
@@ -30,7 +30,7 @@ src.test.control.wall.whenCreatingARow.describe = function () {
   beforeEach(function() {
     currentItem_ = {};
     options_ = {};
-
+    
     createADiv_ = function(){};
     refreshGrid_ = function(){};
   });
@@ -52,13 +52,16 @@ src.test.control.wall.whenCreatingARow.describe = function () {
     createADiv_ = function(attributes){
       methodWasCalled = methodWasCalled ||
         (Constant_.WallRow !== undefined &&
-         attributes[ControlConstant_.Class] === Constant_.WallRow);
+         attributes[ControlConstant_.Class] === Constant_.WallRow &&
+         attributes[ControlConstant_.Id] === Constant_.WallRow);
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
+
+  
   
 };
 

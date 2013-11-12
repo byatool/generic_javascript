@@ -63,3 +63,11 @@ src.base.control.wall.constant.ItemsGrid = 'itemsGrid';
  @protected
  */
 src.base.control.wall.constant.SubjectId = 'subjectId';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.WallRow = 'wallRow';
