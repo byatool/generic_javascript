@@ -4,7 +4,7 @@ goog.provide('src.base.control.controlConstant');
 /**
  @const
  @type {string}
- @protected
+ @export
  */
 src.base.control.controlConstant.CreatedControl = 'createdControl';
 

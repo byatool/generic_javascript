@@ -47,3 +47,19 @@ src.base.control.wall.constant.EntryTextbox = 'entryTextBox';
  @protected
  */
 src.base.control.wall.constant.ErrorEmptyText = 'Please enter some text.';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.ItemsGrid = 'itemsGrid';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.SubjectId = 'subjectId';

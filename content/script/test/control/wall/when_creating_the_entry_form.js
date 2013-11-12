@@ -1,6 +1,7 @@
 goog.require('goog.string');
-goog.require('src.base.control.wall.form');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.wall.constant');
+goog.require('src.base.control.wall.form');
 
 goog.provide('src.test.control.wall.form.whenCreatingTheEntryForm');
 
@@ -14,6 +15,7 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   var Constant_ = src.base.control.wall.constant;
   var ControlConstant_ = src.base.control.controlConstant;
   var Current_ = src.base.control.wall.form;
+  var FormComponentConstant_ = src.base.control.formComponent.constant;
   
   
   //Fields
@@ -108,7 +110,7 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
       methodWasCalled = methodWasCalled ||
         (Constant_.EntrySubmit !== undefined &&
          Constant_.EntrySubmitText !== undefined &&
-         attributes[ControlConstant_.Class] === Constant_.EntrySubmit &&
+         attributes[ControlConstant_.Class] === FormComponentConstant_.ButtonClass &&
          attributes[ControlConstant_.Id] === Constant_.EntrySubmit &&
          attributes[ControlConstant_.Type] === ControlConstant_.Button) &&
         text === Constant_.EntrySubmitText;

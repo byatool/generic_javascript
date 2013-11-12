@@ -3,6 +3,7 @@ goog.require('goog.dom.forms');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formComponent');
 goog.require('src.base.control.formComponent.constant');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.wall.constant');
 goog.require('src.site.validation.validationInterpreter');
 goog.require('src.site.validation.validationInterpreter.constant');
@@ -88,8 +89,8 @@ src.base.control.wall.form.create =
       createAForm :
       src.base.helper.domCreation.form;
     
-    createAButton = createAButton ?
-      createAButton :
+    createATextbox = createATextbox ?
+      createATextbox :
       src.base.helper.domCreation.textbox;
     
     createAHidden = createAHidden ? 
@@ -105,11 +106,12 @@ src.base.control.wall.form.create =
       goog.dom.appendChild;
     
     /* START */
-
-
+    
+    
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    var FormComponentConstant_ = src.base.control.formComponent.constant;
+    
     var entryFormAttributes = {};
     entryFormAttributes[ControlConstant_.Id] = Constant_.EntryForm;
     entryFormAttributes[ControlConstant_.Class] = Constant_.EntryForm;
@@ -122,21 +124,22 @@ src.base.control.wall.form.create =
     entryTextBoxAttributes[ControlConstant_.Id] = Constant_.EntryTextbox;
     entryTextBoxAttributes[ControlConstant_.Name] = Constant_.EntryTextbox;
     var textEntry = createATextbox(entryTextBoxAttributes);
-
-
+    
+    
     var hiddenIdAttributes = {};
     hiddenIdAttributes[ControlConstant_.Id] = Constant_.EntryHiddenId;
     hiddenIdAttributes[ControlConstant_.Name] = Constant_.EntryHiddenId;
     var hiddenId = createAHidden(hiddenIdAttributes);
     
     var entrySubmitAttributes = {};
-    entrySubmitAttributes[ControlConstant_.Class] = Constant_.EntrySubmit;
+    entrySubmitAttributes[ControlConstant_.Class] = FormComponentConstant_.ButtonClass;
     entrySubmitAttributes[ControlConstant_.Id] = Constant_.EntrySubmit;
     entrySubmitAttributes[ControlConstant_.Type] = ControlConstant_.Button;
     var submitEntry = createAButton(entrySubmitAttributes,
                                     Constant_.EntrySubmitText);
     
-    
+    //Constant_.ButtonClass
+    //  
     
     appendChild(entryForm,
                 textEntry);
@@ -175,11 +178,11 @@ src.base.control.wall.form.initialize =
            createAValidationWrapper, createTheValidationRules,
            getElementByClass, initializeTheForm,
            createTheSubmitResultHandler) {
-
+    
     createEmptyDatePickerOptions = createEmptyDatePickerOptions ?
       createEmptyDatePickerOptions :
       src.base.control.wall.form.createEmptyDatePickerOptions;
-
+    
     createAValidationWrapper = createAValidationWrapper ?
       createAValidationWrapper :
       src.site.validation.validationInterpreter.createAValidationWrapper;
@@ -201,21 +204,21 @@ src.base.control.wall.form.initialize =
       src.base.control.wall.form.createTheSubmitResultHandler;
 
     /* START */
-
+    
     var Constant_ = src.base.control.wall.constant;
-
+    
     var validationRules = createTheValidationRules();
     var validationWrapper = createAValidationWrapper(validationRules);
-
+    
     var textEntry = getElementByClass(Constant_.EntryTextbox,
                                       form);
-
+    
     var submitResultHandler = createTheSubmitResultHandler(textEntry,
                                                            onSubmit,
                                                            goog.dom.forms.setValue);
-
+    
     var datePickerOptions = createEmptyDatePickerOptions();
-
+    
     initializeTheForm(form,
                       datePickerOptions,
                       validationWrapper,
