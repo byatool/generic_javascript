@@ -9,7 +9,7 @@ goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.wall');
 
-/**
+ /**
  @return {Object} The list with one empty mapping item.
  @protected
  */
@@ -35,6 +35,7 @@ src.base.control.wall.createTheMapping =
  items for the grid.
  @param {integer} subjectId The id for the parent subject to which
  the items are added to, and found by.
+ @param {string} editableUrl The url for posting edits to existing posts.
  @param {?function} createADiv The method used  to create a
  div element.
  @param {?function} createTheForm The function used to create
@@ -54,7 +55,7 @@ src.base.control.wall.createTheMapping =
  */
 src.base.control.wall.initialize =
   function(containerId, postTo, retrieveItemsUrl, subjectId,
-           createADiv, createTheForm, createTheGrid,
+           editableUrl, createADiv, createTheForm, createTheGrid,
            appendChild, createTheMapping, refreshGrid,
            initializeTheForm) {
     
@@ -89,6 +90,8 @@ src.base.control.wall.initialize =
     
     /* START */
     
+    
+    
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.wall;
@@ -113,6 +116,7 @@ src.base.control.wall.initialize =
     gridOptions[GridBuilderConstant_.ContainerClass] = Constant_.ItemsGrid;
     gridOptions[GridBuilderConstant_.ContainerId] = Constant_.ItemsGrid;
     gridOptions[GridBuilderConstant_.CreateARow] = src.base.control.wall.row.createARow;
+    gridOptions[Constant_.EditableUrl] = editableUrl;
     gridOptions[GridBuilderConstant_.Map] = mapping;
     gridOptions[GridBuilderConstant_.Parameters] = parameters;
     gridOptions[GridBuilderConstant_.ShowHeader] = false;

@@ -22,6 +22,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
+  var EditableUrl_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
   var ParentContainerId_ = goog.string.getRandomString();
   var PostTo_ = goog.string.getRandomString();
@@ -61,7 +62,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     createTheGrid_ = function(){
       return gridResult_;
     };
-
+    
     createTheMapping_ = function(){};
     initializeTheForm_ = function(){};
     refreshGrid_ = function(){};
@@ -72,7 +73,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   
   var callTheMethod_ = function() {
     return Current_.initialize(ParentContainerId_, PostTo_, RetrieveItemsUrl_, SubjectId_,
-                               createADiv_, createTheForm_, createTheGrid_, appendChild_,
+                               EditableUrl_, createADiv_, createTheForm_, createTheGrid_, appendChild_,
                                createTheMapping_, refreshGrid_, initializeTheForm_);
   }; 
   
@@ -124,11 +125,13 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
         options[GridBuilderConstant_.ContainerClass] === Constant_.ItemsGrid &&
         options[GridBuilderConstant_.ContainerId] === Constant_.ItemsGrid &&
         options[GridBuilderConstant_.CreateARow] === src.base.control.wall.row.createARow &&
+        options[Constant_.EditableUrl] === EditableUrl_ &&
         options[GridBuilderConstant_.Map] === mapping &&
         options[GridBuilderConstant_.Parameters][Constant_.SubjectId] === SubjectId_ &&
         options[GridBuilderConstant_.Parameters][ControlConstant_.Page] === 0 &&
         options[GridBuilderConstant_.Url] === RetrieveItemsUrl_ &&
         options[GridBuilderConstant_.ShowHeader] === false;
+      
       
       return gridResult_;
     };
@@ -138,8 +141,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
-  
-  
+   
   it('should initialize the form.', function() {
     var methodWasCalled = 0;
     
@@ -153,8 +155,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
       methodWasCalled += form === form_;
       onSubmit();
     };
-    
-    
+     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(2);
@@ -188,25 +189,6 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-  
-  // it('should initialize the form.', function() {
-  //   var methodWasCalled = false;
-  //   var createdForm = {};
-  
-  //   createTheForm_ = function(){
-  //     return createdForm;
-  //   };
-  
-  
-  //   initializeTheForm_ = function(form, onSubmit){
-  //     methodWasCalled = form === createdForm &&
-  //       onSubmit === onSubmit_;
-  //   };
-  
-  //   callTheMethod_();
-  
-  //   expect(methodWasCalled).toBe(true);
-  // });
   
   
   it('should return the parent container.', function() {

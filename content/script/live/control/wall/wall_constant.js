@@ -6,6 +6,14 @@ goog.provide('src.base.control.wall.constant');
  @type {string}
  @protected
  */
+src.base.control.wall.constant.EditableUrl = 'editableUrl';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.wall.constant.EntryForm = 'entryForm';
 
 
@@ -63,6 +71,14 @@ src.base.control.wall.constant.ErrorEmptyText = 'Please enter some text.';
  @protected
  */
 src.base.control.wall.constant.FieldDate = 'Date';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.FieldId = 'Id';
 
 
 /**
