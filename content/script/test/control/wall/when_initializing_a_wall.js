@@ -2,6 +2,7 @@ goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.wall');
 goog.require('src.base.control.wall.constant');
+goog.require('src.base.control.wall.row');
 
 goog.provide('src.test.control.wall.whenInitializingAWall');
 
@@ -122,7 +123,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
         Constant_.SubjectId !== undefined &&
         options[GridBuilderConstant_.ContainerClass] === Constant_.ItemsGrid &&
         options[GridBuilderConstant_.ContainerId] === Constant_.ItemsGrid &&
-        options[GridBuilderConstant_.CreateARow] === src.base.control.wall.createARow &&
+        options[GridBuilderConstant_.CreateARow] === src.base.control.wall.row.createARow &&
         options[GridBuilderConstant_.Map] === mapping &&
         options[GridBuilderConstant_.Parameters][Constant_.SubjectId] === SubjectId_ &&
         options[GridBuilderConstant_.Parameters][ControlConstant_.Page] === 0 &&

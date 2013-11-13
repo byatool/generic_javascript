@@ -2,19 +2,20 @@ goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder.constant');
 goog.require('src.base.control.wall.constant');
+goog.require('src.base.control.wall.row');
 
-goog.provide('src.test.control.wall.whenCreatingARow');
+goog.provide('src.test.control.wall.row.whenCreatingARow');
 
 /**
  @export
  */
-src.test.control.wall.whenCreatingARow.describe = function () {
+src.test.control.wall.row.whenCreatingARow.describe = function () {
   
   //Using
   
   var Constant_ = src.base.control.wall.constant;
   var ControlConstant_ = src.base.control.controlConstant;
-  var Current_ = src.base.control.wall;
+  var Current_ = src.base.control.wall.row;
   var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
   
   //Fields
@@ -188,7 +189,7 @@ src.test.control.wall.whenCreatingARow.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
-   
+  
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);
   });
@@ -199,7 +200,7 @@ src.test.control.wall.whenCreatingARow.describe = function () {
 
 
 describe('When creating a row, it', function() {
-  src.test.control.wall.whenCreatingARow.describe();
+  src.test.control.wall.row.whenCreatingARow.describe();
 });
 
 

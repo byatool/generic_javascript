@@ -104,7 +104,6 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.tagContainer.whenCreatingATag" ^
 --namespace="src.test.control.tagContainer.whenCreatingTags" ^
 --namespace="src.test.control.tagContainer.whenInitializingATagContainer" ^
---namespace="src.test.control.wall.whenCreatingARow" ^
 --namespace="src.test.control.wall.whenCreatingTheMapping" ^
 --namespace="src.test.control.wall.whenInitializingAWall" ^
 --namespace="src.test.control.wall.form.whenCreatingEmptyDatePickerOptions" ^
@@ -112,6 +111,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.wall.form.whenCreatingTheSubmitResultHandler" ^
 --namespace="src.test.control.wall.form.whenCreatingTheValidationRules" ^
 --namespace="src.test.control.wall.form.whenInitializingTheForm" ^
+--namespace="src.test.control.wall.row.whenCreatingARow" ^
 --namespace="src.test.control.zippyContainer.whenInitializingAZippyContainer" ^
 --namespace="src.test.control.zippyGrid.whenInitializingTheZippyGrid" ^
 --output_mode=compiled ^

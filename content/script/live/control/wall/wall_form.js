@@ -241,8 +241,3 @@ src.base.control.wall.form.initialize =
                       null,
                       submitResultHandler);
   };
-
-
-
-
-
