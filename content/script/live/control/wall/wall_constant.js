@@ -14,7 +14,7 @@ src.base.control.wall.constant.EntryForm = 'entryForm';
  @type {string}
  @protected
  */
-src.base.control.wall.constant.EntryHiddenId = 'entryId';
+src.base.control.wall.constant.EntryHiddenId = 'subjectId';
 
 
 /**
@@ -38,7 +38,15 @@ src.base.control.wall.constant.EntrySubmitText = '+';
  @type {string}
  @protected
  */
-src.base.control.wall.constant.EntryTextbox = 'entryTextBox';
+src.base.control.wall.constant.EntryTextbox = 'entryTextbox';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.EntryTextboxLabel = 'enter text';
 
 
 /**
@@ -47,6 +55,30 @@ src.base.control.wall.constant.EntryTextbox = 'entryTextBox';
  @protected
  */
 src.base.control.wall.constant.ErrorEmptyText = 'Please enter some text.';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.FieldDate = 'Date';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.FieldText = 'Text';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.FieldUsername = 'Username';
 
 
 /**
@@ -70,4 +102,12 @@ src.base.control.wall.constant.SubjectId = 'subjectId';
  @type {string}
  @protected
  */
-src.base.control.wall.constant.WallRow = 'wallRow';
+src.base.control.wall.constant.WallInformation = 'wallInformation';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.WallText = 'wallText';

@@ -27,9 +27,12 @@ src.base.helper.googleWrapper.charCounter =
  @protected
  */
 src.base.helper.googleWrapper.createALabelInput =
-  function(label, textarea) {
+  function(label, container, name) {
     var theLabelInput = new goog.ui.LabelInput(label);
-    theLabelInput.render(textarea);
+    
+    theLabelInput.render(container);
+    theLabelInput.getElement().name = name;
+    theLabelInput.getElement().id = name;
   };
 
 

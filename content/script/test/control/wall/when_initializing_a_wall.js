@@ -31,18 +31,19 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   var createADiv_;
   var createTheForm_;
   var createTheGrid_;
+  var createTheMapping_;
   var createdGrid_;
   var form_;
+  var gridOptions_;
   var gridResult_;
   var initializeTheForm_;
-  var mapping_;
   var parentContainer_;
+  var refreshGrid_;
   
   
    //Test Hooks
   
   beforeEach(function() {
-    mapping_ = {};
     parentContainer_ = {};
     
     appendChild_ = function(){};
@@ -53,13 +54,16 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     
     gridResult_ = {};
     createdGrid_ = {};
+    gridOptions_ = {};
     gridResult_[ControlConstant_.CreatedControl] = createdGrid_;
+    gridResult_[ControlConstant_.CreatedOptions] = gridOptions_;
     createTheGrid_ = function(){
       return gridResult_;
     };
-    
+
+    createTheMapping_ = function(){};
     initializeTheForm_ = function(){};
-    
+    refreshGrid_ = function(){};
   });
   
   
@@ -68,7 +72,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   var callTheMethod_ = function() {
     return Current_.initialize(ParentContainerId_, PostTo_, RetrieveItemsUrl_, SubjectId_,
                                createADiv_, createTheForm_, createTheGrid_, appendChild_,
-                               initializeTheForm_);
+                               createTheMapping_, refreshGrid_, initializeTheForm_);
   }; 
   
   
@@ -107,13 +111,19 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   
   it('should create the grid.', function() {
     var methodWasCalled = false;
+    var mapping = {};
+    
+    createTheMapping_ = function(){
+      return mapping;
+    };
     
     createTheGrid_ = function(options){
       methodWasCalled = Constant_.ItemsGrid !== undefined &&
         Constant_.SubjectId !== undefined &&
         options[GridBuilderConstant_.ContainerClass] === Constant_.ItemsGrid &&
         options[GridBuilderConstant_.ContainerId] === Constant_.ItemsGrid &&
-        options[GridBuilderConstant_.Map] === mapping_ &&
+        options[GridBuilderConstant_.CreateARow] === src.base.control.wall.createARow &&
+        options[GridBuilderConstant_.Map] === mapping &&
         options[GridBuilderConstant_.Parameters][Constant_.SubjectId] === SubjectId_ &&
         options[GridBuilderConstant_.Parameters][ControlConstant_.Page] === 0 &&
         options[GridBuilderConstant_.Url] === RetrieveItemsUrl_ &&
@@ -130,17 +140,23 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   
   
   it('should initialize the form.', function() {
-    var methodWasCalled = false;
+    var methodWasCalled = 0;
+    
+    refreshGrid_ = function(gridOptions, grid){
+      methodWasCalled += gridOptions === gridOptions_ &&
+        grid === createdGrid_;
+      
+    };
     
     initializeTheForm_ = function(form, onSubmit){
-      methodWasCalled = form === form_ &&
-        onSubmit === null;
+      methodWasCalled += form === form_;
+      onSubmit();
     };
     
     
     callTheMethod_();
     
-    expect(methodWasCalled).toBe(true);
+    expect(methodWasCalled).toBe(2);
   });
   
   

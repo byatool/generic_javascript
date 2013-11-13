@@ -5,6 +5,7 @@ goog.require('src.base.control.formComponent');
 goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.wall.constant');
+goog.require('src.base.helper.googleWrapper');
 goog.require('src.site.validation.validationInterpreter');
 goog.require('src.site.validation.validationInterpreter.constant');
 
@@ -57,7 +58,7 @@ src.base.control.wall.form.createTheValidationRules =
 
     var Constant_ = src.base.control.wall.constant;
     var ValidationInterpreterConstant_ = src.site.validation.validationInterpreter.constant;
-
+    
     return [
       [Constant_.EntryTextbox,
        [ValidationInterpreterConstant_.IsNotEmpty, Constant_.ErrorEmptyText]]];
@@ -72,8 +73,12 @@ src.base.control.wall.form.createTheValidationRules =
  container form.
  @param {?function} createATextbox The function used to add the
  comment textbox.
+ @param {?function} createALabelInput The function used to add
+ a label to the textbox.
  @param {?function} createAHidden The function used to create 
  the subjectId holder.
+ @param {?function} setValue The function used to set the
+ subject id on the form.
  @param {?function} createAButton The function used to create
  the submit button.
  @param {?function} appendChild The function used to add the
@@ -83,7 +88,8 @@ src.base.control.wall.form.createTheValidationRules =
  */
 src.base.control.wall.form.create =
   function(postTo, subjectId, createAForm, createATextbox,
-           createAHidden, createAButton, appendChild) {
+           createALabelInput, createAHidden, setValue,
+           createAButton, appendChild) {
     
     createAForm = createAForm ?
       createAForm :
@@ -93,9 +99,17 @@ src.base.control.wall.form.create =
       createATextbox :
       src.base.helper.domCreation.textbox;
     
+    createALabelInput = createALabelInput ? 
+      createALabelInput : 
+      src.base.helper.googleWrapper.createALabelInput;
+    
     createAHidden = createAHidden ? 
       createAHidden : 
       src.base.helper.domCreation.hidden;
+    
+    setValue = setValue ? 
+      setValue : 
+      goog.dom.forms.setValue;
     
     createAButton = createAButton ?
       createAButton :
@@ -118,11 +132,13 @@ src.base.control.wall.form.create =
     entryFormAttributes[ControlConstant_.Method] = ControlConstant_.Post;
     entryFormAttributes[ControlConstant_.Action] = postTo;
     var entryForm = createAForm(entryFormAttributes);
+     
     
     var entryTextBoxAttributes = {};
     entryTextBoxAttributes[ControlConstant_.Class] = Constant_.EntryTextbox;
     entryTextBoxAttributes[ControlConstant_.Id] = Constant_.EntryTextbox;
     entryTextBoxAttributes[ControlConstant_.Name] = Constant_.EntryTextbox;
+    entryTextBoxAttributes[ControlConstant_.Placeholder] = Constant_.EntryTextboxLabel;
     var textEntry = createATextbox(entryTextBoxAttributes);
     
     
@@ -130,6 +146,9 @@ src.base.control.wall.form.create =
     hiddenIdAttributes[ControlConstant_.Id] = Constant_.EntryHiddenId;
     hiddenIdAttributes[ControlConstant_.Name] = Constant_.EntryHiddenId;
     var hiddenId = createAHidden(hiddenIdAttributes);
+    setValue(hiddenId,
+             subjectId);
+    
     
     var entrySubmitAttributes = {};
     entrySubmitAttributes[ControlConstant_.Class] = FormComponentConstant_.ButtonClass;
@@ -138,15 +157,12 @@ src.base.control.wall.form.create =
     var submitEntry = createAButton(entrySubmitAttributes,
                                     Constant_.EntrySubmitText);
     
-    //Constant_.ButtonClass
-    //  
-    
     appendChild(entryForm,
                 textEntry);
     
     appendChild(entryForm,
                 hiddenId);
-                
+    
     appendChild(entryForm,
                 submitEntry);
     
@@ -202,7 +218,7 @@ src.base.control.wall.form.initialize =
     createTheSubmitResultHandler = createTheSubmitResultHandler ?
       createTheSubmitResultHandler :
       src.base.control.wall.form.createTheSubmitResultHandler;
-
+    
     /* START */
     
     var Constant_ = src.base.control.wall.constant;

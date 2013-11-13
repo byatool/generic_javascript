@@ -27,8 +27,12 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   var createAButton_;
   var createAForm_;
   var createAHidden_;
+  var createALabelInput_;
   var createATextbox_;
   var form_;
+  var setValue_;
+  var textbox_;
+  var textboxLabel_;
   
   
   //Test Hooks
@@ -40,15 +44,21 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     createAButton_ = function() {};
     createAForm_ = function() { return form_; };
     createAHidden_ = function(){};
-    createATextbox_ = function() {};
+    createATextbox_ = function() { return textbox_;};
+
+    textbox_ = {};
+    textboxLabel_ = {};
+    textboxLabel_.decorate = function() {};
+    createALabelInput_ = function(){ return textboxLabel_; };
+    setValue_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.create(PostTo_, SubjectId_, createAForm_, createATextbox_, createAHidden_,
-                           createAButton_, appendChild_);
+    return Current_.create(PostTo_, SubjectId_, createAForm_, createATextbox_, createALabelInput_,
+                           createAHidden_, setValue_, createAButton_, appendChild_);
   };
   
   
@@ -79,16 +89,17 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
         (Constant_.EntryTextbox !== undefined &&
          attributes[ControlConstant_.Class] === Constant_.EntryTextbox &&
          attributes[ControlConstant_.Id] === Constant_.EntryTextbox &&
-         attributes[ControlConstant_.Name] === Constant_.EntryTextbox);
+         attributes[ControlConstant_.Name] === Constant_.EntryTextbox &&
+         attributes[ControlConstant_.Placeholder] === Constant_.EntryTextboxLabel);
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
-
-  it('should create the id holder.', function() {
+  
+  
+  it('should create the subject id holder.', function() {
     var methodWasCalled = false;
     
     createAHidden_ = function(attributes){
@@ -97,6 +108,26 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
          attributes[ControlConstant_.Id] === Constant_.EntryHiddenId &&
          attributes[ControlConstant_.Name] === Constant_.EntryHiddenId);
     };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the value of subject id holder.', function() {
+    var methodWasCalled = false;
+    var hidden = {};
+    
+    createAHidden_ = function(){
+      return hidden;
+    };
+    
+    setValue_ = function(element, value){
+      methodWasCalled = element === hidden &&
+        value === SubjectId_;
+    };
+    
     
     callTheMethod_();
     
@@ -140,16 +171,16 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
-
+  
   
   it('should append the id holder to the form.', function() {
     var methodWasCalled = false;
     var idHolder = {};
-
+    
     createAHidden_ = function(){
       return idHolder;
     };
-     
+    
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
         (parent === form_ && child === idHolder);
