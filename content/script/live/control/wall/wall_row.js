@@ -43,7 +43,6 @@ src.base.control.wall.row.createARow =
     
     
     /* Start */
-    //EditableDiv_.initialize('theEditableDiv', 'this is the text', '1', '/editabledivresult/');"
     
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
@@ -59,13 +58,6 @@ src.base.control.wall.row.createARow =
                                           currentItem[Constant_.FieldId],
                                           options[Constant_.EditableUrl]);
     
-    // var textContainerAttributes = {};
-    // textContainerAttributes[ControlConstant_.Class] = Constant_.WallText;
-    // var textContainer = createADiv(textContainerAttributes);
-    // setTextContent(textContainer,
-    //                currentItem[Constant_.FieldText]);
-    
-    
     var infoContainerAttributes = {};
     infoContainerAttributes[ControlConstant_.Class] = Constant_.WallInformation;
     var infoContainer = createADiv(infoContainerAttributes);
@@ -75,10 +67,10 @@ src.base.control.wall.row.createARow =
                    currentItem[Constant_.FieldDate]);
     
     appendChild(containerRow,
-                textContainer);
-
-    appendChild(containerRow,
                 infoContainer);
+    
+    appendChild(containerRow,
+                textContainer);
 
     return containerRow;
 
