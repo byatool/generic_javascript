@@ -1,5 +1,20 @@
 goog.provide('src.base.control.wall.constant');
 
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.DeleteContainer = 'deleteContainer';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.DeleteContainerText = 'X';
+
 
 /**
  @const

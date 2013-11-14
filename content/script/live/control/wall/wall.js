@@ -46,7 +46,7 @@ src.base.control.wall.createTheMapping =
  to the created parent container.
  @param {?function} createTheMapping The function used to create the
  mapping shell for the grid.
- @param {?function} refreshGrid The function used to refresh the 
+ @param {?function} refreshGrid The function used to refresh the
  created grid on form submit.
  @param {?function} initializeTheForm The fuction used to set up
  the created form.
@@ -58,56 +58,56 @@ src.base.control.wall.initialize =
            editableUrl, createADiv, createTheForm, createTheGrid,
            appendChild, createTheMapping, refreshGrid,
            initializeTheForm) {
-    
+
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-    
+
     createTheForm = createTheForm ?
       createTheForm :
       src.base.control.wall.form.create;
-    
+
     createTheGrid = createTheGrid ?
       createTheGrid :
       src.base.control.gridBuilder.initialize;
-    
+
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-    
+
     createTheMapping = createTheMapping ?
       createTheMapping :
       src.base.control.wall.createTheMapping;
-    
-    refreshGrid = refreshGrid ? 
-      refreshGrid : 
+
+    refreshGrid = refreshGrid ?
+      refreshGrid :
       src.base.control.gridBuilder.refresh;
-    
+
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.wall.form.initialize;
-    
-    
+
+
     /* START */
-    
-    
-    
+
+
+
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.wall;
     var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
-    
+
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-    
-    
+
+
     //Form
     var entryForm = createTheForm(postTo,
                                   subjectId);
      //Grid
-    
+
     var gridOptions = {};
     var parameters = {};
     var mapping = createTheMapping();
@@ -121,20 +121,20 @@ src.base.control.wall.initialize =
     gridOptions[GridBuilderConstant_.Parameters] = parameters;
     gridOptions[GridBuilderConstant_.ShowHeader] = false;
     gridOptions[GridBuilderConstant_.Url] = retrieveItemsUrl;
-    
+
     var gridResult = createTheGrid(gridOptions);
-    
+
     appendChild(container,
                 entryForm);
-    
+
     appendChild(container,
                 gridResult[ControlConstant_.CreatedControl]);
-    
+
     initializeTheForm(entryForm,
                       function() {
                         refreshGrid(gridResult[ControlConstant_.CreatedOptions],
                                     gridResult[ControlConstant_.CreatedControl]);
                       });
-    
+
     return container;
   };
