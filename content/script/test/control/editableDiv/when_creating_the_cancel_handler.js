@@ -40,10 +40,9 @@ src.test.control.editableDiv.whenCreatingTheCancelHandler.describe = function ()
     return Current_.createTheCancelHandler(form_, textContainer_, showElement_,
                                            revertText_)();
   };
+
   
   //Test Methods
-  
-  
   
   it('should hide the form', function() {
     var methodWasCalled = false;
@@ -67,7 +66,7 @@ src.test.control.editableDiv.whenCreatingTheCancelHandler.describe = function ()
                            getElementByClass, setValue){
       methodWasCalled = parentForm === form_ &&
         textContainer === textContainer_ &&
-        getTextContent === goog.dom.getTextContent &&
+        getTextContent === goog.dom.getRawTextContent &&
         getElementByClass === goog.dom.getElementByClass &&
         setValue === goog.dom.forms.setValue;
     };

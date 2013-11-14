@@ -30,6 +30,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   
   var appendChild_;
   var createADiv_;
+  var createAPre_;
   var createFormResult_;
   var createTheForm_;
   var createTheCancelHandler_;
@@ -57,23 +58,12 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
     
     parentContainer_ = {};
     textContainer_ = {};
+     
+    createADiv_ = function(attributes){ return parentContainer_; };
+    
+    createAPre_ = function(){ return textContainer_; };
     
     appendChild_ = function(){};
-    
-    createADiv_ = function(attributes){
-      switch(attributes[ControlConstant_.Class]) {
-      case ParentContainerId_:
-        return parentContainer_;
-        break;
-        
-      case Constant_.TextContainer:
-        return textContainer_;
-        break;
-        
-      default:
-        return parentContainer_;                      
-      }};
-    
     createTheCancelHandler_ = function(){};
     createTheForm_ = function(){ return createFormResult_; };
     createTheSubmitResultHandler_ = function(){};
@@ -92,11 +82,11 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, Text_, Id_, PersistUrl_, createADiv_, setTextContent_,
-                               createTheForm_, showElement_, appendChild_, createTheTextContainerClick_,
-                               setClick_, setCancelHandler_, createTheCancelHandler_,
-                               createTheSubmitResultHandler_, createTheValidationRules_,
-                               createAValidationWrapper_, initializeTheForm_);
+    return Current_.initialize(ParentContainerId_, Text_, Id_, PersistUrl_, createADiv_, createAPre_,
+                               setTextContent_, createTheForm_, showElement_, appendChild_,
+                               createTheTextContainerClick_, setClick_, setCancelHandler_,
+                               createTheCancelHandler_, createTheSubmitResultHandler_,
+                               createTheValidationRules_, createAValidationWrapper_, initializeTheForm_);
   };
   
   
@@ -121,7 +111,7 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   it('should create the text holder.', function() {
     var methodWasCalled = false;
     
-    createADiv_ = function(attributes){
+    createAPre_ = function(attributes){
       methodWasCalled = methodWasCalled ||
         (Constant_.TextContainer !== undefined &&
          attributes[ControlConstant_.Class] === Constant_.TextContainer);

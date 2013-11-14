@@ -130,6 +130,18 @@ src.base.helper.domCreation.pre =
 
 
 /**
+ @param {?function} createDom The function used to create the
+ span.
+ @return {Object} The pre element.
+ @export
+ */
+src.base.helper.domCreation.preContainer =
+  function(attributes) {
+    return goog.dom.createDom('pre', attributes);
+  };
+
+
+/**
  @param {Object} attributes The html attributes
  for the parent form.
  @param {Array=} data The data needed to create the items.
