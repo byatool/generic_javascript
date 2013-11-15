@@ -23,6 +23,7 @@ src.test.control.wall.row.whenCreatingTheRowInformationContainer.describe = func
   var Username_ = goog.string.getRandomString();
   
   var appendChild_;
+  var createClearDiv_;
   var createADiv_;
   var createDeleteContainer_;
   var currentItem_;
@@ -57,8 +58,9 @@ src.test.control.wall.row.whenCreatingTheRowInformationContainer.describe = func
       default:
         return wallInformationContainer_;                      
       }};
-
+    
     appendChild_ = function(){};
+    createClearDiv_ = function(){};
     createDeleteContainer_ = function() {};
     refreshGrid_ = function() {};
     setTextContent_ = function() {};
@@ -69,7 +71,7 @@ src.test.control.wall.row.whenCreatingTheRowInformationContainer.describe = func
   
   var callTheMethod_ = function() {
     return Current_.createRowInformationContainer(options_, currentItem_, refreshGrid_, createDeleteContainer_,
-                                                  createADiv_, setTextContent_, appendChild_);
+                                                  createADiv_, setTextContent_, createClearDiv_, appendChild_);
   };
   
   //Test Methods
@@ -157,17 +159,15 @@ src.test.control.wall.row.whenCreatingTheRowInformationContainer.describe = func
     expect(methodWasCalled).toBe(true);
   });
   
-
-  
-  
+   
   it('should append the delete container to the parent.', function() {
     var methodWasCalled = false;
     var deleteContainer = {};
-
+    
     createDeleteContainer_ = function(){
       return deleteContainer;
     };
-     
+    
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
         (parent === wallInformationContainer_ &&
@@ -178,8 +178,29 @@ src.test.control.wall.row.whenCreatingTheRowInformationContainer.describe = func
     
     expect(methodWasCalled).toBe(true);
   });
+
+  it('should append a clear div.', function() {
+    var methodWasCalled = false;
+    var clearDiv = {};
+    
+    createClearDiv_ = function() {
+      return clearDiv;
+    };
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === wallInformationContainer_
+         && child === clearDiv);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
   
   
+  
+   
   
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(wallInformationContainer_);

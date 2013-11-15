@@ -3,6 +3,7 @@ goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder.constant');
 goog.require('src.base.control.wall.constant');
 goog.require('src.base.control.wall.row');
+goog.require('src.base.helper.domCreation');
 goog.require('src.base.helper.domHelper');
 goog.require('src.base.helper.events');
 
@@ -112,13 +113,14 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
     
     createRowInformationContainer_ = function(options, currentItem, refreshGrid,
                                               createDeleteContainer, createADiv, setTextContent,
-                                              appendChild){
+                                              createClearDiv, appendChild){
       methodWasCalled = options === options_ &&
         currentItem === currentItem_ &&
         refreshGrid === refreshGrid_ &&
         createDeleteContainer === src.base.control.wall.row.createDeleteContainer &&
         createADiv === createADiv_ &&
         setTextContent === goog.dom.setTextContent &&
+        createClearDiv === src.base.helper.domCreation.createAClearDiv &&
         appendChild === appendChild_;
     };
     
@@ -181,8 +183,7 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);
   });
-  
-  
+   
 };
 
 

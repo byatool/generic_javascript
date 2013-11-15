@@ -20,13 +20,18 @@ goog.provide('src.base.control.wall.row');
  the various element containers.
  @param {?function} setTextContent The function uses to
  set the text on the text container.
+ @param {function} createClearDiv The function used to 
+ create a clear:both div.
+ @param {function} appendChild The function used to add
+ the text, and delete containers to the parent.
  @return {Object} The created row information container.
  @protected
  */
 src.base.control.wall.row.createRowInformationContainer =
   function(options, currentItem, refreshGrid,
            createDeleteContainer, createADiv,
-           setTextContent, appendChild) {
+           setTextContent, createClearDiv,
+           appendChild) {
     
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
@@ -57,6 +62,9 @@ src.base.control.wall.row.createRowInformationContainer =
     
     appendChild(infoContainer,
                 deleteContainer);
+    
+    appendChild(infoContainer,
+                createClearDiv());
     
     return infoContainer;
   };
@@ -189,6 +197,7 @@ src.base.control.wall.row.createARow =
                                                              src.base.control.wall.row.createDeleteContainer,
                                                              createADiv,
                                                              goog.dom.setTextContent,
+                                                             src.base.helper.domCreation.createAClearDiv,
                                                              appendChild);
     
     
