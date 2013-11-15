@@ -22,6 +22,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   
   var ContainerClass_ = goog.string.getRandomString();
   var ContainerId_ = goog.string.getRandomString();
+  var DeleteUrl_ = goog.string.getRandomString();
   var EditableUrl_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
   var ParentContainerId_ = goog.string.getRandomString();
@@ -72,7 +73,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, PostTo_, RetrieveItemsUrl_, SubjectId_,
+    return Current_.initialize(ParentContainerId_, PostTo_, RetrieveItemsUrl_, DeleteUrl_, SubjectId_,
                                EditableUrl_, createADiv_, createTheForm_, createTheGrid_, appendChild_,
                                createTheMapping_, refreshGrid_, initializeTheForm_);
   }; 
@@ -125,6 +126,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
         options[GridBuilderConstant_.ContainerClass] === Constant_.ItemsGrid &&
         options[GridBuilderConstant_.ContainerId] === Constant_.ItemsGrid &&
         options[GridBuilderConstant_.CreateARow] === src.base.control.wall.row.createARow &&
+        options[Constant_.DeleteUrl] === DeleteUrl_ &&
         options[Constant_.EditableUrl] === EditableUrl_ &&
         options[GridBuilderConstant_.Map] === mapping &&
         options[GridBuilderConstant_.Parameters][Constant_.SubjectId] === SubjectId_ &&

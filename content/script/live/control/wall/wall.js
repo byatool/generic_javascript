@@ -33,6 +33,7 @@ src.base.control.wall.createTheMapping =
  @param {string} postTo The url the form will post to.
  @param {string} retrieveItemsUrl The function used retrieve the
  items for the grid.
+ @param {string} deleteUrl The url used for deleting a post.
  @param {integer} subjectId The id for the parent subject to which
  the items are added to, and found by.
  @param {string} editableUrl The url for posting edits to existing posts.
@@ -54,10 +55,10 @@ src.base.control.wall.createTheMapping =
  @export
  */
 src.base.control.wall.initialize =
-  function(containerId, postTo, retrieveItemsUrl, subjectId,
-           editableUrl, createADiv, createTheForm, createTheGrid,
-           appendChild, createTheMapping, refreshGrid,
-           initializeTheForm) {
+  function(containerId, postTo, retrieveItemsUrl, deleteUrl,
+           subjectId, editableUrl, createADiv, createTheForm,
+           createTheGrid, appendChild, createTheMapping,
+           refreshGrid, initializeTheForm) {
 
     createADiv = createADiv ?
       createADiv :
@@ -91,7 +92,6 @@ src.base.control.wall.initialize =
     /* START */
 
 
-
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.wall;
@@ -116,6 +116,7 @@ src.base.control.wall.initialize =
     gridOptions[GridBuilderConstant_.ContainerClass] = Constant_.ItemsGrid;
     gridOptions[GridBuilderConstant_.ContainerId] = Constant_.ItemsGrid;
     gridOptions[GridBuilderConstant_.CreateARow] = src.base.control.wall.row.createARow;
+    gridOptions[Constant_.DeleteUrl] = deleteUrl;
     gridOptions[Constant_.EditableUrl] = editableUrl;
     gridOptions[GridBuilderConstant_.Map] = mapping;
     gridOptions[GridBuilderConstant_.Parameters] = parameters;

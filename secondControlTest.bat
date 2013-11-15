@@ -62,6 +62,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.wall.row.whenCreatingARow" ^
 --namespace="src.test.control.wall.row.whenCreatingTheDeleteContainer" ^
 --namespace="src.test.control.wall.row.whenCreatingTheDeletePostHandler" ^
+--namespace="src.test.control.wall.row.whenCreatingTheRowInformationContainer" ^
 --namespace="src.test.control.zippyContainer.whenInitializingAZippyContainer" ^
 --namespace="src.test.control.zippyGrid.whenInitializingTheZippyGrid" ^
 --output_mode=compiled ^

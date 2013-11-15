@@ -21,6 +21,14 @@ src.base.control.wall.constant.DeleteContainerText = 'X';
  @type {string}
  @protected
  */
+src.base.control.wall.constant.DeleteUrl = 'deleteUrl';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.wall.constant.EditableUrl = 'editableUrl';
 
 
@@ -134,6 +142,14 @@ src.base.control.wall.constant.SubjectId = 'subjectId';
  @protected
  */
 src.base.control.wall.constant.WallInformation = 'wallInformation';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.wall.constant.WallInformationText = 'wallInformationText';
 
 
 /**

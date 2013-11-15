@@ -2,6 +2,7 @@ goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.wall.constant');
 goog.require('src.base.control.wall.row');
+goog.require('src.base.helper.domHelper');
 
 goog.provide('src.test.control.wall.row.whenCreatingTheDeleteContainer');
 
@@ -21,44 +22,44 @@ src.test.control.wall.row.whenCreatingTheDeleteContainer.describe = function () 
   //Fields
   
   var DeleteUrl_ = goog.string.getRandomString();
+  var Id_ = goog.string.getRandomString();
   
   var createADiv_;
   var currentItem_;
   var deleteContainer_;
-  var grid_;
-  var options_;
   var refreshGrid_;
   var setClick_;
   var setTextContent_;
-  var submitToUrl_;
-  
+  var createDeletePostHandler_;
   
   
   //Test Hooks
   
   beforeEach(function() {
     currentItem_ = {};
+    currentItem_[Constant_.FieldId] = Id_;
+    
     deleteContainer_ = {};
-    grid_ = {};
-    options_ = {};
     
     createADiv_ = function() { return deleteContainer_; };
     refreshGrid_ = function() {};
     setClick_ = function(){};
     setTextContent_ = function() {};
-    submitToUrl_ = function(){};
+    createDeletePostHandler_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createDeleteContainer(options_, grid_, currentItem_, DeleteUrl_, refreshGrid_,
-                                          createADiv_, setTextContent_, submitToUrl_, setClick_);
+    return Current_.createDeleteContainer(currentItem_, DeleteUrl_, refreshGrid_,
+                                          createADiv_, setTextContent_, createDeletePostHandler_, setClick_);
     
   };
   
+  
   //Test Methods
+  
   it('should create the delete holder.', function() {
     var methodWasCalled = false;
     
@@ -90,23 +91,47 @@ src.test.control.wall.row.whenCreatingTheDeleteContainer.describe = function () 
   });
   
   
-  // it('should set the click of the delete container.', function() {
-  //   var methodWasCalled = 0;
+  it('should create the delete handler.', function() {
+    var methodWasCalled = false;
+
+    createDeletePostHandler_ = function(removeUrl, submitToUrl, refesh){
+      methodWasCalled = removeUrl === DeleteUrl_ &&
+        submitToUrl === src.base.helper.domHelper.submitToUrl &&
+        refesh === refreshGrid_;
+    };
+     
+    callTheMethod_();
     
-  //   refreshGrid_ = function(options, grid){
-  //     methodWasCalled += options === options_ &&
-  //       grid === grid_;
-  //   };
+    expect(methodWasCalled).toBe(true);
+  });
+
+  
+  it('should set the click.', function() {
+    var methodWasCalled = 0;
     
-  //   setClick_ = function(element, toCall){
-  //     methodWasCalled += element === deleteContainer_;
-  //     toCall();
-  //   };
+    var deleteHandler = function(id) {
+      methodWasCalled += id === Id_;
+    };
     
-  //   callTheMethod_();
+    createDeletePostHandler_ = function(){
+      return deleteHandler;
+    };
     
-  //   expect(methodWasCalled).toBe(true);
-  // });
+    setClick_ = function(element, toCall){
+      methodWasCalled += element === deleteContainer_;
+      
+      toCall();
+    };
+     
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(2);
+  });
+
+  
+  it('should return the container.', function() {
+    expect(callTheMethod_()).toBe(deleteContainer_);
+  });
   
 };
 

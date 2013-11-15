@@ -3,6 +3,8 @@ goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.gridBuilder.constant');
 goog.require('src.base.control.wall.constant');
 goog.require('src.base.control.wall.row');
+goog.require('src.base.helper.domHelper');
+goog.require('src.base.helper.events');
 
 goog.provide('src.test.control.wall.row.whenCreatingARow');
 
@@ -20,21 +22,22 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
   
   //Fields
   
-  var Date_ = goog.string.getRandomString();
+  var Date_ = goog.string.getRandomString();//remove
+  var DeleteUrl_ = goog.string.getRandomString();
   var EditableUrl_ = goog.string.getRandomString();
   var PostId_ = goog.string.getRandomString();
   var Text_ = goog.string.getRandomString();
-  var Username_ = goog.string.getRandomString();
+  var Username_ = goog.string.getRandomString();//remove 
   
   var appendChild_;
   var columnContainer_;
   var createADiv_;
+  var createRowInformationContainer_;
   var createEditableDiv_;
   var currentItem_;
   var options_;
   var parentContainer_;
   var refreshGrid_;
-  var setTextContent_;
   var textContainer_;
   var wallInformationContainer_;
   
@@ -43,6 +46,7 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
   beforeEach(function() {
     options_ = {};
     options_[Constant_.EditableUrl] = EditableUrl_;
+    options_[Constant_.DeleteUrl] = DeleteUrl_;
     
     currentItem_ = {};
     currentItem_[Constant_.FieldId] = PostId_;
@@ -63,9 +67,6 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
       case GridBuilderConstant_.ColumnClass:
         return columnContainer_;
         break;
-      // case Constant_.WallText:
-      //   return textContainer_;
-      //   b reak;
       case Constant_.WallInformation:
         return wallInformationContainer_;
         break;
@@ -74,9 +75,9 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
       }};
     
     appendChild_ = function(){};
-    createEditableDiv_ = function(){ return textContainer_;};
+    createRowInformationContainer_ = function(){ return wallInformationContainer_; };
+    createEditableDiv_ = function() { return textContainer_; };
     refreshGrid_ = function(){};
-    setTextContent_ = function(){};
   });
   
   
@@ -84,7 +85,8 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
   
   var callTheMethod_ = function() {
     return Current_.createARow(currentItem_, options_, refreshGrid_, createADiv_,
-                               createEditableDiv_, setTextContent_, appendChild_);
+                               createEditableDiv_, createRowInformationContainer_,
+                               appendChild_);
   };
   
   
@@ -108,28 +110,18 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
   it('should create the item information holder.', function() {
     var methodWasCalled = false;
     
-    createADiv_ = function(attributes){
-      methodWasCalled = methodWasCalled ||
-        (Constant_.WallInformation !== undefined &&
-         attributes[ControlConstant_.Class] === Constant_.WallInformation);
+    createRowInformationContainer_ = function(options, currentItem, refreshGrid,
+                                              createDeleteContainer, createADiv, setTextContent,
+                                              appendChild){
+      methodWasCalled = options === options_ &&
+        currentItem === currentItem_ &&
+        refreshGrid === refreshGrid_ &&
+        createDeleteContainer === src.base.control.wall.row.createDeleteContainer &&
+        createADiv === createADiv_ &&
+        setTextContent === goog.dom.setTextContent &&
+        appendChild === appendChild_;
     };
     
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-  
-  
-  it('should set the text of the information container.', function() {
-    var methodWasCalled = false;
-    
-    setTextContent_ = function(element, text){
-      methodWasCalled = methodWasCalled ||
-        (element === wallInformationContainer_ &&
-         Constant_.FieldDate !== undefined  &&
-         Constant_.FieldUsername !== undefined  &&
-         text === Username_ + ' on ' + Date_);
-    };
     
     callTheMethod_();
     
@@ -151,40 +143,10 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
       
     };
     
-    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-  // it('should create the text holder.', function() {
-  //   var methodWasCalled = false;
-  
-  //   createADiv_ = function(attributes){
-  //     methodWasCalled = methodWasCalled ||
-  //       (Constant_.WallText !== undefined &&
-  //        attributes[ControlConstant_.Class] === Constant_.WallText);
-  //   };
-  
-  //   callTheMethod_();
-  
-  //   expect(methodWasCalled).toBe(true);
-  // });
-  
-  
-  // it('should set the text of the text container.', function() {
-  //   var methodWasCalled = false;
-  
-  //   setTextContent_ = function(element, text){
-  //     methodWasCalled = methodWasCalled ||
-  //       (element === textContainer_ &&
-  //        Constant_.FieldText !== undefined  &&
-  //        text === Text_);
-  //   };
-  
-  //   callTheMethod_();
-  
-  //   expect(methodWasCalled).toBe(true);
-  // });
   
   
   
@@ -200,8 +162,7 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
   
   it('should append the text container to the parent.', function() {
     var methodWasCalled = false;
@@ -215,21 +176,6 @@ src.test.control.wall.row.whenCreatingARow.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-  
-
-  
-  // it('should append the text container to the row.', function() {
-  //   var methodWasCalled = false;
-    
-  //   appendChild_ = function(parent, child){
-  //     methodWasCalled = methodWasCalled || 
-  //       (parent === parentContainer_ && child === textContainer_);
-  //   };
-    
-  //   callTheMethod_();
-    
-  //   expect(methodWasCalled).toBe(true);
-  // });
   
   
   it('should return the parent container.', function() {
