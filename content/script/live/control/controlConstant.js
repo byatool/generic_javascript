@@ -95,4 +95,12 @@ src.base.control.controlConstant.Post = 'post';
  @type {string}
  @export
  */
+src.base.control.controlConstant.Text = 'text';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.controlConstant.Type = 'type';

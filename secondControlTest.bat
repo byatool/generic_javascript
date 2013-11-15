@@ -71,5 +71,5 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --compiler_flags="--externs=content/script/run/jasmine/jasmine.js" ^
 --compiler_flags="--externs=content/script/run/jasmine/jasmine-html.js" ^
 --compiler_flags="--warning_level=QUIET" ^
---compiler_flags="--generate_exports" > "content/script/run/control/control.js"
+--compiler_flags="--generate_exports" > "content/script/run/control/secondControl.js"
 rem --jvm_flags="-d32" ^

@@ -10,6 +10,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.autocomplete" ^
 --namespace="src.base.control.buttonList" ^
 --namespace="src.base.control.dropDownList" ^
+--namespace="src.base.control.formBuilder" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.gridBuilder" ^
 --namespace="src.base.control.messageBox" ^
@@ -55,6 +56,8 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.formatTextAreaDisplay.whenFormattingTheRawTextAndUpdatingTheFormatTextAreaDisplay" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenSurroundingWithColor" ^
+--namespace="src.test.control.formBuilder.whenCreatingAControl" ^
+--namespace="src.test.control.formBuilder.whenInitializingAFormBuilder" ^
 --namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^
 --namespace="src.test.control.formComponent.whenHandlingTheResult" ^
 --namespace="src.test.control.formComponent.whenInitializingTheForm" ^

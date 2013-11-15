@@ -13,6 +13,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.dropDownList" ^
 --namespace="src.base.control.editableDiv" ^
 --namespace="src.base.control.feedback.form" ^
+--namespace="src.base.control.formBuilder" ^
 --namespace="src.base.control.formatTextAreaDisplay" ^
 --namespace="src.base.control.formatTextAreaDisplay.javascript" ^
 --namespace="src.base.control.formatTextAreaDisplay.html" ^
