@@ -24,6 +24,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   
   var appendChild_;
   var controlSpecs_;
+  var createAButton_;
   var createAControl_;
   var createADiv_;
   var createAForm_;
@@ -40,6 +41,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     appendChild_ = function() {};
     createAControl_ = function() {};
+    createAButton_ = function(){};
     createADiv_ = function() { return parentContainer_; };
     createAForm_ = function() { return parentForm_; };
     forEach_ = function(){};
@@ -51,7 +53,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   
   var callTheMethod_ = function() {
     return Current_.initialize(ParentContainerId_, PostTo_, controlSpecs_, createAForm_, forEach_,
-                               createADiv_, createAControl_, appendChild_);
+                               createADiv_, createAControl_, createAButton_, appendChild_);
   };
   
   
@@ -115,17 +117,17 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     expect(methodWasCalled).toBe(2);
   });
-
-
+  
+  
   
   it('should append the created control row to the form.', function() {
     var methodWasCalled = false;
     var controlRow = {};
-
+    
     createAControl_ = function(){
       return controlRow;
     };
-
+    
     
     forEach_ = function(element, toDo){
       toDo();
@@ -140,8 +142,25 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     expect(methodWasCalled).toBe(true);
   });
-  
 
+
+  it('should create the Submit button.', function() {
+    var methodWasCalled = false;
+    
+    createAButton_ = function(attributes, text){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.FormSubmit !== undefined &&
+         attributes[ControlConstant_.Id] === Constant_.FormSubmit &&
+         attributes[ControlConstant_.Type] === ControlConstant_.Button &&
+         attributes[ControlConstant_.Class] === Constant_.FormSubmit);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   it('should append the form to the parent.', function() {
     var methodWasCalled = false;
     
@@ -154,7 +173,28 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     expect(methodWasCalled).toBe(true);
   });
+
+
   
+  it('should append the submit button to the parent.', function() {
+    var methodWasCalled = false;
+    var submitButton = {};
+
+    createAButton_ = function(){
+      return submitButton;
+    };
+     
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === parentContainer_ && child === submitButton);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+
   
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);

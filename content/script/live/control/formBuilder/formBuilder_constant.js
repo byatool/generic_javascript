@@ -30,6 +30,14 @@ src.base.control.formBuilder.constant.FormRowLabel = 'formRowLabel';
  @type {string}
  @protected
  */
+src.base.control.formBuilder.constant.FormSubmit = 'formSubmit';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.formBuilder.constant.LabelText = 'label';
 
 

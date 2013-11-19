@@ -31,3 +31,11 @@ src.site.validation.validationInterpreter.constant.IsNotEmpty = 'is not empty';
  @protected
  */
 src.site.validation.validationInterpreter.constant.IsNotEmptyOrTheDefault = 'is not empty or the default';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.site.validation.validationInterpreter.constant.Validation = 'validation';
