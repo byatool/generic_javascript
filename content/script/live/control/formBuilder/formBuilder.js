@@ -1,11 +1,62 @@
 goog.require('goog.dom');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formBuilder.constant');
+goog.require('src.base.control.formBuilder.validation');
+goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.helper.domCreation');
 
 
 goog.provide('src.base.control.formBuilder');
 
+/* PRIVATE FUNCTIONS */
+
+/**
+ @param {function} cssClass The class for the form.
+ @param {string} postTo The url to post the form to.
+ @param {string} formId The id of the form.
+ @param {function} createAForm The function used to
+ create the form.
+ @return {Object} The created form.
+ @private
+ */
+src.base.control.formBuilder.createTheForm_ =
+  function(cssClass, postTo, formId, createAForm) {
+    var Constant_ = src.base.control.formBuilder.constant;
+    var ControlConstant_ = src.base.control.controlConstant;
+    
+    var formAttributes = {};
+    formAttributes[ControlConstant_.Action] = postTo;
+    formAttributes[ControlConstant_.Class] = cssClass;
+    formAttributes[ControlConstant_.Method] = ControlConstant_.Post;
+    formAttributes[ControlConstant_.Id] = formId;
+    return createAForm(formAttributes);
+  }; 
+
+
+/**
+ buttonId
+ @param {string} buttonId The id for the button.
+ @param {string} buttonClass The class for the button.
+ @param {function} createAButton The function used to 
+ created the button.
+ @return {Object} The created button.
+ @private
+ */
+src.base.control.formBuilder.createTheButton_ =
+  function(buttonId, buttonClass, createAButton) {
+    
+    var ControlConstant_ = src.base.control.controlConstant;
+    var FormComponentConstant_ = src.base.control.formComponent.constant;
+    
+    var submitButtonAttributes = {};
+    submitButtonAttributes[ControlConstant_.Id] = buttonId;
+    submitButtonAttributes[ControlConstant_.Type] = ControlConstant_.Button;
+    submitButtonAttributes[ControlConstant_.Class] = FormComponentConstant_.ButtonClass;
+    return createAButton(submitButtonAttributes);
+  };
+
+
+/* PROTECTED FUNCTIONS */
 
 /**
  @param {Object} controlSpec The various control specifications.
@@ -24,11 +75,11 @@ goog.provide('src.base.control.formBuilder');
 src.base.control.formBuilder.createControl =
   function(controlSpec, createADiv, createALabel,
            createATextbox, appendChild, createAClearDiv) {
-
+    
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
-
+    
+    
     var formRowAttributes = {};
     formRowAttributes[ControlConstant_.Class] = Constant_.FormRowContainer;
     formRowAttributes[ControlConstant_.Id] = Constant_.FormRowContainer;
@@ -59,23 +110,24 @@ src.base.control.formBuilder.createControl =
       textboxAttributes[ControlConstant_.Id] = controlSpec[ControlConstant_.Id];
       textboxAttributes[ControlConstant_.Name] = controlSpec[ControlConstant_.Id];
       element = createATextbox(textboxAttributes);
-
+      
       break;
     }
-
+    
     appendChild(formRow,
                 formRowLabel);
-
+    
     appendChild(formRow,
                 element);
-
+    
     appendChild(formRow,
                 createAClearDiv());
-
+    
     return formRow;
   };
 
 
+/* EXPORTED FUNCTIONS */
 
 /**
  @param {string} containerId The id for the overall container.
@@ -99,7 +151,8 @@ src.base.control.formBuilder.createControl =
  */
 src.base.control.formBuilder.initialize =
   function(containerId, postTo, controlSpecs, createAForm, forEach,
-           createADiv, createControl, createAButton, appendChild) {
+           createADiv, createControl, createAButton, appendChild,
+           createValidation, initializeTheForm) {
     
     createAForm = createAForm ?
       createAForm :
@@ -125,24 +178,33 @@ src.base.control.formBuilder.initialize =
       appendChild :
       goog.dom.appendChild;
     
+    createValidation = createValidation ? 
+      createValidation : 
+      src.base.control.formBuilder.validation.createValidation;
+    
+    initializeTheForm = initializeTheForm ? 
+      initializeTheForm : 
+      src.base.control.formComponent.initialize;
+    
     
     /* START */
     
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.formBuilder;
+    var FormComponentConstant_ = src.base.control.formComponent.constant;
+    
     
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
     
-    var formAttributes = {};
-    formAttributes[ControlConstant_.Action] = postTo;
-    formAttributes[ControlConstant_.Class] = Constant_.FormId;
-    formAttributes[ControlConstant_.Method] = ControlConstant_.Post;
-    formAttributes[ControlConstant_.Id] = Constant_.FormId;
-    var form = createAForm(formAttributes);
+    
+    var form = Current_.createTheForm_(Constant_.FormId,
+                                       postTo,
+                                       Constant_.FormId,
+                                       createAForm);
     
     forEach(controlSpecs, function(control) {
       var element = createControl(control,
@@ -156,22 +218,34 @@ src.base.control.formBuilder.initialize =
                   element);
     });
     
-    var submitButtonAttributes = {};
-    submitButtonAttributes[ControlConstant_.Id] = Constant_.FormSubmit;
-    submitButtonAttributes[ControlConstant_.Type] = ControlConstant_.Button;
-    submitButtonAttributes[ControlConstant_.Class] = Constant_.FormSubmit;
-    var submitButton = createAButton(submitButtonAttributes);
     
+    var submitButton = Current_.createTheButton_(Constant_.FormSubmit,
+                                                 FormComponentConstant_.ButtonClass,
+                                                 createAButton);
     
+    appendChild(form,
+                submitButton);
     
     appendChild(container,
                 form);
     
-    appendChild(container,
-                submitButton);
+    
+    var validationWrapper = createValidation(controlSpecs);
+    
+    var datePickerInformation = {};
+    datePickerInformation[FormComponentConstant_.DatepickerOptions] = {};
+    datePickerInformation[FormComponentConstant_.DatepickerTextboxes] = [];
+    
+    initializeTheForm(form,
+                      datePickerInformation,
+                      validationWrapper,
+                      null,
+                      function() {});
     
     return container;
   };
+
+
 
 /*
  - [controlSpecs:
@@ -180,20 +254,9 @@ src.base.control.formBuilder.initialize =
  -     ['is not empty', 'Return To Work Date is required'],
  -     ['is a valid date', 'Must be a valid date.']
  -  ]}
+ -  {type: 'date', id: 'enteredDate', class: 'date', label: 'Entered Date:',
+ -   validation: []}
  -  {type: 'select, default: 'choose', url: 'retrieveUserNames'}
  - ]
  */
 
-
-// src.site.view.employmentTransaction.stop.form.startValidationRules_ = [
-//   ['actionDate',
-//    ['is not empty', 'Return To Work Date is required'],
-//    ['is a valid date', 'Return To Work Date is not valid: (mm/dd/yyyy)']],
-//   ['enteredDate',
-//    ['is not empty', 'Entered Date is required']],
-//   ['reportedDate',
-//    ['is not empty', 'Reported Date is required']],
-//   ['statusStartDate',
-//    ['is not empty', 'Status Start Date is required']],
-//   ['statusCode',
-//    ['is not empty', 'Status Code is required.']]];

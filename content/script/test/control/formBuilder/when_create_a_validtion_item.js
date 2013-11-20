@@ -22,6 +22,8 @@ src.test.control.formBuilder.validation.whenCreatingAValidationItem.describe = f
   var RuleName_= goog.string.getRandomString();
   
   var currentItem_;
+  var forEach_;
+  var insert_;
   
   
   //Test Hooks
@@ -33,6 +35,10 @@ src.test.control.formBuilder.validation.whenCreatingAValidationItem.describe = f
     currentItem_[ValidationConstant_.Validation] = [
       [RuleName_, ErrorMessage_]];
     
+    forEach_ = function(){ };
+    insert_ = function(){};
+    
+    
     // {type: 'text', id: 'username', class: 'textInput', label: 'Username:',
     //  -   validation: [
     //      -     ['is not empty', 'Return To Work Date is required'],
@@ -43,42 +49,35 @@ src.test.control.formBuilder.validation.whenCreatingAValidationItem.describe = f
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.createValidationItem(currentItem_);
+    return Current_.createValidationItem(currentItem_, forEach_, insert_);
   };
   
   //Test Methods
   
   it('should create the correct id entry.', function() {
-    expect(callTheMethod_()[0][0]).toBe(Id_);
-  });
-  
-  it('should create the validation entry.', function() {
-    expect(callTheMethod_()[0][1][0][0]).toBe(RuleName_);
-  });
-  
-  it('should create the validation entry.', function() {
-    expect(callTheMethod_()[0][1][0][1]).toBe(ErrorMessage_);
+    expect(callTheMethod_()[0]).toBe(Id_);
   });
   
   
-  it('should handle multiple validation.', function() {
-    var ruleTwo = goog.string.getRandomString();
-    var errorTwo = goog.string.getRandomString();
+  it('should add all validation to the result.', function() {
+    var methodWasCalled = 0;
+    var item = {};
     
-    currentItem_[ValidationConstant_.Validation] = [
-      [RuleName_, ErrorMessage_],
-      [ruleTwo, errorTwo]
-    ];
+    insert_ = function(list, toInsert){
+      methodWasCalled += list[0] === Id_ &&
+        toInsert === item;
+    };
     
-    var result = callTheMethod_();
+    forEach_ = function(list, toDo){
+      methodWasCalled += list === currentItem_[ValidationConstant_.Validation];
+      toDo(item);
+    };
     
-    var methodWasCalled = result[0][1][0][0] === RuleName_ &&
-          result[0][1][0][1] === ErrorMessage_ &&
-          result[0][1][1][0] === ruleTwo &&
-          result[0][1][1][1] === errorTwo;
+    callTheMethod_();
     
-    expect(methodWasCalled).toBe(true);
+    expect(methodWasCalled).toBe(2);
   });
+  
   
 };
 

@@ -1,7 +1,9 @@
+goog.require('goog.object');
 goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formBuilder');
 goog.require('src.base.control.formBuilder.constant');
+goog.require('src.base.control.formComponent.constant');
 
 goog.provide('src.test.control.formBuilder.whenInitializingAFormBuilder');
 
@@ -15,6 +17,9 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   var Current_ = src.base.control.formBuilder;
   var Constant_ = src.base.control.formBuilder.constant;
   var ControlConstant_ = src.base.control.controlConstant;
+  var FormConstant_ = src.base.control.formComponent.constant;
+  var FormComponentConstant_ = src.base.control.formComponent.constant;
+  
   
   //Fields
   
@@ -28,6 +33,8 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   var createAControl_;
   var createADiv_;
   var createAForm_;
+  var createValidation_;
+  var initializeTheForm_;
   var forEach_;
   var parentContainer_;
   var parentForm_;
@@ -37,6 +44,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   
   beforeEach(function() {
     parentContainer_ = {};
+    parentForm_ = {};
     controlSpecs_ = {};
     
     appendChild_ = function() {};
@@ -44,7 +52,9 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     createAButton_ = function(){};
     createADiv_ = function() { return parentContainer_; };
     createAForm_ = function() { return parentForm_; };
+    createValidation_ = function(){};
     forEach_ = function(){};
+    initializeTheForm_ = function(){};
     parentContainer_ = function() {};;
   });
   
@@ -53,7 +63,8 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   
   var callTheMethod_ = function() {
     return Current_.initialize(ParentContainerId_, PostTo_, controlSpecs_, createAForm_, forEach_,
-                               createADiv_, createAControl_, createAButton_, appendChild_);
+                               createADiv_, createAControl_, createAButton_, appendChild_, createValidation_,
+                               initializeTheForm_);
   };
   
   
@@ -119,7 +130,6 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   });
   
   
-  
   it('should append the created control row to the form.', function() {
     var methodWasCalled = false;
     var controlRow = {};
@@ -142,8 +152,8 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   it('should create the Submit button.', function() {
     var methodWasCalled = false;
     
@@ -152,7 +162,26 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
         (Constant_.FormSubmit !== undefined &&
          attributes[ControlConstant_.Id] === Constant_.FormSubmit &&
          attributes[ControlConstant_.Type] === ControlConstant_.Button &&
-         attributes[ControlConstant_.Class] === Constant_.FormSubmit);
+         attributes[ControlConstant_.Class] === FormComponentConstant_.ButtonClass);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+   
+  it('should append the submit button to the form.', function() {
+    var methodWasCalled = false;
+    var submitButton = {};
+    
+    createAButton_ = function(){
+      return submitButton;
+    };
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === parentForm_ && child === submitButton);
     };
     
     callTheMethod_();
@@ -173,20 +202,17 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     expect(methodWasCalled).toBe(true);
   });
-
-
   
-  it('should append the submit button to the parent.', function() {
+  
+  
+  
+  
+  
+  it('should create the validation wrapper.', function() {
     var methodWasCalled = false;
-    var submitButton = {};
-
-    createAButton_ = function(){
-      return submitButton;
-    };
-     
-    appendChild_ = function(parent, child){
-      methodWasCalled = methodWasCalled || 
-        (parent === parentContainer_ && child === submitButton);
+    
+    createValidation_ = function(spec){
+      methodWasCalled = controlSpecs_ === spec;
     };
     
     callTheMethod_();
@@ -194,7 +220,33 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     expect(methodWasCalled).toBe(true);
   });
   
-
+  
+  it('should initialize the form.', function() {
+    var methodWasCalled = false;
+    var validation = {};
+    
+    createValidation_ = function(){
+      return validation;
+    };
+    
+    initializeTheForm_ = function(form, datePickerOptions, validate, autoFillParameters,
+                                  onClick){
+      
+      methodWasCalled = form === parentForm_ &&
+        goog.object.getKeys(datePickerOptions[FormConstant_.DatepickerOptions]).length === 0 &&
+        datePickerOptions[FormConstant_.DatepickerTextboxes].length === 0 &&
+        validate === validation &&
+        autoFillParameters === null &&
+        onClick !== null;
+      
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
   
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);
