@@ -7,6 +7,10 @@ goog.provide('src.base.control.formBuilder.validation');
 /**
  @param {Object} currentItem The current item from the form
  construction list.
+ @param {function} forEach The function used to traverse the
+ validation lists, and append them to the  return list.
+ @param {function} insert The function used to add the validation
+ items to the return list.
  @return {Object} The needed validation list.
  @protected
  */
@@ -49,8 +53,8 @@ src.base.control.formBuilder.validation.createValidation =
       map :
       goog.array.map;
     
-    createAValidationWrapper = createAValidationWrapper ? 
-      createAValidationWrapper : 
+    createAValidationWrapper = createAValidationWrapper ?
+      createAValidationWrapper :
       src.site.validation.validationInterpreter.createAValidationWrapper;
     
     /* Start */
@@ -65,16 +69,3 @@ src.base.control.formBuilder.validation.createValidation =
     
     return createAValidationWrapper(validationList);
   };
-
-
-
-/*
- - [controlSpecs:
- -  {type: 'text', id: 'username', class: 'textInput', label: 'Username:',
- -   validation: [
- -     ['is not empty', 'Return To Work Date is required'],
- -     ['is a valid date', 'Must be a valid date.']
- -  ]}
- -  {type: 'select, default: 'choose', url: 'retrieveUserNames'}
- - ]
- */

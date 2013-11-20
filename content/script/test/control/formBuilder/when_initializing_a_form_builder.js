@@ -4,6 +4,7 @@ goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formBuilder');
 goog.require('src.base.control.formBuilder.constant');
 goog.require('src.base.control.formComponent.constant');
+goog.require('src.base.control.popupDatePicker.constant');
 
 goog.provide('src.test.control.formBuilder.whenInitializingAFormBuilder');
 
@@ -17,6 +18,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   var Current_ = src.base.control.formBuilder;
   var Constant_ = src.base.control.formBuilder.constant;
   var ControlConstant_ = src.base.control.controlConstant;
+  var DatePickerConstant_ = src.base.control.popupDatePicker.constant;
   var FormConstant_ = src.base.control.formComponent.constant;
   var FormComponentConstant_ = src.base.control.formComponent.constant;
   
@@ -109,14 +111,16 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     var methodWasCalled = false;
     var item = {};
     
-    createAControl_ = function(controlSpec, createADiv, createALabel,
-                               createATextbox, appendChild, createAClearDiv){
+    createAControl_ = function(controlSpec, datePickerControls, createADiv, createALabel,
+                               createATextbox, appendChild, createAClearDiv, insert){
       methodWasCalled += controlSpec === item &&
+        datePickerControls.length === 0 &&
         createADiv === createADiv_ &&
         createALabel === src.base.helper.domCreation.label &&
         createATextbox === src.base.helper.domCreation.textbox &&
         appendChild === appendChild_ &&
-        createAClearDiv === src.base.helper.domCreation.createAClearDiv;
+        createAClearDiv === src.base.helper.domCreation.createAClearDiv &&
+        insert === goog.array.insert;
     };
     
     forEach_ = function(items, toDo){
@@ -204,10 +208,6 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   });
   
   
-  
-  
-  
-  
   it('should create the validation wrapper.', function() {
     var methodWasCalled = false;
     
@@ -231,9 +231,11 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     initializeTheForm_ = function(form, datePickerOptions, validate, autoFillParameters,
                                   onClick){
+      var theOptions = datePickerOptions[FormComponentConstant_.DatepickerOptions];
       
       methodWasCalled = form === parentForm_ &&
-        goog.object.getKeys(datePickerOptions[FormConstant_.DatepickerOptions]).length === 0 &&
+        theOptions[DatePickerConstant_.ButtonText] === '' &&
+        theOptions[DatePickerConstant_.TextboxName] === 'theTextbox' &&
         datePickerOptions[FormConstant_.DatepickerTextboxes].length === 0 &&
         validate === validation &&
         autoFillParameters === null &&

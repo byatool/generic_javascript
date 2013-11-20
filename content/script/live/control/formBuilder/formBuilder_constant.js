@@ -6,6 +6,14 @@ goog.provide('src.base.control.formBuilder.constant');
  @type {string}
  @protected
  */
+src.base.control.formBuilder.constant.DateSuffix = 'date';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.formBuilder.constant.FormId = 'form';
 
 
@@ -31,6 +39,14 @@ src.base.control.formBuilder.constant.FormRowLabel = 'formRowLabel';
  @protected
  */
 src.base.control.formBuilder.constant.FormSubmit = 'formSubmit';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formBuilder.constant.IsDate = 'isDate';
 
 
 /**
