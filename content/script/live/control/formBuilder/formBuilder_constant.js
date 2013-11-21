@@ -6,6 +6,14 @@ goog.provide('src.base.control.formBuilder.constant');
  @type {string}
  @protected
  */
+src.base.control.formBuilder.constant.Date = 'date';
+  
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.formBuilder.constant.DateSuffix = 'date';
 
 

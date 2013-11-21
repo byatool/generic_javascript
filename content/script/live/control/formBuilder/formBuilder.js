@@ -11,24 +11,73 @@ goog.provide('src.base.control.formBuilder');
 
 /* PRIVATE FUNCTIONS */
 
+/**
+ @param {Object} controlSpec The current form spec item.
+ @param {Object} textbox The text box paired with the date
+ picker.
+ @param {Object} parentRow The row to add the date picker
+ container to.
+ @param {Object} datePickerControlList The list of date 
+ picker information that the date picker needs to be added
+ to.
+ @param {function} insert The function used to add the
+ elements to the datePickerControlList
+ @param {function} createADiv The function used to create
+ the date picker container.
+ @param {function} appendChild The function used to add
+ the date picker control to the parentRow.
+ @private
+ */
+src.base.control.formBuilder.createDatePicker_ =
+  function(controlSpec, textbox, parentRow, datePickerControlList,
+           insert, createADiv, appendChild) {
+    
+    var Constant_ = src.base.control.formBuilder.constant;
+    var ControlConstant_ = src.base.control.controlConstant;
+    
+    var datePickerAttributes = {};
+    var datePickerId = controlSpec[ControlConstant_.Id] + Constant_.DateSuffix;
+    datePickerAttributes[ControlConstant_.Id] = datePickerId;
+    datePickerAttributes[ControlConstant_.Name] = datePickerId;
+    var datePickerContainer = createADiv(datePickerAttributes);
+    
+    insert(datePickerControlList,
+           [datePickerId, textbox]);
+    
+    appendChild(parentRow,
+                datePickerContainer);
+  };
+
+
+
+
 
 /**
  @param {Object} controlSpec The current form build spec row.
+ @param {Object} container The parent row the textbox will be
+ appended to.
  @param {function} createATextbox The function used to create
  the needed textbox.
+ @param {function} appendChild The function used to append
+ the textbox to the parent.
  @return {Object} The created textbox.
  @private
  */
-src.base.control.formBuilder.createATextbox_ =
-  function(controlSpec, createATextbox) {
+src.base.control.formBuilder.createAndAppendATextbox_ =
+  function(controlSpec, container, createATextbox, appendChild) {
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var textboxAttributes = {};
     textboxAttributes[ControlConstant_.Class] = controlSpec[ControlConstant_.Class];
     textboxAttributes[ControlConstant_.Id] = controlSpec[ControlConstant_.Id];
     textboxAttributes[ControlConstant_.Name] = controlSpec[ControlConstant_.Id];
-    return createATextbox(textboxAttributes);
+    var textbox = createATextbox(textboxAttributes);
+    
+    appendChild(container,
+                textbox);
+    
+    return textbox;
   };
 
 
@@ -45,7 +94,7 @@ src.base.control.formBuilder.createTheForm_ =
   function(cssClass, postTo, formId, createAForm) {
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var formAttributes = {};
     formAttributes[ControlConstant_.Action] = postTo;
     formAttributes[ControlConstant_.Class] = cssClass;
@@ -66,10 +115,10 @@ src.base.control.formBuilder.createTheForm_ =
  */
 src.base.control.formBuilder.createTheButton_ =
   function(buttonId, buttonClass, createAButton) {
-
+    
     var ControlConstant_ = src.base.control.controlConstant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-
+    
     var submitButtonAttributes = {};
     submitButtonAttributes[ControlConstant_.Id] = buttonId;
     submitButtonAttributes[ControlConstant_.Type] = ControlConstant_.Button;
@@ -101,57 +150,75 @@ src.base.control.formBuilder.createTheButton_ =
 src.base.control.formBuilder.createControl =
   function(controlSpec, datePickerControls, createADiv, createALabel,
            createATextbox, appendChild, createAClearDiv, insert) {
-
+    
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.formBuilder;
-
+    
     var formRowAttributes = {};
     formRowAttributes[ControlConstant_.Class] = Constant_.FormRowContainer;
     formRowAttributes[ControlConstant_.Id] = Constant_.FormRowContainer;
     var formRow = createADiv(formRowAttributes);
-
+    
     var formRowLabelAttributes = {};
     formRowLabelAttributes[ControlConstant_.Class] = Constant_.FormRowLabel;
     var formRowLabel = createALabel(formRowLabelAttributes,
                                     controlSpec[Constant_.LabelText]);
-
-
-    var element = {};
-
-    switch (controlSpec[ControlConstant_.Type]) {
-    case Constant_.Textbox:
-      element = Current_.createATextbox_(controlSpec, createATextbox);
-      break;
-    default:
-      element = Current_.createATextbox_(controlSpec, createATextbox);
-      break;
-    }
-
+    
     appendChild(formRow,
                 formRowLabel);
-
-    appendChild(formRow,
-                element);
-
-    if (controlSpec[Constant_.IsDate]) {
-      var datePickerAttributes = {};
-      var datePickerId = controlSpec[ControlConstant_.Id] + 'date';
-      datePickerAttributes[ControlConstant_.Id] = datePickerId;
-      datePickerAttributes[ControlConstant_.Name] = datePickerId;
-      var datePickerContainer = createADiv(datePickerAttributes);
-
-      insert(datePickerControls,
-             [datePickerId, element]);
-
-      appendChild(formRow,
-                  datePickerContainer);
+    
+    
+    var element = {};
+    
+    switch (controlSpec[ControlConstant_.Type]) {
+    case Constant_.Textbox:
+      element = Current_.createAndAppendATextbox_(controlSpec,
+                                                  formRow,
+                                                  createATextbox,
+                                                  appendChild);
+      break;
+      
+    case Constant_.Date:
+      element = Current_.createAndAppendATextbox_(controlSpec,
+                                                  formRow,
+                                                  createATextbox,
+                                                  appendChild);
+      
+      Current_.createDatePicker_(controlSpec,
+                                 element,
+                                 formRow,
+                                 datePickerControls,
+                                 insert,
+                                 createADiv,
+                                 appendChild);
+      
+      break;
+      
+    default:
+      
+      element = Current_.createAndAppendATextbox_(controlSpec,
+                                                  formRow,
+                                                  createATextbox,
+                                                  appendChild);
+      break;
     }
-
+    
+    
+    // if (controlSpec[Constant_.IsDate]) {
+    //   // var datePickerAttributes = {};
+    //   // var datePickerId = controlSpec[ControlConstant_.Id] + 'date';
+    //   // datePickerAttributes[ControlConstant_.Id] = datePickerId;
+    //   // datePickerAttributes[ControlConstant_.Name] = datePickerId;
+    //   // var datePickerContainer = createADiv(datePickerAttributes);
+      
+      
+    // }
+    
     appendChild(formRow,
                 createAClearDiv());
-
-
+             
+             
     return formRow;
   };
 
@@ -233,8 +300,8 @@ src.base.control.formBuilder.initialize =
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-
-
+    
+    
     var form = Current_.createTheForm_(Constant_.FormId,
                                        postTo,
                                        Constant_.FormId,

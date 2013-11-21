@@ -19,8 +19,8 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   
   
   //Fields
-
   
+  var CssClass_ = goog.string.getRandomString();  
   var Id_ = goog.string.getRandomString();
   
   var appendChild_;
@@ -40,6 +40,8 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   beforeEach(function() {
     controlSpec_ = {};
     controlSpec_[ControlConstant_.Id] = Id_;
+    controlSpec_[ControlConstant_.Type] = Constant_.Textbox;
+    controlSpec_[ControlConstant_.Class] = CssClass_;
     
     container_ = {};
     dateContainer_ = {};
@@ -107,29 +109,7 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-  
-  
-  
-  it('should create a textbox.', function() {
-    var methodWasCalled = false;
-    var cssClass = {};
-    
-    controlSpec_[ControlConstant_.Class] = cssClass;
-    controlSpec_[ControlConstant_.Type] = Constant_.Textbox;
-    
-    createATextbox_ = function(attributes){
-      methodWasCalled = methodWasCalled ||
-        (Constant_.Textbox !== undefined &&
-         attributes[ControlConstant_.Class] === cssClass &&
-         attributes[ControlConstant_.Id] === Id_ &&
-         attributes[ControlConstant_.Name] === Id_);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-  
+   
   
   it('should append the label to the row.', function() {
     var methodWasCalled = false;
@@ -148,19 +128,15 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   });
   
   
-  
-  it('should create the date picker holder.', function() {
+  it('should create a textbox if it is a text type.', function() {
     var methodWasCalled = false;
     
-    
-    controlSpec_[Constant_.IsDate] = true;
-    
-    createADiv_ = function(attributes){
+    createATextbox_ = function(attributes){
       methodWasCalled = methodWasCalled ||
-        (Constant_.IsDate !== undefined &&
-         Constant_.DateSuffix !== undefined &&
-         attributes[ControlConstant_.Id] === Id_ + Constant_.DateSuffix &&
-         attributes[ControlConstant_.Name] === Id_ + Constant_.DateSuffix);
+        (Constant_.Textbox !== undefined &&
+         attributes[ControlConstant_.Class] === CssClass_ &&
+         attributes[ControlConstant_.Id] === Id_ &&
+         attributes[ControlConstant_.Name] === Id_);
     };
     
     callTheMethod_();
@@ -168,45 +144,8 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
-  
-  it('should add it to the date picker controls list.', function() {
-    var methodWasCalled = false;
-    var textbox = {};
-    
-    controlSpec_[Constant_.IsDate] = true;
-    
-    createATextbox_ = function(){
-      return textbox;
-    };
-    
-    insert_ = function(list, item){
-      methodWasCalled = list === datePickerControls_ &&
-        item[0] === Id_ + Constant_.DateSuffix &&
-        item[1] === textbox;
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-  
-  
-  it('should not create add date picker functionality if instructed.', function() {
-    var methodWasCalled = false;
-    
-    controlSpec_[Constant_.IsDate] = false;
-    
-    createADiv_ = function(attributes){
-      methodWasCalled = attributes[ControlConstant_.Id] === Id_ + Constant_.DateSuffix;
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(false);
-  });
-  
-  
-  it('should append the created element to the row.', function() {
+   
+  it('should append the created textbox if it text type.', function() {
     var methodWasCalled = false;
     var element = {};
     
@@ -225,10 +164,108 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   });
   
   
+  it('should create a textbox if it is a date type.', function() {
+    var methodWasCalled = false;
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Date;
+    
+    createATextbox_ = function(attributes){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.Textbox !== undefined &&
+         attributes[ControlConstant_.Class] === CssClass_ &&
+         attributes[ControlConstant_.Id] === Id_ &&
+         attributes[ControlConstant_.Name] === Id_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should append the created textbox if it text type.', function() {
+    var methodWasCalled = false;
+    var element = {};
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Date;
+    
+    createATextbox_ = function(){
+      return element;
+    };
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === container_ && child === element);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+
+  
+  it('should create the date picker holder.', function() {
+    var methodWasCalled = false;
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Date;
+    
+    createADiv_ = function(attributes){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.Date !== undefined &&
+         Constant_.DateSuffix !== undefined &&
+         attributes[ControlConstant_.Id] === Id_ + Constant_.DateSuffix &&
+         attributes[ControlConstant_.Name] === Id_ + Constant_.DateSuffix);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should add it to the date picker controls list.', function() {
+    var methodWasCalled = false;
+    var textbox = {};
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Date;
+    
+    createATextbox_ = function(){
+      return textbox;
+    };
+    
+    insert_ = function(list, item){
+      methodWasCalled = list === datePickerControls_ &&
+        item[0] === Id_ + Constant_.DateSuffix &&
+        item[1] === textbox;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not create a date picker if it is not a date control.', function() {
+    var methodWasCalled = false;
+    
+    controlSpec_[Constant_.Type] = 'text';
+    
+    createADiv_ = function(attributes){
+      methodWasCalled = attributes[ControlConstant_.Id] === Id_ + Constant_.DateSuffix;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
+  
+  
+  
+  
   it('should append the date picker container to the parent.', function() {
     var methodWasCalled = false;
-
-    controlSpec_[Constant_.IsDate] = true;
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Date;
     
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
