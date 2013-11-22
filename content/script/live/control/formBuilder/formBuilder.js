@@ -1,7 +1,9 @@
 goog.require('goog.dom');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formBuilder.constant');
+goog.require('src.base.control.formBuilder.control');
 goog.require('src.base.control.formBuilder.validation');
+goog.require('src.base.control.formComponent');
 goog.require('src.base.control.formComponent.constant');
 goog.require('src.base.control.popupDatePicker.constant');
 goog.require('src.base.helper.domCreation');
@@ -12,74 +14,45 @@ goog.provide('src.base.control.formBuilder');
 /* PRIVATE FUNCTIONS */
 
 /**
- @param {Object} controlSpec The current form spec item.
- @param {Object} textbox The text box paired with the date
- picker.
- @param {Object} parentRow The row to add the date picker
- container to.
- @param {Object} datePickerControlList The list of date 
- picker information that the date picker needs to be added
- to.
- @param {function} insert The function used to add the
- elements to the datePickerControlList
+ @param {string} containerId The id of the container.
  @param {function} createADiv The function used to create
- the date picker container.
- @param {function} appendChild The function used to add
- the date picker control to the parentRow.
+ the container.
+ @return {Object} The created container.
  @private
  */
-src.base.control.formBuilder.createDatePicker_ =
-  function(controlSpec, textbox, parentRow, datePickerControlList,
-           insert, createADiv, appendChild) {
+src.base.control.formBuilder.createTheContainer_ =
+  function(containerId, createADiv) {
     
-    var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     
-    var datePickerAttributes = {};
-    var datePickerId = controlSpec[ControlConstant_.Id] + Constant_.DateSuffix;
-    datePickerAttributes[ControlConstant_.Id] = datePickerId;
-    datePickerAttributes[ControlConstant_.Name] = datePickerId;
-    var datePickerContainer = createADiv(datePickerAttributes);
-    
-    insert(datePickerControlList,
-           [datePickerId, textbox]);
-    
-    appendChild(parentRow,
-                datePickerContainer);
+    var containerAttributes = {};
+    containerAttributes[ControlConstant_.Id] = containerId;
+    containerAttributes[ControlConstant_.Class] = containerId;
+    return createADiv(containerAttributes);
   };
-
-
-
 
 
 /**
- @param {Object} controlSpec The current form build spec row.
- @param {Object} container The parent row the textbox will be
- appended to.
- @param {function} createATextbox The function used to create
- the needed textbox.
- @param {function} appendChild The function used to append
- the textbox to the parent.
- @return {Object} The created textbox.
+ @param {Object} datePickerTextboxes The array of textboxes needing a 
+ date picker.
+ @return {Object} The datepicker options
  @private
  */
-src.base.control.formBuilder.createAndAppendATextbox_ =
-  function(controlSpec, container, createATextbox, appendChild) {
-    var Constant_ = src.base.control.formBuilder.constant;
-    var ControlConstant_ = src.base.control.controlConstant;
+src.base.control.formBuilder.createTheDatePickerOptions_ =
+  function(datePickerTextboxes) {
     
-    var textboxAttributes = {};
-    textboxAttributes[ControlConstant_.Class] = controlSpec[ControlConstant_.Class];
-    textboxAttributes[ControlConstant_.Id] = controlSpec[ControlConstant_.Id];
-    textboxAttributes[ControlConstant_.Name] = controlSpec[ControlConstant_.Id];
-    var textbox = createATextbox(textboxAttributes);
+    var DatePickerConstant_ = src.base.control.popupDatePicker.constant;
+    var FormComponentConstant_ = src.base.control.formComponent.constant;
     
-    appendChild(container,
-                textbox);
+    var datePickerInformation = {};
+    var datePickerOptions = {};
+    datePickerOptions[DatePickerConstant_.ButtonText] = '';
+    datePickerOptions[DatePickerConstant_.TextboxName] = 'theTextbox';
+    datePickerInformation[FormComponentConstant_.DatepickerOptions] = datePickerOptions;
+    datePickerInformation[FormComponentConstant_.DatepickerTextboxes] = datePickerTextboxes;
     
-    return textbox;
+    return datePickerInformation;
   };
-
 
 /**
  @param {function} cssClass The class for the form.
@@ -127,102 +100,6 @@ src.base.control.formBuilder.createTheButton_ =
   };
 
 
-/* PROTECTED FUNCTIONS */
-
-/**
- @param {Object} controlSpec The various control specifications.
- @param {Array.<Object>} datePickerControls The list to add any textbox
- that is pair with a date.
- @param {function} createADiv The function used to create divs.
- @param {function} createALabel The function used to create a
- label.
- @param {function} createATextbox The function used to create a
- textbox.
- @param {function} appendChild The function used to append all
- created elements to a parent element.
- @param {function} createAClearDiv The function used to create
- a clear:both div.
- @param {function} insert The function used to add items to
- the datePickerControls list.
- @return {Object} The created control.
- @protected
- */
-src.base.control.formBuilder.createControl =
-  function(controlSpec, datePickerControls, createADiv, createALabel,
-           createATextbox, appendChild, createAClearDiv, insert) {
-    
-    var Constant_ = src.base.control.formBuilder.constant;
-    var ControlConstant_ = src.base.control.controlConstant;
-    var Current_ = src.base.control.formBuilder;
-    
-    var formRowAttributes = {};
-    formRowAttributes[ControlConstant_.Class] = Constant_.FormRowContainer;
-    formRowAttributes[ControlConstant_.Id] = Constant_.FormRowContainer;
-    var formRow = createADiv(formRowAttributes);
-    
-    var formRowLabelAttributes = {};
-    formRowLabelAttributes[ControlConstant_.Class] = Constant_.FormRowLabel;
-    var formRowLabel = createALabel(formRowLabelAttributes,
-                                    controlSpec[Constant_.LabelText]);
-    
-    appendChild(formRow,
-                formRowLabel);
-    
-    
-    var element = {};
-    
-    switch (controlSpec[ControlConstant_.Type]) {
-    case Constant_.Textbox:
-      element = Current_.createAndAppendATextbox_(controlSpec,
-                                                  formRow,
-                                                  createATextbox,
-                                                  appendChild);
-      break;
-      
-    case Constant_.Date:
-      element = Current_.createAndAppendATextbox_(controlSpec,
-                                                  formRow,
-                                                  createATextbox,
-                                                  appendChild);
-      
-      Current_.createDatePicker_(controlSpec,
-                                 element,
-                                 formRow,
-                                 datePickerControls,
-                                 insert,
-                                 createADiv,
-                                 appendChild);
-      
-      break;
-      
-    default:
-      
-      element = Current_.createAndAppendATextbox_(controlSpec,
-                                                  formRow,
-                                                  createATextbox,
-                                                  appendChild);
-      break;
-    }
-    
-    
-    // if (controlSpec[Constant_.IsDate]) {
-    //   // var datePickerAttributes = {};
-    //   // var datePickerId = controlSpec[ControlConstant_.Id] + 'date';
-    //   // datePickerAttributes[ControlConstant_.Id] = datePickerId;
-    //   // datePickerAttributes[ControlConstant_.Name] = datePickerId;
-    //   // var datePickerContainer = createADiv(datePickerAttributes);
-      
-      
-    // }
-    
-    appendChild(formRow,
-                createAClearDiv());
-             
-             
-    return formRow;
-  };
-
-
 /* EXPORTED FUNCTIONS */
 
 /**
@@ -253,53 +130,51 @@ src.base.control.formBuilder.initialize =
   function(containerId, postTo, controlSpecs, createAForm, forEach,
            createADiv, createControl, createAButton, appendChild,
            createValidation, initializeTheForm) {
-
+    
     createAForm = createAForm ?
       createAForm :
       src.base.helper.domCreation.form;
-
+    
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-
+    
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-
+    
     createControl = createControl ?
       createControl :
-      src.base.control.formBuilder.createControl;
-
+      src.base.control.formBuilder.control.createControl;
+    
     createAButton = createAButton ?
       createAButton :
       src.base.helper.domCreation.button;
-
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     createValidation = createValidation ?
       createValidation :
       src.base.control.formBuilder.validation.createValidation;
-
+    
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.formComponent.initialize;
-
-
+    
+    
     /* START */
-
+    
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.formBuilder;
     var DatePickerConstant_ = src.base.control.popupDatePicker.constant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-
-
-    var containerAttributes = {};
-    containerAttributes[ControlConstant_.Id] = containerId;
-    containerAttributes[ControlConstant_.Class] = containerId;
-    var container = createADiv(containerAttributes);
+    
+    
+    var container = Current_.createTheContainer_(containerId,
+                                                 createADiv);
     
     
     var form = Current_.createTheForm_(Constant_.FormId,
@@ -309,66 +184,32 @@ src.base.control.formBuilder.initialize =
     //BAD It is difficult to test the interaction with this array
     //  since there is nothing to inject...
     var datePickerTextboxes = [];
-
+    
     forEach(controlSpecs, function(control) {
       var element = createControl(control,
-                                  datePickerTextboxes,
-                                  createADiv,
-                                  src.base.helper.domCreation.label,
-                                  src.base.helper.domCreation.textbox,
-                                  appendChild,
-                                  src.base.helper.domCreation.createAClearDiv,
-                                  goog.array.insert);
-
-
-      appendChild(form,
-                  element);
-
-
+                                  datePickerTextboxes);
+      
+      appendChild(form, element);
     });
-
-
+    
+    
     var submitButton = Current_.createTheButton_(Constant_.FormSubmit,
                                                  FormComponentConstant_.ButtonClass,
                                                  createAButton);
-
-    appendChild(form,
-                submitButton);
-
-    appendChild(container,
-                form);
-
-
+    
+    appendChild(form, submitButton);
+    appendChild(container, form);
+    
+    
     var validationWrapper = createValidation(controlSpecs);
-
-    var datePickerInformation = {};
-    var datePickerOptions = {};
-    datePickerOptions[DatePickerConstant_.ButtonText] = '';
-    datePickerOptions[DatePickerConstant_.TextboxName] = 'theTextbox';
-    datePickerInformation[FormComponentConstant_.DatepickerOptions] = datePickerOptions;
-    datePickerInformation[FormComponentConstant_.DatepickerTextboxes] = datePickerTextboxes;
-
+    var datePickerInformation = Current_.createTheDatePickerOptions_(datePickerTextboxes);
+    
     initializeTheForm(form,
                       datePickerInformation,
                       validationWrapper,
                       null,
                       function() {});
-
+    
     return container;
   };
-
-
-
-/*
- - [controlSpecs:
- -  {type: 'text', id: 'username', class: 'textInput', label: 'Username:',
- -   validation: [
- -     ['is not empty', 'Return To Work Date is required'],
- -     ['is a valid date', 'Must be a valid date.']
- -  ]}
- -  {type: 'text', id: 'enteredDate', class: 'textInput', label: 'Entered Date:', 'date': true
- -   validation: []}
- -  {type: 'select, default: 'choose', url: 'retrieveUserNames'}
- - ]
- */
 

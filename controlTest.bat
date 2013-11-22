@@ -56,8 +56,9 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.formatTextAreaDisplay.whenFormattingTheRawTextAndUpdatingTheFormatTextAreaDisplay" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenInitializingAFormatTextAreaDisplay" ^
 --namespace="src.test.control.formatTextAreaDisplay.whenSurroundingWithColor" ^
---namespace="src.test.control.formBuilder.whenCreatingAControl" ^
 --namespace="src.test.control.formBuilder.whenInitializingAFormBuilder" ^
+--namespace="src.test.control.formBuilder.control.whenCreatingAControl" ^
+--namespace="src.test.control.formBuilder.control.whenCreatingAndInitializingASelect" ^
 --namespace="src.test.control.formBuilder.validation.whenCreatingAValidationItem" ^
 --namespace="src.test.control.formBuilder.validation.whenCreatingTheValidation" ^
 --namespace="src.test.control.formComponent.whenFillingTheFormWithData" ^

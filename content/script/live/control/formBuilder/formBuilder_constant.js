@@ -7,7 +7,7 @@ goog.provide('src.base.control.formBuilder.constant');
  @protected
  */
 src.base.control.formBuilder.constant.Date = 'date';
-  
+
 
 /**
  @const
@@ -16,6 +16,14 @@ src.base.control.formBuilder.constant.Date = 'date';
  */
 src.base.control.formBuilder.constant.DateSuffix = 'date';
 
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formBuilder.constant.DefaultValue = 'defaultValue';
+  
 
 /**
  @const
@@ -70,4 +78,29 @@ src.base.control.formBuilder.constant.LabelText = 'label';
  @type {string}
  @protected
  */
+src.base.control.formBuilder.constant.Parameters = 'parameters';
+
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formBuilder.constant.Select = 'select';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.formBuilder.constant.Textbox = 'text';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formBuilder.constant.Url = 'url';

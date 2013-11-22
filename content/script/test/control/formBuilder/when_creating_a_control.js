@@ -1,22 +1,21 @@
 goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
-goog.require('src.base.control.formBuilder');
 goog.require('src.base.control.formBuilder.constant');
+goog.require('src.base.control.formBuilder.control');
 
-goog.provide('src.test.control.formBuilder.whenCreatingAControl');
+goog.provide('src.test.control.formBuilder.control.whenCreatingAControl');
 
 
 /**
  @export
  */
-src.test.control.formBuilder.whenCreatingAControl.describe = function () {
+src.test.control.formBuilder.control.whenCreatingAControl.describe = function () {
   
   //Using
   
   var Constant_ = src.base.control.formBuilder.constant;
   var ControlConstant_ = src.base.control.controlConstant;
-  var Current_ = src.base.control.formBuilder;
-  
+  var Current_ = src.base.control.formBuilder.control;
   
   //Fields
   
@@ -29,6 +28,7 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   var createAClearDiv_;
   var createADiv_;
   var createALabel_;
+  var createAndInitializeSelect;
   var createATextbox_;
   var dateContainer_;
   var datePickerControls_;
@@ -62,6 +62,7 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
     
     
     createALabel_ = function() {};
+    createAndInitializeSelect = function(){};
     createATextbox_ = function(){};
     insert_ = function(){};
   });
@@ -71,7 +72,8 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   
   var callTheMethod_ = function() {
     return Current_.createControl(controlSpec_, datePickerControls_, createADiv_, createALabel_,
-                                  createATextbox_, appendChild_, createAClearDiv_, insert_);
+                                  createATextbox_, createAndInitializeSelect, appendChild_, createAClearDiv_,
+                                  insert_);
   };
   
   
@@ -109,7 +111,7 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-   
+  
   
   it('should append the label to the row.', function() {
     var methodWasCalled = false;
@@ -144,7 +146,7 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
-   
+  
   it('should append the created textbox if it text type.', function() {
     var methodWasCalled = false;
     var element = {};
@@ -202,7 +204,7 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-
+  
   
   it('should create the date picker holder.', function() {
     var methodWasCalled = false;
@@ -248,8 +250,6 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   it('should not create a date picker if it is not a date control.', function() {
     var methodWasCalled = false;
     
-    controlSpec_[Constant_.Type] = 'text';
-    
     createADiv_ = function(attributes){
       methodWasCalled = attributes[ControlConstant_.Id] === Id_ + Constant_.DateSuffix;
     };
@@ -261,6 +261,61 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   
   
   
+  it('should create a select if it is the type.', function() {
+    var methodWasCalled = false;
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Select;
+    
+    createAndInitializeSelect = function(controlSpec, createASelect, initializeASelect){
+      methodWasCalled = controlSpec === controlSpec_ &&
+        createASelect === src.base.helper.domCreation.select &&
+        initializeASelect === src.base.control.dropDownList.initialize;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should append the select to the parent.', function() {
+    var methodWasCalled = false;
+    var select = {};
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Select;
+    
+    createAndInitializeSelect = function(){
+      return select;
+    };
+    
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === container_ && child === select);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not create a textbox if it is a select.', function() {
+    var methodWasCalled = false;
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Select;
+    
+    createATextbox_ = function(){
+      methodWasCalled = true;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(false);
+  });
+   
   
   it('should append the date picker container to the parent.', function() {
     var methodWasCalled = false;
@@ -302,12 +357,8 @@ src.test.control.formBuilder.whenCreatingAControl.describe = function () {
   });
   
   
-  
 };
 
 describe('When creating a control, it', function() {
-  src.test.control.formBuilder.whenCreatingAControl.describe();
+  src.test.control.formBuilder.control.whenCreatingAControl.describe();
 });
-
-
-//--namespace="src.test.control.formBuilder.whenCreatingAControl" ^

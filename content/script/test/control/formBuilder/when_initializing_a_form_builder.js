@@ -111,16 +111,10 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     var methodWasCalled = false;
     var item = {};
     
-    createAControl_ = function(controlSpec, datePickerControls, createADiv, createALabel,
-                               createATextbox, appendChild, createAClearDiv, insert){
+    createAControl_ = function(controlSpec, datePickerControls){
+      
       methodWasCalled += controlSpec === item &&
-        datePickerControls.length === 0 &&
-        createADiv === createADiv_ &&
-        createALabel === src.base.helper.domCreation.label &&
-        createATextbox === src.base.helper.domCreation.textbox &&
-        appendChild === appendChild_ &&
-        createAClearDiv === src.base.helper.domCreation.createAClearDiv &&
-        insert === goog.array.insert;
+        datePickerControls.length === 0;
     };
     
     forEach_ = function(items, toDo){
