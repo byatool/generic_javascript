@@ -20,6 +20,7 @@ src.test.control.editableDiv.whenApplyingTheEdittedText.describe = function () {
   
   var getElementByClass_;
   var getValue_;
+  var htmlEscape_;
   var parentForm_; 
   var setTextContent_; 
   var textContainer_; 
@@ -33,6 +34,7 @@ src.test.control.editableDiv.whenApplyingTheEdittedText.describe = function () {
     
     getElementByClass_ = function() {};
     getValue_ = function() {};
+    htmlEscape_ = function(){};
     setTextContent_ = function() {};
   });
   
@@ -41,9 +43,9 @@ src.test.control.editableDiv.whenApplyingTheEdittedText.describe = function () {
   
   var callTheMethod_ = function() {
     return Current_.applyTheEdittedText(parentForm_, textContainer_, getElementByClass_,
-                                        getValue_, setTextContent_);
+                                        getValue_, htmlEscape_, setTextContent_);
   };
-
+  
   
   //Test Methods
   
@@ -62,15 +64,14 @@ src.test.control.editableDiv.whenApplyingTheEdittedText.describe = function () {
   });
   
   
-  
   it('should retrieve the value of the edit text area.', function() {
     var methodWasCalled = false;
     var editTextArea = {};
-
+    
     getElementByClass_ = function(){
       return editTextArea;
     };
-     
+    
     getValue_ = function(element){
       methodWasCalled = element === editTextArea;
     };
@@ -79,10 +80,9 @@ src.test.control.editableDiv.whenApplyingTheEdittedText.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
+   
   
-  
-  
-  it('should set the inner text of the text container.', function() {
+  it('should escape the html.', function() {
     var methodWasCalled = false;
     var foundText = 'adfa';
     
@@ -90,11 +90,29 @@ src.test.control.editableDiv.whenApplyingTheEdittedText.describe = function () {
       return foundText;
     };
     
+    htmlEscape_ = function(text){
+      methodWasCalled = text === foundText;
+    };
+     
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should set the inner text of the text container.', function() {
+    var methodWasCalled = false;
+    var foundText = 'adfa';
+    
+    htmlEscape_ = function(){
+      return foundText;
+    };
+    
     setTextContent_ = function(element, text){
       methodWasCalled = element === textContainer_ &&
         text === foundText;
     };
-     
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);

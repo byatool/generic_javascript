@@ -151,9 +151,7 @@ src.base.control.editableDiv.form.setCancelHandler =
            setClick) {
     var Constant_ = src.base.control.editableDiv.constant;
     
-    
     var button = getElementByClass(Constant_.ButtonCancel, form);
-    
     
     setClick(button, toCall);
   };

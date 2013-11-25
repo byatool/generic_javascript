@@ -1,4 +1,3 @@
-
 goog.require('goog.string');
 goog.require('src.base.control.editableDiv');
 goog.require('src.base.control.editableDiv.constant');
@@ -17,7 +16,7 @@ src.test.control.editableDiv.whenCreatingTheSubmitResultHandler.describe = funct
   
   
   //Fields
-
+  
   var form_;
   var textContainer_;
   var applyTheEdittedText_;
@@ -45,15 +44,15 @@ src.test.control.editableDiv.whenCreatingTheSubmitResultHandler.describe = funct
   it('should apply the eddited text.', function() {
     var methodWasCalled = false;
     
-    applyTheEdittedText_ = function(form, textContainer, getElementByClass, getValue, setTextContent){
+    applyTheEdittedText_ = function(form, textContainer, getElementByClass, getValue, htmlEscape, setTextContent){
       methodWasCalled = form === form_ &&
         textContainer === textContainer_ &&
         getElementByClass === goog.dom.getElementByClass &&
         getValue === goog.dom.forms.getValue &&
+        htmlEscape === goog.string.htmlEscape &&
         setTextContent === goog.dom.setTextContent;
     };
-    
-    
+     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
