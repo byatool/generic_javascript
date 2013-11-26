@@ -133,6 +133,14 @@ src.base.control.wall.constant.ItemsGrid = 'itemsGrid';
  @type {string}
  @protected
  */
+src.base.control.wall.constant.ShortcutEnter = 'shortcutEnter';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.wall.constant.SubjectId = 'subjectId';
 
 

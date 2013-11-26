@@ -55,6 +55,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.wall.whenCreatingTheMapping" ^
 --namespace="src.test.control.wall.whenInitializingAWall" ^
 --namespace="src.test.control.wall.form.whenCreatingEmptyDatePickerOptions" ^
+--namespace="src.test.control.wall.form.whenCreatingTheEnterHandler" ^
 --namespace="src.test.control.wall.form.whenCreatingTheEntryForm" ^
 --namespace="src.test.control.wall.form.whenCreatingTheSubmitResultHandler" ^
 --namespace="src.test.control.wall.form.whenCreatingTheValidationRules" ^

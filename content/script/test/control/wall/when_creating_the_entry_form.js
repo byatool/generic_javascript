@@ -24,11 +24,13 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   var SubjectId_ = goog.string.getRandomString();
   
   var appendChild_;
+  var document_;
   var createAButton_;
   var createAForm_;
   var createAHidden_;
   var createALabelInput_;
   var createATextbox_;
+  var createTheEnterHandler_;
   var form_;
   var setValue_;
   var textbox_;
@@ -38,6 +40,7 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   //Test Hooks
   
   beforeEach(function() {
+    document_ = {};
     form_ = {};
     
     appendChild_ = function(){};
@@ -45,7 +48,8 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     createAForm_ = function() { return form_; };
     createAHidden_ = function(){};
     createATextbox_ = function() { return textbox_;};
-
+    createTheEnterHandler_ = function(){};
+    
     textbox_ = {};
     textboxLabel_ = {};
     textboxLabel_.decorate = function() {};
@@ -57,8 +61,8 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.create(PostTo_, SubjectId_, createAForm_, createATextbox_, createALabelInput_,
-                           createAHidden_, setValue_, createAButton_, appendChild_);
+    return Current_.create(document_, PostTo_, SubjectId_, createAForm_, createATextbox_, createALabelInput_,
+                           createAHidden_, setValue_, createAButton_, createTheEnterHandler_, appendChild_);
   };
   
   
@@ -192,16 +196,36 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
   });
   
   
+  it('should create tthe enter press handler.', function() {
+    var methodWasCalled = false;
+    var submitButton = {};
+    
+    createAButton_ = function(){
+      return submitButton;
+    };
+    
+    createTheEnterHandler_ = function(document, submitEntry, createAKeyboardShortcutHandler,
+                                      listen){
+      methodWasCalled = document === document_ &&
+        submitEntry === submitButton &&
+        createAKeyboardShortcutHandler === src.base.helper.googleWrapper.createAKeyboardShortcutHandler &&
+        listen === goog.events.listen;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
   
   
   it('should append the submit button to the form.', function() {
     var methodWasCalled = false;
     var submitButton = {};
-
+    
     createAButton_ = function(){
       return submitButton;
     };
-
+    
     
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
@@ -212,8 +236,8 @@ src.test.control.wall.form.whenCreatingTheEntryForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
-
-
+  
+  
   
   it('should return the created form', function() {
     expect(callTheMethod_()).toBe(form_);

@@ -43,7 +43,11 @@ src.base.helper.googleWrapper.createALabelInput =
  */
 src.base.helper.googleWrapper.createAKeyboardShortcutHandler =
   function(domDocument) {
-    return new goog.ui.KeyboardShortcutHandler(domDocument);
+    var handler = new goog.ui.KeyboardShortcutHandler(domDocument);
+    
+    handler.setAlwaysStopPropagation(true);
+    
+    return handler;
   };
 
 

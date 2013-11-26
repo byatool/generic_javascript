@@ -15,15 +15,15 @@ goog.provide('src.base.control.wall');
  */
 src.base.control.wall.createTheMapping =
   function() {
-
+    
     var ControlConstant_ = src.base.control.controlConstant;
     var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
-
+    
     var emptyMapping = {};
     emptyMapping[GridBuilderConstant_.HeaderText] = '';
     emptyMapping[GridBuilderConstant_.PropertyName] = '';
     emptyMapping[ControlConstant_.Class] = '';
-
+    
     return [emptyMapping];
   };
 
