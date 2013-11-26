@@ -55,6 +55,14 @@ src.base.control.controlConstant.Id = 'id';
  @type {string}
  @export
  */
+src.base.control.controlConstant.Label = 'label';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.controlConstant.Method = 'method';
 
 

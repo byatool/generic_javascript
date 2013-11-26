@@ -29,6 +29,8 @@ src.base.control.wall.createTheMapping =
 
 
 /**
+ @param {Object} document The document object used to set key
+ board short cuts.
  @param {string} containerId The id for the overall container.
  @param {string} postTo The url the form will post to.
  @param {string} retrieveItemsUrl The function used retrieve the
@@ -55,56 +57,57 @@ src.base.control.wall.createTheMapping =
  @export
  */
 src.base.control.wall.initialize =
-  function(containerId, postTo, retrieveItemsUrl, deleteUrl,
+  function(document, containerId, postTo, retrieveItemsUrl, deleteUrl,
            subjectId, editableUrl, createADiv, createTheForm,
            createTheGrid, appendChild, createTheMapping,
            refreshGrid, initializeTheForm) {
-
+    
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-
+    
     createTheForm = createTheForm ?
       createTheForm :
       src.base.control.wall.form.create;
-
+    
     createTheGrid = createTheGrid ?
       createTheGrid :
       src.base.control.gridBuilder.initialize;
-
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     createTheMapping = createTheMapping ?
       createTheMapping :
       src.base.control.wall.createTheMapping;
-
+    
     refreshGrid = refreshGrid ?
       refreshGrid :
       src.base.control.gridBuilder.refresh;
-
+    
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.wall.form.initialize;
-
-
+    
+    
     /* START */
-
-
+    
+    
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.wall;
     var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
-
+    
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-
-
+    
+    
     //Form
-    var entryForm = createTheForm(postTo,
+    var entryForm = createTheForm(document, 
+                                  postTo,
                                   subjectId);
      //Grid
 

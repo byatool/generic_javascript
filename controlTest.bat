@@ -79,6 +79,8 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingAColumnFromRowMap" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingARow" ^
 --namespace="src.test.control.gridBuilder.row.whenCreatingRows" ^
+--namespace="src.test.control.login.whenInitializingALogin" ^
+--namespace="src.test.control.login.whenCreatingTheFormDetails" ^
 --output_mode=compiled ^
 --compiler_jar="c:/lib/closure/compiler.jar" ^
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" ^

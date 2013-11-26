@@ -36,6 +36,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   var createTheGrid_;
   var createTheMapping_;
   var createdGrid_;
+  var document_;
   var form_;
   var gridOptions_;
   var gridResult_;
@@ -55,6 +56,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     form_ = {};
     createTheForm_ = function(){ return form_; };
     
+    document_ = {};
     gridResult_ = {};
     createdGrid_ = {};
     gridOptions_ = {};
@@ -73,7 +75,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, PostTo_, RetrieveItemsUrl_, DeleteUrl_, SubjectId_,
+    return Current_.initialize(document_, ParentContainerId_, PostTo_, RetrieveItemsUrl_, DeleteUrl_, SubjectId_,
                                EditableUrl_, createADiv_, createTheForm_, createTheGrid_, appendChild_,
                                createTheMapping_, refreshGrid_, initializeTheForm_);
   }; 
@@ -101,8 +103,9 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   it('should create the form.', function() {
     var methodWasCalled = false;
     
-    createTheForm_ = function(postTo, subjectId){
-      methodWasCalled = postTo === PostTo_ &&
+    createTheForm_ = function(document, postTo, subjectId){
+      methodWasCalled = document === document_ &&
+        postTo === PostTo_ &&
         subjectId === SubjectId_;
     };
     
