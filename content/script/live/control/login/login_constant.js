@@ -30,6 +30,14 @@ src.base.control.login.constant.EmptyUsername = 'Username is required.';
  @type {string}
  @protected
  */
+src.base.control.login.constant.IdForm = 'loginForm';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.login.constant.IdPassword = 'password';
 
 
@@ -46,7 +54,7 @@ src.base.control.login.constant.IdUsername = 'username';
  @type {string}
  @protected
  */
-src.base.control.login.constant.LabelPassword = 'Password:';
+src.base.control.login.constant.LabelPassword = 'password:';
 
 
 /**
@@ -54,7 +62,7 @@ src.base.control.login.constant.LabelPassword = 'Password:';
  @type {string}
  @protected
  */
-src.base.control.login.constant.LabelUsername = 'Username:';
+src.base.control.login.constant.LabelUsername = 'username:';
 
 
 

@@ -28,6 +28,7 @@ src.test.control.login.whenInitializingALogin.describe = function () {
   var createTheFormDetails_;
   var initializeFormBuilder_;
   var parentContainer_;
+  var postSubmit_;
   
   
   //Test Hooks
@@ -36,17 +37,18 @@ src.test.control.login.whenInitializingALogin.describe = function () {
     parentContainer_ = {};
     
     appendChild_ = function() {};
-    createADiv_ = function() {};
+    createADiv_ = function() { return parentContainer_; };
     createTheFormDetails_ = function() {};
     initializeFormBuilder_ = function() {};
+    postSubmit_ = function(){};
   });
   
   
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, createADiv_, initializeFormBuilder_,
-                               createTheFormDetails_, appendChild_);
+    return Current_.initialize(ParentContainerId_, PostTo_, postSubmit_, createADiv_, 
+                               createTheFormDetails_, initializeFormBuilder_, appendChild_);
   };
   
   
@@ -76,20 +78,37 @@ src.test.control.login.whenInitializingALogin.describe = function () {
       return formDetails;
     };
     
-    
-    initializeFormBuilder_ = function(id, url, rules){
+    initializeFormBuilder_ = function(id, url, rules, postSubmit){
       methodWasCalled = id === Constant_.IdForm !== undefined &&
         id === Constant_.IdForm &&
         url === PostTo_ &&
-        rules === formDetails;
+        rules === formDetails &&
+        postSubmit === postSubmit_;
     };
-    
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
   
+  
+  it('should append the form to the parent container.', function() {
+    var methodWasCalled = false;
+    var theForm = {};
+    
+    initializeFormBuilder_ = function(){
+      return theForm;
+    };
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === parentContainer_ && child === theForm);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
   
   it('should return the parent container.', function() {
     expect(callTheMethod_()).toBe(parentContainer_);

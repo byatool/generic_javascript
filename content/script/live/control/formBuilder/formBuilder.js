@@ -107,6 +107,8 @@ src.base.control.formBuilder.createTheButton_ =
  @param {string} postTo The url for the form to post to.
  @param {Object} controlSpecs The list representation of the
  needed inputs.
+ @param {?function} postSubmit The function to be called after
+ the form submits.  This can be null.
  @param {?function} createAForm The function used to create the
  form.
  @param {?function} forEach The function used to loop through
@@ -127,7 +129,7 @@ src.base.control.formBuilder.createTheButton_ =
  @export
  */
 src.base.control.formBuilder.initialize =
-  function(containerId, postTo, controlSpecs, createAForm, forEach,
+  function(containerId, postTo, controlSpecs, postSubmit, createAForm, forEach,
            createADiv, createControl, createAButton, appendChild,
            createValidation, initializeTheForm) {
     
@@ -203,12 +205,14 @@ src.base.control.formBuilder.initialize =
     
     var validationWrapper = createValidation(controlSpecs);
     var datePickerInformation = Current_.createTheDatePickerOptions_(datePickerTextboxes);
+
+    postSubmit = postSubmit ? postSubmit : function() {};
     
     initializeTheForm(form,
                       datePickerInformation,
                       validationWrapper,
                       null,
-                      function() {});
+                      postSubmit);
     
     return container;
   };

@@ -40,6 +40,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   var forEach_;
   var parentContainer_;
   var parentForm_;
+  var postSubmit_;
   
   
   //Test Hooks
@@ -57,6 +58,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     createValidation_ = function(){};
     forEach_ = function(){};
     initializeTheForm_ = function(){};
+    postSubmit_ = function() {};
     parentContainer_ = function() {};;
   });
   
@@ -64,7 +66,7 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, PostTo_, controlSpecs_, createAForm_, forEach_,
+    return Current_.initialize(ParentContainerId_, PostTo_, controlSpecs_, postSubmit_, createAForm_, forEach_,
                                createADiv_, createAControl_, createAButton_, appendChild_, createValidation_,
                                initializeTheForm_);
   };
@@ -233,9 +235,25 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
         datePickerOptions[FormConstant_.DatepickerTextboxes].length === 0 &&
         validate === validation &&
         autoFillParameters === null &&
-        onClick !== null;
+        onClick === postSubmit_;
       
     };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+   
+  it('should initialize the form with a junk function if no on submit function is given.', function() {
+    var methodWasCalled = true;
+    postSubmit_ = null;
+    
+    initializeTheForm_ = function(form, datePickerOptions, validate, autoFillParameters,
+                                  onClick){
+      onClick();
+    };
+    
     
     callTheMethod_();
     

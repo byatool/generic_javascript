@@ -19,6 +19,7 @@ python c:/lib/closure/closure-library/closure/bin/closurebuilder.py ^
 --namespace="src.base.control.formatTextAreaDisplay.html" ^
 --namespace="src.base.control.formComponent" ^
 --namespace="src.base.control.gridBuilder" ^
+--namespace="src.base.control.login" ^
 --namespace="src.base.control.messageBox" ^
 --namespace="src.base.control.pager" ^
 --namespace="src.base.control.popupDatePicker" ^
