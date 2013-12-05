@@ -16,11 +16,14 @@ src.test.helper.domHelper.whenSubmittingToAGetUrl.describe = function () {
   
   var Url_ = goog.string.getRandomString();
   
+  var createFromMap_;
   var createRequest_;
   var getResponseJson_;
   var listen_;
+  var parameters_;
   var request_;
   var result_;
+  var toString_;
   var successMethod_;
   
   
@@ -33,16 +36,18 @@ src.test.helper.domHelper.whenSubmittingToAGetUrl.describe = function () {
     result_.target = {};
     result_.target.getResponseJson = function() {};
     
+    createFromMap_ = function() {};
     createRequest_ = function(){ return request_; };
     listen_ = function(){};
+    toString_ = function(){};
     successMethod_ = function(){};
     
   });
   
   //Support Methods
   var callTheMethod_ = function() {
-    return Current_.submitToGetUrl(Url_, successMethod_, createRequest_,
-                                listen_);
+    return Current_.submitToGetUrl(Url_, parameters_, successMethod_, createRequest_,
+                                   listen_, createFromMap_, toString_);
   };
   
   
@@ -89,19 +94,68 @@ src.test.helper.domHelper.whenSubmittingToAGetUrl.describe = function () {
     
     expect(methodWasCalled).toBe(3);
   });
-  
-  
-  it('should send the request', function() {
-    var methodWasCalled = false;
 
-    request_.send = function(){
-      methodWasCalled = true;
+
+  
+  it('should not add query items if parameters is null.', function() {
+    var methodWasCalled = false;
+    
+    parameters_ = null;
+    
+    request_.send = function(url, method){
+      methodWasCalled = url === Url_ &&
+        method === 'GET';
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
+  
+  
+  
+  it('should create the query item string if parameters is not null.', function() {
+    var methodWasCalled = 0;
+    var createdMap = {};
+    
+    parameters_ = {};
+    
+    toString_ = function(item) {
+      methodWasCalled += item === createdMap;
+    };
+    
+    createFromMap_ = function(parameters){
+      methodWasCalled += parameters === parameters_;
+      
+      return createdMap;
+    };
+    
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(2);
+  });
+  
+  
+  it('should append the to string query items.', function() {
+    var methodWasCalled = false;
+    var toString = 'a';
+    
+    parameters_ = {};
+    
+    toString_ = function(){ return toString; };
+    
+    request_.send = function(url, method){
+      methodWasCalled = url === Url_ + '?' + toString &&
+        method === 'GET';
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
 };
 
 

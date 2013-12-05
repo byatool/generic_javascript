@@ -22,9 +22,9 @@ goog.provide('src.base.control.formBuilder');
  */
 src.base.control.formBuilder.createTheContainer_ =
   function(containerId, createADiv) {
-    
+
     var ControlConstant_ = src.base.control.controlConstant;
-    
+
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
@@ -33,24 +33,24 @@ src.base.control.formBuilder.createTheContainer_ =
 
 
 /**
- @param {Object} datePickerTextboxes The array of textboxes needing a 
+ @param {Object} datePickerTextboxes The array of textboxes needing a
  date picker.
  @return {Object} The datepicker options
  @private
  */
 src.base.control.formBuilder.createTheDatePickerOptions_ =
   function(datePickerTextboxes) {
-    
+
     var DatePickerConstant_ = src.base.control.popupDatePicker.constant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-    
+
     var datePickerInformation = {};
     var datePickerOptions = {};
     datePickerOptions[DatePickerConstant_.ButtonText] = '';
     datePickerOptions[DatePickerConstant_.TextboxName] = 'theTextbox';
     datePickerInformation[FormComponentConstant_.DatepickerOptions] = datePickerOptions;
     datePickerInformation[FormComponentConstant_.DatepickerTextboxes] = datePickerTextboxes;
-    
+
     return datePickerInformation;
   };
 
@@ -67,7 +67,7 @@ src.base.control.formBuilder.createTheForm_ =
   function(cssClass, postTo, formId, createAForm) {
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-    
+
     var formAttributes = {};
     formAttributes[ControlConstant_.Action] = postTo;
     formAttributes[ControlConstant_.Class] = cssClass;
@@ -88,10 +88,10 @@ src.base.control.formBuilder.createTheForm_ =
  */
 src.base.control.formBuilder.createTheButton_ =
   function(buttonId, buttonClass, createAButton) {
-    
+
     var ControlConstant_ = src.base.control.controlConstant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-    
+
     var submitButtonAttributes = {};
     submitButtonAttributes[ControlConstant_.Id] = buttonId;
     submitButtonAttributes[ControlConstant_.Type] = ControlConstant_.Button;
@@ -132,53 +132,53 @@ src.base.control.formBuilder.initialize =
   function(containerId, postTo, controlSpecs, postSubmit, createAForm, forEach,
            createADiv, createControl, createAButton, appendChild,
            createValidation, initializeTheForm) {
-    
+
     createAForm = createAForm ?
       createAForm :
       src.base.helper.domCreation.form;
-    
+
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-    
+
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-    
+
     createControl = createControl ?
       createControl :
       src.base.control.formBuilder.control.createControl;
-    
+
     createAButton = createAButton ?
       createAButton :
       src.base.helper.domCreation.button;
-    
+
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-    
+
     createValidation = createValidation ?
       createValidation :
       src.base.control.formBuilder.validation.createValidation;
-    
+
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.formComponent.initialize;
-    
-    
+
+
     /* START */
-    
+
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.formBuilder;
     var DatePickerConstant_ = src.base.control.popupDatePicker.constant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-    
-    
+
+
     var container = Current_.createTheContainer_(containerId,
                                                  createADiv);
-    
-    
+
+
     var form = Current_.createTheForm_(Constant_.FormId,
                                        postTo,
                                        Constant_.FormId,
@@ -186,34 +186,34 @@ src.base.control.formBuilder.initialize =
     //BAD It is difficult to test the interaction with this array
     //  since there is nothing to inject...
     var datePickerTextboxes = [];
-    
+
     forEach(controlSpecs, function(control) {
       var element = createControl(control,
                                   datePickerTextboxes);
-      
+
       appendChild(form, element);
     });
-    
-    
+
+
     var submitButton = Current_.createTheButton_(Constant_.FormSubmit,
                                                  FormComponentConstant_.ButtonClass,
                                                  createAButton);
-    
+
     appendChild(form, submitButton);
     appendChild(container, form);
-    
-    
+
+
     var validationWrapper = createValidation(controlSpecs);
     var datePickerInformation = Current_.createTheDatePickerOptions_(datePickerTextboxes);
 
     postSubmit = postSubmit ? postSubmit : function() {};
-    
+
     initializeTheForm(form,
                       datePickerInformation,
                       validationWrapper,
                       null,
                       postSubmit);
-    
+
     return container;
   };
 

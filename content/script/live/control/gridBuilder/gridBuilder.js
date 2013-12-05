@@ -176,7 +176,7 @@ src.base.control.gridBuilder.initialize =
     
     submitToUrl = submitToUrl ?
       submitToUrl :
-      src.base.helper.domHelper.submitToUrl;
+      src.base.helper.domHelper.submitToGetUrl;
     
     createGridRefresh = createGridRefresh ?
       createGridRefresh :
@@ -285,7 +285,7 @@ src.base.control.gridBuilder.refresh =
 
     submitToUrl = submitToUrl ?
       submitToUrl :
-       src.base.helper.domHelper.submitToUrl;
+      src.base.helper.domHelper.submitToGetUrl;
 
     createGridRefresh = createGridRefresh ?
       createGridRefresh :

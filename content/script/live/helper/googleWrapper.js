@@ -166,4 +166,13 @@ src.base.helper.googleWrapper.split =
     return text.split(by);
   };
 
-
+/**
+ @param {Object} item The object to call
+ toString from.
+ @return {string} The result from toString()
+ @protected
+ */
+src.base.helper.googleWrapper.toString =
+  function(item) {
+    return item.toString();
+  };

@@ -177,21 +177,21 @@ src.base.control.simpleInformationDisplay.initialize = function(url, parameters,
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
-  submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
-
-
+  submitData = submitData ? submitData : src.base.helper.domHelper.submitToGetUrl;
+  
+  
   var parentContainer = createADiv({'id': options[Current.ContainerId], 'class': options[Current.ContainerClass]});
-
+  
   var rows = goog.array.map(options[Current.LayoutItems], function(currentItem) {
     return createLayoutItem(currentItem, options, createADiv, appendChild);
   });
-
+  
   goog.array.forEach(rows, function(item) {
     appendChild(parentContainer, item);
   });
-
+  
   submitData(url, parameters, createTheCallBack(parentContainer, fillTheRows, setTextContent));
-
+  
   return parentContainer;
 };
 
@@ -210,7 +210,7 @@ src.base.control.simpleInformationDisplay.refresh = function(container, url, par
   createTheCallBack = createTheCallBack ? createTheCallBack : src.base.control.simpleInformationDisplay.createRowsHandler;
   fillTheRows = fillTheRows ? fillTheRows : src.base.control.simpleInformationDisplay.fillTheRows;
   setTextContent = setTextContent ? setTextContent : goog.dom.setTextContent;
-  submitData = submitData ? submitData : src.base.helper.domHelper.submitToUrl;
+  submitData = submitData ? submitData : src.base.helper.domHelper.submitToGetUrl;
 
   var callBack = createTheCallBack(container, fillTheRows, setTextContent);
   submitData(url, parameter, callBack);

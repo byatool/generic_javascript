@@ -184,16 +184,20 @@ src.base.helper.domHelper.submitToUrl =
 
 /**
  @param {string} url The url to submit to.
- @param {function} successMethod The function to be called on 
+ @param {Object} parameters The optional parameters to send.
+ @param {?function} successMethod The function to be called on 
  successful return.
- @param {function} createRequest The function used to create a 
+ @param {?function} createRequest The function used to create a 
  xhrio request.
- @param {function} listen The event setter.
+ @param {?function} listen The event setter.
+ @param {?function} createFromMap The function used to turn
+ @param {?function} toString The .toString wrapper function.
+ the parameters into a data map.
  @export
  */
 src.base.helper.domHelper.submitToGetUrl =
-  function(url, successMethod, createRequest,
-           listen) {
+  function(url, parameters, successMethod, createRequest,
+           listen, createFromMap, toString) {
     
     createRequest = createRequest ? 
       createRequest : 
@@ -202,6 +206,14 @@ src.base.helper.domHelper.submitToGetUrl =
     listen = listen ? 
       listen : 
       goog.events.listen;
+    
+    createFromMap = createFromMap ? 
+      createFromMap : 
+      goog.Uri.QueryData.createFromMap;
+    
+    toString = toString ? 
+      toString : 
+      src.base.helper.googleWrapper.toString;
     
     
     /* Start */
@@ -212,7 +224,9 @@ src.base.helper.domHelper.submitToGetUrl =
       successMethod(result.target.getResponseJson());
     });
     
-    request.send(url, 'GET');
+    var queryItemString = parameters !== null && parameters !== undefined ?
+          '?' + toString(createFromMap(parameters)) :
+          '';
+    
+    request.send(url + queryItemString, 'GET');
   };
-
-

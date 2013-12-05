@@ -318,12 +318,12 @@ src.test.control.autocomplete.whenInitializingAnAutocomplete.describe = function
   });
   
   
-  it('should set the autocomplete method to post.', function() {
+  it('should set the autocomplete method to get.', function() {
     var methodWasCalled = false;
     
     setTheAutocompleteMethod_ = function(autocomplete, method) {
       methodWasCalled = autocomplete === autocomplete_ &&
-        method === 'POST';
+        method === 'GET';
     };
     
     

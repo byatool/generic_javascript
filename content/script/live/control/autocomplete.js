@@ -297,7 +297,7 @@ src.base.control.autocomplete.initialize =
     createATextbox = createATextbox ?
       createATextbox :
       src.base.helper.domCreation.textbox;
-
+    
     createLabelInput = createLabelInput ?
       createLabelInput :
       src.base.control.autocomplete.createALabelInput_;
@@ -389,7 +389,7 @@ src.base.control.autocomplete.initialize =
                              goog.dom.getElement,
                              goog.dom.forms.setValue);
     
-    setTheAutocompleteMethod(autocomplete, 'POST');
+    setTheAutocompleteMethod(autocomplete, 'GET');
     
     return parentContainer;
 };
