@@ -47,7 +47,7 @@ src.base.control.dropDownList.initialize =
     
     submitData = submitData ?
       submitData :
-      src.base.helper.domHelper.submitToUrl;
+      src.base.helper.domHelper.submitToGetUrl;
     
     fillTheList = fillTheList ?
       fillTheList :
