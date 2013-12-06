@@ -23,7 +23,15 @@ src.base.control.formBuilder.constant.DateSuffix = 'date';
  @protected
  */
 src.base.control.formBuilder.constant.DefaultValue = 'defaultValue';
-  
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
+src.base.control.formBuilder.constant.FormClass = 'formClass';
+
 
 /**
  @const
@@ -38,7 +46,7 @@ src.base.control.formBuilder.constant.FormId = 'form';
  @type {string}
  @protected
  */
-src.base.control.formBuilder.constant.FormRowContainer = 'formRow';
+src.base.control.formBuilder.constant.FormRowContainer = 'inputContainerClass';
 
 
 /**

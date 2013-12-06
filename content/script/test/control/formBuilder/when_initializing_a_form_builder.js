@@ -95,8 +95,9 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
     
     createAForm_ = function(attributes){
       methodWasCalled = Constant_.FormId !== undefined &&
+        Constant_.FormClass !== undefined &&
         attributes[ControlConstant_.Action] === PostTo_ &&
-        attributes[ControlConstant_.Class] === Constant_.FormId &&
+        attributes[ControlConstant_.Class] === Constant_.FormClass &&
         attributes[ControlConstant_.Method] === ControlConstant_.Post &&
         attributes[ControlConstant_.Id] === Constant_.FormId;
       

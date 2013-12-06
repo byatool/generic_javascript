@@ -140,46 +140,46 @@ src.base.control.formBuilder.initialize =
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-
+    
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-
+    
     createControl = createControl ?
       createControl :
       src.base.control.formBuilder.control.createControl;
-
+    
     createAButton = createAButton ?
       createAButton :
       src.base.helper.domCreation.button;
-
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     createValidation = createValidation ?
       createValidation :
       src.base.control.formBuilder.validation.createValidation;
-
+    
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.formComponent.initialize;
-
-
+    
+    
     /* START */
-
+    
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.formBuilder;
     var DatePickerConstant_ = src.base.control.popupDatePicker.constant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-
-
+    
+    
     var container = Current_.createTheContainer_(containerId,
                                                  createADiv);
-
-
-    var form = Current_.createTheForm_(Constant_.FormId,
+    
+    
+    var form = Current_.createTheForm_(Constant_.FormClass,
                                        postTo,
                                        Constant_.FormId,
                                        createAForm);
