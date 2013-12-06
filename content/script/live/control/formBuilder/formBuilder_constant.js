@@ -62,6 +62,14 @@ src.base.control.formBuilder.constant.FormSubmit = 'formSubmit';
  @type {string}
  @protected
  */
+src.base.control.formBuilder.constant.Hidden = 'hidden';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.formBuilder.constant.IsDate = 'isDate';
 
 
@@ -79,7 +87,6 @@ src.base.control.formBuilder.constant.LabelText = 'label';
  @protected
  */
 src.base.control.formBuilder.constant.Parameters = 'parameters';
-
 
 
 /**

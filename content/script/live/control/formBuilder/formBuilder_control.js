@@ -7,6 +7,9 @@ goog.require('src.base.helper.domCreation');
 
 goog.provide('src.base.control.formBuilder.control');
 
+//TODO
+// PUll the create methods to a file for each.  Too much is being
+//  tested on the the test file for this control.
 
 /**
  @param {Object} controlSpec The various control specifications.
@@ -110,6 +113,33 @@ src.base.control.formBuilder.control.createAndAppendATextbox_ =
 
 /* PROTECTED FUNCTIONS */
 
+/**
+ @param {Object} controlSpec The specifications of the hidden to
+ create.
+ @param {function} createHidden The function used to create a
+ hidden element.
+ @param {function} setValue The function used to set the hidden's
+ value.
+ @return {Object} The created hidden element.
+ @protected
+ */
+src.base.control.formBuilder.control.createAHidden =
+  function(controlSpec, createHidden, setValue) {
+    var Constant_ = src.base.control.formBuilder.constant;
+    var ControlConstant_ = src.base.control.controlConstant;
+    
+    var hiddenAttributes = {};
+    hiddenAttributes[ControlConstant_.Class] = controlSpec[ControlConstant_.Class];
+    hiddenAttributes[ControlConstant_.Id] = controlSpec[ControlConstant_.Id];
+    hiddenAttributes[ControlConstant_.Name] = controlSpec[ControlConstant_.Id];
+    var hidden = createHidden(hiddenAttributes);
+    
+    setValue(hidden, controlSpec[ControlConstant_.Value]);
+    
+    return hidden;
+  };
+
+
 
 /**
  @param {Object} controlSpec The various control specifications.
@@ -120,6 +150,8 @@ src.base.control.formBuilder.control.createAndAppendATextbox_ =
  label.
  @param {?function} createATextbox The function used to create a
  textbox.
+ @param {?function} createAHidden The function used to create a hidden
+ element.
  @param {?function} createAndInitializeASelect The function used to
  create a drop down list.
  @param {?function} appendChild The function used to append all
@@ -133,7 +165,7 @@ src.base.control.formBuilder.control.createAndAppendATextbox_ =
  */
 src.base.control.formBuilder.control.createControl =
   function(controlSpec, datePickerControls, createADiv, createALabel,
-           createATextbox, createAndInitializeASelect, appendChild,
+           createATextbox, createAHidden,createAndInitializeASelect, appendChild,
            createAClearDiv, insert) {
     
     createADiv = createADiv ?
@@ -147,6 +179,10 @@ src.base.control.formBuilder.control.createControl =
     createATextbox = createATextbox ?
       createATextbox :
       src.base.helper.domCreation.textbox;
+    
+    createAHidden = createAHidden ?
+      createAHidden :
+      src.base.control.formBuilder.control.createAHidden;
     
     createAndInitializeASelect = createAndInitializeASelect ? 
       createAndInitializeASelect : 
@@ -209,6 +245,14 @@ src.base.control.formBuilder.control.createControl =
       
       break;
       
+    case Constant_.Hidden:
+
+      var hidden = createAHidden(controlSpec,
+                                 src.base.helper.domCreation.hidden,
+                                 goog.dom.forms.setValue);
+      
+      appendChild(formRow, hidden);
+      break;
     case Constant_.Select:
       appendChild(formRow,
                   createAndInitializeASelect(controlSpec,
@@ -225,6 +269,6 @@ src.base.control.formBuilder.control.createControl =
     }
     
     appendChild(formRow, createAClearDiv());
-     
+    
     return formRow;
   };

@@ -1,3 +1,4 @@
+goog.require('goog.dom.forms');
 goog.require('goog.string');
 goog.require('src.base.control.controlConstant');
 goog.require('src.base.control.formBuilder.constant');
@@ -21,12 +22,14 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
   
   var CssClass_ = goog.string.getRandomString();  
   var Id_ = goog.string.getRandomString();
+  var Value_ = goog.string.getRandomString();
   
   var appendChild_;
   var container_;
   var controlSpec_;
   var createAClearDiv_;
   var createADiv_;
+  var createAHidden_;
   var createALabel_;
   var createAndInitializeSelect;
   var createATextbox_;
@@ -61,6 +64,7 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
       }};
     
     
+    createAHidden_ = function(){ };
     createALabel_ = function() {};
     createAndInitializeSelect = function(){};
     createATextbox_ = function(){};
@@ -72,8 +76,8 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
   
   var callTheMethod_ = function() {
     return Current_.createControl(controlSpec_, datePickerControls_, createADiv_, createALabel_,
-                                  createATextbox_, createAndInitializeSelect, appendChild_, createAClearDiv_,
-                                  insert_);
+                                  createATextbox_, createAHidden_, createAndInitializeSelect,
+                                  appendChild_, createAClearDiv_, insert_);
   };
   
   
@@ -246,6 +250,22 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
     expect(methodWasCalled).toBe(true);
   });
   
+   
+  it('should append the date picker container to the parent.', function() {
+    var methodWasCalled = false;
+    
+    controlSpec_[ControlConstant_.Type] = Constant_.Date;
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === container_ && child === dateContainer_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
   
   it('should not create a date picker if it is not a date control.', function() {
     var methodWasCalled = false;
@@ -258,7 +278,6 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
     
     expect(methodWasCalled).toBe(false);
   });
-  
   
   
   it('should create a select if it is the type.', function() {
@@ -315,16 +334,16 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
     
     expect(methodWasCalled).toBe(false);
   });
-   
   
-  it('should append the date picker container to the parent.', function() {
+  
+  it('should create a hidden if that is the type.', function() {
     var methodWasCalled = false;
+    controlSpec_[ControlConstant_.Type] = Constant_.Hidden;
     
-    controlSpec_[ControlConstant_.Type] = Constant_.Date;
-    
-    appendChild_ = function(parent, child){
-      methodWasCalled = methodWasCalled || 
-        (parent === container_ && child === dateContainer_);
+    createAHidden_ = function(controlSpec, createHidden, setValue) {
+      methodWasCalled = controlSpec &&
+        createHidden === src.base.helper.domCreation.hidden &&
+        setValue === goog.dom.forms.setValue;
     };
     
     callTheMethod_();
@@ -333,6 +352,26 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
   });
   
   
+  it('should append the hidden to the row.', function() {
+    var methodWasCalled = false;
+    var hidden = {};
+    controlSpec_[ControlConstant_.Type] = Constant_.Hidden;
+    
+    createAHidden_ = function(){
+      return hidden;
+    };
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === container_ && child === hidden);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+   
   it('should append a clear div.', function() {
     var methodWasCalled = false;
     var clearDiv = {};
@@ -359,6 +398,6 @@ src.test.control.formBuilder.control.whenCreatingAControl.describe = function ()
   
 };
 
-describe('When creating a control, it', function() {
+describe('When creating a form builder control, it', function() {
   src.test.control.formBuilder.control.whenCreatingAControl.describe();
 });

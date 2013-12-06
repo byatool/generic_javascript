@@ -112,3 +112,11 @@ src.base.control.controlConstant.Text = 'text';
  @export
  */
 src.base.control.controlConstant.Type = 'type';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
+src.base.control.controlConstant.Value = 'value';
