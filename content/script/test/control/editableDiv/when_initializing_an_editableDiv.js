@@ -157,20 +157,13 @@ src.test.control.editableDiv.whenInitializingAnEditableDiv.describe = function (
   it('should create the form.', function() {
     var methodWasCalled = false;
     
-    createTheForm_ = function(formId, text, id, postTo, createAForm, createATextArea,
-                              createAHidden, createAButton, setValue, appendChild) {
+    createTheForm_ = function(formId, text, id, postTo) {
       
       methodWasCalled = Constant_.FormId !== undefined && 
         formId === Constant_.FormId &&
         text === Text_ &&
         id === Id_ &&
-        postTo === PersistUrl_ &&
-        createAForm === src.base.helper.domCreation.form &&
-        createATextArea === src.base.helper.domCreation.textarea &&
-        createAButton === src.base.helper.domCreation.button &&
-        setValue === goog.dom.forms.setValue &&
-        appendChild === appendChild_ &&
-        createAHidden === src.base.helper.domCreation.hidden;
+        postTo === PersistUrl_;
       
       return createFormResult_;
       

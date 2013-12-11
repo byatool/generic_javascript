@@ -22,6 +22,14 @@ src.base.control.editableDiv.constant.ButtonCancelText = 'x';
  @type {string}
  @protected
  */
+src.base.control.editableDiv.constant.ButtonContainer = 'buttonContainer';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.editableDiv.constant.EditTextArea = 'editTextArea';
 
 

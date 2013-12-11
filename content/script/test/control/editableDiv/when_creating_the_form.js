@@ -28,8 +28,10 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   var Text_ = goog.string.getRandomString();
   
   var appendChild_;
+  var buttonContainer_;
   var cancelButton_;
   var createAButton_;
+  var createADiv_;
   var createAForm_;
   var createAHidden_;
   var createATextArea_;
@@ -42,14 +44,13 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   //Test Hooks
   
   beforeEach(function() {
+    buttonContainer_ = {};
     cancelButton_ = {};
     editTextArea_ = {};
     form_ = {};
     submitButton_ = {};
     
-    appendChild_ = function(){};
-    createAForm_ = function() { return form_; };
-    createATextArea_ = function() { return editTextArea_;};
+    
     
     createAButton_ = function(attributes){
       switch(attributes[ControlConstant_.Class]) {
@@ -64,9 +65,14 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
       default:
         return submitButton_;                      
       }};
-
+    
+    appendChild_ = function(){};
+    createADiv_ = function(){ return buttonContainer_; };
+    createAForm_ = function() { return form_; };
+    createATextArea_ = function() { return editTextArea_;};
     createAHidden_ = function(){};
     setValue_ = function(){};
+    
   });
   
   
@@ -74,10 +80,13 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   
   var callTheMethod_ = function() {
     return Current_.createTheForm(FormId_, Text_, Id_, PostTo_, createAForm_, createATextArea_,
-                                  createAHidden_, createAButton_, setValue_, appendChild_);
+                                  createAHidden_, createAButton_, createADiv_,
+                                  setValue_, appendChild_);
   };
   
+  
   //Test Methods
+  
   it('should create the form.', function() {
     var methodWasCalled = false;
     createAForm_ = function(attributes){
@@ -195,7 +204,21 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
     
     expect(methodWasCalled).toBe(true);
   });
+   
   
+  it('should create the button container.', function() {
+    var methodWasCalled = false;
+    
+    createADiv_ = function(attributes){
+      methodWasCalled = methodWasCalled ||
+        (Constant_.ButtonContainer !== undefined &&
+         attributes[ControlConstant_.Class] === Constant_.ButtonContainer);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
   
   
   it('should create the Submit button.', function() {
@@ -216,12 +239,12 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   });
   
   
-  it('should append the submit button to the form.', function() {
+  it('should append the submit button to the button container.', function() {
     var methodWasCalled = false;
     
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
-        (parent === form_ && child === submitButton_);
+        (parent === buttonContainer_ && child === submitButton_);
     };
     
     callTheMethod_();
@@ -247,12 +270,26 @@ src.test.control.editableDiv.form.whenCreatingTheForm.describe = function () {
   });
   
   
-  it('should append the cancel button to the form.', function() {
+  it('should append the cancel button to the button container.', function() {
     var methodWasCalled = false;
     
     appendChild_ = function(parent, child){
       methodWasCalled = methodWasCalled || 
-        (parent === form_ && child === cancelButton_);
+        (parent === buttonContainer_ && child === cancelButton_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should append the button container to the parent container.', function() {
+    var methodWasCalled = false;
+    
+    appendChild_ = function(parent, child){
+      methodWasCalled = methodWasCalled || 
+        (parent === form_ && child === buttonContainer_);
     };
     
     callTheMethod_();

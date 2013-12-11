@@ -22,7 +22,7 @@ goog.provide('src.base.control.editableDiv');
 src.base.control.editableDiv.createTheContainer_ =
   function(containerId, createADiv) {
     var ControlConstant_ = src.base.control.controlConstant;
-    
+
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
@@ -46,18 +46,18 @@ created text container to the parent container.
 src.base.control.editableDiv.createAndAppendTheTextContainer_ =
   function(parentContainer, text, createAPre,
            setTextContent, appendChild) {
-    
+
     var ControlConstant_ = src.base.control.controlConstant;
     var Constant_ = src.base.control.editableDiv.constant;
-    
+
     var textContainerAttributes = {};
     textContainerAttributes[ControlConstant_.Class] = Constant_.TextContainer;
-    
+
     var textContainer = createAPre(textContainerAttributes);
     setTextContent(textContainer, text);
-    
+
     appendChild(parentContainer, textContainer);
-    
+
     return textContainer;
   };
 
@@ -87,13 +87,7 @@ src.base.control.editableDiv.createAndAppendTheForm_ =
     var formResult = createTheForm(Constant_.FormId,
                                    text,
                                    id,
-                                   persistUrl,
-                                   src.base.helper.domCreation.form,
-                                   src.base.helper.domCreation.textarea,
-                                   src.base.helper.domCreation.hidden,
-                                   src.base.helper.domCreation.button,
-                                   goog.dom.forms.setValue,
-                                   appendChild);
+                                   persistUrl);
 
     var form = formResult[ControlConstant_.CreatedControl];
 
@@ -124,15 +118,15 @@ src.base.control.editableDiv.createAndAppendTheForm_ =
 src.base.control.editableDiv.applyTheEdittedText =
   function(parentForm, textContainer, getElementByClass,
            getValue, htmlEscape, setTextContent) {
-    
+
     var Constant_ = src.base.control.editableDiv.constant;
-    
+
     var editTextArea = getElementByClass(Constant_.EditTextArea,
                                          parentForm);
-    
+
     var text = getValue(editTextArea);
     var cleanText = htmlEscape(text);
-    
+
     setTextContent(textContainer, cleanText);
   };
 
@@ -153,13 +147,13 @@ src.base.control.editableDiv.createTheCancelHandler =
            revertText) {
     return function() {
       showElement(form, false);
-      
+
       revertText(form,
                  textContainer,
                  goog.dom.getRawTextContent,
                  goog.dom.getElementByClass,
                  goog.dom.forms.setValue);
-      
+
       showElement(textContainer, true);
     };
   };
@@ -236,8 +230,9 @@ src.base.control.editableDiv.revertText =
  @param {string} containerId The id for the overall container.
  @param {string} text The text to view, or edit.
  @param {string} id The id to be posted with the text.
- 
  @param {string} persistUrl The url to post the edit to.
+ @param {?function} createADiv The function used to create
+ the parent container.
  @param {?function} createAPre The method used  to create a
  div element.
  @param {?function} setTextContent The function used to set the

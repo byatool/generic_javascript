@@ -24,7 +24,8 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   
   
   //Fields
-  
+
+  var ButtonText_ = goog.string.getRandomString();
   var ParentContainerId_ = goog.string.getRandomString();
   var ParentContainerClass_ = goog.string.getRandomString();
   var PostTo_ = goog.string.getRandomString();
@@ -66,9 +67,9 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(ParentContainerId_, PostTo_, controlSpecs_, postSubmit_, createAForm_, forEach_,
-                               createADiv_, createAControl_, createAButton_, appendChild_, createValidation_,
-                               initializeTheForm_);
+    return Current_.initialize(ParentContainerId_, PostTo_, controlSpecs_, ButtonText_, postSubmit_,
+                               createAForm_, forEach_, createADiv_, createAControl_, createAButton_,
+                               appendChild_, createValidation_, initializeTheForm_);
   };
   
   
@@ -163,15 +164,16 @@ src.test.control.formBuilder.whenInitializingAFormBuilder.describe = function ()
         (Constant_.FormSubmit !== undefined &&
          attributes[ControlConstant_.Id] === Constant_.FormSubmit &&
          attributes[ControlConstant_.Type] === ControlConstant_.Button &&
-         attributes[ControlConstant_.Class] === FormComponentConstant_.ButtonClass);
+         attributes[ControlConstant_.Class] === FormComponentConstant_.ButtonClass &&
+         text === ButtonText_);
     };
     
     callTheMethod_();
     
     expect(methodWasCalled).toBe(true);
   });
-
-   
+  
+  
   it('should append the submit button to the form.', function() {
     var methodWasCalled = false;
     var submitButton = {};

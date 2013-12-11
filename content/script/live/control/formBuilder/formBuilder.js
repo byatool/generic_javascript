@@ -67,7 +67,7 @@ src.base.control.formBuilder.createTheForm_ =
   function(cssClass, postTo, formId, createAForm) {
     var Constant_ = src.base.control.formBuilder.constant;
     var ControlConstant_ = src.base.control.controlConstant;
-
+    
     var formAttributes = {};
     formAttributes[ControlConstant_.Action] = postTo;
     formAttributes[ControlConstant_.Class] = cssClass;
@@ -81,22 +81,23 @@ src.base.control.formBuilder.createTheForm_ =
  buttonId
  @param {string} buttonId The id for the button.
  @param {string} buttonClass The class for the button.
+ @param {string} buttonText The optional text for the button.
  @param {function} createAButton The function used to
  created the button.
  @return {Object} The created button.
  @private
  */
 src.base.control.formBuilder.createTheButton_ =
-  function(buttonId, buttonClass, createAButton) {
-
+  function(buttonId, buttonClass, buttonText, createAButton) {
+    
     var ControlConstant_ = src.base.control.controlConstant;
     var FormComponentConstant_ = src.base.control.formComponent.constant;
-
+    
     var submitButtonAttributes = {};
     submitButtonAttributes[ControlConstant_.Id] = buttonId;
     submitButtonAttributes[ControlConstant_.Type] = ControlConstant_.Button;
     submitButtonAttributes[ControlConstant_.Class] = FormComponentConstant_.ButtonClass;
-    return createAButton(submitButtonAttributes);
+    return createAButton(submitButtonAttributes, buttonText);
   };
 
 
@@ -107,6 +108,8 @@ src.base.control.formBuilder.createTheButton_ =
  @param {string} postTo The url for the form to post to.
  @param {Object} controlSpecs The list representation of the
  needed inputs.
+ @param {?string} buttonText The optional text for the submit
+ button.
  @param {?function} postSubmit The function to be called after
  the form submits.  This can be null.
  @param {?function} createAForm The function used to create the
@@ -129,14 +132,15 @@ src.base.control.formBuilder.createTheButton_ =
  @export
  */
 src.base.control.formBuilder.initialize =
-  function(containerId, postTo, controlSpecs, postSubmit, createAForm, forEach,
-           createADiv, createControl, createAButton, appendChild,
-           createValidation, initializeTheForm) {
-
+  function(containerId, postTo, controlSpecs, buttonText,
+           postSubmit, createAForm, forEach,
+           createADiv, createControl, createAButton,
+           appendChild, createValidation, initializeTheForm) {
+    
     createAForm = createAForm ?
       createAForm :
       src.base.helper.domCreation.form;
-
+    
     forEach = forEach ?
       forEach :
       goog.array.forEach;
@@ -186,19 +190,20 @@ src.base.control.formBuilder.initialize =
     //BAD It is difficult to test the interaction with this array
     //  since there is nothing to inject...
     var datePickerTextboxes = [];
-
+    
     forEach(controlSpecs, function(control) {
       var element = createControl(control,
                                   datePickerTextboxes);
-
+      
       appendChild(form, element);
     });
-
-
+    
+    
     var submitButton = Current_.createTheButton_(Constant_.FormSubmit,
                                                  FormComponentConstant_.ButtonClass,
+                                                 buttonText,
                                                  createAButton);
-
+    
     appendChild(form, submitButton);
     appendChild(container, form);
 
