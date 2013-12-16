@@ -163,6 +163,14 @@ src.base.control.gridBuilder.constant.Map = 'mapping';
  @type {string}
  @export
  */
+src.base.control.gridBuilder.constant.MainParameter = 'mainParameter';
+
+
+/**
+ @const
+ @type {string}
+ @export
+ */
 src.base.control.gridBuilder.constant.Parameters = 'parameters';
 
 

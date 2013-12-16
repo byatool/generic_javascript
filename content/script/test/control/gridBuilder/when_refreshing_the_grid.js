@@ -213,15 +213,18 @@ src.test.control.gridBuilder.whenRefreshingTheGrid.describe = function() {
   
   it('should retrieve the information.', function() {
     var methodWasCalled = false;
-    
     var resultHandler = {};
     
+    var currentMainParameter = goog.string.getRandomString();
+    options_[Constant_.MainParameter] = currentMainParameter;
+     
     createResultHandler_ = function() {
       return resultHandler;
     };
     
-    submitToUrl_ = function(url, parameters, handler) {
+    submitToUrl_ = function(url, mainParameter, parameters, handler) {
       methodWasCalled = url === options_[Constant_.Url] &&
+        mainParameter ===  currentMainParameter &&
         parameters === options_[Constant_.Parameters] &&
         handler === resultHandler;
     };

@@ -34,27 +34,27 @@ src.base.control.gridBuilder.createPagerButtons =
   function(result, gridOptions, parentContainer,
            getElementByClass, initializeThePager, appendChild,
            refreshTheGrid) {
-
+    
     var ControlConstant_ = src.base.control.controlConstant;
     var Constant_ = src.base.control.gridBuilder.constant;
     var Pager_ = src.base.control.pager;
-
+    
     var containerRow = getElementByClass(Constant_.ButtonRowClass,
                                          parentContainer);
-
+    
     var existed = containerRow !== null &&
           containerRow != undefined;
-
+    
     var pagerOptions = {};
     pagerOptions[Pager_.ContainerId] = Constant_.ButtonRowId;
     pagerOptions[Pager_.ContainerClass] = Constant_.ButtonRowClass;
-
-
+    
+    
     pagerOptions[Pager_.Refresh] = function(page) {
       gridOptions[Constant_.Parameters][ControlConstant_.Page] = page;
       refreshTheGrid(gridOptions, parentContainer);
     };
-
+    
     containerRow = initializeThePager(result,
                                       gridOptions,
                                       pagerOptions,
@@ -112,21 +112,21 @@ src.base.control.gridBuilder.createTheResultHandler =
            setTextContent, swap, setClick,
            getElementByClass, createPagerButtons,
            refreshGrid) {
-
-
+    
+    
     var Constant_ = src.base.control.gridBuilder.constant;
     var Current_ = src.base.control.gridBuilder;
-
+    
     return function(result) {
       createTheHeaderRow(options, parentContainer);
       
       var createARow = options[Constant_.CreateARow] ?
             options[Constant_.CreateARow] :
             Current_.row.createARow;
-
+      
       createRows(result, parentContainer, options,
                  createARow, refreshGrid);
-
+      
       createPagerButtons(result, options, parentContainer,
                          getElementByClass, src.base.control.pager.initialize,
                          appendChild, src.base.control.gridBuilder.refresh);
@@ -176,7 +176,7 @@ src.base.control.gridBuilder.initialize =
     
     submitToUrl = submitToUrl ?
       submitToUrl :
-      src.base.helper.domHelper.submitToGetUrl;
+      src.base.helper.domHelper.submitRestfulGet;
     
     createGridRefresh = createGridRefresh ?
       createGridRefresh :
@@ -197,8 +197,8 @@ src.base.control.gridBuilder.initialize =
     parentContainerAttributes[ControlConstant_.Id] = options[Constant_.ContainerId];
     parentContainerAttributes[ControlConstant_.Class] = options[Constant_.ContainerClass];
     var parentContainer = createADiv(parentContainerAttributes);
-
-
+    
+    
     var gridRefresh = createGridRefresh(options,
                                         parentContainer,
                                         Current_.refresh);
@@ -215,11 +215,12 @@ src.base.control.gridBuilder.initialize =
                                                goog.dom.getElementByClass,
                                                Current_.createPagerButtons,
                                                gridRefresh);
-
+    
     submitToUrl(options[Constant_.Url],
+                options[Constant_.MainParameter],
                 options[Constant_.Parameters],
                 resultHandler);
-
+    
     return createControlResult(parentContainer,
                                options);
   };
@@ -254,11 +255,11 @@ src.base.control.gridBuilder.refresh =
            forEach, removeNode, createADiv,
            createTheResultHandler, appendChild,
            setTextContent, submitToUrl, createGridRefresh) {
-
+    
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-
+    
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
@@ -266,55 +267,55 @@ src.base.control.gridBuilder.refresh =
     createTheResultHandler = createTheResultHandler ?
       createTheResultHandler :
       src.base.control.gridBuilder.createTheResultHandler;
-
+    
     getElementsByClass = getElementsByClass ?
       getElementsByClass :
       goog.dom.getElementsByClass;
-
+    
     forEach = forEach ?
       forEach :
       goog.array.forEach;
-
+    
     removeNode = removeNode ?
       removeNode :
       goog.dom.removeNode;
-
+    
     setTextContent = setTextContent ?
       setTextContent :
       goog.dom.setTextContent;
-
+    
     submitToUrl = submitToUrl ?
       submitToUrl :
-      src.base.helper.domHelper.submitToGetUrl;
-
+      src.base.helper.domHelper.submitRestfulGet;
+    
     createGridRefresh = createGridRefresh ?
       createGridRefresh :
       src.base.control.gridBuilder.createGridRefresh;
-
-
+    
+    
     //START
-
+    
     var Constant_ = src.base.control.gridBuilder.constant;
     var Current_ = src.base.control.gridBuilder;
-
+    
     var children = getElementsByClass(Constant_.RowClass,
                                       grid);
     
     forEach(children, function(item) {
       removeNode(item);
     });
-
+    
     var possibleMessageRow = getElementsByClass(Constant_.MessageClass,
                                                 grid);
-
+    
     forEach(possibleMessageRow, function(item) {
       removeNode(item);
     });
-
+    
     var gridRefresh = createGridRefresh(options,
                                         grid,
                                         Current_.refresh);
-
+    
     var resultHandler = createTheResultHandler(options,
                                                grid,
                                                src.base.control.gridBuilder.header.createTheHeaderRow,
@@ -329,6 +330,7 @@ src.base.control.gridBuilder.refresh =
                                                gridRefresh);
     
     submitToUrl(options[Constant_.Url],
+                options[Constant_.MainParameter],
                 options[Constant_.Parameters],
                 resultHandler);
 };
