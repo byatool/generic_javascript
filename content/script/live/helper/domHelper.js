@@ -14,6 +14,29 @@ goog.require('src.base.helper.googleWrapper');
 goog.provide('src.base.helper.domHelper');
 
 
+/* PRIVATE FUNCTIONS */
+
+/**
+ @param {Object} parameters The parameter map to create the
+ parameter query string with.
+ @param {function} toString The function used to turn the
+ create from map result to a string.
+ @param {function} createFromMap The function used to convert
+ the parameters map.
+ @return {string} The created query string parameters
+ @private
+ */
+src.base.helper.domHelper.createParameterString_ =
+  function(parameters, toString, createFromMap) {
+
+    return parameters !== null && parameters !== undefined ?
+      '?' + toString(createFromMap(parameters)) :
+      '';
+  };
+
+
+/* PROTECTED FUNCTIONS */
+
 /**
  @param {Object} element The created element.
  @param {Object} options The created element options.
@@ -23,17 +46,19 @@ goog.provide('src.base.helper.domHelper');
  */
 src.base.helper.domHelper.createControlResult =
   function(element, options) {
-    
+
     var ControlConstant_ = src.base.control.controlConstant;
-    
+
     var result = {};
-    
+
     result[ControlConstant_.CreatedControl] = element;
     result[ControlConstant_.CreatedOptions] = options;
-    
+
     return result;
   };
 
+
+/* EXPORTED FUNCTIONS */
 
 /**
  @param {Object} button The button to update.
@@ -46,7 +71,7 @@ src.base.helper.domHelper.toBeEnabled =
     addRemove = addRemove ?
       addRemove :
       goog.dom.classes.addRemove;
-    
+
     if (enabled) {
       button['disabled'] = undefined;
       addRemove(button, 'Disabled', null);
@@ -78,32 +103,32 @@ src.base.helper.domHelper.resetAForm =
     findNodes = findNodes ?
       findNodes :
       goog.dom.findNodes;
-    
+
     setValue = setValue ?
       setValue :
       goog.dom.forms.setValue;
-    
+
     getChildren = getChildren ?
       getChildren :
       goog.dom.getChildren;
-    
+
     var textBoxes = findNodes(form,
                               function(item) {
                                 return item.nodeName === 'INPUT' &&
                                   item.type === 'text';
                               });
-    
+
     goog.array.forEach(textBoxes,
-                       function(item){
+                       function(item) {
                          setValue(item, '');
                        });
-    
+
     var selects = findNodes(form,
                             function(item) {
                               return item.nodeName === 'SELECT';
                             });
-    
-    goog.array.forEach(selects, function(select){
+
+    goog.array.forEach(selects, function(select) {
       var children = getChildren(select);
       setValue(select, children[0]);
     });
@@ -149,17 +174,75 @@ src.base.helper.domHelper.retrieveFormDataMap = function(mapToCheck, keyName) {
  */
 src.base.helper.domHelper.submitData =
   function(dataMap, successMethod) {
-    
+
     var request = new goog.net.XhrIo();
-    
+
     goog.events.listen(request, 'complete', function(result) {
       successMethod(result.target.getResponseJson());
     });
-    
+
     var data = goog.Uri.QueryData.createFromMap(dataMap);
-    
+
     request.send(dataMap.action, 'POST', data.toString());
   };
+
+/**
+ @param {string} url The url to submit to.
+ @param {Object} mainParameter The parameter that the get call
+ is expecting to trail the url.
+ @param {Object} parameters The optional parameters to send.
+ @param {?function} successMethod The function to be called on
+ successful return.
+ @param {?function} createRequest The function used to create a
+ xhrio request.
+ @param {?function} listen The event setter.
+ @param {?function} createFromMap The function used to turn
+ @param {?function} toString The .toString wrapper function.
+ the parameters into a data map.
+ @export
+ */
+src.base.helper.domHelper.submitRestfulGet =
+  function(url, mainParameter, parameters, successMethod,
+           createRequest, listen, createFromMap, toString) {
+
+    createRequest = createRequest ?
+      createRequest :
+      src.base.helper.googleWrapper.createRequest;
+
+    listen = listen ?
+      listen :
+      goog.events.listen;
+
+    createFromMap = createFromMap ?
+      createFromMap :
+      goog.Uri.QueryData.createFromMap;
+
+    toString = toString ?
+      toString :
+      src.base.helper.googleWrapper.toString;
+
+
+    /* Start */
+
+    var Current_ = src.base.helper.domHelper;
+
+    var request = createRequest();
+
+    listen(request, 'complete', function(result) {
+      successMethod(result.target.getResponseJson());
+    });
+
+    if (mainParameter !== null && mainParameter !== undefined) {
+      url = url + '/' + mainParameter;
+    }
+
+    var queryItemString = Current_.createParameterString_(parameters,
+                                                          toString,
+                                                          createFromMap);
+
+    request.send(url + queryItemString, 'GET');
+  };
+
 
 
 /**
@@ -171,13 +254,13 @@ src.base.helper.domHelper.submitData =
 src.base.helper.domHelper.submitToUrl =
   function(url, parameters, successMethod) {
     var request = new goog.net.XhrIo();
-    
+
     goog.events.listen(request, 'complete', function(result) {
       successMethod(result.target.getResponseJson());
     });
-    
+
     var data = goog.Uri.QueryData.createFromMap(parameters);
-    
+
     request.send(url, 'POST', data.toString());
   };
 
@@ -185,9 +268,9 @@ src.base.helper.domHelper.submitToUrl =
 /**
  @param {string} url The url to submit to.
  @param {Object} parameters The optional parameters to send.
- @param {?function} successMethod The function to be called on 
+ @param {?function} successMethod The function to be called on
  successful return.
- @param {?function} createRequest The function used to create a 
+ @param {?function} createRequest The function used to create a
  xhrio request.
  @param {?function} listen The event setter.
  @param {?function} createFromMap The function used to turn
@@ -198,25 +281,27 @@ src.base.helper.domHelper.submitToUrl =
 src.base.helper.domHelper.submitToGetUrl =
   function(url, parameters, successMethod, createRequest,
            listen, createFromMap, toString) {
-    
-    createRequest = createRequest ? 
-      createRequest : 
+
+    createRequest = createRequest ?
+      createRequest :
       src.base.helper.googleWrapper.createRequest;
-    
-    listen = listen ? 
-      listen : 
+
+    listen = listen ?
+      listen :
       goog.events.listen;
-    
-    createFromMap = createFromMap ? 
-      createFromMap : 
+
+    createFromMap = createFromMap ?
+      createFromMap :
       goog.Uri.QueryData.createFromMap;
-    
-    toString = toString ? 
-      toString : 
+
+    toString = toString ?
+      toString :
       src.base.helper.googleWrapper.toString;
-    
+
     
     /* Start */
+
+    var Current_ = src.base.helper.domHelper;
     
     var request = createRequest();
     
@@ -224,9 +309,9 @@ src.base.helper.domHelper.submitToGetUrl =
       successMethod(result.target.getResponseJson());
     });
     
-    var queryItemString = parameters !== null && parameters !== undefined ?
-          '?' + toString(createFromMap(parameters)) :
-          '';
+    var queryItemString = Current_.createParameterString_(parameters,
+                                                          toString,
+                                                          createFromMap);
     
     request.send(url + queryItemString, 'GET');
   };
