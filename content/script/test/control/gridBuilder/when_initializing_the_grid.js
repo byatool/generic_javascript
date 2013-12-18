@@ -59,9 +59,9 @@ src.test.control.gridBuilder.whenInitializingTheGrid.describe = function() {
   //Support Methods
   
   var callTheMethod_ = function() {
-    return Current_.initialize(options_, createADiv_, createResultHandler_,
-                               appendChild_, setTextContent_, submitToUrl_,
-                               createGridRefresh_, createControlResult_);
+    return Current_.initialize(options_, createADiv_,
+                               createResultHandler_, appendChild_, setTextContent_,
+                               submitToUrl_, createGridRefresh_, createControlResult_);
   };
   
   

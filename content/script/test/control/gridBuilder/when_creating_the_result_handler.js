@@ -60,8 +60,8 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
   var callTheMethod_ = function() {
     var methodToCall =
           src.base.control.gridBuilder.createTheResultHandler(options_, parentContainer_,
-                                                              createTheHeaderRow_, createRows_,
-                                                              createADiv_, appendChild_,
+                                                              createTheHeaderRow_,
+                                                              createRows_, createADiv_, appendChild_,
                                                               setTextContent_, swap_, setClick_,
                                                               getElementByClass_, createPagerButtons_,
                                                               refreshGrid_);
@@ -131,7 +131,7 @@ src.test.control.gridBuilder.whenCreatingTheResultHandler.describe = function() 
     
     createPagerButtons_ = function(result, gridOptions, parentContainer,
                                    getElementByClass, initializeThePager, appendChild,
-                                  refreshGrid) {
+                                   refreshGrid) {
       
       methodWasCalled = result === result_ &&
         gridOptions === options_ &&

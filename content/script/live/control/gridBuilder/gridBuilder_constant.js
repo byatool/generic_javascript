@@ -32,6 +32,14 @@ src.base.control.gridBuilder.constant.ButtonRowId = 'gridBuilderButtonRowId';
  @type {string}
  @protected
  */
+src.base.control.gridBuilder.constant.CallOnRefresh = 'callOnRefresh';
+
+
+/**
+ @const
+ @type {string}
+ @protected
+ */
 src.base.control.gridBuilder.constant.ColumnClass = 'gridBuilderColumnClass';
 
 

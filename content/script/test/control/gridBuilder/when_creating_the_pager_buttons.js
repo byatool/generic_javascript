@@ -23,6 +23,7 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   
   
   var appendChild_;
+  var callOnRefresh_;
   var getElementByClass_;
   var initializeThePager_;
   var gridOptions_;
@@ -34,23 +35,22 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
    //Test Hooks
   
   beforeEach(function() {
+    pager_ = {};
     parentContainer_ = {};
+    result_ = {};
     
+    callOnRefresh_ = function(){};
     refreshTheGrid_ = function(){};
     gridOptions_ = {};
+    gridOptions_[Constant_.CallOnRefresh] = callOnRefresh_;
     gridOptions_[Pager_.Refresh] = refreshTheGrid_;
     gridOptions_[Constant_.Parameters] = {};
     gridOptions_[Constant_.Parameters][ControlConstant_.Page] = 1;
     
-    
-    result_ = {};
+    appendChild_ = function() { };
     
     getElementByClass_ = function() { return null; };
     initializeThePager_ = function() { return pager_;};
-    
-    appendChild_ = function() { };
-    pager_ = {};
-    
   });
   
   
@@ -109,7 +109,6 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   it('should set the correct refresh function.', function() {
     var methodWasCalled = false;
     
-    
     refreshTheGrid_ = function(options, grid) {
       methodWasCalled = options === gridOptions_ &&
         grid === parentContainer_;
@@ -125,6 +124,55 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
   
+  
+  it('should invoke the refresh function.', function() {
+    var methodWasCalled = false;
+    
+    callOnRefresh_ = function(result) {
+      methodWasCalled = Constant_.CallOnRefresh !== undefined && 
+        result === result_;
+    };
+    
+    gridOptions_[Constant_.CallOnRefresh] = callOnRefresh_;
+    
+    initializeThePager_ = function(result, gridOptions, pagerOptions,
+                                   containerRow) {
+      pagerOptions[Pager_.Refresh](NewPage_);
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not invoke the refresh function if it is null.', function() {
+    callOnRefresh_ = null;
+    
+    gridOptions_[Constant_.CallOnRefresh] = callOnRefresh_;
+    
+    initializeThePager_ = function(result, gridOptions, pagerOptions,
+                                   containerRow) {
+      pagerOptions[Pager_.Refresh](NewPage_);
+    };
+    
+    callTheMethod_();
+    
+    expect(1).toBe(1);
+  });
+  
+  
+  it('should not invoke the refresh function if it is undefined.', function() {
+    
+    initializeThePager_ = function(result, gridOptions, pagerOptions,
+                                   containerRow) {
+      pagerOptions[Pager_.Refresh](NewPage_);
+    };
+    
+    callTheMethod_();
+    
+    expect(1).toBe(1);
+  });
   
   
   it('should update the page on the original options.', function() {
