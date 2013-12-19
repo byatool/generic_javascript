@@ -5,6 +5,7 @@ goog.require('src.base.control.wall.constant');
 goog.require('src.base.control.wall.form');
 goog.require('src.base.control.wall.row');
 goog.require('src.base.helper.domCreation');
+goog.require('src.base.helper.domHelper');
 
 
 goog.provide('src.base.control.wall');
@@ -15,15 +16,15 @@ goog.provide('src.base.control.wall');
  */
 src.base.control.wall.createTheMapping =
   function() {
-    
+
     var ControlConstant_ = src.base.control.controlConstant;
     var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
-    
+
     var emptyMapping = {};
     emptyMapping[GridBuilderConstant_.HeaderText] = '';
     emptyMapping[GridBuilderConstant_.PropertyName] = '';
     emptyMapping[ControlConstant_.Class] = '';
-    
+
     return [emptyMapping];
   };
 
@@ -53,6 +54,8 @@ src.base.control.wall.createTheMapping =
  created grid on form submit.
  @param {?function} initializeTheForm The fuction used to set up
  the created form.
+ @param {?function} createControlResult The function used to create
+ the result.
  @return {Object} The created control.
  @export
  */
@@ -60,16 +63,16 @@ src.base.control.wall.initialize =
   function(document, containerId, postTo, retrieveItemsUrl, deleteUrl,
            subjectId, editableUrl, createADiv, createTheForm,
            createTheGrid, appendChild, createTheMapping,
-           refreshGrid, initializeTheForm) {
-    
+           refreshGrid, initializeTheForm, createControlResult) {
+
     createADiv = createADiv ?
       createADiv :
       src.base.helper.domCreation.div;
-    
+
     createTheForm = createTheForm ?
       createTheForm :
       src.base.control.wall.form.create;
-    
+
     createTheGrid = createTheGrid ?
       createTheGrid :
       src.base.control.gridBuilder.initialize;
@@ -77,36 +80,41 @@ src.base.control.wall.initialize =
     appendChild = appendChild ?
       appendChild :
       goog.dom.appendChild;
-    
+
     createTheMapping = createTheMapping ?
       createTheMapping :
       src.base.control.wall.createTheMapping;
-    
+
     refreshGrid = refreshGrid ?
       refreshGrid :
       src.base.control.gridBuilder.refresh;
-    
+
     initializeTheForm = initializeTheForm ?
       initializeTheForm :
       src.base.control.wall.form.initialize;
-    
-    
+
+    createControlResult = createControlResult ?
+      createControlResult :
+      src.base.helper.domHelper.createControlResult;
+
+
     /* START */
-    
-    
+
+
     var Constant_ = src.base.control.wall.constant;
     var ControlConstant_ = src.base.control.controlConstant;
     var Current_ = src.base.control.wall;
     var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
-    
+
     var containerAttributes = {};
     containerAttributes[ControlConstant_.Id] = containerId;
     containerAttributes[ControlConstant_.Class] = containerId;
     var container = createADiv(containerAttributes);
-    
-    
+
+
     //Form
-    var entryForm = createTheForm(document, 
+
+    var entryForm = createTheForm(document,
                                   postTo,
                                   subjectId);
      //Grid
@@ -114,7 +122,9 @@ src.base.control.wall.initialize =
     var gridOptions = {};
     var parameters = {};
     var mapping = createTheMapping();
-    parameters[Constant_.SubjectId] = subjectId;
+
+    gridOptions[GridBuilderConstant_.MainParameter]  = subjectId;
+    //parameters[Constant_.SubjectId] = subjectId;
     parameters[ControlConstant_.Page] = 0;
     gridOptions[GridBuilderConstant_.ContainerClass] = Constant_.ItemsGrid;
     gridOptions[GridBuilderConstant_.ContainerId] = Constant_.ItemsGrid;
@@ -125,9 +135,9 @@ src.base.control.wall.initialize =
     gridOptions[GridBuilderConstant_.Parameters] = parameters;
     gridOptions[GridBuilderConstant_.ShowHeader] = false;
     gridOptions[GridBuilderConstant_.Url] = retrieveItemsUrl;
-
+    
     var gridResult = createTheGrid(gridOptions);
-
+    
     appendChild(container,
                 entryForm);
 
@@ -140,5 +150,42 @@ src.base.control.wall.initialize =
                                     gridResult[ControlConstant_.CreatedControl]);
                       });
 
-    return container;
+
+    return createControlResult(container, gridOptions);
+  };
+
+
+/**
+ @param {Object} options The original wall options.
+ @param {string} subjectId The id used by the wall to retrieve
+ the items.
+ @param {function} wall The wall control.
+ @param {?function} getElementByClass The function used to
+ find the grid.
+ @param {?function} refreshGrid The function used to refresh
+ the wall grid.
+ @protected
+ */
+src.base.control.wall.refresh =
+  function(options, subjectId, wall, getElementByClass, refreshGrid) {
+    
+    
+    getElementByClass = getElementByClass ?
+      getElementByClass :
+      goog.dom.getElementByClass;
+    
+    refreshGrid = refreshGrid ?
+      refreshGrid :
+      src.base.control.gridBuilder.refresh;
+    
+    /* Start */
+    
+    var Constant_ = src.base.control.wall.constant;
+    var GridBuilderConstant_ = src.base.control.gridBuilder.constant;
+    
+    var grid = getElementByClass(Constant_.ItemsGrid, wall);
+    
+    options[GridBuilderConstant_.MainParameter] = subjectId;
+
+    refreshGrid(options, grid);
   };

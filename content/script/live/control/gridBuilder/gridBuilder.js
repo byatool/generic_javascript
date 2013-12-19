@@ -52,12 +52,11 @@ src.base.control.gridBuilder.createPagerButtons =
     pagerOptions[Pager_.Refresh] = function(page) {
       gridOptions[Constant_.Parameters][ControlConstant_.Page] = page;
       refreshTheGrid(gridOptions, parentContainer);
-      
-      if(gridOptions[Constant_.CallOnRefresh]){
-        gridOptions[Constant_.CallOnRefresh](result);
-      }
-      
     };
+    
+    if(gridOptions[Constant_.CallOnRefresh]){
+      gridOptions[Constant_.CallOnRefresh](result);
+    }
     
     containerRow = initializeThePager(result,
                                       gridOptions,
@@ -295,7 +294,7 @@ src.base.control.gridBuilder.refresh =
     setTextContent = setTextContent ?
       setTextContent :
       goog.dom.setTextContent;
-
+    
     submitToUrl = submitToUrl ?
       submitToUrl :
       src.base.helper.domHelper.submitRestfulGet;
@@ -303,27 +302,27 @@ src.base.control.gridBuilder.refresh =
     createGridRefresh = createGridRefresh ?
       createGridRefresh :
       src.base.control.gridBuilder.createGridRefresh;
-
-
+    
+    
     //START
-
+    
     var Constant_ = src.base.control.gridBuilder.constant;
     var Current_ = src.base.control.gridBuilder;
-
+    
     var children = getElementsByClass(Constant_.RowClass,
                                       grid);
-
+    
     forEach(children, function(item) {
       removeNode(item);
     });
-
+    
     var possibleMessageRow = getElementsByClass(Constant_.MessageClass,
                                                 grid);
-
+    
     forEach(possibleMessageRow, function(item) {
       removeNode(item);
     });
-
+    
     var gridRefresh = createGridRefresh(options,
                                         grid,
                                         Current_.refresh);

@@ -32,6 +32,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   
   var appendChild_;
   var createADiv_;
+  var createControlResult_;
   var createTheForm_;
   var createTheGrid_;
   var createTheMapping_;
@@ -66,6 +67,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
       return gridResult_;
     };
     
+    createControlResult_ = function(){};
     createTheMapping_ = function(){};
     initializeTheForm_ = function(){};
     refreshGrid_ = function(){};
@@ -77,7 +79,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   var callTheMethod_ = function() {
     return Current_.initialize(document_, ParentContainerId_, PostTo_, RetrieveItemsUrl_, DeleteUrl_, SubjectId_,
                                EditableUrl_, createADiv_, createTheForm_, createTheGrid_, appendChild_,
-                               createTheMapping_, refreshGrid_, initializeTheForm_);
+                               createTheMapping_, refreshGrid_, initializeTheForm_, createControlResult_);
   }; 
   
   
@@ -132,7 +134,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
         options[Constant_.DeleteUrl] === DeleteUrl_ &&
         options[Constant_.EditableUrl] === EditableUrl_ &&
         options[GridBuilderConstant_.Map] === mapping &&
-        options[GridBuilderConstant_.Parameters][Constant_.SubjectId] === SubjectId_ &&
+        options[GridBuilderConstant_.MainParameter] === SubjectId_ &&
         options[GridBuilderConstant_.Parameters][ControlConstant_.Page] === 0 &&
         options[GridBuilderConstant_.Url] === RetrieveItemsUrl_ &&
         options[GridBuilderConstant_.ShowHeader] === false;
@@ -146,7 +148,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
     expect(methodWasCalled).toBe(true);
   });
   
-   
+  
   it('should initialize the form.', function() {
     var methodWasCalled = 0;
     
@@ -160,7 +162,7 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
       methodWasCalled += form === form_;
       onSubmit();
     };
-     
+    
     callTheMethod_();
     
     expect(methodWasCalled).toBe(2);
@@ -196,8 +198,36 @@ src.test.control.wall.whenInitializingAWall.describe = function () {
   });
   
   
-  it('should return the parent container.', function() {
-    expect(callTheMethod_()).toBe(parentContainer_);
+  it('should create the control result.', function() {
+    var methodWasCalled = false;
+    var currentOptions = null;
+    
+    createTheGrid_ = function(options){
+      currentOptions = options;
+
+      return gridResult_;
+    };
+    
+    createControlResult_ = function(control, options){
+      methodWasCalled = control === parentContainer_ &&
+        options === currentOptions;
+    };
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should return the control and options.', function() {
+
+    var controlResult = {};
+    
+    createControlResult_ = function(){
+      return controlResult;
+    };
+    
+    expect(callTheMethod_()).toBe(controlResult);
   });
 };
 

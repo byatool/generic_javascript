@@ -125,54 +125,6 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
   });
   
   
-  it('should invoke the refresh function.', function() {
-    var methodWasCalled = false;
-    
-    callOnRefresh_ = function(result) {
-      methodWasCalled = Constant_.CallOnRefresh !== undefined && 
-        result === result_;
-    };
-    
-    gridOptions_[Constant_.CallOnRefresh] = callOnRefresh_;
-    
-    initializeThePager_ = function(result, gridOptions, pagerOptions,
-                                   containerRow) {
-      pagerOptions[Pager_.Refresh](NewPage_);
-    };
-    
-    callTheMethod_();
-    
-    expect(methodWasCalled).toBe(true);
-  });
-  
-  
-  it('should not invoke the refresh function if it is null.', function() {
-    callOnRefresh_ = null;
-    
-    gridOptions_[Constant_.CallOnRefresh] = callOnRefresh_;
-    
-    initializeThePager_ = function(result, gridOptions, pagerOptions,
-                                   containerRow) {
-      pagerOptions[Pager_.Refresh](NewPage_);
-    };
-    
-    callTheMethod_();
-    
-    expect(1).toBe(1);
-  });
-  
-  
-  it('should not invoke the refresh function if it is undefined.', function() {
-    
-    initializeThePager_ = function(result, gridOptions, pagerOptions,
-                                   containerRow) {
-      pagerOptions[Pager_.Refresh](NewPage_);
-    };
-    
-    callTheMethod_();
-    
-    expect(1).toBe(1);
-  });
   
   
   it('should update the page on the original options.', function() {
@@ -225,6 +177,42 @@ src.test.control.gridBuilder.whenCreatingThePagerButtons.describe = function() {
     expect(methodWasCalled).toBe(true);
   });
   
+  
+  it('should invoke the refresh function.', function() {
+    var methodWasCalled = false;
+    
+    callOnRefresh_ = function(result){
+      methodWasCalled = result === result_;
+    };
+    
+    gridOptions_[Constant_.CallOnRefresh] = callOnRefresh_;
+    
+    callTheMethod_();
+    
+    expect(methodWasCalled).toBe(true);
+  });
+  
+  
+  it('should not invoke the refresh function if it is null.', function() {
+    var noErrors = true;
+    
+    gridOptions_[Constant_.CallOnRefresh] = null;
+    
+    callTheMethod_();
+    
+    expect(noErrors).toBe(true);
+  });
+  
+  
+  it('should not invoke the refresh function if it is undefined.', function() {
+    var noErrors = true;
+    
+    gridOptions_[Constant_.CallOnRefresh] = undefined;
+    
+    callTheMethod_();
+    
+    expect(noErrors).toBe(true);
+  });
   
   
   it('should add the pager if it did not exist before.', function() {
